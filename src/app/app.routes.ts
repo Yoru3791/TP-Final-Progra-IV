@@ -25,6 +25,7 @@ import { adminGuardFn } from './guards/admin.guard.fn';
 import { AdminReclamosPage } from './pages/admin-reclamos-page/admin-reclamos-page';
 import { AdminEmprendimientosPage } from './pages/admin-emprendimientos-page/admin-emprendimientos-page';
 import { AdminPedidosPage } from './pages/admin-pedidos-page/admin-pedidos-page';
+import { MisReclamosComponent } from './pages/mis-reclamos-page/mis-reclamos-page';
 
 export const routes: Routes = [
   /* -------------------- HOME -------------------- */
@@ -32,6 +33,7 @@ export const routes: Routes = [
 
   /* -------------------- PERFIL (solo logeados) -------------------- */
   { path: 'me', component: PerfilUsuario, canActivate: [authGuardFn] },
+  { path: 'cliente/mis-reclamos', component: MisReclamosComponent, canActivate: [authGuardFn] },
 
   /* -------------------- REGISTROS (solo invitados) -------------------- */
   { path: 'registro/dueno', component: RegisterPageDueno, canActivate: [invitadoGuardFn] },
