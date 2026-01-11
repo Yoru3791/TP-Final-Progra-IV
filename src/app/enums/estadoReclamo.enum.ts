@@ -1,0 +1,6 @@
+export enum EstadoReclamo {
+  PENDIENTE = 'PENDIENTE',
+  EN_PROCESO = 'EN_PROCESO',
+  RESUELTO = 'RESUELTO',
+  RECHAZADO = 'RECHAZADO'
+}
