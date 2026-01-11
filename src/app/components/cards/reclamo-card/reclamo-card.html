@@ -1,0 +1,34 @@
+<div class="card-ticket">
+  <div class="ticket-header">
+    <div class="ticket-info">
+      <span class="ticket-code">{{ reclamo.codigoTicket }}</span>
+      <span class="ticket-date">{{ reclamo.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</span>
+    </div>
+    
+    <div class="badge" [ngClass]="estadoHelper[reclamo.estado].cssClass">
+      <i [class]="estadoHelper[reclamo.estado].icon"></i>
+      {{ estadoHelper[reclamo.estado].label }}
+    </div>
+  </div>
+
+  <div class="ticket-body">
+    <h4 class="categoria">{{ categoriaLabel[reclamo.categoria] }}</h4>
+    <p class="descripcion">"{{ reclamo.descripcion }}"</p>
+    
+    @if (reclamo.respuestaAdmin) {
+      <div class="admin-response">
+        <div class="response-header">
+          <i class="fa-solid fa-headset"></i> Respuesta de Soporte:
+        </div>
+        <p class="response-text">{{ reclamo.respuestaAdmin }}</p>
+      </div>
+    }
+
+    @if (isAdmin) {
+      <div class="admin-actions">
+        <hr>
+        <p class="text-sm text-gray-500">Controles de administrador disponibles aquí</p>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="container-reclamos">
+  
+  <div class="header-section">
+    <div>
+      <h1 class="titulo">Mis Reclamos</h1>
+      <p class="subtitulo">Historial de reportes y tickets de soporte</p>
+    </div>
+    <a routerLink="/reclamos" class="btn-nuevo">
+      <i class="fa-solid fa-plus"></i> Nuevo Reclamo
+    </a>
+  </div>
+
+  <div class="filtros-container">
+    @for (filtro of filtrosDisponibles; track filtro.value) {
+      <button 
+        class="chip" 
+        [class.active]="filtroActual() === filtro.value"
+        (click)="setFiltro(filtro.value)">
+        {{ filtro.label }}
+      </button>
+    }
+  </div>
+
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div> <p>Cargando tus tickets...</p>
+    </div>
+  } 
+  
+  @else if (reclamos().length === 0) {
+    <div class="empty-state">
+      <i class="fa-regular fa-folder-open icon-empty"></i>
+      <h3>No tienes reclamos registrados</h3>
+      <p>Si tienes algún inconveniente, crea un nuevo reporte.</p>
+    </div>
+  }
+
+  @else if (reclamosFiltrados().length === 0) {
+    <div class="empty-filter">
+      <p>No hay reclamos con el estado <strong>{{ filtroActual() }}</strong>.</p>
+    </div>
+  }
+
+  @else {
+    <div class="lista-reclamos">
+      @for (ticket of reclamosFiltrados(); track ticket.id) {
+        <app-reclamo-card [reclamo]="ticket"></app-reclamo-card>
+      }
+    </div>
+  }
+
+</div>
