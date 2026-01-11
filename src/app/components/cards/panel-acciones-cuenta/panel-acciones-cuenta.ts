@@ -3,10 +3,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { EliminarCuentaPaso1 } from '../../modals/eliminar-cuenta-paso1/eliminar-cuenta-paso1';
 import { ConfirmarLogout } from '../../modals/logout-modal/logout-modal';
 import { CambiarPasswordModal } from '../../modals/cambiar-password-modal/cambiar-password-modal';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-panel-acciones-cuenta',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './panel-acciones-cuenta.html',
   styleUrl: './panel-acciones-cuenta.css',
 })
