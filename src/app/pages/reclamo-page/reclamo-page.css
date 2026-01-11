@@ -41,3 +41,44 @@
 .info-footer a:hover {
   text-decoration: underline;
 }
+
+/* RESPONSIVE */
+
+@media (max-width: 600px) {
+  .container-reclamos {
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+  }
+
+  .header-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.2rem;
+    text-align: center;
+  }
+
+  .titulo {
+    font-size: 1.6rem;
+  }
+
+  .btn-nuevo {
+    justify-content: center;
+    width: 100%; 
+    padding: 0.8rem;
+  }
+
+  .filtros-container {
+    scrollbar-width: none; 
+  }
+  .filtros-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .empty-state {
+    padding: 2rem 1rem;
+  }
+  
+  .icon-empty {
+    font-size: 2.5rem;
+  }
+}

@@ -1,0 +1,71 @@
+.dialog-container {
+  padding: 1.5rem;
+  min-width: 40rem;
+  background: white;
+}
+
+.dialog-title {
+  color: var(--color-primary);
+  margin-top: 0;
+  border-bottom: 0.2rem solid #eee;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #444;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.error-msg {
+  color: #dc2626;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 1px solid #ccc;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.btn-save {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-save:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
