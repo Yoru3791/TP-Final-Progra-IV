@@ -26,8 +26,14 @@
 
     @if (isAdmin) {
       <div class="admin-actions">
-        <hr>
-        <p class="text-sm text-gray-500">Controles de administrador disponibles aquí</p>
+        <hr class="separator">
+        <div class="action-row">
+          <p class="text-sm text-gray-500">Panel de Administrador</p>
+          
+          <button class="btn-gestionar" (click)="onGestionarClick()">
+            <i class="fa-solid fa-pen-to-square"></i> Responder / Cambiar Estado
+          </button>
+        </div>
       </div>
     }
   </div>
