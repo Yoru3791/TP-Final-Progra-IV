@@ -1,0 +1,95 @@
+.admin-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.header-section {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.titulo {
+  color: var(--color-primary);
+  margin: 0;
+  font-size: 2rem;
+}
+
+.subtitulo {
+  color: #666;
+  margin: 0.5rem 0 0 0;
+}
+
+/* FILTROS (CHIPS) - Igual que en cliente */
+.filtros-container {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.chip {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: #555;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.chip.active {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+/* LAYOUT CARDS */
+.lista-reclamos {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ESTADOS DE CARGA Y VACIO */
+.loading-state {
+  text-align: center;
+  margin-top: 3rem;
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: #f9fafb;
+  border-radius: 1rem;
+  border: 2px dashed #e5e7eb;
+  color: #666;
+}
+
+.icon-empty {
+  font-size: 3rem;
+  color: #d1d5db;
+  margin-bottom: 1rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .titulo {
+    font-size: 1.5rem;
+  }
+  
+  .filtros-container {
+    scrollbar-width: none;
+  }
+}
