@@ -7,10 +7,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Reclamo } from '../../model/reclamo-response.model';
 import { EstadoReclamo } from '../../enums/estadoReclamo.enum';
 import { AdminGestionReclamoModal } from '../../components/modals/admin-gestion-reclamo-modal/admin-gestion-reclamo-modal';
+import { InfoReclamoTooltipComponent } from '../../components/utils/info-reclamo-tooltip/info-reclamo-tooltip';
 
 @Component({
   selector: 'app-admin-reclamos-page',
-  imports: [CommonModule, ReclamoCardComponent],
+  imports: [CommonModule, ReclamoCardComponent, InfoReclamoTooltipComponent],
   templateUrl: './admin-reclamos-page.html',
   styleUrl: './admin-reclamos-page.css',
 })
