@@ -5,10 +5,11 @@ import { ReclamoCardComponent } from '../../components/cards/reclamo-card/reclam
 import { EstadoReclamo } from '../../enums/estadoReclamo.enum';
 import { ReclamoService } from '../../services/reclamo-service';
 import { Reclamo } from '../../model/reclamo-response.model';
+import { InfoReclamoTooltipComponent } from '../../components/utils/info-reclamo-tooltip/info-reclamo-tooltip';
 
 @Component({
   selector: 'app-mis-reclamos-page',
-  imports: [CommonModule, RouterLink, ReclamoCardComponent],
+  imports: [CommonModule, RouterLink, ReclamoCardComponent,InfoReclamoTooltipComponent],
   templateUrl: './mis-reclamos-page.html',
   styleUrl: './mis-reclamos-page.css',
 })
