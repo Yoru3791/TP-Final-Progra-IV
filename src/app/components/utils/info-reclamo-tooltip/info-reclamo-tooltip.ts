@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,4 +7,6 @@ import { CommonModule } from '@angular/common';
   templateUrl: './info-reclamo-tooltip.html',
   styleUrl: './info-reclamo-tooltip.css'
 })
-export class InfoReclamoTooltipComponent {}
+export class InfoReclamoTooltipComponent {
+  @Input() isAdmin = false;
+}

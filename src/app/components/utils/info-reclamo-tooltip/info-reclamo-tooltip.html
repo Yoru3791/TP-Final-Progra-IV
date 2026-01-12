@@ -4,22 +4,51 @@
   <div class="tooltip-box">
     <h4 class="tooltip-title">Estados del Ticket</h4>
     <ul class="lista-estados">
+      
       <li>
         <span class="badge badge-pendiente">Pendiente</span>
-        <p>Tu reporte fue recibido y espera revisión.</p>
+        <p>
+          @if (isAdmin) {
+            Ticket recién ingresado. Requiere revisión inicial.
+          } @else {
+            Tu reporte fue recibido y espera revisión.
+          }
+        </p>
       </li>
+
       <li>
         <span class="badge badge-proceso">En Proceso</span>
-        <p>Soporte está analizando tu caso.</p>
+        <p>
+          @if (isAdmin) {
+            El ticket está siendo analizado o gestionado actualmente.
+          } @else {
+            Soporte está analizando tu caso.
+          }
+        </p>
       </li>
+
       <li>
         <span class="badge badge-resuelto">Resuelto</span>
-        <p>Se ha brindado una solución o respuesta.</p>
+        <p>
+          @if (isAdmin) {
+            Solución enviada. Esperando confirmación o cierre.
+          } @else {
+            Se ha brindado una solución o respuesta.
+          }
+        </p>
       </li>
+
       <li>
         <span class="badge badge-rechazado">Cerrado</span>
-        <p>El reporte fue desestimado o finalizado.</p>
+        <p>
+          @if (isAdmin) {
+            Ticket finalizado, desestimado o inválido.
+          } @else {
+            El reporte fue desestimado o finalizado.
+          }
+        </p>
       </li>
+
     </ul>
   </div>
 </div>
