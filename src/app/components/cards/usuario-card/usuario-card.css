@@ -177,3 +177,9 @@
 {
   filter: brightness(0.5);
 }
+
+.edit-button:disabled {
+  cursor: not-allowed;
+  opacity: 0;
+  pointer-events: none;
+}
