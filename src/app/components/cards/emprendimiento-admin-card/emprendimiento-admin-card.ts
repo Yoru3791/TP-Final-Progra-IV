@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { EmprendimientoResponse } from '../../../model/emprendimiento-response.model';
+
+import { EmprendimientoAdminResponse } from '../../../model/emprendimiento-admin-response.model';
 
 
 @Component({
@@ -10,5 +11,5 @@ import { EmprendimientoResponse } from '../../../model/emprendimiento-response.m
   styleUrl: './emprendimiento-admin-card.css',
 })
 export class EmprendimientoAdminCard {
-  @Input() emprendimiento!: EmprendimientoResponse;
+  @Input() emprendimiento!: EmprendimientoAdminResponse;
 }

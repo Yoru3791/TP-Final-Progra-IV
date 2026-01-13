@@ -5,7 +5,8 @@ import { catchError, forkJoin, map, of, tap } from 'rxjs';
 import { AuthService, UserRole } from './auth-service';
 import { CityFilterService } from './city-filter-service';
 import { ViandaService } from './vianda-service';
-import { PageMetadata } from '../model/hateoas-pagination.models';
+import { PagedResponse, PageMetadata } from '../model/hateoas-pagination.models';
+import { EmprendimientoAdminResponse } from '../model/emprendimiento-admin-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class EmprendimientoService {
@@ -14,8 +15,9 @@ export class EmprendimientoService {
   private cityFilter = inject(CityFilterService);
   private viandaService = inject(ViandaService);
   public allEmprendimientos = signal<EmprendimientoResponse[]>([]);
-  public pageInfo = signal<PageMetadata | null>(null);
+  public allEmprendimientosAdmin = signal<EmprendimientoAdminResponse[]>([]);
   public adminPageInfo = signal<PageMetadata | null>(null);
+  public pageInfo = signal<PageMetadata | null>(null);
 
   //Siempre refleja los emprendimientos filtrados por ciudad
   public emprendimientos = computed(() => this.allEmprendimientos());
@@ -59,7 +61,6 @@ export class EmprendimientoService {
         params = params.set('ciudad', ciudad);
       }
     } else {
-      // PUBLIC / CLIENTE
       if (ciudad) {
         url = `${baseUrl}/ciudad/${ciudad}`;
       } else {
@@ -68,7 +69,7 @@ export class EmprendimientoService {
     }
 
     this.http
-      .get<any>(url, { params }) // Uso any para manejar ambas respuestas
+      .get<PagedResponse<EmprendimientoResponse>>(url, { params })
       .pipe(
         catchError((err) => {
           console.error('Error al cargar emprendimientos', err);
@@ -77,12 +78,7 @@ export class EmprendimientoService {
       )
       .subscribe((response) => {
         if (response && response._embedded) {
-          const rawList =
-            response._embedded['emprendimientoDTOList'] ||
-            response._embedded['emprendimientoAdminDTOList'] ||
-            [];
-
-          const data = rawList.map((item: any) => ({
+          const data = (response._embedded['emprendimientoDTOList'] || []).map((item: any) => ({
             ...item,
             viandas: [],
           }));
@@ -92,6 +88,30 @@ export class EmprendimientoService {
         } else {
           this.allEmprendimientos.set([]);
           this.pageInfo.set(null);
+        }
+      });
+  }
+
+  fetchEmprendimientosAdmin(page: number = 0, size: number = 20) {
+    const params = new HttpParams().set('page', page).set('size', size);
+
+    this.http
+      .get<any>(this.baseUrls.ADMIN, { params })
+      .pipe(
+        catchError((err) => {
+          console.error('Error al cargar emprendimientos (ADMIN)', err);
+          return of(null);
+        })
+      )
+      .subscribe((response) => {
+        if (response && response._embedded) {
+          const data = response._embedded['emprendimientoAdminDTOList'] ?? [];
+
+          this.allEmprendimientosAdmin.set(data);
+          this.adminPageInfo.set(response.page);
+        } else {
+          this.allEmprendimientosAdmin.set([]);
+          this.adminPageInfo.set(null);
         }
       });
   }
