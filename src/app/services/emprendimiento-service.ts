@@ -14,6 +14,7 @@ export class EmprendimientoService {
   private authService = inject(AuthService);
   private cityFilter = inject(CityFilterService);
   private viandaService = inject(ViandaService);
+
   public allEmprendimientos = signal<EmprendimientoResponse[]>([]);
   public allEmprendimientosAdmin = signal<EmprendimientoAdminResponse[]>([]);
   public adminPageInfo = signal<PageMetadata | null>(null);
@@ -139,44 +140,68 @@ export class EmprendimientoService {
     return this.http.get<EmprendimientoResponse>(`${url}/id/${id}`);
   }
 
-  //CRUD
+  // ----------------------- CRUD (ACTUALIZADO PARA ADMIN) -----------------------
 
   createEmprendimiento(formData: FormData) {
-    if (this.authService.currentUserRole() !== 'DUENO') {
-      throw new Error('Solo dueños pueden crear emprendimientos');
+    const rol = this.authService.currentUserRole();
+
+    if (rol !== 'DUENO' && rol !== 'ADMIN') {
+      throw new Error('No tienes permisos para crear emprendimientos');
     }
-    return this.http.post<EmprendimientoResponse>(this.baseUrls.DUENO, formData).pipe(
+
+    const url = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+
+    return this.http.post<EmprendimientoResponse>(url, formData).pipe(
       tap(() => {
-        this.fetchEmprendimientos(0, 10);
+        // Recargamos la lista que corresponda según el rol
+        if (rol === 'DUENO') {
+          this.fetchEmprendimientos(0, 10);
+        } else {
+          this.fetchEmprendimientosAdmin(0, 10);
+        }
       })
     );
   }
 
   deleteEmprendimiento(id: number) {
-    if (this.authService.currentUserRole() !== 'DUENO') {
-      throw new Error('Solo dueños pueden eliminar emprendimientos');
+    const rol = this.authService.currentUserRole();
+
+    if (rol !== 'DUENO' && rol !== 'ADMIN') {
+      throw new Error('No tienes permisos para eliminar emprendimientos');
     }
-    return this.http.delete<void>(`${this.baseUrls.DUENO}/id/${id}`).pipe(
+
+    const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const url = `${baseUrl}/id/${id}`;
+
+    return this.http.delete<void>(url).pipe(
       tap(() => {
+        // Actualizamos localmente las listas para que la UI responda rápido
         this.allEmprendimientos.update((list) => list.filter((e) => e.id !== id));
+        // Si tienes una lista de admin local, podrías filtrarla también si los tipos coinciden,
+        // o simplemente esperar a que el componente recargue.
       })
     );
   }
 
-  //verificar que un emprendimiento le corresponde a un dueño (para guards)
+  // Verificar que un emprendimiento le corresponde a un dueño (para guards)
   esDuenoDelEmprendimiento(emprendimientoId: number, usuarioId: number): boolean {
     const emprendimiento = this.emprendimientos().find((e) => e.id === emprendimientoId);
     return emprendimiento ? emprendimiento.dueno.id === usuarioId : false;
   }
 
-  //Actualizar los campos del emprendimiento
+  // Actualizar los campos del emprendimiento
   updateEmprendimiento(id: number, dto: any) {
-    if (this.authService.currentUserRole() !== 'DUENO') {
-      throw new Error('Solo dueños pueden actualizar emprendimientos');
+    const rol = this.authService.currentUserRole();
+
+    if (rol !== 'DUENO' && rol !== 'ADMIN') {
+      throw new Error('No tienes permisos para actualizar emprendimientos');
     }
 
+    const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const url = `${baseUrl}/id/${id}`;
+
     return this.http
-      .put<EmprendimientoResponse>(`${this.baseUrls.DUENO}/id/${id}`, dto)
+      .put<EmprendimientoResponse>(url, dto)
       .pipe(
         tap((actualizado) =>
           this.allEmprendimientos.update((list) => list.map((e) => (e.id === id ? actualizado : e)))
@@ -184,14 +209,19 @@ export class EmprendimientoService {
       );
   }
 
-  //actualizar la imagen del emprendimiento
+  // Actualizar la imagen del emprendimiento
   updateImagenEmprendimiento(id: number, formData: FormData) {
-    if (this.authService.currentUserRole() !== 'DUENO') {
-      throw new Error('Solo dueños pueden actualizar imágenes de emprendimientos');
+    const rol = this.authService.currentUserRole();
+
+    if (rol !== 'DUENO' && rol !== 'ADMIN') {
+      throw new Error('No tienes permisos para actualizar imágenes');
     }
 
+    const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const url = `${baseUrl}/id/${id}/imagen`;
+
     return this.http
-      .put<EmprendimientoResponse>(`${this.baseUrls.DUENO}/id/${id}/imagen`, formData)
+      .put<EmprendimientoResponse>(url, formData)
       .pipe(
         tap((actualizado) =>
           this.allEmprendimientos.update((list) => list.map((e) => (e.id === id ? actualizado : e)))

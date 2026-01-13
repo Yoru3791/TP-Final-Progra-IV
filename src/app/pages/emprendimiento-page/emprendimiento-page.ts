@@ -24,12 +24,7 @@ export type PageMode = 'DUENO' | 'CLIENTE' | 'INVITADO' | 'PROHIBIDO' | 'CARGAND
 
 @Component({
   selector: 'app-emprendimiento-page',
-  imports: [
-    EmprendimientoInfo,
-    EmprendimientoFiltrosViandas,
-    ViandaCardDetallada,
-    RouterLink
-  ],
+  imports: [EmprendimientoInfo, EmprendimientoFiltrosViandas, ViandaCardDetallada, RouterLink],
   templateUrl: './emprendimiento-page.html',
   styleUrl: './emprendimiento-page.css',
 })
@@ -43,9 +38,8 @@ export class EmprendimientoPage {
   private dialog = inject(MatDialog);
   private carritoService = inject(CarritoService);
 
-  emprendimientoEditado = signal(0);   //  Signal para forzar recarga de info de emprendimiento al editarlo
-  viandaEditada = signal(0);           //  Signal para forzar recarga de viandas y categorias al editar una vianda
-
+  emprendimientoEditado = signal(0); //  Signal para forzar recarga de info de emprendimiento al editarlo
+  viandaEditada = signal(0); //  Signal para forzar recarga de viandas y categorias al editar una vianda
 
   //  Uso signals para idEmprendimiento, emprendimiento y esDueno (si algo cambia, se actualiza todo automáticamente)
   idEmprendimiento = computed(() => {
@@ -55,20 +49,21 @@ export class EmprendimientoPage {
 
   emprendimiento = toSignal(
     combineLatest([
-    toObservable(this.idEmprendimiento),
-    toObservable(this.emprendimientoEditado)
-  ]).pipe(
-    map(([id, _]) => id),
+      toObservable(this.idEmprendimiento),
+      toObservable(this.emprendimientoEditado),
+    ]).pipe(
+      map(([id, _]) => id),
       switchMap((id) => {
         if (!id) return of(null);
         return this.emprendimientoService.getEmprendimientoById(id).pipe(
           catchError((err) => {
-
             const backendMsg =
-                        err.error?.message || err.error?.error || 'Error desconocido al cargar emprendimiento';
-            
+              err.error?.message ||
+              err.error?.error ||
+              'Error desconocido al cargar emprendimiento';
+
             console.error(backendMsg);
-  
+
             this.dialog.open(ErrorDialogModal, {
               data: { message: backendMsg },
               panelClass: 'modal-error',
@@ -89,6 +84,10 @@ export class EmprendimientoPage {
     const userId = this.authService.usuarioId();
     const userRole = this.authService.currentUserRole();
 
+    if (userRole === 'ADMIN') {
+      return 'DUENO';
+    }
+
     if (userRole === 'DUENO') {
       return emp.dueno.id === userId ? 'DUENO' : 'PROHIBIDO';
     }
@@ -100,36 +99,34 @@ export class EmprendimientoPage {
     return 'INVITADO';
   });
 
-
-    //  -------------------  Componente: emprendimiento-info -------------------
+  //  -------------------  Componente: emprendimiento-info -------------------
 
   handleAccionInfo() {
     const modo = this.modoVista();
 
     if (modo === 'DUENO') {
       this.abrirModalEditarEmprendimiento();
-    } 
-    else if (modo === 'CLIENTE') {
+    } else if (modo === 'CLIENTE') {
       this.abrirModalCarrito();
-    } 
-    else if (modo === 'INVITADO') {
+    } else if (modo === 'INVITADO') {
       this.abrirSnackbarLoginRequerido();
     }
   }
 
   abrirModalEditarEmprendimiento() {
     this.dialog
-      .open(FormUpdateEmprendimiento, {              //  REVISAR errores que tira este modal (dentro del form)
+      .open(FormUpdateEmprendimiento, {
+        //  REVISAR errores que tira este modal (dentro del form)
         width: '100rem',
         panelClass: 'form-modal',
         autoFocus: false,
         restoreFocus: false,
-        data: this.emprendimiento()
+        data: this.emprendimiento(),
       })
       .afterClosed()
       .subscribe((exito) => {
         if (exito) {
-          this.emprendimientoEditado.update(v => v + 1);
+          this.emprendimientoEditado.update((v) => v + 1);
         }
       });
   }
@@ -145,19 +142,18 @@ export class EmprendimientoPage {
   abrirSnackbarLoginRequerido() {
     const snackbarData: SnackbarData = {
       message: 'Inicie sesión para realizar pedidos',
-      iconName: 'error'
-    }
+      iconName: 'error',
+    };
 
     this.snackBar.openFromComponent(Snackbar, {
       duration: 3000,
       verticalPosition: 'bottom',
       panelClass: 'snackbar-panel',
-      data: snackbarData
+      data: snackbarData,
     });
   }
 
-
-    //  -------------------  Componente: emprendimiento-filtros-viandas -------------------
+  //  -------------------  Componente: emprendimiento-filtros-viandas -------------------
 
   //  Signal que contiene los filtros actuales
   filtrosSignal = signal<FiltrosViandas>({} as FiltrosViandas);
@@ -167,7 +163,7 @@ export class EmprendimientoPage {
     return {
       id: this.idEmprendimiento(),
       filtros: this.filtrosSignal(),
-      modo: this.modoVista()
+      modo: this.modoVista(),
     };
   });
 
@@ -175,7 +171,6 @@ export class EmprendimientoPage {
   viandas = toSignal(
     toObservable(this.triggerViandas).pipe(
       switchMap(({ id, filtros, modo }) => {
-
         if (!id || modo === 'CARGANDO' || modo === 'PROHIBIDO') {
           return of([] as ViandaResponse[]);
         }
@@ -203,7 +198,7 @@ export class EmprendimientoPage {
             // Ordena las viandas para mostrar las disponibles primero (solo afecta al dueño)
             return resultado.sort((a, b) => {
               if (a.estaDisponible === b.estaDisponible) {
-                  return 0; 
+                return 0;
               }
               return a.estaDisponible ? -1 : 1;
             });
@@ -223,7 +218,7 @@ export class EmprendimientoPage {
     this.viandaEditada();
     return {
       id: this.idEmprendimiento(),
-      modo: this.modoVista()
+      modo: this.modoVista(),
     };
   });
 
@@ -232,13 +227,12 @@ export class EmprendimientoPage {
   viandasTotales = toSignal(
     toObservable(this.triggerViandasTotales).pipe(
       switchMap(({ id, modo }) => {
-
         if (!id || modo === 'CARGANDO' || modo === 'PROHIBIDO') {
-            return of([] as ViandaResponse[]);
+          return of([] as ViandaResponse[]);
         }
 
         let request$: Observable<ViandaResponse[]>;
-        
+
         switch (modo) {
           case 'DUENO':
             request$ = this.viandaService.getViandasDueno(id);
@@ -263,7 +257,6 @@ export class EmprendimientoPage {
     this.filtrosSignal.set(nuevosFiltros);
   }
 
-
   //  -------------------  Componente: vianda-card-detallada -------------------
 
   abrirViandaForm() {
@@ -279,8 +272,8 @@ export class EmprendimientoPage {
       .afterClosed()
       .subscribe((exito) => {
         if (exito) {
-          this.viandaEditada.update(v => v + 1);
-          this.filtrosSignal.update(f => ({...f}));
+          this.viandaEditada.update((v) => v + 1);
+          this.filtrosSignal.update((f) => ({ ...f }));
         }
       });
   }
@@ -316,7 +309,6 @@ export class EmprendimientoPage {
   }
 
   handleEditarVianda(vianda: ViandaResponse) {
-    
     this.dialog
       .open(FormViandaUpdate, {
         data: { vianda: vianda },
@@ -328,24 +320,22 @@ export class EmprendimientoPage {
       .afterClosed()
       .subscribe((exito) => {
         if (exito) {
-          this.viandaEditada.update(v => v + 1);
-          this.filtrosSignal.update(f => ({...f}));
+          this.viandaEditada.update((v) => v + 1);
+          this.filtrosSignal.update((f) => ({ ...f }));
         }
       });
   }
 
   filtrosActivos(): boolean {
-  const f = this.filtrosSignal();
-  return !!(
-    (f.categoria && f.categoria.trim() !== '') ||
-    (f.nombreVianda && f.nombreVianda.trim() !== '') || 
-    f.esSinTacc || 
-    f.esVegano || 
-    f.esVegetariano || 
-    f.precioMin || 
-    f.precioMax
-  );
-}
-
-  
+    const f = this.filtrosSignal();
+    return !!(
+      (f.categoria && f.categoria.trim() !== '') ||
+      (f.nombreVianda && f.nombreVianda.trim() !== '') ||
+      f.esSinTacc ||
+      f.esVegano ||
+      f.esVegetariano ||
+      f.precioMin ||
+      f.precioMax
+    );
+  }
 }
