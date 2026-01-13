@@ -1,0 +1,39 @@
+<div class="emprendimiento-card" [class.unavailable]="!emprendimiento.estaDisponible">
+  <img class="card-img" [src]="emprendimiento.imagenUrl" alt="Imagen emprendimiento" />
+
+  <div class="main-info">
+    <p class="nombre">{{ emprendimiento.nombreEmprendimiento }}</p>
+
+    <div class="meta-data">
+      <p class="dato">
+        <i class="fa-solid fa-location-dot icon-small"></i>
+        {{ emprendimiento.ciudad }} · {{ emprendimiento.direccion }}
+      </p>
+
+      <p class="dato">
+        <i class="fa-solid fa-phone icon-small"></i>
+        <a [href]="'tel:' + emprendimiento.telefono">{{ emprendimiento.telefono }}</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="dueno-col">
+    <span class="label">Dueño:</span>
+    <p class="dueno-nombre">{{ emprendimiento.dueno.nombreCompleto }}</p>
+    <a [href]="'mailto:' + emprendimiento.dueno.email" class="dueno-email">
+      {{ emprendimiento.dueno.email }}
+    </a>
+  </div>
+
+  <div class="status-action-col">
+    <div class="estado-wrapper">
+      <span class="estado" [class.off]="!emprendimiento.estaDisponible">
+        {{ emprendimiento.estaDisponible ? 'Disponible' : 'No disponible' }}
+      </span>
+    </div>
+
+    <button class="btn btn-ver-mas" [routerLink]="['/emprendimiento', emprendimiento.id]">
+      Ver más
+    </button>
+  </div>
+</div>
