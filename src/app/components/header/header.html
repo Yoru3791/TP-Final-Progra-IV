@@ -17,16 +17,20 @@
         } }
       </div>
 
+      @if (role() !== 'ADMIN') {
       <app-city-selector
         [ngModel]="cityFilterService.city()"
         (ngModelChange)="cityFilterService.setCity($event)"
         [restoreOnBlur]="true"
       >
       </app-city-selector>
+      }
     </div>
 
     <div class="header-center">
+      @if (role() !== 'ADMIN'){
       <app-search-bar></app-search-bar>
+      }
     </div>
 
     <div class="header-right">
