@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ViandaResponse } from '../model/vianda-response.model';
 import { AuthService, UserRole } from './auth-service';
@@ -12,14 +12,14 @@ import { ViandaDeleteResponse } from '../model/vianda-delete-response.model';
   providedIn: 'root',
 })
 export class ViandaService {
-  private apiUrl = 'http://localhost:8080/api/public/viandas';
-
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  private http = inject(HttpClient);
+  private authService = inject(AuthService);
 
   private baseUrls = {
     INVITADO: 'http://localhost:8080/api/public/viandas',
     DUENO: 'http://localhost:8080/api/dueno/viandas',
     CLIENTE: 'http://localhost:8080/api/cliente/viandas',
+    ADMIN: 'http://localhost:8080/api/admin/viandas',
   };
 
   // Selecciona endpoint según el rol
@@ -27,42 +27,53 @@ export class ViandaService {
     const rol: UserRole = this.authService.currentUserRole();
 
     switch (rol) {
+      case 'ADMIN': 
+        return this.baseUrls.ADMIN;
       case 'DUENO':
         return this.baseUrls.DUENO;
-
       case 'CLIENTE':
         return this.baseUrls.CLIENTE;
-
       default:
         return this.baseUrls.INVITADO;
     }
   }
 
-  // CRUD
+  // ----------------- CRUD -----------------
 
   createVianda(formData: FormData) {
-    if (this.authService.currentUserRole() !== 'DUENO') {
-      throw new Error('Solo los dueños pueden crear viandas');
+    const rol = this.authService.currentUserRole();
+
+    if (rol !== 'DUENO' && rol !== 'ADMIN') {
+      throw new Error('No tienes permisos para crear viandas');
     }
 
-    return this.http.post<ViandaCreate>(this.baseUrls.DUENO, formData);
+    const url = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+
+    return this.http.post<ViandaCreate>(url, formData);
   }
 
   updateVianda(id: number, dto: ViandaUpdate): Observable<any> {
-    if (this.authService.currentUserRole() !== 'DUENO') {
-      throw new Error('Solo los dueños pueden actualizar viandas');
+    const rol = this.authService.currentUserRole();
+
+    if (rol !== 'DUENO' && rol !== 'ADMIN') {
+      throw new Error('No tenes permisos para actualizar viandas');
     }
 
-    const url = `${this.baseUrls.DUENO}/id/${id}`;
+    const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const url = `${baseUrl}/id/${id}`;
+
     return this.http.put<any>(url, dto);
   }
 
   updateImagenVianda(id: number, file: File): Observable<ViandaResponse> {
-    if (this.authService.currentUserRole() !== 'DUENO') {
-      throw new Error('Solo los dueños pueden actualizar imágenes');
+    const rol = this.authService.currentUserRole();
+
+    if (rol !== 'DUENO' && rol !== 'ADMIN') {
+      throw new Error('No tenes permisos para actualizar viandas');
     }
 
-    const url = `${this.baseUrls.DUENO}/id/${id}/imagen`;
+    const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const url = `${baseUrl}/id/${id}/imagen`;
 
     const formData = new FormData();
     formData.append('image', file);
@@ -71,18 +82,19 @@ export class ViandaService {
   }
 
   deleteVianda(id: number): Observable<ViandaDeleteResponse> {
-    if (this.authService.currentUserRole() !== 'DUENO') {
-      throw new Error('Solo los dueños pueden eliminar viandas');
+    const rol = this.authService.currentUserRole();
+
+    if (rol !== 'DUENO' && rol !== 'ADMIN') {
+      throw new Error('No tenes permisos para eliminar viandas');
     }
 
-    const url = `${this.baseUrls.DUENO}/id/${id}`;
+    const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const url = `${baseUrl}/id/${id}`;
 
     return this.http.delete<ViandaDeleteResponse>(url);
   }
 
-  getViandas() {
-    return this.http.get<ViandaResponse[]>(this.apiUrl);
-  }
+  // ----------------- Consultas Generales -----------------
 
   getViandaById(id: number) {
     const url = `${this.getApiUrl()}/id/${id}`;
@@ -90,52 +102,57 @@ export class ViandaService {
   }
 
   getViandasByEmprendimientoId(emprendimientoId: number) {
-    const url = `${this.apiUrl}/idEmprendimiento/${emprendimientoId}`;
+    const url = `http://localhost:8080/api/public/viandas/idEmprendimiento/${emprendimientoId}`;
     return this.http.get<ViandaResponse[]>(url);
   }
 
-  // -----------------  Métodos de Emprendimiento Page  -----------------
+  // ----------------- Métodos de Emprendimiento Page -----------------
 
-  // El invitado solo ve las viandas disponibles (+ filtros)
   getViandasPublico(
     idEmprendimiento: number,
     filtros?: FiltrosViandas
   ): Observable<ViandaResponse[]> {
     const params = this.construirParams(filtros);
-
     return this.http.get<ViandaResponse[]>(
       `${this.baseUrls.INVITADO}/idEmprendimiento/${idEmprendimiento}`,
       { params }
     );
   }
 
-  // El cliente ve lo mismo que el invitado (pero el  back lo diferencia)
   getViandasCliente(
     idEmprendimiento: number,
     filtros?: FiltrosViandas
   ): Observable<ViandaResponse[]> {
     const params = this.construirParams(filtros);
-
     return this.http.get<ViandaResponse[]>(
       `${this.baseUrls.CLIENTE}/idEmprendimiento/${idEmprendimiento}`,
       { params }
     );
   }
 
-  // El dueño ve todas sus viandas (+ filtros)
   getViandasDueno(
     idEmprendimiento: number,
     filtros?: FiltrosViandas
   ): Observable<ViandaResponse[]> {
     const params = this.construirParams(filtros);
+    const rol = this.authService.currentUserRole();
 
+    // Si es ADMIN, llamamos al endpoint de admin
+    if (rol === 'ADMIN') {
+      return this.http.get<ViandaResponse[]>(
+        `${this.baseUrls.ADMIN}/idEmprendimiento/${idEmprendimiento}`,
+        { params }
+      );
+    }
+
+    // Si es DUENO
     return this.http.get<ViandaResponse[]>(
       `${this.baseUrls.DUENO}/idEmprendimiento/${idEmprendimiento}`,
       { params }
     );
   }
 
-  //  Limpia basura del filtro y lo transforma a parámetros HTTP
+  // Limpia basura del filtro y lo transforma a parámetros HTTP
   private construirParams(filtros?: FiltrosViandas): HttpParams {
     let params = new HttpParams();
 
