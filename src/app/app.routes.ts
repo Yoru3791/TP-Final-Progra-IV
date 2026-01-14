@@ -12,7 +12,6 @@ import { Error403Page } from './pages/redirects/error403-page/error403-page';
 import { Error404Page } from './pages/redirects/error404-page/error404-page';
 import { SobreNosotrosPage } from './pages/sobre-nosotros-page/sobre-nosotros-page';
 import { SobreMivianditaPage } from './pages/sobre-miviandita-page/sobre-miviandita-page';
-import { RecuperarPasswordPage } from './pages/recuperar-password-page/recuperar-password-page';
 import { NormasComunidadPage } from './pages/normas-comunidad-page/normas-comunidad-page';
 import { BasesCondicionesPage } from './pages/bases-condiciones-page/bases-condiciones-page';
 import { Error418Page } from './pages/redirects/error418-page/error418-page';
@@ -26,6 +25,7 @@ import { AdminReclamosPage } from './pages/admin-reclamos-page/admin-reclamos-pa
 import { AdminEmprendimientosPage } from './pages/admin-emprendimientos-page/admin-emprendimientos-page';
 import { AdminPedidosPage } from './pages/admin-pedidos-page/admin-pedidos-page';
 import { MisReclamosComponent } from './pages/mis-reclamos-page/mis-reclamos-page';
+import { RecuperarContrasena } from './pages/recuperar-contrasena/recuperar-contrasena';
 
 export const routes: Routes = [
   /* -------------------- HOME -------------------- */
@@ -41,6 +41,7 @@ export const routes: Routes = [
 
   /* -------------------- LOGIN (solo invitados) -------------------- */
   { path: 'login', component: Login, canActivate: [invitadoGuardFn] },
+  { path: 'change-password', component: RecuperarContrasena, canActivate: [invitadoGuardFn] },
 
   /* -------------------- EMPRENDIMIENTO -------------------- */
   // Invitado → puede ver
@@ -66,7 +67,6 @@ export const routes: Routes = [
   /* -------------------- PÁGINAS VARIAS -------------------- */
   { path: 'sobre-miviandita', component: SobreMivianditaPage },
   { path: 'sobre-nosotros', component: SobreNosotrosPage },
-  { path: 'recuperar-password', component: RecuperarPasswordPage },
   { path: 'confirmar-cuenta', component: AccountActivation },
   { path: 'faq', component: FaqPage },
   { path: 'instructivo', component: InstructivoUsoPage },
