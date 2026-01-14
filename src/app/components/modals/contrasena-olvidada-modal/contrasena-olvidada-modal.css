@@ -1,31 +1,28 @@
-/* Contenedor del Modal */
 .modal-container {
-  padding: 2.5rem; /* Más espacio interno */
+  padding: 2.5rem; 
   background: white;
   border-radius: 1rem;
-  max-width: 500px; /* Un poco más ancho */
+  max-width: 50rem; 
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
-/* Título Grande */
 h2 { 
   color: var(--color-primary-dark, #333); 
   margin: 0 0 1rem 0; 
-  font-size: 1.8rem; /* Aumentado considerablemente */
+  font-size: 1.8rem;
   font-weight: 800;
 }
 
-/* Texto descriptivo */
 p { 
   color: #555; 
-  font-size: 1.1rem; /* Texto base más grande para leer bien */
+  font-size: 1.1rem; 
   margin-bottom: 2rem; 
   line-height: 1.6; 
 }
 
-/* Inputs */
+
 .form-field { 
   display: flex; 
   flex-direction: column; 
@@ -40,21 +37,20 @@ p {
 }
 
 .form-input {
-  padding: 1rem; /* Input "gordito" cómodo de clickear */
-  border: 2px solid #e0e0e0; 
+  padding: 1rem; 
+  border: 0.2rem solid #e0e0e0; 
   border-radius: 0.6rem; 
-  font-size: 1.1rem; /* Texto dentro del input grande */
+  font-size: 1.1rem;
   transition: border-color 0.2s;
   outline: none;
-  width: 100%; /* Asegura que ocupe todo */
-  box-sizing: border-box; /* Evita que el padding rompa el ancho */
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-input:focus {
   border-color: var(--color-primary, #eb8334);
 }
 
-/* Mensaje de error */
 .error-msg { 
   color: #d32f2f; 
   font-size: 0.95rem; 
@@ -65,7 +61,6 @@ p {
   gap: 0.5rem;
 }
 
-/* Botones */
 .modal-actions { 
   display: flex; 
   justify-content: flex-end; 
@@ -81,7 +76,7 @@ p {
   font-weight: 700; 
   cursor: pointer; 
   padding: 0.8rem 1.5rem;
-  font-size: 1.1rem; /* Texto más grande */
+  font-size: 1.1rem;
   transition: color 0.2s;
 }
 
@@ -93,13 +88,13 @@ p {
   background: var(--color-primary, #eb8334); 
   color: white; 
   border: none;
-  padding: 1rem 2rem; /* Botón grande */
+  padding: 1rem 2rem;
   border-radius: 0.6rem; 
   font-weight: 700; 
-  font-size: 1.1rem; /* Texto más grande */
+  font-size: 1.1rem;
   cursor: pointer;
   transition: background 0.3s, transform 0.1s;
-  box-shadow: 0 4px 6px rgba(235, 131, 52, 0.2); /* Sombrita elegante */
+  box-shadow: 0 0.4rem 0.6rem rgba(235, 131, 52, 0.2);
 }
 
 .btn-submit:hover:not(:disabled) {
@@ -122,7 +117,7 @@ p {
   h2 { font-size: 1.5rem; }
   
   .modal-actions {
-    flex-direction: column-reverse; /* En móvil, cancelar abajo, enviar arriba */
+    flex-direction: column-reverse;
     width: 100%;
     gap: 0.8rem;
   }

@@ -1,18 +1,17 @@
-/* --- CONTENEDOR PRINCIPAL (Para centrar igual que el login) --- */
 .main-form-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 550px;
+  max-width: 55rem;
   margin: 0 auto;
   padding: 1rem;
-  min-height: 80vh; /* Para que quede centrado verticalmente si hay poco contenido */
+  min-height: 80vh;
   justify-content: center;
 }
 
 .main-h1-title {
-  margin: 0 0 2rem 0; /* Un poco de margen abajo */
+  margin: 0 0 2rem 0;
   color: var(--color-primary-dark, #333);
   text-align: center;
   font-size: 2.2rem;
@@ -20,24 +19,22 @@
   text-transform: uppercase;
 }
 
-/* --- ESTILOS IDÉNTICOS AL LOGIN --- */
 .form-login {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem; /* Un poco más de espacio entre inputs */
+  gap: 1.5rem;
   padding: 2.5rem;
   width: 100%;
   background: var(--color-background-secondary, #ffffff);
   border-radius: 1rem;
-  box-shadow: var(--shadow-form, 0 4px 15px rgba(0,0,0,0.1));
+  box-shadow: var(--shadow-form, 0 0.4rem 1.5rem rgba(0,0,0,0.1));
 }
 
 .form-login div {
   width: 100%;
 }
 
-/* Inputs */
 .form-field {
   display: flex;
   flex-direction: column;
@@ -54,7 +51,7 @@
 .form-input {
   width: 100%;
   padding: 1rem;
-  border: 1px solid #ccc; /* Borde sutil */
+  border: 0.1rem solid #ccc;
   border-radius: 0.5rem;
   font-size: 1.1rem;
   outline: none;
@@ -65,8 +62,6 @@
   border-color: var(--color-primary, #eb8334);
 }
 
-/* --- LÓGICA DEL ÍCONO DE OJO (INPUT WITH ICON) --- */
-/* Esto es crucial para que el ojo quede dentro del input */
 .input-with-icon {
   position: relative;
   display: flex;
@@ -74,12 +69,12 @@
 }
 
 .input-with-icon .form-input {
-  padding-right: 3rem; /* Espacio para que el texto no toque el ícono */
+  padding-right: 3rem;
 }
 
 .toggle-eye {
   position: absolute;
-  right: 10px;
+  right: 1rem;
   background: none;
   border: none;
   cursor: pointer;
@@ -95,7 +90,6 @@
   color: var(--color-primary, #eb8334);
 }
 
-/* --- BOTÓN --- */
 .btn {
   width: 60%;
   font-size: 1.3rem;
@@ -114,14 +108,12 @@
   background-color: var(--color-primary-dark, #d6762b);
 }
 
-/* Estado deshabilitado visualmente */
 .btn.disabled, .btn:disabled {
   opacity: 0.6;
   background-color: #ccc;
   cursor: not-allowed;
 }
 
-/* --- RESPONSIVE --- */
 @media (max-width: 600px) {
   .main-form-container {
     padding: 1rem;
@@ -133,6 +125,6 @@
   }
   
   .btn {
-    width: 100%; /* Botón ancho en celular */
+    width: 100%;
   }
 }
