@@ -3,6 +3,8 @@ import { UsuarioCard } from '../../components/cards/usuario-card/usuario-card';
 import { UsuarioService } from '../../services/usuario-service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { EmprendimientoService } from '../../services/emprendimiento-service';
+import { MatDialog } from '@angular/material/dialog';
+import { AdminUserCreateModal } from '../../components/modals/admin-user-create-modal/admin-user-create-modal';
 
 @Component({
   selector: 'app-admin-usuarios-page',
@@ -12,18 +14,17 @@ import { EmprendimientoService } from '../../services/emprendimiento-service';
 })
 export class AdminUsuariosPage {
   private emprendimientoService = inject(EmprendimientoService);
+  private dialog = inject(MatDialog);
   private usuarioService = inject(UsuarioService);
 
   private nameFilter = signal<string>("");
   private emailFilter = signal<string>("");
 
-  private allUsuarios = toSignal(this.usuarioService.getUsuarios(), { initialValue: [] });
-
   usuarios = computed(() => {
     const nameFilter = this.nameFilter();
     const emailFilter = this.emailFilter();
 
-    return this.allUsuarios().filter(
+    return this.usuarioService.usuarios().filter(
       usuario => {
         if (nameFilter && !usuario.nombreCompleto.toLowerCase().includes(nameFilter.toLowerCase())) {
           return false;
@@ -40,7 +41,10 @@ export class AdminUsuariosPage {
 
   constructor() {
     // TO-DO: Usar ruta que devuelva emprendimientos por ID de dueño
-    effect(() => this.emprendimientoService.fetchEmprendimientos(0, 100, true));
+    effect(() => {
+      this.usuarioService.readUsuarios();
+      this.emprendimientoService.fetchEmprendimientos(0, 100, true);
+    });
   }
 
   public onNameInput(event: any) {
@@ -49,5 +53,20 @@ export class AdminUsuariosPage {
 
   public onEmailInput(event: any) {
     this.emailFilter.set((event.target.value as string).trim());
+  }
+
+  public openUsuarioForm() {
+    this.dialog
+      .open(AdminUserCreateModal, {
+        panelClass: 'form-modal',
+        autoFocus: false,
+        restoreFocus: false,
+      })
+      .afterClosed()
+      .subscribe(result => {
+        if (result === true) {
+          this.usuarioService.readUsuarios();
+        }
+      });
   }
 }

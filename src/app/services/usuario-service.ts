@@ -1,10 +1,11 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UsuarioResponse } from '../model/usuario-response.model';
 import { Observable } from 'rxjs';
 import { ChangePasswordRequest } from '../model/change-password-request.model';
 import { UsuarioUpdate } from '../model/usuario-update.model';
 import { AuthService, UserRole } from './auth-service';
+import { UsuarioCreateAdmin } from '../model/usuario-create-admin.model';
 
 @Injectable({
   providedIn: 'root',
@@ -28,12 +29,21 @@ export class UsuarioService {
 
   constructor(private http: HttpClient) {}
 
+  createUsuario(body: UsuarioCreateAdmin) {
+    return this.http.post<UsuarioResponse>(`${this.getApiUrl()}/register`, body);
+  }
+
   getPerfilUsuario(): Observable<UsuarioResponse> {
     return this.http.get<UsuarioResponse>(`${this.apiUrl}/me`);
   }
 
-  getUsuarios(): Observable<UsuarioResponse[]> {
-    return this.http.get<UsuarioResponse[]>(`${this.getApiUrl()}`);
+  private readonly _usuarios = signal<UsuarioResponse[]>([]);
+  readonly usuarios = this._usuarios.asReadonly();
+
+  readUsuarios() {
+    this.http
+      .get<UsuarioResponse[]>(`${this.getApiUrl()}`)
+      .subscribe(data => this._usuarios.set(data));
   }
 
   cambiarPassword(body: ChangePasswordRequest): Observable<any> {

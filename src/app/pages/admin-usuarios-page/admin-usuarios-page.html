@@ -3,20 +3,29 @@
     <h1 class="main-h1-title">USUARIOS</h1>
   </div>
 
-  <div class="filters">
-    <input
-      class="name-input"
-      type="text"
-      placeholder="Filtrar por nombre..."
-      (input)="onNameInput($event)"
-    />
+  <div class="filters-buttons-container">
+    <div class="filters-container">
+      <input
+        class="filter-input"
+        type="text"
+        placeholder="Filtrar por nombre..."
+        (input)="onNameInput($event)"
+      />
 
-    <input
-      class="email-input"
-      type="text"
-      placeholder="Filtrar por email..."
-      (input)="onEmailInput($event)"
-    />
+      <input
+        class="filter-input"
+        type="text"
+        placeholder="Filtrar por email..."
+        (input)="onEmailInput($event)"
+      />
+    </div>
+
+    <div class="buttons-container">
+      <button class="btn btn-create" (click)="openUsuarioForm()">
+        <i class="fa-solid fa-plus"></i>
+        <span>Crear usuario</span>
+      </button>
+    </div>
   </div>
 
   <div class="usuarios-list">
