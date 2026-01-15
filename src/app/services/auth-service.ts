@@ -5,6 +5,7 @@ import { LoginResponse } from '../model/login-response.model';
 import { UsuarioResponse } from '../model/usuario-response.model';
 import { UsuarioRegistro } from '../model/usuario-registro.model';
 import { environment } from '../environments/environment';
+import { PasswordResetChange } from '../model/password-reset-change.model';
 
 export type UserRole = 'ADMIN' | 'DUENO' | 'CLIENTE' | 'INVITADO';
 
@@ -30,6 +31,8 @@ export class AuthService {
   private apiUrlRegister = 'http://localhost:8080/api/public/register';
   private apiUrlConfirm = 'http://localhost:8080/api/public/confirm';
   private apiUrlResend = 'http://localhost:8080/api/public/resend-token';
+  private apiUrlForgot = 'http://localhost:8080/api/public/forgot-password';
+  private apiUrlReset  = 'http://localhost:8080/api/public/reset-password';
   private apiUrlGoogle = `${environment.apiUrl}/google`;
 
   constructor(private http: HttpClient) {
@@ -155,5 +158,15 @@ export class AuthService {
       params: { email: email },
       responseType: 'text'
     });
+  }
+
+  // Solicitar el mail de recuperación
+  forgotPassword(email: string) {
+    return this.http.post(this.apiUrlForgot, { email }, { responseType: 'text' });
+  }
+
+  // Enviar la nueva contraseña con el token
+  resetPassword(data: PasswordResetChange) {
+    return this.http.post(this.apiUrlReset, data, { responseType: 'text' });
   }
 }

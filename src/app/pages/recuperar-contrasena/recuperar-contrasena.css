@@ -1,0 +1,130 @@
+.main-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 55rem;
+  margin: 0 auto;
+  padding: 1rem;
+  min-height: 80vh;
+  justify-content: center;
+}
+
+.main-h1-title {
+  margin: 0 0 2rem 0;
+  color: var(--color-primary-dark, #333);
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.form-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2.5rem;
+  width: 100%;
+  background: var(--color-background-secondary, #ffffff);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-form, 0 0.4rem 1.5rem rgba(0,0,0,0.1));
+}
+
+.form-login div {
+  width: 100%;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-weight: bold;
+  color: #444;
+  font-size: 1rem;
+  margin-left: 0.2rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 1rem;
+  border: 0.1rem solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1.1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.form-input:focus {
+  border-color: var(--color-primary, #eb8334);
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon .form-input {
+  padding-right: 3rem;
+}
+
+.toggle-eye {
+  position: absolute;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #888;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  transition: color 0.2s;
+}
+
+.toggle-eye:hover {
+  color: var(--color-primary, #eb8334);
+}
+
+.btn {
+  width: 60%;
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding: 1rem 0;
+  margin-top: 1rem;
+  background-color: var(--color-primary, #eb8334);
+  color: white;
+  border: none;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn:hover:not(.disabled) {
+  background-color: var(--color-primary-dark, #d6762b);
+}
+
+.btn.disabled, .btn:disabled {
+  opacity: 0.6;
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .main-form-container {
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  .form-login {
+    padding: 1.5rem;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}
