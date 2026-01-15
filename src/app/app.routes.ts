@@ -25,6 +25,7 @@ import { AdminReclamosPage } from './pages/admin-reclamos-page/admin-reclamos-pa
 import { AdminEmprendimientosPage } from './pages/admin-emprendimientos-page/admin-emprendimientos-page';
 import { AdminPedidosPage } from './pages/admin-pedidos-page/admin-pedidos-page';
 import { MisReclamosComponent } from './pages/mis-reclamos-page/mis-reclamos-page';
+import { ResultadoPedidoPage } from './pages/resultado-pedido-page/resultado-pedido-page';
 import { RecuperarContrasena } from './pages/recuperar-contrasena/recuperar-contrasena';
 
 export const routes: Routes = [
@@ -73,6 +74,7 @@ export const routes: Routes = [
   { path: 'normas-comunidad', component: NormasComunidadPage },
   { path: 'bases-condiciones', component: BasesCondicionesPage },
   { path: 'reclamos', component: ReclamoPage},
+  { path: 'resultado-pedido', component: ResultadoPedidoPage },
 
   /* -------------------- REDIRECTS BASICOS -------------------- */
   { path: '', redirectTo: '/home', pathMatch: 'full' },

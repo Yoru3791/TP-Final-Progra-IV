@@ -11,6 +11,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class CarritoModal implements OnInit {
   private confirmarModalService = inject(ConfirmarModalService);
   private dialogRef = inject(MatDialogRef<CarritoModal>);
   private formBuilder = inject(FormBuilder);
+  private router = inject(Router);
 
   public emprendimiento = this.carritoService.emprendimiento;
   public viandaCantidades = this.carritoService.viandaCantidades;
@@ -160,12 +162,42 @@ export class CarritoModal implements OnInit {
 
         setTimeout(() => {
           if (confirmado) {
-            this.carritoService.crearPedido();
-            this.cerrar();
+            
+            const empId = this.carritoService.emprendimiento()?.id;
+            const observablePedido = this.carritoService.crearPedido();
+            
+            if (observablePedido) {
+                observablePedido.subscribe({
+                    next: (pedidoCreado) => {
+                        this.cerrar();
+                        
+                        this.router.navigate(['/resultado-pedido'], {
+                            state: {
+                                resultado: 'exito',
+                                pedidoId: pedidoCreado.id,
+                                emprendimientoId: empId
+                            }
+                        });
+                    },
+                    error: (err) => {
+                        this.cerrar();
+
+                        this.router.navigate(['/resultado-pedido'], {
+                            state: { 
+                                resultado: 'error',
+                                emprendimientoId: empId
+                            }
+                        });
+                    }
+                });
+            } else {
+                  this.modalBloqueado = false;
+            }
+
+          } else {
+            this.modalBloqueado = false;
           }
-
-          this.modalBloqueado = false;
-
+          
           this.changeDetectorRef.detectChanges();
         }, 0);
 
