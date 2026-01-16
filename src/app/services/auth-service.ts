@@ -6,6 +6,7 @@ import { UsuarioResponse } from '../model/usuario-response.model';
 import { UsuarioRegistro } from '../model/usuario-registro.model';
 import { environment } from '../environments/environment';
 import { PasswordResetChange } from '../model/password-reset-change.model';
+import { Router } from '@angular/router';
 
 export type UserRole = 'ADMIN' | 'DUENO' | 'CLIENTE' | 'INVITADO';
 
@@ -13,18 +14,9 @@ export type UserRole = 'ADMIN' | 'DUENO' | 'CLIENTE' | 'INVITADO';
   providedIn: 'root',
 })
 export class AuthService {
-  init(): void {
-  const token = this.getToken();
-
-  if (token) {
-    this.currentUserRole.set(this.decodeRolFrom(token));
-    this.usuarioId.set(this.getUsuarioIdFromStorage());
-  }
-}
-
   private TOKEN_KEY = 'authToken';
 
-  public currentUserRole = signal<UserRole>(this.getRolFromToken());
+  public currentUserRole = signal<UserRole>('INVITADO');
   public usuarioId = signal<number | null>(this.getUsuarioIdFromStorage());
 
   private apiUrlLogin = 'http://localhost:8080/api/public/login';
@@ -32,11 +24,24 @@ export class AuthService {
   private apiUrlConfirm = 'http://localhost:8080/api/public/confirm';
   private apiUrlResend = 'http://localhost:8080/api/public/resend-token';
   private apiUrlForgot = 'http://localhost:8080/api/public/forgot-password';
-  private apiUrlReset  = 'http://localhost:8080/api/public/reset-password';
+  private apiUrlReset = 'http://localhost:8080/api/public/reset-password';
+  private apiUrlRefresh = 'http://localhost:8080/api/public/refresh-token';
+  private apiUrlLogout = 'http://localhost:8080/api/public/logout';
+  private apiUrlLogoutAll = 'http://localhost:8080/api/public/logout-all';
   private apiUrlGoogle = `${environment.apiUrl}/google`;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
+    this.init();
     console.log('AuthService inicializado. Rol actual', this.currentUserRole());
+  }
+
+  init(): void {
+    const token = this.getToken();
+
+    if (token) {
+      this.currentUserRole.set(this.decodeRolFrom(token));
+      this.usuarioId.set(this.getUsuarioIdFromStorage());
+    }
   }
 
   // Lee el TOKEN actual y extrae el rol (si no hay TOKEN, el rol es invitado)
@@ -65,11 +70,28 @@ export class AuthService {
   }
 
   login(usuario: UsuarioLogin) {
-    return this.http.post<LoginResponse>(this.apiUrlLogin, usuario);
-  }
+  return this.http.post<LoginResponse>(this.apiUrlLogin, usuario, {
+    withCredentials: true
+  });
+}
 
   loginGoogle(token: string) {
-    return this.http.post<LoginResponse>(this.apiUrlGoogle, { token });
+    return this.http.post<LoginResponse>(this.apiUrlGoogle, { token }, {
+    withCredentials: true
+  });
+  }
+
+  refreshToken() {
+    return this.http.post<LoginResponse>(this.apiUrlRefresh, {}, { withCredentials: true });
+  }
+
+  saveToken(newToken: string) {
+    if (localStorage.getItem(this.TOKEN_KEY)) {
+      localStorage.setItem(this.TOKEN_KEY, newToken);
+    } else {
+      sessionStorage.setItem(this.TOKEN_KEY, newToken);
+    }
+    this.currentUserRole.set(this.decodeRolFrom(newToken));
   }
 
   public handleLoginSuccess(token: string, usuarioID: number, recordarme: boolean): void {
@@ -87,15 +109,40 @@ export class AuthService {
     console.log('Login exitoso. Rol:', this.currentUserRole(), 'UsuarioID:', this.usuarioId());
   }
 
-  // Cierre de sesion y elimina la persistencia del token
+  // Cierre de sesion y elimina la persistencia del refreshToken
   public handleLogout(): void {
+    this.http
+      .post(this.apiUrlLogout, {}, { withCredentials: true, responseType: 'text' })
+      .subscribe({
+        //aca se borra el refreshToken
+        next: () => console.log('Logout en servidor exitoso'),
+        error: (err) => console.error('Error logout servidor', err),
+        complete: () => this.clearLocalData(),
+      });
+  }
+
+  public handleLogoutAll(): void {
+    this.http
+      .post(this.apiUrlLogoutAll, {}, { withCredentials: true, responseType: 'text' })
+      .subscribe({
+        next: () => console.log('Se cerraron todas las sesiones correctamente'),
+        error: (err) => {
+          console.error('Error al cerrar sesiones globales', err);
+        },
+        complete: () => this.clearLocalData(),
+      });
+  }
+
+  private clearLocalData() {
     localStorage.removeItem(this.TOKEN_KEY);
     sessionStorage.removeItem(this.TOKEN_KEY);
-
     localStorage.removeItem('usuarioID');
     sessionStorage.removeItem('usuarioID');
 
     this.currentUserRole.set('INVITADO');
+    this.usuarioId.set(null);
+
+    this.router.navigate(['/login']);
   }
 
   private decodeRolFrom(token: string): UserRole {
@@ -149,14 +196,14 @@ export class AuthService {
   verifyAccount(token: string) {
     return this.http.get(this.apiUrlConfirm, {
       params: { token: token },
-      responseType: 'text'
+      responseType: 'text',
     });
   }
 
   resendToken(email: string) {
     return this.http.post(this.apiUrlResend, null, {
       params: { email: email },
-      responseType: 'text'
+      responseType: 'text',
     });
   }
 
