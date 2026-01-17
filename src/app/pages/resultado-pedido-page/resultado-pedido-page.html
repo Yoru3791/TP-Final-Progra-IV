@@ -1,0 +1,55 @@
+
+<div class="result-container">
+    
+    @if (resultado() === 'exito') {
+        <div class="card-result success">
+            <div class="icon-circle success-icon">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            
+            <h1>¡Pedido Realizado!</h1>
+            
+            @if (pedidoId()) {
+                <p class="order-id">Pedido #{{ pedidoId() }}</p>
+            }
+
+            <div class="messages">
+                <p class="main-msg">
+                    Tu pedido fue enviado correctamente. En breve recibirás un correo de confirmación con los detalles del pedido.
+                </p>
+                
+                <div class="info-box">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p>
+                        Te notificaremos por email en cuanto haya una respuesta por parte del emprendimiento.
+                    </p>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" routerLink="/me">Ver mis Pedidos</button>
+                <button class="btn btn-outline" routerLink="/home">Volver al Inicio</button>
+            </div>
+        </div>
+    }
+
+    @if (resultado() === 'error') {
+        <div class="card-result error">
+            <div class="icon-circle error-icon">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+
+            <h1>Hubo un problema</h1>
+            
+            <p class="main-msg">
+                No pudimos procesar tu pedido en este momento. Por favor, intenta nuevamente.
+            </p>
+
+            <div class="actions">
+                <button class="btn btn-primary error-btn" (click)="volverAtras()">Volver atrás</button>
+                <button class="btn btn-outline" routerLink="/home">Ir al Inicio</button>
+            </div>
+        </div>
+    }
+
+</div>

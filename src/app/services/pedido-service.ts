@@ -72,9 +72,11 @@ export class PedidosService {
   }
 
   createPedido(pedido: PedidoRequest) {
-    this.http.post<PedidoResponse>(this.getApiUrl(), pedido).subscribe((pedidoResponse) => {
-      this.allPedidos.update((pedidos) => [...pedidos, pedidoResponse]);
-    });
+    return this.http.post<PedidoResponse>(this.getApiUrl(), pedido).pipe(
+      tap((pedidoResponse) => {
+        this.allPedidos.update((pedidos) => [...pedidos, pedidoResponse]);
+      })
+  );
   }
 
   //Obtiene los pedidos desde el backend y lo guarda en un signal

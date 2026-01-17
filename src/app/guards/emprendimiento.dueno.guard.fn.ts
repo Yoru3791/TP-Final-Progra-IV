@@ -11,8 +11,8 @@ export const emprendimientoDuenoGuardFn: CanActivateFn = (route: ActivatedRouteS
 
   const rol = auth.currentUserRole();
   const emprendimientoId = Number(route.paramMap.get('id'));
-  
-  if (rol === 'INVITADO' || rol === 'CLIENTE') {
+
+  if (rol === 'INVITADO' || rol === 'CLIENTE' || rol === 'ADMIN') {
     return true;
   }
 
@@ -22,13 +22,16 @@ export const emprendimientoDuenoGuardFn: CanActivateFn = (route: ActivatedRouteS
     return false;
   }
 
-  const esDuenoEnMemoria = emprendimientoService.esDuenoDelEmprendimiento(emprendimientoId, usuarioId);
+  const esDuenoEnMemoria = emprendimientoService.esDuenoDelEmprendimiento(
+    emprendimientoId,
+    usuarioId
+  );
   // Si la lista está vacía, esto da false, pero no significa que sea un error todavía (caso F5)
   const listaCargada = emprendimientoService.allEmprendimientos().length > 0;
 
   if (listaCargada && esDuenoEnMemoria) {
-     return true;
-  } 
+    return true;
+  }
 
   return emprendimientoService.getEmprendimientoById(emprendimientoId).pipe(
     map((emprendimiento) => {
