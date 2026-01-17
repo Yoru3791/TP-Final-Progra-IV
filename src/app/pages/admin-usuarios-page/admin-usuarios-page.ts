@@ -43,7 +43,7 @@ export class AdminUsuariosPage {
     // TO-DO: Usar ruta que devuelva emprendimientos por ID de dueño
     effect(() => {
       this.usuarioService.readUsuarios();
-      this.emprendimientoService.fetchEmprendimientos(0, 100, true);
+      this.emprendimientoService.fetchEmprendimientosAdmin(0, 100);
     });
   }
 

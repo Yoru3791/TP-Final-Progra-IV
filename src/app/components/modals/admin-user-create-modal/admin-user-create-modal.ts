@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormAdminUserCreate } from '../../forms/form-admin-user-create/form-admin-user';
+import { FormAdminUserCreate } from '../../forms/form-admin-user-create/form-admin-user-create';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({

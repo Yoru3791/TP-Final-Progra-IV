@@ -6,6 +6,8 @@ import { ChangePasswordRequest } from '../model/change-password-request.model';
 import { UsuarioUpdate } from '../model/usuario-update.model';
 import { AuthService, UserRole } from './auth-service';
 import { UsuarioCreateAdmin } from '../model/usuario-create-admin.model';
+import { UsuarioUpdateAdmin } from '../model/usuario-update-admin.model';
+import { AdminChangePasswordRequest } from '../model/admin-change-password-request.model';
 
 @Injectable({
   providedIn: 'root',
@@ -50,17 +52,29 @@ export class UsuarioService {
     return this.http.put(`${this.apiUrl}/changePassword/me`, body);
   }
 
+  updatePasswordAdmin(id: number, body: AdminChangePasswordRequest): Observable<any> {
+    return this.http.put(`${this.getApiUrl()}/id/${id}/changePassword`, body);
+  }
+
   eliminarCuenta(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  deleteUsuarioAdmin(id: number): Observable<any> {
+    return this.http.delete(`${this.getApiUrl()}/${id}`);
   }
 
   updateUsuario(id: number, body: UsuarioUpdate) {
     return this.http.put<UsuarioResponse>(`${this.apiUrl}/${id}`, body);
   }
 
+  updateUsuarioAdmin(id: number, body: UsuarioUpdateAdmin) {
+    return this.http.put<UsuarioResponse>(`${this.getApiUrl()}/${id}`, body);
+  }
+
   updateImagenUsuario(id: number, file: File): Observable<UsuarioResponse> {
     const formData = new FormData();
     formData.append('image', file);
-    return this.http.put<UsuarioResponse>(`${this.apiUrl}/${id}/imagen`, formData);
+    return this.http.put<UsuarioResponse>(`${this.getApiUrl()}/${id}/imagen`, formData);
   }
 }

@@ -36,8 +36,7 @@
       placeholder="Ej: tunombre@gmail.com"
     />
 
-    @if (mostrarError('email'))
-    {
+    @if (mostrarError('email')) {
       <div class="error-messages">
         @if (form.get('email')?.hasError('required')) {
           <p>El email es obligatorio.</p>
@@ -47,27 +46,6 @@
         }
         @if (form.get('email')?.hasError('maxLength')) {
           <p>El mail no debe superar los 100 caracteres.</p>
-        }
-      </div>
-    }
-  </div>
-
-  <!-- Rol -->
-  <div class="form-field">
-    <label for="rol" class="form-label">Rol</label>
-
-    <select formControlName="rol" class="form-input">
-      <option value="" disabled selected hidden>-- Seleccionar --</option>
-
-      @for (rol of roles; track rol.identificadorBDD) {
-        <option [value]="rol.identificadorBDD">{{ rol.descripcion }}</option>
-      }
-    </select>
-
-    @if (mostrarError('rol')) {
-      <div class="error-messages">
-        @if (form.get('rol')?.hasError('required')) {
-        <p>Debe seleccionar un rol.</p>
         }
       </div>
     }
@@ -96,36 +74,34 @@
     }
   </div>
 
-  <!-- Password -->
-  <div class="form-field password-field">
-    <label for="password" class="form-label">Password</label>
+  <!-- Imagen -->
+  <div class="image-upload">
+    <input
+      type="file"
+      id="imagen-file"
+      #fileInput
+      (change)="onFileSelected($event); onFileInputReady(fileInput)"
+      class="form-file-input"
+      accept="image/*"
+    />
 
-    <div class="input-with-icon">
-      <input
-        formControlName="password"
-        [type]="showPassword ? 'text' : 'password'"
-        class="form-input"
-        [class.invalid]="mostrarError('password')"
-        placeholder="Entre 10 y 16 caracteres, al menos una mayúscula, una minuscula, un número y un caracter especial"
-      />
-      <button type="button" class="toggle-eye" (click)="togglePassword()">
-        <i class="fa-solid {{ showPassword ? 'fa-eye-slash' : 'fa-eye' }}"></i>
-      </button>
+    <label for="imagen-file" class="upload-box-visual">
+      @if (imagePreviewUrl) {
+        <img class="image-preview" [src]="imagePreviewUrl">
+      } @else {
+        <span class="upload-icon">⤒</span>
+        <br />
+        <span class="upload-text">Cargar nueva imagen</span>
+      }
+    </label>
+
+    <div class="image-placeholder-message">
+      @if (!selectedFileName) {
+        <p class="placeholder-info">No se seleccionó una nueva imagen.</p>
+      } @else {
+        <p class="success-message">Archivo cargado: {{ selectedFileName }}</p>
+      }
     </div>
-
-    @if (mostrarError('password')) {
-      <div class="error-messages">
-        @if (form.get('password')?.hasError('required')) {
-          <p>La contraseña es obligatoria.</p>
-        }
-        @if (form.get('password')?.hasError('pattern')) {
-          <p>
-            Debe tener entre 10 y 16 caracteres, al menos una mayúscula, una minuscula, un número y un
-            caracter especial.
-          </p>
-        }
-      </div>
-    }
   </div>
 
   <button
@@ -133,6 +109,6 @@
     class="btn"
     [disabled]="!form.valid"
   >
-    Crear usuario
+    Actualizar usuario
   </button>
 </form>

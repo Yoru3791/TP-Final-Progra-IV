@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -6,15 +6,17 @@ import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-m
 import { SnackbarData } from '../../../model/snackbar-data.model';
 import { Snackbar } from '../../modals/snackbar/snackbar';
 import { UsuarioService } from '../../../services/usuario-service';
-import { RolUsuario } from '../../../model/rol-usuario.model';
+import { UsuarioResponse } from '../../../model/usuario-response.model';
 
 @Component({
-  selector: 'app-form-admin-user',
+  selector: 'app-form-admin-user-update-password',
   imports: [ReactiveFormsModule],
-  templateUrl: './form-admin-user.html',
-  styleUrl: './form-admin-user.css',
+  templateUrl: './form-admin-user-update-password.html',
+  styleUrl: './form-admin-user-update-password.css',
 })
-export class FormAdminUserCreate {
+export class FormAdminUserUpdatePassword {
+  @Input() usuario!: UsuarioResponse;
+
   private dialog = inject(MatDialog);
   private dialogRef = inject<MatDialogRef<unknown>>(MatDialogRef, {
     optional: true,
@@ -25,26 +27,8 @@ export class FormAdminUserCreate {
 
   showPassword = false;
 
-  roles = RolUsuario.ROLES_LOGUEADOS;
-
   form = this.formBuilder.group(
     {
-      nombreCompleto: [
-        '',
-        [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
-      ],
-      email: [
-        '',
-        [Validators.required, Validators.email, Validators.maxLength(50)]
-      ],
-      rol: [
-        '',
-        Validators.required
-      ],
-      telefono: [
-        '',
-        [Validators.required, Validators.pattern(/^\d{10,15}$/)]
-      ],
       password: [
         '',
         [
@@ -66,15 +50,11 @@ export class FormAdminUserCreate {
   }
 
   onSubmit() {
-    const usuario = this.form.value;
+    const formValues = this.form.value;
 
     this.usuarioService
-      .createUsuario({
-        nombreCompleto: usuario.nombreCompleto!,
-        email: usuario.email!,
-        password: usuario.password!,
-        rolUsuario: usuario.rol!,
-        telefono: usuario.telefono!,
+      .updatePasswordAdmin(this.usuario.id, {
+        nuevaPassword: formValues.password!
       })
       .subscribe({
         next: () => {
@@ -83,7 +63,7 @@ export class FormAdminUserCreate {
             verticalPosition: 'bottom',
             panelClass: 'snackbar-panel',
             data: {
-              message: 'Usuario creado con éxito.',
+              message: 'Contraseña cambiada con éxito.',
               iconName: 'check_circle',
             } as SnackbarData,
           });
@@ -93,7 +73,7 @@ export class FormAdminUserCreate {
         },
         error: (err) => {
           const backendMsg =
-            err.error?.message || err.error?.error || 'Error desconocido en el registro';
+            err.error?.message || err.error?.error || 'Error desconocido al cambiar contraseña';
 
           console.error(backendMsg);
 
