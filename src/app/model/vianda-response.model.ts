@@ -13,3 +13,9 @@ export interface ViandaResponse {
   estaDisponible: boolean;
   imagenUrl: string;
 }
+
+export interface ViandaAdminResponse extends ViandaResponse {
+  fechaEliminacion: string | null;
+}
+
+export type ViandaAnyResponse = ViandaResponse | ViandaAdminResponse;
