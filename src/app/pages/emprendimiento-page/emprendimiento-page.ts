@@ -9,7 +9,7 @@ import { EmprendimientoFiltrosViandas } from '../../components/cards/emprendimie
 import { FiltrosViandas } from '../../model/filtros-viandas.model';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { catchError, combineLatest, map, Observable, of, switchMap } from 'rxjs';
-import { ViandaResponse } from '../../model/vianda-response.model';
+import { ViandaAnyResponse, ViandaResponse } from '../../model/vianda-response.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Snackbar } from '../../components/modals/snackbar/snackbar';
 import { SnackbarData } from '../../model/snackbar-data.model';
@@ -181,10 +181,10 @@ export class EmprendimientoPage {
     toObservable(this.triggerViandas).pipe(
       switchMap(({ id, filtros, modo, page }) => {
         if (!id || modo === 'CARGANDO' || modo === 'PROHIBIDO') {
-          return of([] as ViandaResponse[]);
+          return of([] as ViandaAnyResponse[]);
         }
 
-        let request$: Observable<PagedResponse<ViandaResponse>>;
+        let request$: Observable<PagedResponse<ViandaAnyResponse>>;
 
         switch (modo) {
           case 'DUENO':
@@ -197,31 +197,33 @@ export class EmprendimientoPage {
             request$ = this.viandaService.getViandasPublico(id, filtros, page, 10);
             break;
           default:
-            return of([] as ViandaResponse[]);
+            return of([] as ViandaAnyResponse[]);
         }
 
         return request$.pipe(
           map((response) => {
 
-            if (response.page) {
-              this.pageInfo.set(response.page);
-            } else {
-              this.pageInfo.set(null);
+            this.pageInfo.set(response.page || null);
+
+            if (response._embedded) {
+              if ('viandaDTOList' in response._embedded) {
+                return response._embedded['viandaDTOList'];
+              }
+              if ('viandaAdminDTOList' in response._embedded) {
+                return response._embedded['viandaAdminDTOList'];
+              }
             }
-
-            const lista = response._embedded ? response._embedded['viandaDTOList'] : [];
-
-            return lista;
+            return [];
           }),
           catchError((err) => {
             console.warn('Error cargando viandas (posiblemente sin resultados)', err);
             this.pageInfo.set(null);
-            return of([] as ViandaResponse[]);
+            return of([] as ViandaAnyResponse[]);
           })
         );
       })
     ),
-    { initialValue: [] as ViandaResponse[] }
+    { initialValue: [] as ViandaAnyResponse[] }
   );
 
   private triggerCategorias = computed(() => {
