@@ -129,7 +129,7 @@ export class FormAdminUserUpdate {
         next: () => {
           if (this.newImageFile) {
             this.usuarioService
-              .updateImagenUsuario(this.usuario.id, this.newImageFile)
+              .updateImagenUsuarioAdmin(this.usuario.id, this.newImageFile)
               .subscribe({
                 next: () => this.updateSuccess(),
                 error: (err) => this.updateError(err, 'Error al actualizar imagen.'),
