@@ -36,7 +36,7 @@ export class Header {
 
   constructor() {
     effect(() => {
-      if (this.isLoggedIn()) {
+      if (this.isLoggedIn() && this.role() !== 'ADMIN') {
         this.notiService.fetchNotificaciones();
       }
     });
