@@ -24,7 +24,7 @@ export class AdminUsuariosPage {
     const nameFilter = this.nameFilter();
     const emailFilter = this.emailFilter();
 
-    return this.usuarioService.usuarios().filter(
+    return this.usuarioService.usuariosAdmin().filter(
       usuario => {
         if (nameFilter && !usuario.nombreCompleto.toLowerCase().includes(nameFilter.toLowerCase())) {
           return false;
@@ -42,7 +42,7 @@ export class AdminUsuariosPage {
   constructor() {
     // TO-DO: Usar ruta que devuelva emprendimientos por ID de dueño
     effect(() => {
-      this.usuarioService.readUsuarios();
+      this.usuarioService.readUsuariosAdmin();
       this.emprendimientoService.fetchEmprendimientosAdmin(0, 100);
     });
   }
@@ -65,7 +65,7 @@ export class AdminUsuariosPage {
       .afterClosed()
       .subscribe(result => {
         if (result === true) {
-          this.usuarioService.readUsuarios();
+          this.usuarioService.readUsuariosAdmin();
         }
       });
   }

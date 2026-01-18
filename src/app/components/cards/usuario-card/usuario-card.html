@@ -8,6 +8,24 @@
     <p><a [href]="'tel:' + usuario.telefono">{{ usuario.telefono }}</a></p>
   </div>
 
+  <div class="status-container">
+    @if (isEditable() && !usuario.enabled) {
+      <div class="not-enabled-container">
+        <p class="not-enabled-text">NO VERIFICADO</p>
+
+        <button class="btn enable-button" (click)="enable()" title="Activar">
+          <i class="fa-regular fa-circle-check"></i>
+        </button>
+      </div>
+    }
+
+    @if (isDeleted()) {
+      <p class="deleted-text">
+        <strong>Eliminado:</strong> {{ deletionDate }}
+      </p>
+    }
+  </div>
+
   <div class="rol-emprendimientos-container">
     <p class="rol">{{ usuario.rolUsuario }}</p>
 

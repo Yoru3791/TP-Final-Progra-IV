@@ -1,5 +1,4 @@
 import { Component, computed, inject, Input, Signal } from '@angular/core';
-import { UsuarioResponse } from '../../../model/usuario-response.model';
 import { EmprendimientoService } from '../../../services/emprendimiento-service';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth-service';
@@ -13,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-modal';
 import { firstValueFrom } from 'rxjs';
 import { AdminUserUpdatePasswordModal } from '../../modals/admin-user-update-password-modal/admin-user-update-password-modal';
+import { UsuarioAdminResponse } from '../../../model/usuario-admin-response.model';
 
 @Component({
   selector: 'app-usuario-card',
@@ -21,7 +21,7 @@ import { AdminUserUpdatePasswordModal } from '../../modals/admin-user-update-pas
   styleUrl: './usuario-card.css',
 })
 export class UsuarioCard {
-  @Input() usuario!: UsuarioResponse;
+  @Input() usuario!: UsuarioAdminResponse;
 
   private authService = inject(AuthService);
   private confirmarModalService = inject(ConfirmarModalService);
@@ -30,11 +30,24 @@ export class UsuarioCard {
   private snackBar = inject(MatSnackBar);
   private usuarioService = inject(UsuarioService);
 
-  isEditable = computed(() => this.usuario.id !== 1 && this.usuario.id !== this.authService.usuarioId());
+  isDeleted = computed(() => this.usuario.deletedAt !== null);
+
+  deletionDate = "";
+
+  isEditable = computed(() =>
+    this.usuario.id !== 1 && this.usuario.id !== this.authService.usuarioId()
+    && !this.isDeleted()
+  );
 
   emprendimientos = computed(() =>
     this.emprendimientoService.allEmprendimientosAdmin().filter(datum => datum.dueno.id === this.usuario.id)
   );
+
+  ngOnInit() {
+    if (this.isDeleted()) {
+      this.deletionDate = this.usuario.deletedAt.split('T')[0];
+    }
+  }
 
   changePassword() {
       this.dialog
@@ -48,6 +61,29 @@ export class UsuarioCard {
         .subscribe();
   }
 
+  async enable() {
+    const confirmado = await firstValueFrom(
+      this.confirmarModalService.confirmar({
+          titulo: 'Activar usuario',
+          texto: '¿Seguro de que querés activar este usuario?',
+      })
+    );
+
+    if (!confirmado) return;
+
+    this.usuarioService
+      .enableUsuario(this.usuario.id)
+      .subscribe({
+        next: () => {
+          this.abrirSnackBar("Usuario activado con éxito.");
+          this.usuarioService.readUsuariosAdmin();
+        },
+        error: (error) => {
+          this.abrirModalError(error);
+        },
+      });
+  }
+
   edit() {
       this.dialog
         .open(AdminUserUpdateModal, {
@@ -59,7 +95,7 @@ export class UsuarioCard {
         .afterClosed()
         .subscribe((result) => {
             if (result === true) {
-              this.usuarioService.readUsuarios();
+              this.usuarioService.readUsuariosAdmin();
             }
           }
         );
@@ -73,8 +109,7 @@ export class UsuarioCard {
     const confirmado = await firstValueFrom(
       this.confirmarModalService.confirmar({
           titulo: 'Eliminar usuario',
-          texto:
-            '¿Seguro de que querés eliminar este usuario? <span>Esta acción es irreversible.</span>',
+          texto: '¿Seguro de que querés eliminar este usuario? <span>Esta acción es irreversible.</span>',
           textoEsHtml: true,
           critico: true,
       })
@@ -87,7 +122,7 @@ export class UsuarioCard {
       .subscribe({
         next: () => {
           this.abrirSnackBar("Usuario eliminado con éxito");
-          this.usuarioService.readUsuarios();
+          this.usuarioService.readUsuariosAdmin();
         },
         error: (error) => {
           this.abrirModalError(error);
