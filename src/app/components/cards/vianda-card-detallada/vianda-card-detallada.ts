@@ -1,5 +1,5 @@
-import { Component, inject, input, output } from '@angular/core';
-import { ViandaResponse } from '../../../model/vianda-response.model';
+import { Component, computed, inject, input, output } from '@angular/core';
+import { ViandaAnyResponse, ViandaResponse } from '../../../model/vianda-response.model';
 import { PageMode } from '../../../pages/emprendimiento-page/emprendimiento-page';
 import { IconTacc } from '../../utils/icon-tacc/icon-tacc';
 import { IconVegan } from '../../utils/icon-vegan/icon-vegan';
@@ -15,7 +15,7 @@ import { ViandaExtendedModal } from '../../modals/vianda-extended-modal/vianda-e
   styleUrl: './vianda-card-detallada.css',
 })
 export class ViandaCardDetallada {
-  vianda = input.required<ViandaResponse>();
+  vianda = input.required<ViandaAnyResponse>();
   modo = input.required<PageMode>();
 
   // La cantidad la manda el carrito
@@ -57,4 +57,9 @@ export class ViandaCardDetallada {
       restoreFocus: false,
     });
   }
+
+  esEliminada = computed(() => {
+    const v = this.vianda();
+    return 'fechaEliminacion' in v && v.fechaEliminacion !== null;
+  });
 }
