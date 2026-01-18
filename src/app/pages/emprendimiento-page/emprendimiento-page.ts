@@ -19,12 +19,18 @@ import { FormUpdateEmprendimiento } from '../../components/forms/form-emprendimi
 import { CarritoService } from '../../services/carrito-service';
 import { FormViandaUpdate } from '../../components/forms/form-vianda-update/form-vianda-update';
 import { ErrorDialogModal } from '../../components/modals/error-dialog-modal/error-dialog-modal';
+import { Paginador } from '../../components/utils/paginador/paginador';
+import { PagedResponse, PageMetadata } from '../../model/hateoas-pagination.models';
 
 export type PageMode = 'DUENO' | 'CLIENTE' | 'INVITADO' | 'PROHIBIDO' | 'CARGANDO';
 
 @Component({
   selector: 'app-emprendimiento-page',
-  imports: [EmprendimientoInfo, EmprendimientoFiltrosViandas, ViandaCardDetallada, RouterLink],
+  imports: [EmprendimientoInfo,
+    EmprendimientoFiltrosViandas,
+    ViandaCardDetallada,
+    RouterLink,
+    Paginador],
   templateUrl: './emprendimiento-page.html',
   styleUrl: './emprendimiento-page.css',
 })
@@ -40,6 +46,8 @@ export class EmprendimientoPage {
 
   emprendimientoEditado = signal(0); //  Signal para forzar recarga de info de emprendimiento al editarlo
   viandaEditada = signal(0); //  Signal para forzar recarga de viandas y categorias al editar una vianda
+  currentPage = signal(0);
+  pageInfo = signal<PageMetadata | null>(null);
 
   //  Uso signals para idEmprendimiento, emprendimiento y esDueno (si algo cambia, se actualiza todo automáticamente)
   idEmprendimiento = computed(() => {
@@ -164,48 +172,50 @@ export class EmprendimientoPage {
       id: this.idEmprendimiento(),
       filtros: this.filtrosSignal(),
       modo: this.modoVista(),
+      page: this.currentPage()
     };
   });
 
   // Convierto el trigger en un Observable (llama a la API y devuelve las viandas que muestro en pantalla)
   viandas = toSignal(
     toObservable(this.triggerViandas).pipe(
-      switchMap(({ id, filtros, modo }) => {
+      switchMap(({ id, filtros, modo, page }) => {
         if (!id || modo === 'CARGANDO' || modo === 'PROHIBIDO') {
           return of([] as ViandaResponse[]);
         }
 
-        let request$: Observable<ViandaResponse[]>;
+        let request$: Observable<PagedResponse<ViandaResponse>>;
 
         switch (modo) {
           case 'DUENO':
-            request$ = this.viandaService.getViandasDueno(id, filtros);
+            request$ = this.viandaService.getViandasDueno(id, filtros, page, 10);
             break;
           case 'CLIENTE':
-            request$ = this.viandaService.getViandasCliente(id, filtros);
+            request$ = this.viandaService.getViandasCliente(id, filtros, page, 10);
             break;
           case 'INVITADO':
-            request$ = this.viandaService.getViandasPublico(id, filtros);
+            request$ = this.viandaService.getViandasPublico(id, filtros, page, 10);
             break;
           default:
             return of([] as ViandaResponse[]);
         }
 
         return request$.pipe(
-          map((viandas) => {
-            let resultado = viandas;
+          map((response) => {
 
-            // Ordena las viandas para mostrar las disponibles primero (solo afecta al dueño)
-            return resultado.sort((a, b) => {
-              if (a.estaDisponible === b.estaDisponible) {
-                return 0;
-              }
-              return a.estaDisponible ? -1 : 1;
-            });
+            if (response.page) {
+              this.pageInfo.set(response.page);
+            } else {
+              this.pageInfo.set(null);
+            }
+
+            const lista = response._embedded ? response._embedded['viandaDTOList'] : [];
+
+            return lista;
           }),
           catchError((err) => {
-            //  Ya está contemplado lo que se muestra cuando no hay viandas (lo dejo como warning por las dudas)
             console.warn('Error cargando viandas (posiblemente sin resultados)', err);
+            this.pageInfo.set(null);
             return of([] as ViandaResponse[]);
           })
         );
@@ -214,46 +224,58 @@ export class EmprendimientoPage {
     { initialValue: [] as ViandaResponse[] }
   );
 
-  private triggerViandasTotales = computed(() => {
-    this.viandaEditada();
+  private triggerCategorias = computed(() => {
+    this.viandaEditada(); 
     return {
       id: this.idEmprendimiento(),
       modo: this.modoVista(),
     };
   });
 
-  //  Uso viandasTotales para tener las categorías disponibles en los filtros
-  //  (Lo necesito porque las categorías se obtienen dinámicamente)
-  viandasTotales = toSignal(
-    toObservable(this.triggerViandasTotales).pipe(
+  listaCategorias = toSignal(
+    toObservable(this.triggerCategorias).pipe(
       switchMap(({ id, modo }) => {
         if (!id || modo === 'CARGANDO' || modo === 'PROHIBIDO') {
-          return of([] as ViandaResponse[]);
+          return of([] as string[]);
         }
 
-        let request$: Observable<ViandaResponse[]>;
+        let request$: Observable<string[]>;
 
         switch (modo) {
           case 'DUENO':
-            request$ = this.viandaService.getViandasDueno(id);
+            request$ = this.viandaService.getCategoriasDueno(id);
             break;
           case 'CLIENTE':
-            request$ = this.viandaService.getViandasCliente(id);
+            request$ = this.viandaService.getCategoriasCliente(id);
             break;
           case 'INVITADO':
-            request$ = this.viandaService.getViandasPublico(id);
+            request$ = this.viandaService.getCategoriasPublico(id);
             break;
           default:
-            return of([] as ViandaResponse[]);
+            return of([] as string[]);
         }
 
-        return request$.pipe(catchError(() => of([] as ViandaResponse[])));
+        return request$.pipe(
+            catchError((err) => {
+                console.warn('Error cargando categorías', err);
+                return of([] as string[]);
+            })
+        );
       })
     ),
-    { initialValue: [] as ViandaResponse[] }
+    { initialValue: [] as string[] }
   );
 
+  onPageChange(newPage: number) {
+    this.currentPage.set(newPage);
+    const listElement = document.querySelector('.viandas-detalladas-grid');
+    if (listElement) {
+        listElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
   onFiltrosChanged(nuevosFiltros: FiltrosViandas) {
+    this.currentPage.set(0);
     this.filtrosSignal.set(nuevosFiltros);
   }
 
