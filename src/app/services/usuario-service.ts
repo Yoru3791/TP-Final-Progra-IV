@@ -36,7 +36,7 @@ export class UsuarioService {
   }
 
   getPerfilUsuario(): Observable<UsuarioResponse> {
-    return this.http.get<UsuarioResponse>(`${this.apiUrl}/me`);
+    return this.http.get<UsuarioResponse>(`${this.getApiUrl()}/me`);
   }
 
   private readonly _usuarios = signal<UsuarioResponse[]>([]);
