@@ -2,7 +2,7 @@
 <div class="filtros-container">
     
     <!-- Filtros de arriba (categorías) -->
-    @if (categoriasDisponibles().length > 1) {
+    @if (categorias().length > 1) {
         <div class="categorias-section">
             <button class="btn-toggle-cat" 
                         [class.active]="categoriasOpen()"
@@ -18,7 +18,7 @@
 
             <div class="categorias-dropdown-wrapper" [class.open]="categoriasOpen()">
                 <div class="chips-grid">
-                    @for (cat of categoriasDisponibles(); track cat) {
+                    @for (cat of categorias(); track cat) {
                     <button 
                         class="chip-categoria"
                         [class.active]="categoriaSeleccionada() === cat"

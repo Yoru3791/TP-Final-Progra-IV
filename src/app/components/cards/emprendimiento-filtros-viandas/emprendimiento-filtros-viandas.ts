@@ -17,7 +17,7 @@ type FiltroDisponibilidad = 'TODAS' | 'DISPONIBLES' | 'NO_DISPONIBLES';
 })
 export class EmprendimientoFiltrosViandas {
 
-  viandasIniciales = input.required<ViandaResponse[]>();
+  categorias = input.required<string[]>();
   modo = input.required<PageMode>();
   filtrosChanged = output<FiltrosViandas>();
 
@@ -31,14 +31,6 @@ export class EmprendimientoFiltrosViandas {
   precioMax = signal<number | null>(null);
   filtroDisponibilidad = signal<FiltroDisponibilidad>('TODAS');
 
-  // Extrae dinámicamente las categorías de las viandas que llegan
-  categoriasDisponibles = computed(() => {
-    const viandas = this.viandasIniciales();
-    if (!viandas || viandas.length === 0) return [];
-
-    const categorias = viandas.map((v) => v.categoria);
-    return [...new Set(categorias)]; // Uso Set para eliminar duplicados
-  });
 
   borrarBusqueda() {
     this.busqueda.set('');
