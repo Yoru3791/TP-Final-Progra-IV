@@ -1,10 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ViandaResponse } from '../model/vianda-response.model';
+import { ViandaAnyResponse, ViandaResponse } from '../model/vianda-response.model';
 import { AuthService, UserRole } from './auth-service';
 import { ViandaCreate } from '../model/vianda-create.model';
 import { FiltrosViandas } from '../model/filtros-viandas.model';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { ViandaUpdate } from '../model/vianda-update.model';
 import { ViandaDeleteResponse } from '../model/vianda-delete-response.model';
 import { PagedResponse } from '../model/hateoas-pagination.models';
@@ -102,9 +102,36 @@ export class ViandaService {
     return this.http.get<ViandaResponse>(url);
   }
 
-  getViandasByEmprendimientoId(emprendimientoId: number) {
-    const url = `http://localhost:8080/api/public/viandas/idEmprendimiento/${emprendimientoId}`;
+  getAllViandasDisponibles(idEmprendimiento: number): Observable<ViandaResponse[]> {
+    const url = `${this.baseUrls.CLIENTE}/all/idEmprendimiento/${idEmprendimiento}`;
     return this.http.get<ViandaResponse[]>(url);
+  }
+
+  getViandasPreview(emprendimientoId: number, limit: number = 8): Observable<ViandaResponse[]> {
+    const rol = this.authService.currentUserRole();
+    let request$: Observable<PagedResponse<ViandaAnyResponse>>;
+
+    switch (rol) {
+      case 'DUENO':
+        request$ = this.getViandasDueno(emprendimientoId, undefined, 0, limit);
+        break;
+      case 'CLIENTE':
+        request$ = this.getViandasCliente(emprendimientoId, undefined, 0, limit);
+        break;
+      default:
+        request$ = this.getViandasPublico(emprendimientoId, undefined, 0, limit);
+        break;
+    }
+
+    return request$.pipe(
+      map(response => {
+        if (response._embedded) {
+          if ('viandaDTOList' in response._embedded) return response._embedded['viandaDTOList'] as ViandaResponse[];
+        }
+        return [];
+      }),
+      catchError(() => of([] as ViandaResponse[]))
+    );
   }
 
   getCategoriasPublico(idEmprendimiento: number): Observable<string[]> {
@@ -160,12 +187,12 @@ export class ViandaService {
     filtros?: FiltrosViandas,
     page: number = 0,
     size: number = 10
-  ): Observable<PagedResponse<ViandaResponse>> {
+  ): Observable<PagedResponse<ViandaAnyResponse>> {
     const params = this.construirParams(filtros, page, size);
     const rol = this.authService.currentUserRole();
     const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
 
-    return this.http.get<PagedResponse<ViandaResponse>>(
+    return this.http.get<PagedResponse<ViandaAnyResponse>>(
       `${baseUrl}/idEmprendimiento/${idEmprendimiento}`,
       { params }
     );

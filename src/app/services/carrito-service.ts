@@ -163,7 +163,7 @@ export class CarritoService {
     if (!this.emprendimiento()) return true;
 
     const viandasEmprendimiento = await firstValueFrom(
-      this.viandaService.getViandasByEmprendimientoId(this.emprendimiento()!.id)
+      this.viandaService.getAllViandasDisponibles(this.emprendimiento()!.id)
     );
 
     let seQuitaronViandas = false;

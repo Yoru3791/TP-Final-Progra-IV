@@ -126,8 +126,7 @@ export class EmprendimientoService {
     }
 
     const requests = emps.map((e) =>
-      this.viandaService.getViandasByEmprendimientoId(e.id).pipe(
-        catchError(() => of([])),
+      this.viandaService.getViandasPreview(e.id, 8).pipe(
         map((viandas) => ({ ...e, viandas }))
       )
     );
