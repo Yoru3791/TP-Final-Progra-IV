@@ -233,7 +233,7 @@
   top: 0.8rem;
   right: 0.8rem;
 
-  background-color: var(--color-state-error); /* #ef4444 (rojo fuerte) */
+  background-color: var(--color-state-error);
   border: 0.1rem solid var(--color-state-error);
   color: var(--color-text-inverse);
   padding: 0.5rem 1rem;
@@ -244,4 +244,27 @@
   white-space: nowrap;
   z-index: 10;
   cursor: default;
+}
+
+.card.eliminada {
+  border: 0.2rem dashed #dc2626;
+  background-color: #fef2f2;
+}
+
+.status-badge.deleted {
+  background-color: #991b1b;
+  border-color: #991b1b;
+}
+
+.card.eliminada .product-image,
+.card.eliminada .card-header,
+.card.eliminada .card-description,
+.card.eliminada .diet-icons {
+  opacity: 0.6;
+  filter: grayscale(80%);
+}
+
+.card.eliminada .status-badge {
+  opacity: 1;
+  filter: none;
 }

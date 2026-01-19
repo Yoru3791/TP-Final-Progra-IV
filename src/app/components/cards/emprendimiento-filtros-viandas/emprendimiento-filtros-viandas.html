@@ -2,33 +2,49 @@
 <div class="filtros-container">
     
     <!-- Filtros de arriba (categorías) -->
-    <div class="categorias-wrapper">
-        @for (cat of categoriasDisponibles(); track cat) {
-        <button 
-            class="chip-categoria"
-            [class.active]="categoriaSeleccionada() === cat"
-            (click)="toggleCategoria(cat)">
-            {{ cat }}
-        </button>
-        }
-    </div>
-    
+    @if (categorias().length > 1) {
+        <div class="categorias-section">
+            <button class="btn-toggle-cat" 
+                        [class.active]="categoriasOpen()"
+                        [class.has-selection]="categoriaSeleccionada()"
+                        (click)="toggleMenuCategorias()">
+                    
+                    <span class="text-dynamic">
+                        {{ categoriaSeleccionada() ? 'Categoría seleccionada: ' + categoriaSeleccionada() : 'Categorías' }}
+                    </span>
+                    
+                    <i class="fa-solid fa-chevron-down" [class.rotated]="categoriasOpen()"></i>
+                </button>
+
+            <div class="categorias-dropdown-wrapper" [class.open]="categoriasOpen()">
+                <div class="chips-grid">
+                    @for (cat of categorias(); track cat) {
+                    <button 
+                        class="chip-categoria"
+                        [class.active]="categoriaSeleccionada() === cat"
+                        (click)="toggleCategoria(cat)">
+                        {{ cat }}
+                    </button>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+
     <!-- Filtros de abajo (nombre + vegano/vegetariano/sinTACC + precios) -->
     <div class="controles-bottom">
 
         <!-- Filtrar por nombre de vianda -->
         <div class="search-box" [class.filled]="busqueda()">
-            
             <i class="fa-solid fa-magnifying-glass"></i>
-            
             <input 
                 type="text"
                 placeholder="Buscar vianda..."
                 [ngModel]="busqueda()"
-                (ngModelChange)="onSearchInput($event)">
-            
-            <i class="fa-solid fa-x close-icon" 
-            (click)="borrarBusqueda()"></i>
+                (ngModelChange)="busqueda.set($event)"
+                (keyup.enter)="aplicarFiltros()">
+            <i class="fa-solid fa-x close-icon" (click)="borrarBusqueda()"></i>
         </div>
         
         <!-- Filtrar por vegano/vegetariano/sinTACC -->
@@ -56,58 +72,67 @@
                 title="Vegano">
                 <app-icon-vegan class="icon"></app-icon-vegan>
             </button>
-            
         </div>
         
         <!-- Filtrar por precios mínimo y máximo -->
         <div class="price-inputs">
-            
             <div class="input-wrapper" [class.filled]="precioMin()">
                 <span class="currency-symbol">$</span>
                 <input 
                     type="number" 
                     placeholder="Min" 
                     [ngModel]="precioMin()"
-                    (ngModelChange)="updatePrecio('min', $event)">
+                    (ngModelChange)="precioMin.set($event)"
+                    (keyup.enter)="aplicarFiltros()">
             </div>
-
             <span class="separator">-</span>
-
             <div class="input-wrapper" [class.filled]="precioMax()">
                 <span class="currency-symbol">$</span>
                 <input 
                     type="number" 
                     placeholder="Max"
                     [ngModel]="precioMax()"
-                    (ngModelChange)="updatePrecio('max', $event)">
+                    (ngModelChange)="precioMax.set($event)"
+                    (keyup.enter)="aplicarFiltros()">
             </div>
-
         </div>
 
+        <!-- Filtrar por disponibilidad (dueño) -->
         @if (modo() === 'DUENO') {
             <div class="segmented-control">
                 <button 
                     [class.active]="filtroDisponibilidad() === 'DISPONIBLES'"
-                    (click)="setDisponibilidad('DISPONIBLES')"
-                    title="Ver solo disponibles">
+                    (click)="filtroDisponibilidad.set('DISPONIBLES')"
+                    title="Ver solo Disponibles">
                     <i class="fa-solid fa-check"></i>
                 </button>
                 
                 <button 
                     [class.active]="filtroDisponibilidad() === 'NO_DISPONIBLES'"
-                    (click)="setDisponibilidad('NO_DISPONIBLES')"
-                    title="Ver no disponibles">
+                    (click)="filtroDisponibilidad.set('NO_DISPONIBLES')"
+                    title="Ver solo No Disponibles">
                     <i class="fa-solid fa-ban"></i>
                 </button>
 
                 <button 
                     [class.active]="filtroDisponibilidad() === 'TODAS'"
-                    (click)="setDisponibilidad('TODAS')"
+                    (click)="filtroDisponibilidad.set('TODAS')"
                     title="Ver todas">
-                    Todas
+                    TODAS
                 </button>
             </div>
         }
+
+        <!-- Botones filtrar/limpiar -->
+        <div class="action-buttons">
+            <button class="btn-action-apply" (click)="aplicarFiltros()">
+                Filtrar
+            </button>
+
+            <button class="btn-icon-action btn-clear" (click)="limpiarFiltros()" title="Limpiar filtros">
+                <i class="fa-solid fa-broom"></i>
+            </button>
+        </div>
         
     </div>
 </div>
