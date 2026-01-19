@@ -30,9 +30,17 @@ export class UsuarioCard {
   private snackBar = inject(MatSnackBar);
   private usuarioService = inject(UsuarioService);
 
-  isDeleted = computed(() => this.usuario.deletedAt !== null);
+  isDeleted() {
+    return this.usuario.deletedAt !== null;
+  }
 
   deletionDate = "";
+
+  isBanned() {
+    return this.usuario.bannedAt !== null;
+  }
+
+  banDate = "";
 
   isEditable = computed(() =>
     this.usuario.id !== 1 && this.usuario.id !== this.authService.usuarioId()
@@ -43,9 +51,13 @@ export class UsuarioCard {
     this.emprendimientoService.allEmprendimientosAdmin().filter(datum => datum.dueno.id === this.usuario.id)
   );
 
-  ngOnInit() {
+  ngOnChanges() {
     if (this.isDeleted()) {
       this.deletionDate = this.usuario.deletedAt.split('T')[0];
+    }
+
+    if (this.isBanned()) {
+      this.banDate = this.usuario.bannedAt.split('T')[0];
     }
   }
 
@@ -101,8 +113,29 @@ export class UsuarioCard {
         );
   }
 
-  ban() {
+  async toggleBan() {
+    const banned = this.isBanned();
 
+    const confirmado = await firstValueFrom(
+      this.confirmarModalService.confirmar({
+          titulo: `${banned ? 'Desbloquear' : 'Bloquear'} usuario`,
+          texto: `¿Seguro de que querés ${banned ? 'desbloquear' : 'bloquear'} a este usuario?`,
+          critico: true,
+      })
+    );
+
+    if (!confirmado) return;
+
+    (banned ? this.usuarioService.unbanUsuario(this.usuario.id) : this.usuarioService.banUsuario(this.usuario.id))
+      .subscribe({
+        next: () => {
+          this.abrirSnackBar(`Usuario ${banned ? 'desbloqueado' : 'bloqueado'} con éxito`);
+          this.usuarioService.readUsuariosAdmin();
+        },
+        error: (error) => {
+          this.abrirModalError(error);
+        },
+      });
   }
 
   async delete() {

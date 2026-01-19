@@ -7,5 +7,6 @@ export interface UsuarioAdminResponse {
   rolUsuario: string;
   enabled: boolean;
   createdAt: string;
+  bannedAt: string;
   deletedAt: string;
 }

@@ -89,4 +89,12 @@ export class UsuarioService {
   enableUsuario(id: number) {
     return this.http.put<UsuarioAdminResponse>(`${this.getApiUrl()}/${id}/enable`, null);
   }
+
+  banUsuario(id: number) {
+    return this.http.put<UsuarioAdminResponse>(`${this.getApiUrl()}/${id}/ban`, null);
+  }
+
+  unbanUsuario(id: number) {
+    return this.http.put<UsuarioAdminResponse>(`${this.getApiUrl()}/${id}/unban`, null);
+  }
 }
