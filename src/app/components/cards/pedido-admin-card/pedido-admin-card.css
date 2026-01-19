@@ -1,0 +1,218 @@
+.pedido-card {
+  border: 1px solid var(--color-ui-neutral);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-card);
+  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+
+  width: 100%;
+  /* Height auto para mobile, fijo en desktop */
+  height: auto;
+}
+
+/* Eliminamos el hover de borde de color */
+.pedido-card:hover {
+  border-color: var(--color-ui-neutral);
+}
+
+.main-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  flex: 1;
+}
+
+.nombre {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.id-pedido {
+  color: var(--color-primary);
+  font-weight: 900;
+  margin-right: 0.5rem;
+}
+
+.meta-data {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fila-datos {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.dato {
+  font-size: 1.3rem;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+/* Nuevos estilos para labels inline */
+.label-dato {
+  font-weight: normal;
+  color: var(--color-text-light);
+  font-size: 1.3rem;
+}
+
+.valor-dato.primary {
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.separador {
+  color: var(--color-ui-neutral);
+  margin: 0 0.5rem;
+}
+
+.precio-total {
+  color: var(--color-text-primary);
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
+.icon-small {
+  color: var(--color-primary-light);
+  width: 1.4rem;
+  text-align: center;
+}
+
+/* Columna Dueño */
+.dueno-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-ui-neutral);
+}
+
+.label {
+  font-size: 1rem;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+
+.dueno-nombre {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.dueno-email {
+  font-size: 1.2rem;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Columna Estado y Acción */
+.status-action-col {
+  display: flex;
+  flex-direction: row; /* En mobile suelen ir juntos */
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.estado {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem;
+}
+
+/* Colores de Estado */
+.estado-aceptado {
+  color: var(--color-state-success);
+  background: #eafff0;
+}
+.estado-pendiente {
+  color: var(--color-state-warning);
+  background: #fff8e1;
+}
+.estado-rechazado {
+  color: var(--color-state-error);
+  background: #ffebeb;
+}
+.estado-entregado {
+  color: var(--color-state-finish);
+  background: #eef6ff;
+}
+
+.btn-ver-mas {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.6rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-ver-mas:hover {
+  background-color: var(--color-primary-hover-dark);
+}
+
+/* --- RESPONSIVE DESKTOP --- */
+@media (min-width: 900px) {
+  .pedido-card {
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem 2rem;
+    height: 10rem;
+    gap: 3rem;
+    max-width: 115rem;
+  }
+
+  .main-info {
+    justify-content: center;
+    border-right: 1px solid transparent; /* Espaciador si fuera necesario */
+  }
+
+  .dueno-col {
+    width: 25rem;
+    min-width: 25rem;
+    border-top: none;
+    padding-top: 0;
+    justify-content: center;
+    border-left: 1px solid var(--color-border-light);
+    padding-left: 2rem;
+    height: 80%;
+  }
+
+  .status-action-col {
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 1rem;
+    width: 14rem;
+    min-width: 14rem;
+    margin-top: 0;
+  }
+
+  .btn-ver-mas {
+    width: 100%;
+  }
+}

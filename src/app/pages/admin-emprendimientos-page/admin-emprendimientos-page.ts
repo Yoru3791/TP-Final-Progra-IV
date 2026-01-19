@@ -1,7 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { EmprendimientoService } from '../../services/emprendimiento-service';
 import { EmprendimientoAdminCard } from '../../components/cards/emprendimiento-admin-card/emprendimiento-admin-card';
-import { EmprendimientoResponse } from '../../model/emprendimiento-response.model';
 import { EmprendimientoAdminResponse } from '../../model/emprendimiento-admin-response.model';
 
 @Component({
