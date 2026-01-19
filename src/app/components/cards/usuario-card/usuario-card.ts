@@ -1,6 +1,4 @@
-import { Component, computed, inject, Input, Signal } from '@angular/core';
-import { EmprendimientoService } from '../../../services/emprendimiento-service';
-import { RouterLink } from '@angular/router';
+import { Component, computed, inject, Input, signal, Signal } from '@angular/core';
 import { AuthService } from '../../../services/auth-service';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminUserUpdateModal } from '../../modals/admin-user-update-modal/admin-user-update-modal';
@@ -16,42 +14,40 @@ import { UsuarioAdminResponse } from '../../../model/usuario-admin-response.mode
 
 @Component({
   selector: 'app-usuario-card',
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './usuario-card.html',
   styleUrl: './usuario-card.css',
 })
 export class UsuarioCard {
-  @Input() usuario!: UsuarioAdminResponse;
+  @Input({ required: true }) usuario!: UsuarioAdminResponse;
+  usuarioSignal = signal<UsuarioAdminResponse|null>(null);
 
   private authService = inject(AuthService);
   private confirmarModalService = inject(ConfirmarModalService);
   private dialog = inject(MatDialog);
-  private emprendimientoService = inject(EmprendimientoService);
   private snackBar = inject(MatSnackBar);
   private usuarioService = inject(UsuarioService);
 
-  isDeleted() {
-    return this.usuario.deletedAt !== null;
-  }
+  isDeleted = computed(() =>
+    this.usuarioSignal()?.deletedAt !== null
+  );
 
   deletionDate = "";
 
-  isBanned() {
-    return this.usuario.bannedAt !== null;
-  }
+  isBanned = computed(() =>
+    this.usuarioSignal()?.bannedAt !== null
+  );
 
   banDate = "";
 
   isEditable = computed(() =>
-    this.usuario.id !== 1 && this.usuario.id !== this.authService.usuarioId()
+    this.usuarioSignal()?.id !== 1 && this.usuarioSignal()?.id !== this.authService.usuarioId()
     && !this.isDeleted()
   );
 
-  emprendimientos = computed(() =>
-    this.emprendimientoService.allEmprendimientosAdmin().filter(datum => datum.dueno.id === this.usuario.id)
-  );
-
   ngOnChanges() {
+    this.usuarioSignal.set(this.usuario);
+
     if (this.isDeleted()) {
       this.deletionDate = this.usuario.deletedAt.split('T')[0];
     }

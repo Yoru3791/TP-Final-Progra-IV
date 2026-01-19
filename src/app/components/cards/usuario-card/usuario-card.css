@@ -94,8 +94,8 @@ p {
   justify-content: center;
 }
 
-.rol-emprendimientos-container {
-  --width: 12rem;
+.rol-container {
+  --width: 8rem;
 
   align-items: flex-end;
   display: flex;
@@ -105,105 +105,6 @@ p {
   max-width: var(--width);
   min-width: var(--width);
   text-align: right;
-}
-
-.emprendimientos-container {
-  position: relative;
-}
-
-.emprendimientos-title {
-  background-color: inherit;
-  border: none;
-  color: var(--color-primary-light);
-  font-family: inherit;
-  font-size: 1.4rem;
-  position: relative;
-  text-decoration: underline;
-  transition-duration: 0.1s;
-}
-
-.emprendimientos-title:focus-within,
-.emprendimientos-title:hover
-{
-  filter: brightness(0.9);
-}
-
-.emprendimientos-title::after {
-  content: '';
-  height: 0.5rem;
-  left: 0;
-  right: 0;
-  position: absolute;
-  top: 100%;
-}
-
-.emprendimientos-list {
-  align-items: center;
-  background-color: var(--color-background-primary);
-  border: 1px solid var(--color-ui-neutral);
-  border-radius: 0.5rem;
-  box-shadow: var(--shadow-card);
-  display: none;
-  flex-direction: column;
-  left: 50%;
-  margin-top: 0.5rem;
-  min-width: 24rem;
-  position: absolute;
-  top: 100%;
-  transform: translateX(-50%);
-}
-
-.emprendimientos-container:focus-within .emprendimientos-list,
-.emprendimientos-container:hover .emprendimientos-list,
-.emprendimientos-container:active .emprendimientos-list,
-.emprendimientos-list:active
-{
-  display: flex;
-}
-
-.emprendimientos-list li {
-  text-decoration: none;
-}
-
-.emprendimiento {
-  align-items: center;
-  background-color: inherit;
-  border-bottom: 1px solid var(--color-ui-neutral);
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  justify-content: left;
-  padding: 0.5rem 1rem;
-  pointer-events: all;
-  text-decoration: none;
-  transition-duration: 0.2s;
-  width: 100%;
-}
-
-.emprendimiento:last-child {
-  border-bottom: none;
-}
-
-.emprendimiento:visited {
-  color: inherit;
-}
-
-.emprendimiento img {
-  aspect-ratio: 1/1;
-  border-radius: 0.5rem;
-  height: 3rem;
-  object-fit: cover;
-}
-
-.emprendimiento p {
-  font-size: 1.2rem;
-}
-
-.emprendimiento:focus-within,
-.emprendimiento:hover
-{
-  filter: brightness(0.95);
 }
 
 .rol {

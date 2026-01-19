@@ -58,7 +58,7 @@ export class UsuarioService {
   }
 
   eliminarCuenta(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+    return this.http.delete(`${this.getApiUrl()}/${id}`);
   }
 
   deleteUsuarioAdmin(id: number) {
