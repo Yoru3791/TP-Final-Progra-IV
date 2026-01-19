@@ -72,7 +72,22 @@ export class FormLogin {
         },
         error: (err) => {
           if (err.status === 403) {
-            this.unverifiedEmail = usuario.email || null;
+            const errorCode: string = err.error.error;
+
+            if (errorCode === 'ACCOUNT_NOT_VERIFIED') {
+              this.unverifiedEmail = usuario.email || null;
+            } else if (errorCode === 'ACCOUNT_BANNED') {
+              this.dialog.open(ErrorDialogModal, {
+                data: {
+                  message:
+                    "Esta cuenta fue bloqueada por un administrador. " +
+                    "Si creés que esto es un error, contactanos para solucionarlo."
+                },
+                panelClass: 'modal-error',
+                autoFocus: false,
+                restoreFocus: false,
+              });
+            }
           } else {
             const backendMsg =
               err.error?.message || err.error?.error || 'Error desconocido en el login';

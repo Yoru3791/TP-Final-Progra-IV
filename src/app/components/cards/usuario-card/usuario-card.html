@@ -19,9 +19,15 @@
       </div>
     }
 
+    @if (isBanned()) {
+      <p class="banned-text">
+        <span>BLOQUEADO:</span> {{ banDate }}
+      </p>
+    }
+
     @if (isDeleted()) {
       <p class="deleted-text">
-        <strong>Eliminado:</strong> {{ deletionDate }}
+        <span>ELIMINADO:</span> {{ deletionDate }}
       </p>
     }
   </div>
@@ -54,8 +60,12 @@
       <i class="fa-regular fa-pen-to-square"></i>
     </button>
 
-    <button class="btn" (click)="ban()" [disabled]="!isEditable()" title="Bloquear">
-      <i class="fa-solid fa-lock"></i>
+    <button class="btn" (click)="toggleBan()" [disabled]="!isEditable()" title="Bloquear">
+      @if (isBanned()) {
+        <i class="fa-solid fa-lock-open"></i>
+      } @else {
+        <i class="fa-solid fa-lock"></i>
+      }
     </button>
 
     <button class="btn" (click)="delete()" [disabled]="!isEditable()" title="Eliminar">

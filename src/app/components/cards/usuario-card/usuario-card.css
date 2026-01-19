@@ -77,6 +77,15 @@ p {
   color: var(--color-state-error);
 }
 
+.banned-text span {
+  color: var(--color-state-error);
+  font-weight: bold;
+}
+
+.deleted-text span {
+  font-weight: bold;
+}
+
 .enable-button {
   align-items: center;
   display: flex;
@@ -203,17 +212,21 @@ p {
 }
 
 .buttons-container {
-  column-gap: 0.5rem;
+  column-gap: 0.25rem;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   row-gap: 0.25rem;
 }
 
 .btn {
+  --font-size: 2rem;
+
   aspect-ratio: 1/1;
   background-color: inherit;
   color: color-mix(in srgb, var(--color-text-primary) 50%, var(--color-text-inverse));
-  font-size: 2rem;
+  font-size: var(--font-size);
+  min-width: calc(var(--font-size) * 1.25);
+  text-align: center;
 }
 
 .btn:focus-within,
