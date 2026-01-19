@@ -32,23 +32,8 @@
     }
   </div>
 
-  <div class="rol-emprendimientos-container">
+  <div class="rol-container">
     <p class="rol">{{ usuario.rolUsuario }}</p>
-
-    @if (emprendimientos().length > 0) {
-      <div class="emprendimientos-container">
-        <button class="emprendimientos-title">Emprendimientos</button>
-
-        <ul class="emprendimientos-list">
-          @for (emprendimiento of emprendimientos(); track emprendimiento.id) {
-            <a class="emprendimiento" [routerLink]="'/emprendimiento/' + emprendimiento.id">
-              <img [src]="emprendimiento.imagenUrl">
-              <p>{{ emprendimiento.nombreEmprendimiento }}</p>
-            </a>
-          }
-        </ul>
-      </div>
-    }
   </div>
 
   <div class="buttons-container">

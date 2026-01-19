@@ -16,7 +16,7 @@ import { UsuarioAdminResponse } from '../../../model/usuario-admin-response.mode
 
 @Component({
   selector: 'app-usuario-card',
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './usuario-card.html',
   styleUrl: './usuario-card.css',
 })
@@ -45,10 +45,6 @@ export class UsuarioCard {
   isEditable = computed(() =>
     this.usuario.id !== 1 && this.usuario.id !== this.authService.usuarioId()
     && !this.isDeleted()
-  );
-
-  emprendimientos = computed(() =>
-    this.emprendimientoService.allEmprendimientosAdmin().filter(datum => datum.dueno.id === this.usuario.id)
   );
 
   ngOnChanges() {
