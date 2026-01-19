@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { EliminarCuentaPaso1 } from '../../modals/eliminar-cuenta-paso1/eliminar-cuenta-paso1';
 import { ConfirmarLogout } from '../../modals/logout-modal/logout-modal';
 import { CambiarPasswordModal } from '../../modals/cambiar-password-modal/cambiar-password-modal';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../../services/auth-service';
 
 @Component({
   selector: 'app-panel-acciones-cuenta',
@@ -12,7 +13,12 @@ import { RouterLink } from '@angular/router';
   styleUrl: './panel-acciones-cuenta.css',
 })
 export class PanelAccionesCuenta {
+  private authService = inject(AuthService);
   private dialog = inject(MatDialog);
+
+  esAdminOriginal = computed(() =>
+    this.authService.currentUserRole() === 'ADMIN' && this.authService.usuarioId() === 1
+  );
 
   cambiarPassword() {
     this.dialog.open(CambiarPasswordModal, {

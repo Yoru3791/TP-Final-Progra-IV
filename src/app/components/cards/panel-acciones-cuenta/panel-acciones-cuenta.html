@@ -22,10 +22,12 @@
         <p>Cerrar sesión</p>
       </div>
 
-      <div class="accion accion-roja" (click)="eliminarCuenta()">
-        <i class="fa-solid fa-user-slash icon icon-rojo"></i>
-        <p>Eliminar mi cuenta</p>
-      </div>
+      @if (!esAdminOriginal()) {
+        <div class="accion accion-roja" (click)="eliminarCuenta()">
+          <i class="fa-solid fa-user-slash icon icon-rojo"></i>
+          <p>Eliminar mi cuenta</p>
+        </div>
+      }
     </div>
   </div>
 </div>
