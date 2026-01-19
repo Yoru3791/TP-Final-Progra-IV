@@ -1,1 +1,57 @@
-<p>admin-pedidos-page works!</p>
+<div class="page-container">
+  <div class="header-section">
+    <h1 class="main-h1-title">PEDIDOS</h1>
+  </div>
+
+  <div class="filters-container">
+    <div class="select-wrapper">
+      <div class="select-custom" [class.open]="openEstado" (click)="toggleEstado($event)">
+        <div class="selected-option">{{ pedidoService.filtroEstado() || 'Estado: Todos' }}</div>
+        <div class="arrow">▾</div>
+        @if (openEstado) {
+          <ul class="options">
+            <li (click)="setEstado(null); $event.stopPropagation()">Todos</li>
+            @for (estado of estados; track estado) {
+              <li (click)="setEstado(estado); $event.stopPropagation()">{{ estado }}</li>
+            }
+          </ul>
+        }
+      </div>
+    </div>
+
+    <div class="select-wrapper">
+      <div class="select-custom" [class.open]="openEmp" (click)="toggleEmp($event)">
+        <div class="selected-option">
+          {{ pedidoService.filtroEmprendimiento() || 'Emprendimiento: Todos' }}
+        </div>
+        <div class="arrow">▾</div>
+        @if (openEmp) {
+          <ul class="options">
+            <li (click)="setEmp(null); $event.stopPropagation()">Todos</li>
+            @for (emp of pedidoService.emprendimientosUnicos(); track emp) {
+              <li (click)="setEmp(emp); $event.stopPropagation()">{{ emp }}</li>
+            }
+          </ul>
+        }
+      </div>
+    </div>
+
+    <div class="select-wrapper date-wrapper">
+      <app-date-range-picker
+        (fechasSeleccionadas)="pedidoService.filtroFechas.set($event)"
+      ></app-date-range-picker>
+    </div>
+  </div>
+
+  <div class="pedidos-list">
+    @if (pedidoService.pedidosFiltrados().length === 0) {
+      <div class="estado-vacio">
+        <p class="sin-pedidos">No se encontraron pedidos con estos filtros.</p>
+      </div>
+    } @else {
+      @for (p of pedidoService.pedidosFiltrados(); track p.id) {
+        <app-pedido-admin-card [pedido]="p"></app-pedido-admin-card>
+      }
+    }
+  </div>
+</div>
