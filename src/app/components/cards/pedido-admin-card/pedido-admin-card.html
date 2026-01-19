@@ -1,0 +1,48 @@
+<div class="pedido-card">
+  <div class="main-info">
+    <p class="nombre">
+      <span class="id-pedido">#{{ pedido.id }}</span> {{ pedido.cliente.nombreCompleto }}
+    </p>
+
+    <div class="meta-data">
+      <p class="dato">
+        <span class="label-dato">Emprendimiento:</span>
+        <span class="valor-dato primary">{{ pedido.emprendimiento.nombreEmprendimiento }}</span>
+      </p>
+
+      <div class="fila-datos">
+        <p class="dato">
+          <i class="fa-regular fa-calendar icon-small"></i>
+          Entrega: {{ pedido.fechaEntrega | date: 'dd/MM/yyyy' }}
+        </p>
+
+        <span class="separador">|</span>
+
+        <p class="dato">
+          <span class="label-dato">Total:</span>
+          <span class="precio-total">{{
+            pedido.total | currency: 'ARS' : 'symbol-narrow' : '1.0-0'
+          }}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dueno-col">
+    <span class="label">Dueño:</span>
+    <p class="dueno-nombre">{{ pedido.emprendimiento.dueno.nombreCompleto }}</p>
+    <a [href]="'mailto:' + pedido.emprendimiento.dueno.email" class="dueno-email">
+      {{ pedido.emprendimiento.dueno.email }}
+    </a>
+  </div>
+
+  <div class="status-action-col">
+    <div class="estado-wrapper">
+      <span class="estado" [ngClass]="getEstadoClass()">
+        {{ pedido.estado }}
+      </span>
+    </div>
+
+    <button class="btn btn-ver-mas">Ver más</button>
+  </div>
+</div>
