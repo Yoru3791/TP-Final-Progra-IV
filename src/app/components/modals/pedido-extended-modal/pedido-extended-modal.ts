@@ -1,9 +1,5 @@
 import { Component, Inject, inject, OnInit } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialog,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { PedidoResponse } from '../../../model/pedido-response.model';
@@ -18,7 +14,7 @@ import { ErrorDialogModal } from '../error-dialog-modal/error-dialog-modal';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { DatosUsuarioModal } from '../datos-usuario-modal/datos-usuario-modal';
-import { A11yModule } from "@angular/cdk/a11y";
+import { A11yModule } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-pedido-extended-modal',
@@ -28,6 +24,10 @@ import { A11yModule } from "@angular/cdk/a11y";
 })
 export class PedidoExtendedModal implements OnInit {
   EstadoPedido = EstadoPedido;
+
+  // Lista de estados para el selector del ADMIN
+  estadosPosibles = Object.values(EstadoPedido);
+
   private authService = inject(AuthService);
   private pedidosService = inject(PedidosService);
   private dialogRef = inject(MatDialogRef);
@@ -40,10 +40,15 @@ export class PedidoExtendedModal implements OnInit {
   minDate: string = '';
   esDemasiadoTarde: boolean = false;
 
+  // Variable para el selector del Admin
+  estadoAdminSeleccionado!: EstadoPedido;
+
   constructor(@Inject(MAT_DIALOG_DATA) public pedido: PedidoResponse) {}
 
   ngOnInit(): void {
     this.calcularValidacionesFecha();
+    // Inicializamos el selector con el estado actual del pedido
+    this.estadoAdminSeleccionado = this.pedido.estado;
   }
 
   calcularValidacionesFecha() {
@@ -51,7 +56,7 @@ export class PedidoExtendedModal implements OnInit {
 
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
-    
+
     const [year, month, day] = this.pedido.fechaEntrega.split('-').map(Number);
     const fechaEntregaActual = new Date(year, month - 1, day);
     fechaEntregaActual.setHours(0, 0, 0, 0);
@@ -63,7 +68,6 @@ export class PedidoExtendedModal implements OnInit {
       this.esDemasiadoTarde = true;
     }
 
-    // Mínimo debe ser Hoy + 2 días (ej: Si hoy es 23 -> min 25)
     const fechaMinimaPolitica = new Date(hoy);
     fechaMinimaPolitica.setDate(hoy.getDate() + 2);
 
@@ -84,6 +88,7 @@ export class PedidoExtendedModal implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
+  // Método general para Cliente/Dueño (botones específicos)
   cambiarEstado(estadoNuevo: EstadoPedido) {
     const estadoActual = this.pedido.estado;
 
@@ -95,13 +100,13 @@ export class PedidoExtendedModal implements OnInit {
 
     if (this.role() === 'DUENO') {
       let permitido = false;
-
-      if (estadoActual === EstadoPedido.PENDIENTE && 
-         (estadoNuevo === EstadoPedido.ACEPTADO || estadoNuevo === EstadoPedido.RECHAZADO)) {
-          permitido = true;
-      }
-      else if (estadoActual === EstadoPedido.ACEPTADO && estadoNuevo === EstadoPedido.ENTREGADO) {
-          permitido = true;
+      if (
+        estadoActual === EstadoPedido.PENDIENTE &&
+        (estadoNuevo === EstadoPedido.ACEPTADO || estadoNuevo === EstadoPedido.RECHAZADO)
+      ) {
+        permitido = true;
+      } else if (estadoActual === EstadoPedido.ACEPTADO && estadoNuevo === EstadoPedido.ENTREGADO) {
+        permitido = true;
       }
 
       if (!permitido) {
@@ -117,31 +122,41 @@ export class PedidoExtendedModal implements OnInit {
     this.sendUpdate(body);
   }
 
-  cambiarFechaEntrega(fecha: string | null) {
-    if (this.role() !== 'CLIENTE') {
-      this.mostrarError('Solo el cliente puede modificar la fecha de entrega.');
-      return;
-    }
-
-    if (this.esDemasiadoTarde) {
-      this.mostrarError('No podés modificar el pedido un día antes de la entrega.');
-      return;
-    }
-
-    if (!fecha) {
-      this.mostrarError('Seleccioná una fecha.');
-      return;
-    }
-
-    if (fecha! < this.pedido.fechaEntrega) {
-      this.mostrarError('La nueva fecha no puede ser anterior a la fecha original.');
+  // Método específico para el ADMIN (Selector)
+  actualizarEstadoAdmin() {
+    if (this.estadoAdminSeleccionado === this.pedido.estado) {
+      // Si no cambió nada, no hacemos la petición
       return;
     }
 
     const body: PedidoUpdateRequest = {
-      fechaEntrega: fecha,
+      estado: this.estadoAdminSeleccionado,
+      // El admin podría cambiar la fecha también, pero aquí nos centramos en el estado
+      fechaEntrega: this.pedido.fechaEntrega,
     };
 
+    this.sendUpdate(body);
+  }
+
+  cambiarFechaEntrega(fecha: string | null) {
+    // ... (lógica existente sin cambios) ...
+    if (this.role() !== 'CLIENTE') {
+      this.mostrarError('Solo el cliente puede modificar la fecha de entrega.');
+      return;
+    }
+    if (this.esDemasiadoTarde) {
+      this.mostrarError('No podés modificar el pedido un día antes de la entrega.');
+      return;
+    }
+    if (!fecha) {
+      this.mostrarError('Seleccioná una fecha.');
+      return;
+    }
+    if (fecha! < this.pedido.fechaEntrega) {
+      this.mostrarError('La nueva fecha no puede ser anterior a la fecha original.');
+      return;
+    }
+    const body: PedidoUpdateRequest = { fechaEntrega: fecha };
     this.sendUpdate(body);
   }
 
@@ -152,14 +167,12 @@ export class PedidoExtendedModal implements OnInit {
           message: 'Pedido actualizado correctamente',
           iconName: 'check_circle',
         };
-
         this.snackBar.openFromComponent(Snackbar, {
           duration: 3000,
           verticalPosition: 'bottom',
           panelClass: 'snackbar-panel',
           data,
         });
-
         setTimeout(() => this.pedidosService.fetchPedidos(), 500);
         this.dialogRef.close({ updated: true });
       },
