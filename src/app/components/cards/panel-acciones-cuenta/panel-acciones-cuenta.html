@@ -1,18 +1,33 @@
-<h3 class="titulo-seccion">MI CUENTA</h3>
-
-<div class="acciones-card">
-  <div class="accion" (click)="cambiarPassword()">
-    <i class="fa-solid fa-key icon"></i>
-    <p>Cambiar mi contraseña</p>
+<div class="card-unificada">
+  <div class="header-card">
+    <h3 class="titulo-seccion">Mi Cuenta</h3>
   </div>
 
-  <div class="accion" (click)="cerrarSesion()">
-    <i class="fa-solid fa-right-from-bracket icon"></i>
-    <p>Cerrar sesión</p>
-  </div>
+  <div class="divisor"></div>
 
-  <div class="accion accion-roja" (click)="eliminarCuenta()">
-    <i class="fa-solid fa-user-slash icon icon-rojo"></i>
-    <p>Eliminar mi cuenta</p>
+  <div class="contenido-card">
+    <div class="acciones-list">
+      <div class="accion" routerLink="/cliente/mis-reclamos">
+        <i class="fa-solid fa-clipboard-list icon"></i>
+        <p>Mis reclamos / Tickets</p>
+      </div>
+
+      <div class="accion" (click)="cambiarPassword()">
+        <i class="fa-solid fa-key icon"></i>
+        <p>Cambiar mi contraseña</p>
+      </div>
+
+      <div class="accion" (click)="cerrarSesion()">
+        <i class="fa-solid fa-right-from-bracket icon"></i>
+        <p>Cerrar sesión</p>
+      </div>
+
+      @if (!esAdminOriginal()) {
+        <div class="accion accion-roja" (click)="eliminarCuenta()">
+          <i class="fa-solid fa-user-slash icon icon-rojo"></i>
+          <p>Eliminar mi cuenta</p>
+        </div>
+      }
+    </div>
   </div>
 </div>

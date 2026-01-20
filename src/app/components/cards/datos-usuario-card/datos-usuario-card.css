@@ -1,37 +1,59 @@
 :host {
   display: block;
   width: 100%;
+}
+
+/* Contenedor base imitando Notificaciones */
+.card-unificada {
+  background-color: var(--color-background-primary);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: var(--shadow-card);
+  border: 0.1rem solid var(--color-border-light);
+  display: flex;
+  flex-direction: column;
   height: 100%;
+}
+
+.header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
 }
 
 .titulo-seccion {
   font-size: 2rem;
-  color: var(--color-text-primary);
+  color: var(--color-primary-light);
+  margin: 0;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+}
+
+.divisor {
+  height: 0.1rem;
+  background-color: var(--color-border-light);
   margin-bottom: 2rem;
-  margin-top: 0.5rem;
 }
 
-/* --- TARJETA PRINCIPAL --- */
-.datos-card {
-  background-color: var(--color-background-secondary);
-  border-radius: 1.2rem;
-  padding: 4rem 3.4rem;
-  box-shadow: var(--shadow-form);
-  width: 100%;
-  position: relative;
+.contenido-card {
+  flex: 1;
+}
+
+/* Layout de datos: Mobile First (Apilado) */
+.layout-datos {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column-reverse; /* Imagen arriba en mobile */
   align-items: center;
+  gap: 2.5rem;
 }
 
-/* --- COLUMNA DE DATOS (TEXTO) --- */
 .datos-info {
   display: flex;
   flex-direction: column;
-  gap: 2.2rem;
-  flex: 1; 
-  padding-right: 2rem; 
+  gap: 1.8rem;
+  width: 100%;
 }
 
 .dato-container {
@@ -43,26 +65,24 @@
 .icon {
   font-size: 1.8rem;
   width: 2.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   color: var(--color-primary-light);
+  text-align: center;
 }
 
 .dato {
-  font-size: 1.7rem;
+  font-size: 1.6rem;
   color: var(--color-text-secondary);
   margin: 0;
-  word-break: break-word;
+  word-break: break-all;
 }
 
-/* --- COLUMNA DE IMAGEN (CONTENEDOR) --- */
+/* Imagen de perfil */
 .datos-imagen {
   position: relative;
-  width: 13rem;
-  height: 13rem;
-  cursor: pointer;    
-  flex-shrink: 0;    
+  width: 12rem;
+  height: 12rem;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
 .profile-img {
@@ -70,8 +90,7 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 0.2rem solid var(--color-background-secondary);
-  box-shadow: 0 0.4rem 1rem rgba(0,0,0,0.1);
+  border: 0.2rem solid var(--color-border-light);
 }
 
 .image-overlay {
@@ -80,8 +99,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); 
-  border-radius: 50%; 
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -89,57 +108,32 @@
   color: #fff;
   opacity: 0;
   transition: opacity 0.3s ease;
-  pointer-events: none; 
-}
-
-.image-overlay i {
-  font-size: 2.4rem;
-  margin-bottom: 0.5rem;
-}
-
-.image-overlay span {
-  font-size: 1.2rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .datos-imagen:hover .image-overlay {
   opacity: 1;
 }
 
-/* --- BOTÓN DE EDICIÓN DE TEXTO --- */
 .edit-icon {
-  position: absolute;
-  bottom: 1.4rem;
-  right: 1.8rem;
-  font-size: 1.35rem;
+  font-size: 1.6rem;
   color: var(--color-text-light);
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color 0.2s;
 }
 
 .edit-icon:hover {
   color: var(--color-primary-light);
 }
 
-/* --- RESPONSIVE (Móvil) --- */
-@media (max-width: 768px) {
-  .datos-card {
-    flex-direction: column-reverse; 
-    text-align: center;
-    gap: 3rem;
-    padding: 3rem 2rem;
+/* --- DESKTOP (PC) --- */
+@media (min-width: 768px) {
+  .layout-datos {
+    flex-direction: row; /* Lado a lado */
+    justify-content: space-between;
+    align-items: center;
   }
-  
+
   .datos-info {
-    padding-right: 0;
-    align-items: center; 
-    width: 100%;
+    width: auto;
   }
-
-  .dato-container {
-    justify-content: center; 
-  }
-
 }

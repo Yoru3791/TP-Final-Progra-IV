@@ -1,0 +1,137 @@
+<form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- Nombre completo -->
+  <div class="form-field">
+    <label for="nombreCompleto" class="form-label">Nombre completo</label>
+    <input
+      formControlName="nombreCompleto"
+      type="text"
+      class="form-input"
+      [class.invalid]="mostrarError('nombreCompleto')"
+      placeholder="Ej: Juan Pérez"
+    />
+
+    @if (mostrarError('nombreCompleto')) {
+      <div class="error-messages">
+        @if (form.get('nombreCompleto')?.hasError('required')) {
+          <p>El nombre es obligatorio.</p>
+        }
+        @if (form.get('nombreCompleto')?.hasError('maxLength')) {
+          <p>El nombre no debe superar los 100 caracteres.</p>
+        }
+        @if (form.get('nombreCompleto')?.hasError('minLength')) {
+          <p>El nombre no debe tener al menos 1 caracter.</p>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Email -->
+  <div class="form-field">
+    <label for="email" class="form-label">Email</label>
+    <input
+      formControlName="email"
+      type="email"
+      class="form-input"
+      [class.invalid]="mostrarError('email')"
+      placeholder="Ej: tunombre@gmail.com"
+    />
+
+    @if (mostrarError('email')) {
+      <div class="error-messages">
+        @if (form.get('email')?.hasError('required')) {
+          <p>El email es obligatorio.</p>
+        }
+        @if (form.get('email')?.hasError('email')) {
+          <p>Ingresa un mail válido.</p>
+        }
+        @if (form.get('email')?.hasError('maxLength')) {
+          <p>El mail no debe superar los 100 caracteres.</p>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Telefono -->
+  <div class="form-field">
+    <label for="telefono" class="form-label">Teléfono</label>
+    <input
+      formControlName="telefono"
+      type="text"
+      class="form-input"
+      [class.invalid]="mostrarError('telefono')"
+      placeholder="Ej: 11234567890"
+    />
+
+    @if (mostrarError('telefono')) {
+      <div class="error-messages">
+        @if (form.get('telefono')?.hasError('required')) {
+          <p>El teléfono es obligatorio.</p>
+        }
+        @if (form.get('telefono')?.hasError('pattern')) {
+          <p>El telefono debe tener entre 10 y 16 caracteres numericos.</p>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Rol -->
+  <div class="form-field">
+    <label for="rol" class="form-label">Rol</label>
+
+    <select formControlName="rol" class="form-input">
+      <option value="" disabled selected hidden>-- Seleccionar --</option>
+
+      @for (rol of roles; track rol.identificadorBDD) {
+        <option [value]="rol.identificadorBDD">{{ rol.descripcion }}</option>
+      }
+    </select>
+
+    @if (mostrarError('rol')) {
+      <div class="error-messages">
+        @if (form.get('rol')?.hasError('required')) {
+        <p>Debe seleccionar un rol.</p>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Password -->
+  <div class="form-field password-field">
+    <label for="password" class="form-label">Password</label>
+
+    <div class="input-with-icon">
+      <input
+        formControlName="password"
+        [type]="showPassword ? 'text' : 'password'"
+        class="form-input"
+        [class.invalid]="mostrarError('password')"
+        placeholder="Entre 10 y 16 caracteres, al menos una mayúscula, una minuscula, un número y un caracter especial"
+      />
+      <button type="button" class="toggle-eye" (click)="togglePassword()">
+        <i class="fa-solid {{ showPassword ? 'fa-eye-slash' : 'fa-eye' }}"></i>
+      </button>
+    </div>
+
+    @if (mostrarError('password')) {
+      <div class="error-messages">
+        @if (form.get('password')?.hasError('required')) {
+          <p>La contraseña es obligatoria.</p>
+        }
+        @if (form.get('password')?.hasError('pattern')) {
+          <p>
+            Debe tener entre 10 y 16 caracteres, al menos una mayúscula, una minuscula, un número y un
+            caracter especial.
+          </p>
+        }
+      </div>
+    }
+  </div>
+
+  <button
+    type="submit"
+    class="btn"
+    [disabled]="!form.valid"
+  >
+    Crear usuario
+  </button>
+</form>

@@ -1,0 +1,187 @@
+import { Component, computed, inject, Input, signal, Signal } from '@angular/core';
+import { AuthService } from '../../../services/auth-service';
+import { MatDialog } from '@angular/material/dialog';
+import { AdminUserUpdateModal } from '../../modals/admin-user-update-modal/admin-user-update-modal';
+import { UsuarioService } from '../../../services/usuario-service';
+import { ConfirmarModalService } from '../../../services/confirmar-modal-service';
+import { SnackbarData } from '../../../model/snackbar-data.model';
+import { Snackbar } from '../../modals/snackbar/snackbar';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-modal';
+import { firstValueFrom } from 'rxjs';
+import { AdminUserUpdatePasswordModal } from '../../modals/admin-user-update-password-modal/admin-user-update-password-modal';
+import { UsuarioAdminResponse } from '../../../model/usuario-admin-response.model';
+
+@Component({
+  selector: 'app-usuario-card',
+  imports: [],
+  templateUrl: './usuario-card.html',
+  styleUrl: './usuario-card.css',
+})
+export class UsuarioCard {
+  @Input({ required: true }) usuario!: UsuarioAdminResponse;
+  usuarioSignal = signal<UsuarioAdminResponse|null>(null);
+
+  private authService = inject(AuthService);
+  private confirmarModalService = inject(ConfirmarModalService);
+  private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
+  private usuarioService = inject(UsuarioService);
+
+  isDeleted = computed(() =>
+    this.usuarioSignal()?.deletedAt !== null
+  );
+
+  deletionDate = "";
+
+  isBanned = computed(() =>
+    this.usuarioSignal()?.bannedAt !== null
+  );
+
+  banDate = "";
+
+  isEditable = computed(() =>
+    this.usuarioSignal()?.id !== 1 && this.usuarioSignal()?.id !== this.authService.usuarioId()
+    && !this.isDeleted()
+  );
+
+  ngOnChanges() {
+    this.usuarioSignal.set(this.usuario);
+
+    if (this.isDeleted()) {
+      this.deletionDate = this.usuario.deletedAt.split('T')[0];
+    }
+
+    if (this.isBanned()) {
+      this.banDate = this.usuario.bannedAt.split('T')[0];
+    }
+  }
+
+  changePassword() {
+      this.dialog
+        .open(AdminUserUpdatePasswordModal, {
+          panelClass: 'form-modal',
+          autoFocus: false,
+          restoreFocus: false,
+          data: this.usuario,
+        })
+        .afterClosed()
+        .subscribe();
+  }
+
+  async enable() {
+    const confirmado = await firstValueFrom(
+      this.confirmarModalService.confirmar({
+          titulo: 'Activar usuario',
+          texto: '¿Seguro de que querés activar este usuario?',
+      })
+    );
+
+    if (!confirmado) return;
+
+    this.usuarioService
+      .enableUsuario(this.usuario.id)
+      .subscribe({
+        next: () => {
+          this.abrirSnackBar("Usuario activado con éxito.");
+          this.usuarioService.readUsuariosAdmin();
+        },
+        error: (error) => {
+          this.abrirModalError(error);
+        },
+      });
+  }
+
+  edit() {
+      this.dialog
+        .open(AdminUserUpdateModal, {
+          panelClass: 'form-modal',
+          autoFocus: false,
+          restoreFocus: false,
+          data: this.usuario,
+        })
+        .afterClosed()
+        .subscribe((result) => {
+            if (result === true) {
+              this.usuarioService.readUsuariosAdmin();
+            }
+          }
+        );
+  }
+
+  async toggleBan() {
+    const banned = this.isBanned();
+
+    const confirmado = await firstValueFrom(
+      this.confirmarModalService.confirmar({
+          titulo: `${banned ? 'Desbloquear' : 'Bloquear'} usuario`,
+          texto: `¿Seguro de que querés ${banned ? 'desbloquear' : 'bloquear'} a este usuario?`,
+          critico: true,
+      })
+    );
+
+    if (!confirmado) return;
+
+    (banned ? this.usuarioService.unbanUsuario(this.usuario.id) : this.usuarioService.banUsuario(this.usuario.id))
+      .subscribe({
+        next: () => {
+          this.abrirSnackBar(`Usuario ${banned ? 'desbloqueado' : 'bloqueado'} con éxito`);
+          this.usuarioService.readUsuariosAdmin();
+        },
+        error: (error) => {
+          this.abrirModalError(error);
+        },
+      });
+  }
+
+  async delete() {
+    const confirmado = await firstValueFrom(
+      this.confirmarModalService.confirmar({
+          titulo: 'Eliminar usuario',
+          texto: '¿Seguro de que querés eliminar este usuario? <span>Esta acción es irreversible.</span>',
+          textoEsHtml: true,
+          critico: true,
+      })
+    );
+
+    if (!confirmado) return;
+
+    this.usuarioService
+      .deleteUsuarioAdmin(this.usuario.id)
+      .subscribe({
+        next: () => {
+          this.abrirSnackBar("Usuario eliminado con éxito");
+          this.usuarioService.readUsuariosAdmin();
+        },
+        error: (error) => {
+          this.abrirModalError(error);
+        },
+      });
+  }
+
+  private abrirSnackBar(mensaje: string) {
+    const snackbarData: SnackbarData = {
+      message: mensaje,
+      iconName: 'check_circle',
+    };
+
+    this.snackBar.openFromComponent(Snackbar, {
+      duration: 4000,
+      verticalPosition: 'bottom',
+      panelClass: 'snackbar-panel',
+      data: snackbarData,
+    });
+  }
+  
+  private abrirModalError(error: any) {
+    const backendMsg =
+      error?.message || 'Error al eliminar el usuario. Es posible que tenga datos asociados.';
+
+    this.dialog.open(ErrorDialogModal, {
+      data: { message: backendMsg },
+      panelClass: 'modal-error',
+      autoFocus: false,
+      restoreFocus: false,
+    });
+  }
+}

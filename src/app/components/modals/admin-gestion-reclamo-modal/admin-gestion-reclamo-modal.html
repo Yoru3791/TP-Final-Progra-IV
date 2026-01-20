@@ -1,0 +1,38 @@
+<div class="dialog-container">
+  <h2 class="dialog-title">Gestionar Ticket: {{ data.codigoTicket }}</h2>
+  
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    
+    <div class="form-group">
+      <label>Estado del Reclamo</label>
+      <select formControlName="estado" class="form-input">
+        @for (opt of estadosOptions; track opt.value) {
+          <option [value]="opt.value">{{ opt.label }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Devolución / Respuesta</label>
+      <textarea 
+        formControlName="respuesta" 
+        rows="5" 
+        class="form-input"
+        placeholder="Escribe la solución o respuesta para el usuario...">
+      </textarea>
+      
+      @if (form.get('respuesta')?.hasError('required') && form.get('respuesta')?.touched) {
+        <p class="error-msg">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          Para cerrar el ticket, es obligatorio escribir una devolución.
+        </p>
+      }
+    </div>
+
+    <div class="dialog-actions">
+      <button type="button" class="btn-cancel" (click)="cerrar()">Cancelar</button>
+      <button type="submit" class="btn-save" [disabled]="form.invalid">Guardar Cambios</button>
+    </div>
+
+  </form>
+</div>

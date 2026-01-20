@@ -1,6 +1,25 @@
 <div class="contenedor-home">
 
-  <h1 class="main-h1-title">MIS EMPRENDIMIENTOS DE <span>{{ciudadActual()}}</span></h1>
+  <div class="header-section">
+
+    <h1 class="main-h1-title">
+      @if (verTodas()){
+        TODOS MIS EMPRENDIMIENTOS
+      } @else {
+        MIS EMPRENDIMIENTOS DE <span>{{ciudadActual()}}</span>
+      }
+    </h1>
+
+    <div class="toggle-wrapper">
+      <span class="toggle-label" [class.active]="verTodas()">Ver todos mis emprendimientos</span>
+      
+      <label class="switch-toggle">
+        <input type="checkbox" [checked]="verTodas()" (change)="toggleVerTodas()" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    
+  </div>
 
   <div class="card-crear" (click)="openEmprendimientoForm()">
     <i class="fa-solid fa-plus"></i>

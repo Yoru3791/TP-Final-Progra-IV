@@ -9,7 +9,7 @@
 
     <!-- Filtros de viandas -->
     <app-emprendimiento-filtros-viandas
-        [viandasIniciales]="viandasTotales()"
+        [categorias]="listaCategorias()"
         [modo]="modoVista()"
         (filtrosChanged)="onFiltrosChanged($event)"
         >>
@@ -61,6 +61,14 @@
             </div>
         }
     </div>
+
+    @if (pageInfo(); as info) {
+        <app-paginador
+            [currentPage]="info.number"
+            [totalPages]="info.totalPages"
+            (pageChange)="onPageChange($event)">
+        </app-paginador>
+    }
 
 } @else {
     <!-- Si no hay emprendimiento (por algún error) -->

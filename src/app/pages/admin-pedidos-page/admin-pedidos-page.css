@@ -1,0 +1,87 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 2rem;
+  width: 100%;
+}
+
+.header-section {
+  width: 100%;
+  text-align: center;
+}
+
+.main-h1-title {
+  font-size: 3rem;
+  margin: 3rem auto;
+  text-align: center;
+  color: var(--color-text-primary);
+  font-weight: bold;
+}
+
+.filters-container {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 115rem;
+}
+
+.select-wrapper {
+  flex: 1;
+  min-width: 22rem;
+  max-width: 30rem;
+}
+
+.date-wrapper {
+  min-width: 25rem;
+}
+
+.select-custom {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--color-ui-neutral);
+  background: white;
+  font-size: 1.4rem;
+  height: 4.5rem; 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.select-custom:hover {
+  border-color: var(--color-primary-light);
+}
+
+.pedidos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 115rem;
+  padding-bottom: 4rem;
+}
+
+.estado-vacio {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 0;
+  width: 100%;
+}
+
+.sin-pedidos {
+  font-size: 1.8rem;
+  color: var(--color-ui-disabled-text);
+  font-style: italic;
+}

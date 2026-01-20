@@ -6,7 +6,7 @@ import { ViandaService } from './vianda-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarData } from '../model/snackbar-data.model';
 import { Snackbar } from '../components/modals/snackbar/snackbar';
-import { firstValueFrom, forkJoin, map } from 'rxjs';
+import { firstValueFrom, forkJoin, map, tap } from 'rxjs';
 import { PedidoRequest } from '../model/pedido-request.model';
 import { AuthService } from './auth-service';
 import { ViandaCantidadRequest } from '../model/vianda-cantidad-request.model';
@@ -163,7 +163,7 @@ export class CarritoService {
     if (!this.emprendimiento()) return true;
 
     const viandasEmprendimiento = await firstValueFrom(
-      this.viandaService.getViandasByEmprendimientoId(this.emprendimiento()!.id)
+      this.viandaService.getAllViandasDisponibles(this.emprendimiento()!.id)
     );
 
     let seQuitaronViandas = false;
@@ -265,7 +265,6 @@ export class CarritoService {
   public crearPedido() {
     // Posiblemente redundante
     this.eliminarViandasEnCero();
-
     if (this.vacio()) return;
 
     const pedido: PedidoRequest = {
@@ -280,9 +279,11 @@ export class CarritoService {
       }),
     };
 
-    this.pedidoService.createPedido(pedido);
-    this.abrirSnackBar('Pedido confirmado.');
-    this.vaciar(false);
+    return this.pedidoService.createPedido(pedido).pipe(
+        tap(() => {
+            this.vaciar(false);
+        })
+    );
   }
 
   // Modal, snackbar

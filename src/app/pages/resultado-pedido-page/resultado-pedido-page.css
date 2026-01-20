@@ -1,0 +1,138 @@
+.result-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: var(--color-background-secondary);
+}
+
+.card-result {
+    background-color: var(--color-background-primary);
+    padding: 4rem 3rem;
+    border-radius: 2rem;
+    text-align: center;
+    max-width: 50rem;
+    width: 100%;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(2rem); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- ICONOS --- */
+.icon-circle {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.success-icon {
+    background-color: rgba(var(--color-state-success-rgb, 34, 197, 94), 0.1);
+    color: var(--color-state-success);
+}
+
+.error-icon {
+    background-color: rgba(var(--color-state-error-rgb, 239, 68, 68), 0.1);
+    color: var(--color-state-error);
+}
+
+/* --- TEXTOS --- */
+h1 {
+    font-size: 2.8rem;
+    color: var(--color-text-dark-secondary);
+    margin: 0;
+}
+
+.order-id {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-primary-medium);
+    background: var(--color-background-soft-orange);
+    padding: 0.5rem 1.5rem;
+    border-radius: 1rem;
+    margin: -0.6rem 0 0 0;
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.main-msg {
+    font-size: 1.6rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.info-box {
+    background-color: var(--color-background-soft-orange);
+    border: 1px solid var(--color-primary-medium);
+    color: var(--color-primary-medium);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    font-size: 1.4rem;
+    display: flex;
+    gap: 1rem;
+    align-items: start;
+    text-align: left;
+}
+
+.info-box i {
+    font-size: 1.8rem;
+    margin-top: 0.2rem;
+}
+
+.info-box p {
+    margin: 0;
+}
+
+/* --- BOTONES --- */
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.btn {
+    padding: 1.2rem;
+    border-radius: 1rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    width: 100%;
+}
+
+.error-btn {
+    background-color: var(--color-state-error);
+}
+.error-btn:hover {
+    background-color: var(--color-state-error-hover);
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 0.1rem solid var(--color-text-light);
+    color: var(--color-text-dark-secondary);
+}
+
+.btn-outline:hover {
+    background-color: var(--color-background-secondary);
+    border-color: var(--color-text-secondary);
+    color: var(--color-text-secondary);
+}

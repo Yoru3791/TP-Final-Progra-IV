@@ -1,4 +1,92 @@
-/* --- CARD CREAR Y ESTADO VACÍO --- */
+/* --- HEADER SECTION --- */
+.header-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  margin: 5rem auto 3rem auto; 
+  width: 100%;
+}
+
+.header-section .main-h1-title {
+  margin: 0;
+  margin-top: 1rem;
+}
+
+/* --- TOGGLE CONTAINER --- */
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  background-color: var(--color-background-primary);
+  padding: 0.8rem 1.8rem;
+  border-radius: 5rem;
+  border: 0.1rem solid var(--color-ui-neutral);
+  transition: all 0.3s ease;
+}
+
+.toggle-wrapper:hover {
+  border-color: var(--color-primary-light);
+}
+
+.toggle-label {
+  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  transition: color 0.3s;
+  cursor: default;
+}
+
+.toggle-label.active {
+  color: var(--color-primary-action);
+  font-weight: 700;
+}
+
+/* --- SWITCH STYLES --- */
+.switch-toggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.switch-toggle input {
+  display: none;
+}
+
+.slider {
+  width: 4.4rem;
+  height: 2.4rem;
+  background: var(--color-ui-gray-light);
+  border-radius: 3rem;
+  position: relative;
+  transition: 0.3s;
+}
+
+.slider::before {
+  content: '';
+  position: absolute;
+  width: 1.8rem;
+  height: 1.8rem;
+  left: 0.3rem;
+  top: 0.3rem;
+  background: var(--color-background-primary);
+  border-radius: 50%;
+  transition: 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+input:checked + .slider {
+  background: var(--color-primary-light);
+}
+
+input:checked + .slider::before {
+  transform: translateX(2rem);
+}
+
+/* --- CARD CREAR --- */
 .card-crear {
   width: 70%;
   margin: 3rem auto;
@@ -33,6 +121,7 @@
   letter-spacing: 0.1rem;
 }
 
+/* --- ESTADO VACÍO --- */
 .estado-vacio {
   width: 100%;
   text-align: center;

@@ -12,7 +12,6 @@ import { Error403Page } from './pages/redirects/error403-page/error403-page';
 import { Error404Page } from './pages/redirects/error404-page/error404-page';
 import { SobreNosotrosPage } from './pages/sobre-nosotros-page/sobre-nosotros-page';
 import { SobreMivianditaPage } from './pages/sobre-miviandita-page/sobre-miviandita-page';
-import { RecuperarPasswordPage } from './pages/recuperar-password-page/recuperar-password-page';
 import { NormasComunidadPage } from './pages/normas-comunidad-page/normas-comunidad-page';
 import { BasesCondicionesPage } from './pages/bases-condiciones-page/bases-condiciones-page';
 import { Error418Page } from './pages/redirects/error418-page/error418-page';
@@ -20,6 +19,14 @@ import { AccountActivation } from './pages/account-activation/account-activation
 import { ReclamoPage } from './pages/reclamo-page/reclamo-page';
 import { InstructivoUsoPage } from './pages/instructivo-uso-page/instructivo-uso-page';
 import { FaqPage } from './pages/faq-page/faq-page';
+import { AdminUsuariosPage } from './pages/admin-usuarios-page/admin-usuarios-page';
+import { adminGuardFn } from './guards/admin.guard.fn';
+import { AdminReclamosPage } from './pages/admin-reclamos-page/admin-reclamos-page';
+import { AdminEmprendimientosPage } from './pages/admin-emprendimientos-page/admin-emprendimientos-page';
+import { AdminPedidosPage } from './pages/admin-pedidos-page/admin-pedidos-page';
+import { MisReclamosComponent } from './pages/mis-reclamos-page/mis-reclamos-page';
+import { ResultadoPedidoPage } from './pages/resultado-pedido-page/resultado-pedido-page';
+import { RecuperarContrasena } from './pages/recuperar-contrasena/recuperar-contrasena';
 
 export const routes: Routes = [
   /* -------------------- HOME -------------------- */
@@ -27,6 +34,7 @@ export const routes: Routes = [
 
   /* -------------------- PERFIL (solo logeados) -------------------- */
   { path: 'me', component: PerfilUsuario, canActivate: [authGuardFn] },
+  { path: 'cliente/mis-reclamos', component: MisReclamosComponent, canActivate: [authGuardFn] },
 
   /* -------------------- REGISTROS (solo invitados) -------------------- */
   { path: 'registro/dueno', component: RegisterPageDueno, canActivate: [invitadoGuardFn] },
@@ -34,6 +42,7 @@ export const routes: Routes = [
 
   /* -------------------- LOGIN (solo invitados) -------------------- */
   { path: 'login', component: Login, canActivate: [invitadoGuardFn] },
+  { path: 'change-password', component: RecuperarContrasena, canActivate: [invitadoGuardFn] },
 
   /* -------------------- EMPRENDIMIENTO -------------------- */
   // Invitado → puede ver
@@ -45,6 +54,12 @@ export const routes: Routes = [
     canActivate: [emprendimientoDuenoGuardFn],
   },
 
+  /* -------------------- ADMIN -------------------- */
+  { path: 'admin/usuarios', component: AdminUsuariosPage, canActivate: [adminGuardFn] },
+  { path: 'admin/reclamos', component: AdminReclamosPage, canActivate: [adminGuardFn] },
+  { path: 'admin/emprendimientos', component: AdminEmprendimientosPage, canActivate: [adminGuardFn] },
+  { path: 'admin/pedidos', component: AdminPedidosPage, canActivate: [adminGuardFn] },
+
   /* -------------------- ERRORES -------------------- */
   { path: 'error/403', component: Error403Page },
   { path: 'error/404', component: Error404Page },
@@ -53,13 +68,13 @@ export const routes: Routes = [
   /* -------------------- PÁGINAS VARIAS -------------------- */
   { path: 'sobre-miviandita', component: SobreMivianditaPage },
   { path: 'sobre-nosotros', component: SobreNosotrosPage },
-  { path: 'recuperar-password', component: RecuperarPasswordPage },
   { path: 'confirmar-cuenta', component: AccountActivation },
   { path: 'faq', component: FaqPage },
   { path: 'instructivo', component: InstructivoUsoPage },
   { path: 'normas-comunidad', component: NormasComunidadPage },
   { path: 'bases-condiciones', component: BasesCondicionesPage },
   { path: 'reclamos', component: ReclamoPage},
+  { path: 'resultado-pedido', component: ResultadoPedidoPage },
 
   /* -------------------- REDIRECTS BASICOS -------------------- */
   { path: '', redirectTo: '/home', pathMatch: 'full' },

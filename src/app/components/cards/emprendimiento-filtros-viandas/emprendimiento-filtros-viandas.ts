@@ -16,11 +16,12 @@ type FiltroDisponibilidad = 'TODAS' | 'DISPONIBLES' | 'NO_DISPONIBLES';
   styleUrl: './emprendimiento-filtros-viandas.css',
 })
 export class EmprendimientoFiltrosViandas {
-  viandasIniciales = input.required<ViandaResponse[]>();
-  modo = input.required<PageMode>();
 
+  categorias = input.required<string[]>();
+  modo = input.required<PageMode>();
   filtrosChanged = output<FiltrosViandas>();
 
+  categoriasOpen = signal(false);
   categoriaSeleccionada = signal<string | null>(null);
   busqueda = signal<string>('');
   esVegano = signal<boolean>(false);
@@ -28,40 +29,31 @@ export class EmprendimientoFiltrosViandas {
   esSinTacc = signal<boolean>(false);
   precioMin = signal<number | null>(null);
   precioMax = signal<number | null>(null);
-
   filtroDisponibilidad = signal<FiltroDisponibilidad>('TODAS');
 
-  // Extrae dinámicamente las categorías de las viandas que llegan
-  categoriasDisponibles = computed(() => {
-    const viandas = this.viandasIniciales();
-    if (!viandas || viandas.length === 0) return [];
-
-    const categorias = viandas.map((v) => v.categoria);
-    return [...new Set(categorias)]; // Uso Set para eliminar duplicados
-  });
-
-  // Leve retraso en la busqueda por nombre para evitar buscar al instante al tipear
-  private debounceTimer: any;
-  onSearchInput(texto: string) {
-    this.busqueda.set(texto);
-
-    clearTimeout(this.debounceTimer);
-    this.debounceTimer = setTimeout(() => {
-      this.emitirFiltros();
-    }, 500);
-  }
 
   borrarBusqueda() {
     this.busqueda.set('');
-    this.onSearchInput('');
+    this.aplicarFiltros();
   }
 
-  setDisponibilidad(valor: FiltroDisponibilidad) {
-    this.filtroDisponibilidad.set(valor);
-    this.emitirFiltros();
+  toggleMenuCategorias() {
+    this.categoriasOpen.update(v => !v);
   }
 
-  emitirFiltros() {
+  toggleCategoria(cat: string) {
+    this.categoriaSeleccionada.update((current) => (current === cat ? null : cat));
+    this.categoriasOpen.set(false);
+    this.aplicarFiltros();
+  }
+
+  toggleDietary(tipo: 'vegano' | 'vegetariano' | 'sintacc') {
+    if (tipo === 'vegano') this.esVegano.update((v) => !v);
+    if (tipo === 'vegetariano') this.esVegetariano.update((v) => !v);
+    if (tipo === 'sintacc') this.esSinTacc.update((v) => !v);
+  }
+
+  aplicarFiltros() {
     let disponibilidad: boolean | null = null;
     const estado = this.filtroDisponibilidad();
     
@@ -82,27 +74,18 @@ export class EmprendimientoFiltrosViandas {
     this.filtrosChanged.emit(dto);
   }
 
-  toggleCategoria(cat: string) {
-    this.categoriaSeleccionada.update((current) => (current === cat ? null : cat));
-    this.emitirFiltros();
+  limpiarFiltros() {
+    this.busqueda.set('');
+    this.categoriaSeleccionada.set(null);
+    this.esVegano.set(false);
+    this.esVegetariano.set(false);
+    this.esSinTacc.set(false);
+    this.precioMin.set(null);
+    this.precioMax.set(null);
+    this.filtroDisponibilidad.set('TODAS');
+
+    this.categoriasOpen.set(false);
+    this.aplicarFiltros();
   }
 
-  toggleDietary(tipo: 'vegano' | 'vegetariano' | 'sintacc') {
-    if (tipo === 'vegano') this.esVegano.update((v) => !v);
-    if (tipo === 'vegetariano') this.esVegetariano.update((v) => !v);
-    if (tipo === 'sintacc') this.esSinTacc.update((v) => !v);
-    this.emitirFiltros();
-  }
-
-  // Leve retraso en la busqueda por precio (igual al de nombre)
-  private precioDebounceTimer: any;
-  updatePrecio(tipo: 'min' | 'max', valor: number | null) {
-    if (tipo === 'min') this.precioMin.set(valor);
-    if (tipo === 'max') this.precioMax.set(valor);
-
-    clearTimeout(this.precioDebounceTimer);
-    this.precioDebounceTimer = setTimeout(() => {
-      this.emitirFiltros();
-    }, 500);
-  }
 }

@@ -2,6 +2,14 @@
   <h2 class="modal-title">Datos de contacto</h2>
 
   <div class="modal-content">
+    <div class="profile-img-container">
+      <img
+        [src]="usuario.imagenUrl || 'assets/placeholder-user.png'"
+        class="profile-img"
+        alt="Foto de perfil"
+      />
+    </div>
+
     <div class="dato">
       <span class="label">Nombre</span>
       <span class="valor">{{ usuario.nombreCompleto }}</span>
@@ -17,10 +25,12 @@
       <span class="valor">{{ usuario.telefono }}</span>
     </div>
 
-    <div class="alerta">⚠️ Recomendación: reunite siempre en un lugar público y concurrido.</div>
+    @if (role() !== 'ADMIN') {
+      <div class="alerta">⚠️ Recomendación: reunite siempre en un lugar público y concurrido.</div>
+    }
   </div>
 
   <div class="acciones">
-    <button class=" btn btn-cerrar" (click)="cerrar()">Cerrar</button>
+    <button class="btn btn-cerrar" (click)="cerrar()">Cerrar</button>
   </div>
 </div>

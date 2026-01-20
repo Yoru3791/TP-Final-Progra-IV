@@ -1,55 +1,84 @@
-/* --- LAYOUT DE PERFIL DE USUARIO --- */
+/* ESTRATEGIA MOBILE FIRST */
 .main-container {
-  width: 80%;
-  margin: 4rem auto;
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
+  width: 95%;
+  margin: 2rem auto;
 }
 
 .perfil-layout {
-  display: flex;
-  gap: 2rem;
-  align-items: stretch;
-}
-
-.col-izquierda {
-  flex: 0 0 30%;
-  display: flex;
-}
-
-.col-derecha {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  min-height: 40rem;
-}
-
-.fila-superior {
-  display: flex;
+  display: grid; /* Usamos Grid para controlar el orden total */
+  grid-template-columns: 1fr;
   gap: 2rem;
 }
 
-.fila-inferior {
-  flex: 1;
-  display: flex;
+/* Definimos áreas para mover las piezas libremente */
+.col-notificaciones {
+  grid-area: noti;
+}
+.col-contenido {
+  display: contents; /* Esto "desarma" el div para que sus hijos sean parte del grid padre */
 }
 
-.fila-superior > app-datos-usuario-card,
-.fila-superior > app-panel-acciones-cuenta {
-  flex: 1;
-  display: block;
+/* Asignamos nombres a los componentes */
+app-datos-usuario-card {
+  grid-area: datos;
+}
+app-panel-acciones-cuenta {
+  grid-area: panel;
+}
+.seccion-pedidos {
+  grid-area: pedidos;
 }
 
-.fila-inferior > app-pedidos-card {
-  flex: 1;
-  display: block;
-}
-.col-izquierda app-notificaciones-card {
-  height: 75rem;
+/* ORDEN ESPECÍFICO EN MOBILE */
+.perfil-layout {
+  grid-template-areas:
+    'datos'
+    'noti'
+    'pedidos'
+    'panel';
 }
 
-.fila-inferior app-pedidos-card {
-  height: 47.5rem;
+/* --- DISEÑO DESKTOP (PC) --- */
+@media (min-width: 1024px) {
+  .main-container {
+    width: 85%;
+    margin: 4rem auto;
+  }
+
+  .perfil-layout {
+    display: flex; /* Volvemos a Flex para el diseño de 2 columnas */
+    flex-direction: row;
+    grid-template-areas: none;
+    align-items: stretch;
+  }
+
+  .col-notificaciones {
+    flex: 0 0 30%;
+  }
+
+  .col-contenido {
+    display: flex; /* Restauramos el contenedor en PC */
+    flex-direction: column;
+    flex: 1;
+    gap: 2rem;
+  }
+
+  .grid-superior {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+  }
+
+  .grid-superior > app-datos-usuario-card,
+  .grid-superior > app-panel-acciones-cuenta {
+    flex: 1;
+  }
+
+  /* Alturas de la imagen original */
+  .col-notificaciones app-notificaciones-card {
+    height: 75rem;
+  }
+  .seccion-pedidos app-pedidos-card {
+    height: 48rem;
+  }
 }

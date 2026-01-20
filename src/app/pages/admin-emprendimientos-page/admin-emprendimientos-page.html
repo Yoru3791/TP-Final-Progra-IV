@@ -1,0 +1,29 @@
+<div class="page-container">
+  <div class="header-section">
+    <h1 class="main-h1-title">EMPRENDIMIENTOS</h1>
+  </div>
+
+  <div class="filters">
+    <input
+      type="text"
+      placeholder="Filtrar por ciudad..."
+      (input)="onCiudadInput($event)"
+    />
+
+    <input
+      type="text"
+      placeholder="Filtrar por emprendimiento..."
+      (input)="onNombreInput($event)"
+    />
+
+    <input type="text" placeholder="Filtrar por dueño o email..." (input)="onDuenoInput($event)" />
+  </div>
+
+  <div class="emprendimientos-list">
+    @for (emp of emprendimientos(); track emp.id) {
+    <app-emprendimiento-admin-card [emprendimiento]="emp" />
+    } @empty {
+    <p class="no-results">No se encontraron resultados.</p>
+    }
+  </div>
+</div>

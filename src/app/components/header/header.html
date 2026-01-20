@@ -1,7 +1,5 @@
-
 <header class="main-header">
   <nav class="header-nav">
-    
     <div class="header-left">
       <div class="logo-rol-container">
         <a class="logo-container" routerLink="/home">
@@ -13,23 +11,26 @@
         </a>
 
         @if (role() === 'DUENO') {
-          <p class="rol">DUEÑO</p>
-        } @else {
-          @if (role() === 'ADMIN') {
-            <p class="rol">ADMIN</p>
-          } 
-        }
+        <p class="rol">DUEÑO</p>
+        } @else { @if (role() === 'ADMIN') {
+        <p class="rol">ADMIN</p>
+        } }
       </div>
 
-      <app-city-selector 
-      [ngModel]="cityFilterService.city()" 
-      (ngModelChange)="cityFilterService.setCity($event)"
-      [restoreOnBlur]="true">
-    </app-city-selector>
+      @if (role() !== 'ADMIN') {
+      <app-city-selector
+        [ngModel]="cityFilterService.city()"
+        (ngModelChange)="cityFilterService.setCity($event)"
+        [restoreOnBlur]="true"
+      >
+      </app-city-selector>
+      }
     </div>
 
     <div class="header-center">
+      @if (role() !== 'ADMIN'){
       <app-search-bar></app-search-bar>
+      }
     </div>
 
     <div class="header-right">
@@ -37,22 +38,23 @@
       <a routerLink="/sobre-miviandita" class="nav-link">SOBRE MIVIANDITA</a>
 
       @if (!isLoggedIn()) {
-        <button routerLink="/login" (click)="onLogin()" class="btn btn-primary">
-          INICIAR SESIÓN
-        </button>
+      <button routerLink="/login" (click)="onLogin()" class="btn btn-primary">
+        INICIAR SESIÓN
+      </button>
       } @else {
-        <div class="btns-logged">
-          
-          <app-dropdown-notificacion></app-dropdown-notificacion>
+      <div class="btns-logged">
+        @if (role() !== 'ADMIN') {
+        <app-dropdown-notificacion></app-dropdown-notificacion>
+        }
 
-          <button class="btn btn-profile" routerLink="/me" title="Mi perfil">
-            <i class="fa-regular fa-user"></i>
-          </button>
+        <button class="btn btn-profile" routerLink="/me" title="Mi perfil">
+          <i class="fa-regular fa-user"></i>
+        </button>
 
-          <button class="btn btn-logout" (click)="onLogout()" title="Cerrar sesión">
-            <i class="fa-solid fa-right-from-bracket"></i>
-          </button>
-        </div>
+        <button class="btn btn-logout" (click)="onLogout()" title="Cerrar sesión">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>
       }
     </div>
   </nav>

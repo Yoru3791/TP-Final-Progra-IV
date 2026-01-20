@@ -5,6 +5,7 @@
   /* Fondo y Texto General */
   --color-background-primary: #ffffff;
   --color-background-secondary: #f9f8f8; /* Uso en formularios, modales, etc. */
+  --color-background-inverse: #000000;
   --color-text-primary: #000000;
   --color-text-secondary: #444; /* Texto de inputs */
   --color-text-inverse: #ffffff;

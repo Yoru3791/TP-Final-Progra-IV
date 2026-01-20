@@ -11,76 +11,89 @@ import { EstadoPedido } from '../enums/estadoPedido.enum';
   providedIn: 'root',
 })
 export class PedidosService {
+  private http = inject(HttpClient);
+  private authService = inject(AuthService);
+
   public allPedidos = signal<PedidoResponse[]>([]);
   public filtroFechas = signal<{ desde: Date; hasta: Date } | null>(null);
   public filtroEstado = signal<EstadoPedido | null>(null);
   public filtroEmprendimiento = signal<string | null>(null);
 
+  // URLs base según rol
+  private baseUrls = {
+    DUENO: 'http://localhost:8080/api/dueno/pedidos',
+    CLIENTE: 'http://localhost:8080/api/cliente/pedidos',
+    ADMIN: 'http://localhost:8080/api/admin/pedidos',
+  };
+
+  private getApiUrl(): string {
+    const rol: UserRole = this.authService.currentUserRole();
+    switch (rol) {
+      case 'ADMIN':
+        return this.baseUrls.ADMIN;
+      case 'DUENO':
+        return this.baseUrls.DUENO;
+      case 'CLIENTE':
+      default:
+        return this.baseUrls.CLIENTE;
+    }
+  }
+
+  // --- Lógica de Filtros  ---
   public emprendimientosUnicos = computed(() => {
     const pedidos = this.allPedidos();
-
-    const nombres = pedidos.map((p) => p.emprendimiento.nombreEmprendimiento);
-
+    // Verificamos que exista emprendimiento antes de acceder al nombre para evitar errores
+    const nombres = pedidos
+      .filter(p => p.emprendimiento)
+      .map((p) => p.emprendimiento.nombreEmprendimiento);
     return Array.from(new Set(nombres));
   });
 
-  // Pedidos ordenados DESC por fechaEntrega (más reciente primero)
   public pedidosFiltrados = computed(() => {
     let list = [...this.allPedidos()];
 
+    // 1. Filtro Fecha
     const filtro = this.filtroFechas();
     if (filtro) {
-      // Formatear fechas del filtro a YYYY-MM-DD
       const desdeStr = filtro.desde.toISOString().split('T')[0];
       const hastaStr = filtro.hasta.toISOString().split('T')[0];
 
       list = list.filter((p) => {
-        const fechaEntregaStr = p.fechaEntrega.split('T')[0]; // extrae solo YYYY-MM-DD
+        const fechaEntregaStr = p.fechaEntrega.split('T')[0];
         return fechaEntregaStr >= desdeStr && fechaEntregaStr <= hastaStr;
       });
     }
 
-    // Filtro por el estado
+    // 2. Filtro Estado
     const estado = this.filtroEstado();
     if (estado) {
       list = list.filter((p) => p.estado === estado);
     }
 
-    // Filtro por emprendimiento
+    // 3. Filtro Emprendimiento
     const emp = this.filtroEmprendimiento();
     if (emp) {
-      list = list.filter((p) => p.emprendimiento.nombreEmprendimiento === emp);
+      list = list.filter((p) => p.emprendimiento?.nombreEmprendimiento === emp);
     }
 
-    // Orden descendente
+    // Orden descendente por fecha de entrega
     return list.sort(
       (a, b) => new Date(b.fechaEntrega).getTime() - new Date(a.fechaEntrega).getTime()
     );
   });
 
-  // URLs base según rol
-  private baseUrls = {
-    DUENO: 'http://localhost:8080/api/dueno/pedidos',
-    CLIENTE: 'http://localhost:8080/api/cliente/pedidos',
-  };
-
-  constructor(private http: HttpClient, private authService: AuthService) {}
-
-  private getApiUrl(): string {
-    const rol: UserRole = this.authService.currentUserRole();
-    return rol === 'DUENO' ? this.baseUrls.DUENO : this.baseUrls.CLIENTE;
-  }
+  // --- CRUD ---
 
   createPedido(pedido: PedidoRequest) {
-    this.http.post<PedidoResponse>(this.getApiUrl(), pedido).subscribe((pedidoResponse) => {
-      this.allPedidos.update((pedidos) => [...pedidos, pedidoResponse]);
-    });
+    return this.http.post<PedidoResponse>(this.getApiUrl(), pedido).pipe(
+      tap((pedidoResponse) => {
+        this.allPedidos.update((pedidos) => [...pedidos, pedidoResponse]);
+      })
+    );
   }
 
-  //Obtiene los pedidos desde el backend y lo guarda en un signal
   fetchPedidos() {
     const url = this.getApiUrl();
-
     this.http
       .get<PedidoResponse[]>(url)
       .pipe(
@@ -92,13 +105,12 @@ export class PedidosService {
         })
       )
       .subscribe((result) => {
-        this.allPedidos.set(result);
+        this.allPedidos.set(result || []);
       });
   }
 
   updatePedido(id: number, pedidoUpdate: PedidoUpdateRequest) {
     const url = `${this.getApiUrl()}/id/${id}`;
-
     return this.http
       .put<PedidoResponse>(url, pedidoUpdate)
       .pipe(

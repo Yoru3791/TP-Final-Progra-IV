@@ -1,25 +1,49 @@
-/* --- COMPONENTE TARJETA DE ACCIONES (PANEL) --- */
 :host {
   display: block;
   width: 100%;
+}
+
+.card-unificada {
+  background-color: var(--color-background-primary);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: var(--shadow-card);
+  border: 0.1rem solid var(--color-border-light);
+  display: flex;
+  flex-direction: column;
   height: 100%;
+}
+
+.header-card {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  min-height: 3.2rem; /* Para alinear con la altura del header de Datos */
 }
 
 .titulo-seccion {
   font-size: 2rem;
-  color: var(--color-text-primary);
-  margin-bottom: 2rem;
-  margin-top: 0.5rem;
+  color: var(--color-primary-light);
+  margin: 0;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
 }
 
-.acciones-card {
-  background-color: var(--color-background-secondary);
-  border-radius: 1.2rem;
-  padding: 4rem 3.4rem;
-  box-shadow: var(--shadow-form);
-  width: 100%;
-  justify-content: center;
-  position: relative;
+.divisor {
+  height: 0.1rem;
+  background-color: var(--color-border-light);
+  margin-bottom: 2rem;
+}
+
+.contenido-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra las acciones verticalmente */
+}
+
+.acciones-list {
   display: flex;
   flex-direction: column;
   gap: 2.2rem;
@@ -30,11 +54,12 @@
   align-items: center;
   gap: 1.4rem;
   cursor: pointer;
+  padding: 0.5rem 0;
   transition: transform 0.2s ease;
 }
 
 .accion:hover {
-  transform: translateX(0.4rem);
+  transform: translateX(0.6rem);
 }
 
 .accion:hover p {
@@ -43,7 +68,7 @@
 
 .icon {
   font-size: 1.8rem;
-  width: 2.2rem;
+  width: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,16 +76,27 @@
 }
 
 .accion p {
-  font-size: 1.55rem;
+  font-size: 1.6rem;
   margin: 0;
   color: var(--color-text-primary);
-  line-height: 1.2;
 }
 
+/* Estilos para acciones críticas */
 .accion-roja p {
   color: var(--color-state-error);
 }
 
 .icon-rojo {
-  color: var(--color-state-error);
+  color: var(--color-state-error) !important;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .accion {
+    padding: 1rem 0; /* Más espacio para tocar en celular */
+  }
+
+  .card-unificada {
+    min-height: auto;
+  }
 }

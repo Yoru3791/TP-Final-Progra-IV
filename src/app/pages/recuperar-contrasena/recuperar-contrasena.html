@@ -1,0 +1,46 @@
+<div class="main-form-container">
+  <h1 class="main-h1-title">NUEVA CONTRASEÑA</h1>
+
+  <form class="form-login" [formGroup]="form" (ngSubmit)="onSubmit()">
+    
+    <div class="form-field password-field">
+      <label class="form-label">Nueva Contraseña</label>
+      
+      <div class="input-with-icon">
+        <input
+          formControlName="password"
+          [type]="showPassword ? 'text' : 'password'"
+          class="form-input"
+        />
+        <button type="button" class="toggle-eye" (click)="togglePassword()">
+          <i class="fa-solid" [class]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="form-field password-field">
+      <label class="form-label">Repetir Contraseña</label>
+      
+      <div class="input-with-icon">
+        <input
+          formControlName="confirmPassword"
+          [type]="showPassword ? 'text' : 'password'"
+          class="form-input"
+        />
+        <button type="button" class="toggle-eye" (click)="togglePassword()">
+            <i class="fa-solid" [class]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn"
+      [disabled]="form.invalid || isSubmitting()"
+      [class.disabled]="form.invalid"
+    >
+      {{ isSubmitting() ? 'Guardando...' : 'Cambiar Contraseña' }}
+    </button>
+
+  </form>
+</div>

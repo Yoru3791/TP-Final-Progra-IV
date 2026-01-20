@@ -1,0 +1,38 @@
+<div class="page-container">
+  <div class="header-section">
+    <h1 class="main-h1-title">USUARIOS</h1>
+  </div>
+
+  <div class="filters-buttons-container">
+    <div class="filters-container">
+      <input
+        class="filter-input"
+        type="text"
+        placeholder="Filtrar por nombre..."
+        (input)="onNameInput($event)"
+      />
+
+      <input
+        class="filter-input"
+        type="text"
+        placeholder="Filtrar por email..."
+        (input)="onEmailInput($event)"
+      />
+    </div>
+
+    <div class="buttons-container">
+      <button class="btn btn-create" (click)="openUsuarioForm()">
+        <i class="fa-solid fa-plus"></i>
+        <span>Crear usuario</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="usuarios-list">
+    @for (usuario of usuarios(); track usuario.id) {
+      <app-usuario-card [usuario]="usuario"></app-usuario-card>
+    } @empty {
+      <p class="no-results">No se encontraron resultados.</p>
+    }
+  </div>
+</div>

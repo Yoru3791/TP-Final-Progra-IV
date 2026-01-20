@@ -1,72 +1,110 @@
-/* --- COMPONENTE LISTADO DE PEDIDOS Y FILTROS --- */
 :host {
   display: block;
   width: 100%;
   height: 100%;
 }
 
-.titulo-con-filtros {
+.card-unificada {
+  background-color: var(--color-background-primary);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: var(--shadow-card);
+  border: 0.1rem solid var(--color-border-light);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  margin-bottom: 3rem;
+  flex-direction: column;
+  height: 100%; /* Importante para el scroll interno en PC */
+}
+
+.header-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .titulo-seccion {
   font-size: 2rem;
-  color: var(--color-text-primary);
-  margin: 0;
+  color: var(--color-primary-light);
   font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  margin: 0;
 }
 
-.filtros-layout {
+.filtros-container {
   display: flex;
-  align-items: center;
-  gap: 2rem;
-  flex-wrap: nowrap;
+  flex-wrap: wrap; /* Para que bajen en mobile */
+  gap: 1.5rem;
+  align-items: flex-end;
 }
 
-.pedidos-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+.divisor {
+  height: 0.1rem;
+  background-color: var(--color-border-light);
+  margin-bottom: 1.5rem;
 }
 
-.pedidos-card {
-  background: var(--color-background-secondary);
-  border-radius: 1.2rem;
-  box-shadow: var(--shadow-form);
-  padding: 2.4rem;
-  display: flex;
-  flex-direction: column;
+.contenido-card {
   flex: 1;
-  overflow: hidden;
+  overflow: hidden; /* Evita que la card crezca infinitamente */
+  display: flex;
+  flex-direction: column;
+}
+
+.lista-pedidos {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.estado-vacio {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 0;
 }
 
 .sin-pedidos {
-  font-size: 2rem;
-  color: var(--color-text-secondary);
-  margin: 0;
-  opacity: 0.8;
+  font-size: 1.7rem;
+  color: var(--color-text-light);
+  font-style: italic;
 }
 
-.lista {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 0.6rem;
-}
-
+/* Estilos de Selectores (Reutilizando lógica de tu style.css) */
 .select-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.5rem;
 }
 
 .select-label {
-  font-size: 1.2rem;
-  color: var(--color-text-secondary);
-  opacity: 0.7;
-  margin-left: 0.2rem;
-  font-weight: 500;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  font-weight: bold;
+  letter-spacing: 0.05rem;
+}
+
+/* --- RESPONSIVE --- */
+@media (min-width: 1024px) {
+  .header-card {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .filtros-container {
+    flex-wrap: nowrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .filtros-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .select-custom {
+    width: 100% !important; /* Que ocupen todo el ancho en celular */
+  }
 }

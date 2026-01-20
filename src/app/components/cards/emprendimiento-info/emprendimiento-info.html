@@ -8,9 +8,9 @@
         [class.clickable]="emprendimiento().imagenUrl"
         [class.unavailable]="!emprendimiento().estaDisponible">
         
-        @if (emprendimiento().imagenUrl) {
+        @if (emprendimiento().imagenUrl && !imageLoadError()) {
         <div class="img-wrapper">
-          <img [src]="emprendimiento().imagenUrl" alt="Logo" />
+          <img [src]="emprendimiento().imagenUrl" alt="Logo" (error)="handleImageError()" />
 
           <div class="overlay">
             <i class="fa-solid fa-magnifying-glass-plus lupa-icon"></i>

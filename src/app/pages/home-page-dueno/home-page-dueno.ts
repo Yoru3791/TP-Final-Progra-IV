@@ -22,6 +22,7 @@ export class HomePageDueno implements OnInit {
   ciudadActual = computed(() => (this.cityFilter.city() ?? '').toUpperCase());
   emprendimientos = signal<EmprendimientoResponse[]>([]);
   pageInfo = computed(() => this.emprendimientoService.pageInfo());
+  verTodas = signal(false);
 
   constructor() {
     //  Cargo datos, viandas y ordeno por disponibilidad
@@ -47,10 +48,11 @@ export class HomePageDueno implements OnInit {
         });
     });
 
-    //  Vuelvo a página 0 si cambia la ciudad
+    //  Vuelvo a página 0 si cambia la ciudad o cambia el toggle
     effect(() => {
         const ciudad = this.cityFilter.city();
-        this.emprendimientoService.fetchEmprendimientos(0, 10);
+        const verTodo = this.verTodas();
+        this.emprendimientoService.fetchEmprendimientos(0, 10, verTodo);
     }, { allowSignalWrites: true });
   }
 
@@ -58,8 +60,12 @@ export class HomePageDueno implements OnInit {
     
   }
 
+  toggleVerTodas() {
+    this.verTodas.update(v => !v);
+  }
+
   onPageChange(newPage: number) {
-    this.emprendimientoService.fetchEmprendimientos(newPage, 10);
+    this.emprendimientoService.fetchEmprendimientos(newPage, 10, this.verTodas());
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -75,7 +81,7 @@ export class HomePageDueno implements OnInit {
       .subscribe((exito) => {
         if (exito) {
           const currentPage = this.pageInfo()?.number || 0;
-          this.emprendimientoService.fetchEmprendimientos(currentPage);
+          this.emprendimientoService.fetchEmprendimientos(currentPage, 10, this.verTodas());
         }
       });
   }

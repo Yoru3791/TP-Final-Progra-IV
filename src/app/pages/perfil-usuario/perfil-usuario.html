@@ -3,20 +3,23 @@
 
   @if (usuario(); as u) {
   <div class="perfil-layout">
-    <section class="col-izquierda">
+    @if (u.rolUsuario !== 'ADMIN') {
+    <section class="col-notificaciones">
       <app-notificaciones-card></app-notificaciones-card>
     </section>
+    }
 
-    <section class="col-derecha">
-      <div class="fila-superior">
-        <app-datos-usuario-card [usuario]="u"> </app-datos-usuario-card>
-
+    <section class="col-contenido" [class.full-width]="u.rolUsuario === 'ADMIN'">
+      <div class="grid-superior">
+        <app-datos-usuario-card [usuario]="u"></app-datos-usuario-card>
         <app-panel-acciones-cuenta></app-panel-acciones-cuenta>
       </div>
 
-      <div class="fila-inferior">
+      @if (u.rolUsuario !== 'ADMIN') {
+      <div class="seccion-pedidos">
         <app-pedidos-card></app-pedidos-card>
       </div>
+      }
     </section>
   </div>
   }

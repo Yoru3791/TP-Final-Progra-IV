@@ -2,6 +2,7 @@
 .viandas-detalladas-grid {
   width: 75%;
   margin: 0 auto;
+  margin-bottom: 5rem;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(26rem, 1fr));
   gap: 3.2rem;

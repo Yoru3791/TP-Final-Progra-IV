@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { EmprendimientoResponse } from '../../../model/emprendimiento-response.model';
 import { CarritoService } from '../../../services/carrito-service';
 
@@ -13,6 +13,7 @@ export class EmprendimientoInfo {
   modo = input.required<'CLIENTE' | 'DUENO' | 'INVITADO' | 'PROHIBIDO' | 'CARGANDO'>();
   showImagenModal = false;
   imagenModalUrl?: String;
+  imageLoadError = signal(false);
 
   accionPrincipal = output<void>();
 
@@ -32,7 +33,7 @@ export class EmprendimientoInfo {
 
   openImagenModal() {
     const url = this.emprendimiento().imagenUrl;
-    if (!url) return;
+    if (!url || this.imageLoadError()) return;
 
     this.imagenModalUrl = url;
     this.showImagenModal = true;
@@ -40,5 +41,9 @@ export class EmprendimientoInfo {
 
   closeImagenModal() {
     this.showImagenModal = false;
+  }
+
+  handleImageError() {
+    this.imageLoadError.set(true);
   }
 }

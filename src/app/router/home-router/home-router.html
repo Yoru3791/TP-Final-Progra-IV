@@ -1,5 +1,9 @@
-@switch (rol) { @case ('DUENO') {
-<app-home-page-dueno />
-} @default {
-<app-home-page />
-} }
+@switch (rol()) {
+  @case ('ADMIN') {
+    <app-home-page-admin />
+  } @case ('DUENO') {
+    <app-home-page-dueno />
+  } @default {
+    <app-home-page />
+  }
+}

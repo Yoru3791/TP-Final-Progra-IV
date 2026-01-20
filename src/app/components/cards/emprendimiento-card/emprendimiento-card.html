@@ -5,8 +5,8 @@
     <div class="info-main">
       
       <div class="logo-circle">
-        @if (emprendimiento.imagenUrl) {
-          <img [src]="emprendimiento.imagenUrl" alt="Logo" />
+        @if (emprendimiento.imagenUrl && !imageLoadError()) {
+          <img [src]="emprendimiento.imagenUrl" alt="Logo" (error)="handleImageError()" />
         } @else {
           <i class="fa-solid fa-store placeholder-icon"></i>
         }
