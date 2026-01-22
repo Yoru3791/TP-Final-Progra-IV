@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { Notificacion } from '../model/notificacion.model';
 import { catchError, map, of } from 'rxjs';
 import { AuthService, UserRole } from './auth-service';
+import { PagedResponse, PageMetadata } from '../model/hateoas-pagination.models';
 
 @Injectable({
   providedIn: 'root',
@@ -21,88 +22,55 @@ export class NotificacionService {
     return rol === 'DUENO' ? this.baseUrls.DUENO : this.baseUrls.CLIENTE;
   }
 
-  public allNotificaciones = signal<Notificacion[]>([]);
+  public notificaciones = signal<Notificacion[]>([]);
+  public pageInfo = signal<PageMetadata | null>(null);
+  public cantidadNoLeidas = signal<number>(0);
+
   public filtroDesde = signal<string | null>(null);
   public filtroHasta = signal<string | null>(null);
+  public filtroLeida = signal<boolean | null>(null);  //  null = todas
 
-  public soloNoLeidas = computed(() => {
-    return this.notificacionesOrdenadas().filter(n => !n.leida);
-  });
+  
+  fetchNotificaciones(page: number = 0, size: number = 10) {
+    const url = this.getApiUrl();
+    
+    let params = new HttpParams()
+        .set('page', page)
+        .set('size', size);
 
-  public cantidadNoLeidas = computed(() => {
-    return this.allNotificaciones().filter(n => !n.leida).length;
-  });
-
-  public notificacionesOrdenadas = computed<Notificacion[]>(() => {
-    const list = this.allNotificaciones();
-    return [...list].sort((a, b) => {
-      const fa = new Date(a.fechaEnviado).getTime();
-      const fb = new Date(b.fechaEnviado).getTime();
-      return fb - fa;
-    });
-  });
-
-  public notificacionesFiltradas = computed(() => {
-    const lista = this.notificacionesOrdenadas();
+    const leida = this.filtroLeida();
     const desde = this.filtroDesde();
     const hasta = this.filtroHasta();
 
-    return lista.filter((noti) => {
-      let ok = true;
-      if (desde) ok = ok && new Date(noti.fechaEnviado) >= new Date(desde);
-      if (hasta) ok = ok && new Date(noti.fechaEnviado) <= new Date(hasta);
-      return ok;
+    if (leida !== null) params = params.set('leida', leida);
+    if (desde) params = params.set('desde', desde);
+    if (hasta) params = params.set('hasta', hasta);
+
+    this.http.get<PagedResponse<Notificacion>>(url, { params })
+      .pipe(
+        catchError((err) => {
+          console.error('Error cargando notificaciones:', err);
+          return of(null);
+        })
+      )
+      .subscribe((response) => {
+        if (response && response._embedded) {
+          const data = response._embedded['notificacionDTOList'] || []; 
+          this.notificaciones.set(data);
+          this.pageInfo.set(response.page);
+        } else {
+          this.notificaciones.set([]);
+          this.pageInfo.set(null);
+        }
+      });
+  }
+
+  fetchCantidadNoLeidas() {
+    const url = `${this.getApiUrl()}/no-leidas/cantidad`;
+    this.http.get<{cantidad: number}>(url).subscribe({
+        next: (res) => this.cantidadNoLeidas.set(res.cantidad),
+        error: () => this.cantidadNoLeidas.set(0)
     });
-  });
-
-  fetchNotificaciones() {
-    const url = this.getApiUrl();
-    this.http
-      .get<Notificacion[]>(url)
-      .pipe(
-        catchError((err) => {
-          if (err.status !== 404) {
-            console.error('Error al cargar notificaciones:', err);
-          }
-          return of([]);
-        })
-      )
-      .subscribe((result) => {
-        setTimeout(() => this.allNotificaciones.set(result));
-      });
-  }
-
-
-  fetchNotificacionesUltimaSemana() {
-    const url = this.getApiUrl();
-
-    const { desde, hasta } = this.getRangoUltimaSemana();
-    const finalUrl = `${url}/entre-fechas?desde=${desde}&hasta=${hasta}`;
-
-    this.http
-      .get<Notificacion[]>(finalUrl)
-      .pipe(
-        catchError((err) => {
-          if (err.status !== 404) {
-            console.error('Error cargando notificaciones:', err);
-          }
-          return of([]);
-        })
-      )
-      .subscribe((list) => {
-        setTimeout(() => this.allNotificaciones.set(list));
-      });
-  }
-
-  private getRangoUltimaSemana() {
-    const hoy = new Date();
-    const hace7Dias = new Date();
-    hace7Dias.setDate(hoy.getDate() - 7);
-
-    return {
-      desde: hace7Dias.toISOString().split('T')[0],
-      hasta: hoy.toISOString().split('T')[0],
-    };
   }
 
   marcarComoLeida(id: number) {
@@ -110,12 +78,20 @@ export class NotificacionService {
 
     this.http.patch<Notificacion>(url, {})
       .subscribe({
-        next: (notiActualizada) => {
-          this.allNotificaciones.update(lista => 
+        next: () => {
+          this.notificaciones.update(lista =>
             lista.map(n => n.id === id ? { ...n, leida: true } : n)
           );
+          this.cantidadNoLeidas.update(cant => Math.max(0, cant - 1));
         },
         error: (err) => console.error('Error al marcar leida', err)
       });
   }
+
+  resetFiltros() {
+      this.filtroDesde.set(null);
+      this.filtroHasta.set(null);
+      this.filtroLeida.set(null);
+  }
+  
 }

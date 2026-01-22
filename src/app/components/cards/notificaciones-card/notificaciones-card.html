@@ -31,16 +31,24 @@
   </div>
 
   <div class="notificaciones-list-area">
-    @if (listaVisual.length === 0) {
+    @if (notiService.notificaciones().length === 0) {
       <div class="estado-vacio">
         <p>No hay notificaciones con estos filtros.</p>
       </div>
     } @else {
       <div class="lista">
-        @for (noti of listaVisual; track noti.id) {
+        @for (noti of notiService.notificaciones(); track noti.id) {
           <app-notificacion-single-card [notificacion]="noti"></app-notificacion-single-card>
         }
       </div>
+
+      @if (pageInfo(); as info) {
+        <app-paginador
+            [currentPage]="info.number"
+            [totalPages]="info.totalPages"
+            (pageChange)="onPageChange($event)">
+        </app-paginador>
+      }
     }
   </div>
 </div>
