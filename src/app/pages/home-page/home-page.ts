@@ -41,7 +41,7 @@ export class HomePage implements OnInit {
     effect(() => {
         const ciudad = this.cityFilter.city(); 
         this.emprendimientoService.fetchEmprendimientos(0, 10);
-    }, { allowSignalWrites: true });
+    });
   }
 
   ngOnInit() {

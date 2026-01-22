@@ -53,7 +53,7 @@ export class HomePageDueno implements OnInit {
         const ciudad = this.cityFilter.city();
         const verTodo = this.verTodas();
         this.emprendimientoService.fetchEmprendimientos(0, 10, verTodo);
-    }, { allowSignalWrites: true });
+    });
   }
 
   ngOnInit() {
