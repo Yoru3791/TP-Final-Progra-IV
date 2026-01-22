@@ -13,13 +13,13 @@
         </div>
 
       <div class="lista">
-        @if (notificacionService.soloNoLeidas().length === 0) {
+        @if (notificacionService.notificaciones().length === 0) {
           <div class="empty-state">
             <i class="fa-regular fa-face-smile-wink"></i>
             <p>¡Estás al día! No hay notificaciones nuevas.</p>
           </div>
         } @else {
-          @for (n of notificacionService.soloNoLeidas(); track n.id) {
+          @for (n of notificacionService.notificaciones(); track n.id) {
             <app-notificacion-single-card [notificacion]="n"></app-notificacion-single-card>
           }
         }
