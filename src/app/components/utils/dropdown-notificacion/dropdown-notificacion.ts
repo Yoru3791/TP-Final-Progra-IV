@@ -12,20 +12,21 @@ import { NotificacionSingleCardComponent } from '../../cards/notificacion-single
 })
 export class DropdownNotificacion {
   public notificacionService = inject(NotificacionService);
-  private emprendimientoService = inject(EmprendimientoService);
   private router = inject(Router);
   private elementRef = inject(ElementRef);
 
   isOpen = signal(false);
 
   constructor() {
-    effect(() => {
-       this.notificacionService.fetchNotificaciones(); 
-    });
+    this.notificacionService.fetchCantidadNoLeidas();
   }
 
   toggleDropdown() {
     this.isOpen.update((v) => !v);
+    if (this.isOpen()) {
+        this.notificacionService.filtroLeida.set(false);
+        this.notificacionService.fetchNotificaciones(0, 10);
+    }
   }
 
   verTodasNotificaciones() {
