@@ -1,13 +1,17 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { NotificacionService } from '../../../services/notificacion-service';
 import { NotificacionSingleCardComponent } from '../notificacion-single-card/notificacion-single-card';
 import { DateRangePickerComponent } from '../../utils/date-range-picker/date-range-picker'; 
+import { Paginador } from '../../utils/paginador/paginador';
 
 type EstadoFiltro = 'TODAS' | 'NO_LEIDAS' | 'LEIDAS';
 
 @Component({
   selector: 'app-notificaciones-card',
-  imports: [NotificacionSingleCardComponent, DateRangePickerComponent],
+  imports: [
+    NotificacionSingleCardComponent,
+    DateRangePickerComponent,
+    Paginador],
   templateUrl: './notificaciones-card.html',
   styleUrl: './notificaciones-card.css',
 })
@@ -16,29 +20,33 @@ export class NotificacionesCard implements OnInit {
 
   filtroEstado = signal<EstadoFiltro>('TODAS');
 
-  cargando = true;
+  pageInfo = computed(() => this.notiService.pageInfo());
+
+  constructor() {
+      effect(() => {
+          this.notiService.filtroDesde();
+          this.notiService.filtroHasta();
+          this.notiService.filtroLeida();
+          
+          this.notiService.fetchNotificaciones(0, 10);
+      });
+  }
 
   ngOnInit() {
-    this.notiService.fetchNotificaciones();
-    setTimeout(() => (this.cargando = false), 300);
+    this.notiService.resetFiltros(); 
+    this.notiService.fetchNotificaciones(0, 10);
   }
 
   setFiltro(estado: EstadoFiltro) {
     this.filtroEstado.set(estado);
-  }
-
-  get listaVisual() {
-    let lista = this.notiService.notificacionesFiltradas();
-    
-    const estado = this.filtroEstado();
     
     if (estado === 'NO_LEIDAS') {
-      lista = lista.filter(n => !n.leida);
+        this.notiService.filtroLeida.set(false);
     } else if (estado === 'LEIDAS') {
-      lista = lista.filter(n => n.leida);
+        this.notiService.filtroLeida.set(true);
+    } else {
+        this.notiService.filtroLeida.set(null);
     }
-    
-    return lista;
   }
 
   onFechasSeleccionadas(fechas: { desde: Date; hasta: Date } | null) {
@@ -53,5 +61,9 @@ export class NotificacionesCard implements OnInit {
 
     this.notiService.filtroDesde.set(desde);
     this.notiService.filtroHasta.set(hasta);
+  }
+
+  onPageChange(page: number) {
+      this.notiService.fetchNotificaciones(page, 10);
   }
 }
