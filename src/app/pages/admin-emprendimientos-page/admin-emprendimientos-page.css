@@ -21,10 +21,9 @@
   max-width: 115rem;
 }
 
-/* INPUTS GRUESOS (5rem) */
 .filters input {
   padding: 0 1.5rem;
-  height: 5rem; /* Altura forzada */
+  height: 5rem;
   min-height: 5rem;
 
   border-radius: 1rem;
@@ -33,8 +32,6 @@
   font-size: 1.4rem;
   flex: 1;
   min-width: 25rem;
-
-  /* Reset mobile */
   -webkit-appearance: none;
   appearance: none;
   box-sizing: border-box;
