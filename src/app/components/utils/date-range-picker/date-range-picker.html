@@ -1,5 +1,4 @@
 <div class="select-wrapper">
-
   <div class="select-custom" [class.open]="isOpen()" (click)="toggleDropdown($event)">
     <div class="selected-option">
       {{ displayLabel() }}
@@ -11,33 +10,33 @@
       }
       <div class="arrow">▾</div>
     </div>
+  </div>
 
-    @if (isOpen()) {
+  @if (isOpen()) {
+    <div class="backdrop" (click)="close()"></div>
+  }
+
+  @if (isOpen()) {
     <div class="calendar-dropdown" (click)="$event.stopPropagation()">
       <div class="calendar-header">
         @if (!showSelectorView()) {
-           <button class="nav-btn" (click)="changeMonth(-1, $event)">‹</button>
+          <button class="nav-btn" (click)="changeMonth(-1, $event)">‹</button>
         } @else {
-           <div style="width: 24px;"></div> 
+          <div style="width: 24px"></div>
         }
 
-        <span 
-           class="month-label clickable" 
-           (click)="toggleSelectorView($event)"
-           title="Cambiar año/mes rápidamente">
-           {{ headerLabel() }} 
-           <span class="edit-icon">✎</span>
+        <span class="month-label clickable" (click)="toggleSelectorView($event)">
+          {{ headerLabel() }} <span class="edit-icon">✎</span>
         </span>
 
         @if (!showSelectorView()) {
-           <button class="nav-btn" (click)="changeMonth(1, $event)">›</button>
+          <button class="nav-btn" (click)="changeMonth(1, $event)">›</button>
         } @else {
-           <div style="width: 24px;"></div>
+          <div style="width: 24px"></div>
         }
       </div>
 
       @if (!showSelectorView()) {
-        
         <div class="mode-selector">
           <button class="mode-btn" [class.active]="!isRangeMode()" (click)="setMode(false, $event)">
             Fecha puntual
@@ -48,13 +47,14 @@
         </div>
 
         <div class="weekdays">
-          <span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sa</span><span>Do</span>
+          <span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sa</span
+          ><span>Do</span>
         </div>
 
         <div class="days-grid">
           @for (date of calendarDays(); track $index) {
             @if (date) {
-              <button 
+              <button
                 class="day-btn"
                 [class.today]="isToday(date)"
                 [class.selected]="isSelected(date)"
@@ -69,30 +69,26 @@
             }
           }
         </div>
-
       } @else {
-        
         <div class="quick-selector">
-            
-            <div class="year-control">
-                <button class="nav-btn" (click)="changeYear(-1, $event)">«</button>
-                <span class="year-display">{{ viewDate().getFullYear() }}</span>
-                <button class="nav-btn" (click)="changeYear(1, $event)">»</button>
-            </div>
-
-            <div class="months-grid">
-                @for (mes of monthsList; track $index) {
-                    <button 
-                        class="month-btn"
-                        [class.active]="viewDate().getMonth() === $index"
-                        (click)="selectMonth($index, $event)">
-                        {{ mes | slice:0:3 }} </button>
-                }
-            </div>
+          <div class="year-control">
+            <button class="nav-btn" (click)="changeYear(-1, $event)">«</button>
+            <span class="year-display">{{ viewDate().getFullYear() }}</span>
+            <button class="nav-btn" (click)="changeYear(1, $event)">»</button>
+          </div>
+          <div class="months-grid">
+            @for (mes of monthsList; track $index) {
+              <button
+                class="month-btn"
+                [class.active]="viewDate().getMonth() === $index"
+                (click)="selectMonth($index, $event)"
+              >
+                {{ mes | slice: 0 : 3 }}
+              </button>
+            }
+          </div>
         </div>
       }
-
     </div>
-    }
-  </div>
+  }
 </div>
