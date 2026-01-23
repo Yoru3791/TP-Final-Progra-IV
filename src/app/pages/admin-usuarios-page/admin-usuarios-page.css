@@ -1,56 +1,85 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
 .page-container {
-  align-items: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 0 2rem;
+  width: 100%;
+}
+
+.header-section {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.main-h1-title {
+  font-size: 3rem;
+  margin: 3rem auto;
+  text-align: center;
+  color: var(--color-text-primary);
+  font-weight: bold;
+}
+
+.filters {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap; 
   justify-content: center;
-}
-
-.filters-buttons-container {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  min-width: 80rem;
-}
-
-.filters-container {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
+  width: 100%;
+  max-width: 115rem;
 }
 
 .filter-input {
+  flex: 1;
+  min-width: 25rem;
+  height: 5rem;
+  border-radius: 1rem !important;
+  padding: 0 1.5rem;
   border: 1px solid var(--color-ui-neutral);
-  border-radius: 1rem;
   font-family: inherit;
-  padding: 0.75rem 1.5rem;
-  transition-duration: 0.1s;
+  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+  background-color: white;
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
 }
 
-.filter-input:focus-within {
-  border: 1px solid var(--color-primary);
+.filter-input:focus {
   outline: none;
-}
-
-.buttons-container {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
+  border-color: var(--color-primary-light);
 }
 
 .btn-create {
-  --font-size: 1.8rem;
-
-  align-items: center;
+  flex: 0 0 auto;
   display: flex;
-  flex-direction: row;
-  font-size: var(--font-size);
-  gap: 1rem;
-  line-height: var(--font-size);
-  padding-left: 1rem;
-  padding-right: 1rem;
+  align-items: center;
   justify-content: center;
+  gap: 1rem;
+  padding: 0 2rem;
+  height: 5rem;
+  border-radius: 1rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: var(--color-primary-medium-price);
+  color: white;
+  border: none;
+  transition: 0.2s;
+  box-sizing: border-box;
+  min-width: max-content; 
+}
+
+.btn-create:hover {
+  background-color: var(--color-primary-hover-light);
 }
 
 .btn-create i {
@@ -58,15 +87,41 @@
 }
 
 .usuarios-list {
-  align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 115rem;
+  padding-bottom: 4rem;
+}
+
+app-usuario-card {
+  width: 100%;
+  display: block;
 }
 
 .no-results {
-  color: var(--color-ui-disabled-text);
   font-size: 2.4rem;
+  color: var(--color-ui-disabled-text);
+  text-align: center;
+  margin-top: 4rem;
+}
+
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column; 
+    gap: 1.5rem;
+  }
+
+  .filter-input {
+    width: 100%;
+    min-width: unset; 
+    flex: none;
+  }
+
+  .btn-create {
+    width: 100%; 
+    flex: none;
+    margin: 0;
+  }
 }
