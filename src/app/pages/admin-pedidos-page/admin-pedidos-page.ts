@@ -14,25 +14,24 @@ export class AdminPedidosPage implements OnInit {
   pedidoService = inject(PedidosService);
   estados = Object.values(EstadoPedido);
 
-  // Control de dropdowns personalizados
+  // Control de dropdown de Estado (el único que queda como dropdown custom)
   openEstado = false;
-  openEmp = false;
 
   ngOnInit() {
-    // Al cargar la página, traemos los pedidos
     this.pedidoService.fetchPedidos();
   }
 
   // --- Lógica de Filtros UI ---
-  toggleEstado(event: MouseEvent) {
-    this.openEstado = !this.openEstado;
-    this.openEmp = false; // Cierra el otro si está abierto
-    event.stopPropagation();
+
+  // 1. Input de Texto para Emprendimiento
+  onEmprendimientoInput(event: Event) {
+    const valor = (event.target as HTMLInputElement).value;
+    this.pedidoService.filtroEmprendimiento.set(valor);
   }
 
-  toggleEmp(event: MouseEvent) {
-    this.openEmp = !this.openEmp;
-    this.openEstado = false;
+  // 2. Dropdown de Estado
+  toggleEstado(event: MouseEvent) {
+    this.openEstado = !this.openEstado;
     event.stopPropagation();
   }
 
@@ -41,18 +40,12 @@ export class AdminPedidosPage implements OnInit {
     this.openEstado = false;
   }
 
-  setEmp(value: string | null) {
-    this.pedidoService.filtroEmprendimiento.set(value);
-    this.openEmp = false;
-  }
-
-  // Cerrar dropdowns al hacer click fuera
+  // Cerrar dropdown al hacer click fuera
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
-    const inside = (event.target as HTMLElement).closest('.select-custom');
+    const inside = (event.target as HTMLElement).closest('.select-custom-wrapper');
     if (!inside) {
       this.openEstado = false;
-      this.openEmp = false;
     }
   }
 }
