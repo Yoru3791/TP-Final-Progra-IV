@@ -107,10 +107,21 @@
 
 .footer-quick-links nav {
   display: block;
+  position: relative;
 }
 
 .footer-quick-links nav p {
   margin: 0;
+}
+
+.footer-quick-links nav:not(:last-child)::after {
+  background-color: color-mix(in srgb, var(--color-background-primary) 90%, var(--color-background-inverse));
+  bottom: 10%;
+  content: "";
+  position: absolute;
+  right: -0.8rem;
+  top: 10%;
+  width: 1px;
 }
 
 .footer-bottom {
