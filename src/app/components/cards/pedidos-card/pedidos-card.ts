@@ -1,12 +1,16 @@
-import { Component, HostListener, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, HostListener, inject, OnInit } from '@angular/core';
 import { PedidosService } from '../../../services/pedido-service';
 import { PedidoSingleCard } from '../pedido-single-card/pedido-single-card';
 import { DateRangePickerComponent } from '../../utils/date-range-picker/date-range-picker';
 import { EstadoPedido } from '../../../enums/estadoPedido.enum';
+import { Paginador } from '../../utils/paginador/paginador';
 
 @Component({
   selector: 'app-pedidos-card',
-  imports: [PedidoSingleCard, DateRangePickerComponent],
+  imports: [
+    PedidoSingleCard,
+    DateRangePickerComponent,
+    Paginador],
   templateUrl: './pedidos-card.html',
   styleUrl: './pedidos-card.css',
 })
@@ -15,40 +19,41 @@ export class PedidosCard implements OnInit {
 
   estados = Object.values(EstadoPedido);
 
-  ngOnInit() {
-    this.pedidoService.fetchPedidos();
-  }
-
-  actualizarEstado(event: Event) {
-    const value = (event.target as HTMLSelectElement).value;
-
-    if (value === 'null' || value === '') {
-      this.pedidoService.filtroEstado.set(null);
-    } else {
-      this.pedidoService.filtroEstado.set(value as EstadoPedido);
-    }
-  }
-
-  actualizarEmprendimiento(event: Event) {
-    const value = (event.target as HTMLSelectElement).value;
-
-    if (value === 'null' || value === '') {
-      this.pedidoService.filtroEmprendimiento.set(null);
-    } else {
-      this.pedidoService.filtroEmprendimiento.set(value);
-    }
-  }
+  pageInfo = computed(() => this.pedidoService.pageInfo());
 
   openEstado = false;
   openEmp = false;
 
+  constructor() {
+    effect(() => {
+        this.pedidoService.filtroEstado();
+        this.pedidoService.filtroEmprendimiento();
+        this.pedidoService.filtroFechas();
+
+        this.pedidoService.fetchPedidos(0, 10);
+    });
+  }
+
+  ngOnInit() {
+    this.pedidoService.fetchPedidos(0, 10);
+    this.pedidoService.fetchNombresEmprendimientos();
+  }
+
+  onPageChange(page: number) {
+    this.pedidoService.fetchPedidos(page, 10);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // --- Lógica de Filtros ---
   toggleEstado(event: MouseEvent) {
     this.openEstado = !this.openEstado;
+    this.openEmp = false;
     event.stopPropagation();
   }
 
   toggleEmp(event: MouseEvent) {
     this.openEmp = !this.openEmp;
+    this.openEstado = false;
     event.stopPropagation();
   }
 
@@ -62,7 +67,6 @@ export class PedidosCard implements OnInit {
     this.openEmp = false;
   }
 
-  /* Cerrar ambos selects cuando se clickea afuera */
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const inside = (event.target as HTMLElement).closest('.select-custom');
