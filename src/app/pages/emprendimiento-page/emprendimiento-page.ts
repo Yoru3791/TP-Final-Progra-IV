@@ -188,7 +188,7 @@ export class EmprendimientoPage {
 
         switch (modo) {
           case 'DUENO':
-            request$ = this.viandaService.getViandasDueno(id, filtros, page, 10);
+            request$ = this.viandaService.getViandasDueno(id, filtros, page, 9);
             break;
           case 'CLIENTE':
             request$ = this.viandaService.getViandasCliente(id, filtros, page, 10);
