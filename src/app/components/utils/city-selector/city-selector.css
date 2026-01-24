@@ -1,152 +1,8 @@
-/* Heredamos la fuente y el box-sizing global */
 .city-selector {
   position: relative;
-  width: 22rem; /* Un poco más ancho para nombres largos */
+  width: 22rem;
   font-family: inherit;
-  z-index: 50; /* Para que el dropdown quede sobre otros elementos */
-}
-
-/* --- CONTENEDOR DEL INPUT (Imita a .select-custom) --- */
-.input-container {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 0.8rem 1.4rem; /* Ajustado para alinear con botones del header */
-  
-  /* Borde suave como la barra de búsqueda */
-  border: 0.1rem solid color-mix(in srgb, var(--color-background-primary) 75%, black);
-  border-radius: 1rem; /* Radio de 1rem como tus botones */
-  background-color: var(--color-background-primary);
-  
-  transition: all 0.2s ease;
-  cursor: text;
-}
-
-/* EFECTOS HOVER Y FOCUS (Estilo MiViandita) */
-/* Al pasar el mouse o al escribir, se pone naranja suave */
-.input-container:hover, 
-.input-container:focus-within {
-  border-color: var(--color-primary-light);
-  background-color: color-mix(in srgb, var(--color-primary-light) 7%, white);
-}
-
-/* El input real es invisible, solo muestra texto */
-.input-container input {
-  background: transparent;
-  border: none;
-  outline: none;
-  width: 100%;
-  
-  /* Tipografía */
-  font-family: 'Inria Sans', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 400;
-  color: var(--color-text-secondary);
-  
-  /* Capitalización visual */
-  text-transform: capitalize; 
-}
-
-.input-container input::placeholder {
-  color: var(--color-text-placeholder);
-  opacity: 0.8;
-}
-
-/* La flecha se pone naranja al interactuar */
-.input-container:hover .icon,
-.input-container:focus-within .icon {
-  color: var(--color-primary-light);
-}
-
-/* --- DROPDOWN (Imita a .options global) --- */
-.options {
-  position: absolute;
-  top: calc(100% + 0.5rem);
-  left: 0;
-  width: 100%;
-  max-height: 35rem; /* Altura máxima */
-  overflow-y: auto; /* Scroll si es necesario */
-  
-  background: var(--color-background-primary);
-  border: 0.1rem solid var(--color-border-light);
-  border-radius: 1rem;
-  
-  /* Sombra suave definida en tus variables */
-  box-shadow: 0 0.5rem 1.4rem rgba(0, 0, 0, 0.15);
-  
-  padding: 0.5rem 0;
-  margin: 0;
-  list-style: none;
-  z-index: 100;
-}
-
-/* ITEMS DE LA LISTA */
-.option-item {
-  padding: 0.9rem 1.4rem;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  transition: 0.15s ease;
-  border-bottom: 1px solid transparent; /* Evita saltos */
-}
-
-/* Hover y Navegación por teclado (Flechas) */
-.option-item:hover, 
-.option-item.selected-nav {
-  /* Fondo naranja muy suave (25%) */
-  background: color-mix(in srgb, var(--color-primary-light) 25%, var(--color-background-primary));
-}
-
-/* Item actualmente seleccionado en el sistema */
-.option-item.current-value {
-  background: color-mix(in srgb, var(--color-primary-light) 40%, var(--color-background-primary));
-  font-weight: bold;
-}
-
-/* Textos dentro de las opciones */
-.city-name {
-  font-size: 1.4rem;
-  color: var(--color-text-secondary);
-}
-
-/* Negrita del buscador (Highlight) */
-.city-name ::ng-deep b {
-  color: var(--color-text-primary); /* Texto negro para resaltar */
-  font-weight: 700;
-}
-
-.prov-name {
-  font-size: 1.1rem;
-  color: var(--color-text-light);
-  margin-top: 0.2rem;
-}
-
-/* ESTADO SIN RESULTADOS */
-.no-results-item {
-  padding: 1.5rem;
-  text-align: center;
-  font-size: 1.3rem;
-  color: var(--color-text-dark-secondary);
-}
-
-.no-results-item strong {
-  color: var(--color-primary-light);
-}
-
-/* LOADER (Spinner naranja) */
-.loader {
-  width: 1.4rem;
-  height: 1.4rem;
-  border: 0.2rem solid var(--color-border-light);
-  border-bottom-color: var(--color-primary-light);
-  border-radius: 50%;
-  display: inline-block;
-  animation: rotation 1s linear infinite;
-}
-
-@keyframes rotation {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  z-index: 50;
 }
 
 .input-container {
@@ -154,12 +10,17 @@
   align-items: center;
   width: 100%;
   padding: 0.8rem 1.4rem;
-  /* El resto de bordes y colores sigue igual */
   border: 0.1rem solid color-mix(in srgb, var(--color-background-primary) 75%, black);
   border-radius: 1rem;
   background-color: var(--color-background-primary);
   transition: all 0.2s ease;
   cursor: text;
+}
+
+.input-container:hover,
+.input-container:focus-within {
+  border-color: var(--color-primary-light);
+  background-color: color-mix(in srgb, var(--color-primary-light) 7%, white);
 }
 
 .input-container input {
@@ -172,5 +33,112 @@
   font-weight: 400;
   color: var(--color-text-secondary);
   text-transform: capitalize;
-  text-align: center;  
+}
+
+.input-container input::placeholder {
+  color: var(--color-text-placeholder);
+  opacity: 0.8;
+}
+
+.input-container:hover .icon,
+.input-container:focus-within .icon {
+  color: var(--color-primary-light);
+}
+
+.options {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: 100%;
+  max-height: 35rem;
+  overflow-y: auto;
+  background: var(--color-background-primary);
+  border: 0.1rem solid var(--color-border-light);
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1.4rem rgba(0, 0, 0, 0.15);
+  padding: 0.5rem 0;
+  margin: 0;
+  list-style: none;
+  z-index: 100;
+}
+
+.option-item {
+  padding: 0.9rem 1.4rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: 0.15s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.option-item:hover,
+.option-item.selected-nav {
+  background: color-mix(in srgb, var(--color-primary-light) 25%, var(--color-background-primary));
+}
+
+.option-item.current-value {
+  background: color-mix(in srgb, var(--color-primary-light) 40%, var(--color-background-primary));
+  font-weight: bold;
+}
+
+.city-name {
+  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+}
+
+.city-name ::ng-deep b {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.prov-name {
+  font-size: 1.1rem;
+  color: var(--color-text-light);
+  margin-top: 0.2rem;
+}
+
+.no-results-item {
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 1.3rem;
+  color: var(--color-text-dark-secondary);
+}
+
+.no-results-item strong {
+  color: var(--color-primary-light);
+}
+
+.loader {
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 0.2rem solid var(--color-border-light);
+  border-bottom-color: var(--color-primary-light);
+  border-radius: 50%;
+  display: inline-block;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .city-selector {
+    width: 100%;
+    max-width: 16rem;
+  }
+
+  .input-container {
+    padding: 0.6rem 1rem;
+  }
+
+  .input-container input {
+    font-size: 1.2rem;
+    text-align: left;
+  }
 }
