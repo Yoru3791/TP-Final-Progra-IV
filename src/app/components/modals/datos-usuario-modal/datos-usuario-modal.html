@@ -4,7 +4,7 @@
   <div class="modal-content">
     <div class="profile-img-container">
       <img
-        [src]="usuario.imagenUrl || 'assets/placeholder-user.png'"
+        [src]="data.imagenUrl || 'assets/placeholder-user.png'"
         class="profile-img"
         alt="Foto de perfil"
       />
@@ -12,17 +12,19 @@
 
     <div class="dato">
       <span class="label">Nombre</span>
-      <span class="valor">{{ usuario.nombreCompleto }}</span>
+      <span class="valor">{{ data.nombre }}</span>
     </div>
 
-    <div class="dato">
-      <span class="label">Email</span>
-      <span class="valor">{{ usuario.email }}</span>
-    </div>
+    @if (data.email) {
+      <div class="dato">
+        <span class="label">Email</span>
+        <span class="valor">{{ data.email }}</span>
+      </div>
+    }
 
     <div class="dato">
       <span class="label">Teléfono</span>
-      <span class="valor">{{ usuario.telefono }}</span>
+      <span class="valor">{{ data.telefono }}</span>
     </div>
 
     @if (role() !== 'ADMIN') {
