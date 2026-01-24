@@ -1,7 +1,7 @@
 :host {
   display: block;
   width: 100%;
-  min-height: 100vh;
+  /* min-height: 100vh;  <-- ELIMINADO para que no empuje el footer */
 }
 
 .page-container {
@@ -9,22 +9,39 @@
   flex-direction: column;
   align-items: center;
   padding: 0 2rem;
+
+  /* CORRECCIÓN DE HEADER TAPADO */
+  padding-top: 8rem; /* Espacio para que el navbar no tape el título */
+
   width: 100%;
+  max-width: 115rem;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
+/* --- HEADER --- */
 .header-section {
   width: 100%;
-  text-align: center;
+  text-align: left;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid var(--color-border-light);
+  padding-bottom: 1.5rem;
 }
 
-.main-h1-title {
-  font-size: 3rem;
-  margin: 3rem auto;
-  text-align: center;
-  color: var(--color-text-primary);
+.main-title {
+  font-size: 2.4rem;
+  color: var(--color-primary);
+  margin: 0;
   font-weight: bold;
 }
 
+.subtitulo {
+  font-size: 1.6rem;
+  color: var(--color-text-secondary);
+  margin: 0.5rem 0 0 0;
+}
+
+/* --- FILTROS --- */
 .filters {
   display: flex;
   gap: 2rem;
@@ -46,7 +63,6 @@
   height: 5rem;
   min-height: 5rem;
   padding: 0 1.5rem;
-
   border-radius: 1rem;
   border: 1px solid var(--color-ui-neutral);
   font-family: inherit;
