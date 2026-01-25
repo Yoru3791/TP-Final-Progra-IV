@@ -21,7 +21,6 @@ export class AdminPedidosPage implements OnInit {
   pageInfo = computed(() => this.pedidoService.pageInfo());
 
   openEstado = false;
-  openEmp = false;
 
   constructor() {
     effect(() => {
@@ -35,7 +34,6 @@ export class AdminPedidosPage implements OnInit {
 
   ngOnInit() {
     this.pedidoService.fetchPedidos(0, 10);
-    this.pedidoService.fetchNombresEmprendimientos();
   }
 
   onPageChange(page: number) {
@@ -44,15 +42,14 @@ export class AdminPedidosPage implements OnInit {
   }
 
   // --- Lógica de Filtros ---
-  toggleEstado(event: MouseEvent) {
-    this.openEstado = !this.openEstado;
-    this.openEmp = false;
-    event.stopPropagation();
+
+  onEmprendimientoInput(event: Event) {
+    const valor = (event.target as HTMLInputElement).value;
+    this.pedidoService.filtroEmprendimiento.set(valor);
   }
 
-  toggleEmp(event: MouseEvent) {
-    this.openEmp = !this.openEmp;
-    this.openEstado = false;
+  toggleEstado(event: MouseEvent) {
+    this.openEstado = !this.openEstado;
     event.stopPropagation();
   }
 
@@ -61,17 +58,12 @@ export class AdminPedidosPage implements OnInit {
     this.openEstado = false;
   }
 
-  setEmp(value: string | null) {
-    this.pedidoService.filtroEmprendimiento.set(value);
-    this.openEmp = false;
-  }
-
+  // Cerrar dropdown al hacer click fuera
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
-    const inside = (event.target as HTMLElement).closest('.select-custom');
+    const inside = (event.target as HTMLElement).closest('.select-custom-wrapper');
     if (!inside) {
       this.openEstado = false;
-      this.openEmp = false;
     }
   }
 }

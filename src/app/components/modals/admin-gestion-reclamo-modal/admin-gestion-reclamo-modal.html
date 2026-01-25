@@ -1,8 +1,7 @@
 <div class="dialog-container">
   <h2 class="dialog-title">Gestionar Ticket: {{ data.codigoTicket }}</h2>
-  
+
   <form [formGroup]="form" (ngSubmit)="guardar()">
-    
     <div class="form-group">
       <label>Estado del Reclamo</label>
       <select formControlName="estado" class="form-input">
@@ -14,13 +13,14 @@
 
     <div class="form-group">
       <label>Devolución / Respuesta</label>
-      <textarea 
-        formControlName="respuesta" 
-        rows="5" 
-        class="form-input"
-        placeholder="Escribe la solución o respuesta para el usuario...">
+      <textarea
+        formControlName="respuesta"
+        rows="5"
+        class="form-input textarea"
+        placeholder="Escribe la solución o respuesta para el usuario..."
+      >
       </textarea>
-      
+
       @if (form.get('respuesta')?.hasError('required') && form.get('respuesta')?.touched) {
         <p class="error-msg">
           <i class="fa-solid fa-triangle-exclamation"></i>
@@ -33,6 +33,5 @@
       <button type="button" class="btn-cancel" (click)="cerrar()">Cancelar</button>
       <button type="submit" class="btn-save" [disabled]="form.invalid">Guardar Cambios</button>
     </div>
-
   </form>
 </div>
