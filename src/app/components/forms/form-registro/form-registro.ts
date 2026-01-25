@@ -25,7 +25,6 @@ export class FormRegistro {
   showConfirmPassword = false;
   private snackBar = inject(MatSnackBar);
 
-  //Como este form va dentro de una pagina (componente padre) que define el rol desde la URL, lo recibo por Input, luego desde la pagina padre le paso el rol correspondiente.
   @Input() rolUsuario: string = '';
 
   formRegistro = this.fb.group(
@@ -41,7 +40,7 @@ export class FormRegistro {
         [
           Validators.required,
           Validators.pattern(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,16}$/
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,16}$/,
           ),
         ],
       ],
@@ -49,7 +48,7 @@ export class FormRegistro {
       aceptarTerminos: [false, Validators.requiredTrue],
       aceptarPoliticas: [false, Validators.requiredTrue],
     },
-    { validators: this.passwordsCoinciden }
+    { validators: this.passwordsCoinciden },
   );
 
   onSubmit() {
@@ -64,21 +63,10 @@ export class FormRegistro {
       })
       .subscribe({
         next: () => {
-          const snackbarData: SnackbarData = {
-            message: 'Cuenta creada con exito! Inicia sesion',
-            iconName: 'check_circle',
-          };
-
-          this.snackBar.openFromComponent(Snackbar, {
-            duration: 3000,
-            verticalPosition: 'bottom',
-            panelClass: 'snackbar-panel',
-            data: snackbarData,
-          });
+          this.showSnackBar('Cuenta creada con exito! Inicia sesion', 'check_circle');
           this.router.navigate(['/login']);
         },
         error: (err) => {
-          // Por si el backend devuelve un mensaje dentro de error.error (estructura del back)
           const backendMsg =
             err.error?.message || err.error?.error || 'Error desconocido en el registro';
 
@@ -129,7 +117,6 @@ export class FormRegistro {
     });
   }
 
-  // Validador personalizado para verificar que las contraseñas coincidan
   passwordsCoinciden(form: any) {
     const pass = form.get('password')?.value;
     const confirm = form.get('confirmarPassword')?.value;
@@ -142,5 +129,19 @@ export class FormRegistro {
 
   toggleConfirmPassword() {
     this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  private showSnackBar(message: string, iconName: string) {
+    const snackbarData: SnackbarData = {
+      message: message,
+      iconName: iconName,
+    };
+
+    this.snackBar.openFromComponent(Snackbar, {
+      duration: 3000,
+      verticalPosition: 'bottom',
+      panelClass: 'snackbar-panel',
+      data: snackbarData,
+    });
   }
 }

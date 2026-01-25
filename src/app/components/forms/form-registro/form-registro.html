@@ -95,7 +95,7 @@
           formRegistro.get('password')?.invalid &&
           (formRegistro.get('password')?.touched || formRegistro.get('password')?.dirty)
         "
-        placeholder="Entre 10 y 16 caracteres, al menos una mayúscula, una minuscula, un número y un caracter especial"
+        placeholder="Entre 8 y 16 caracteres, al menos una mayúscula, una minuscula, un número y un caracter especial"
       />
       <button type="button" class="toggle-eye" (click)="togglePassword()">
         <i class="fa-solid {{ showPassword ? 'fa-eye-slash' : 'fa-eye' }}"></i>
@@ -109,7 +109,7 @@
       <p>La contraseña es obligatoria.</p>
       } @if (formRegistro.get('password')?.hasError('pattern')) {
       <p>
-        Debe tener entre 10 y 16 caracteres, al menos una mayúscula, una minuscula, un número y un
+        Debe tener entre 8 y 16 caracteres, al menos una mayúscula, una minuscula, un número y un
         caracter especial.
       </p>
       }
