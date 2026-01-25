@@ -49,22 +49,12 @@ export class FormLogin {
       })
       .subscribe({
         next: (response: LoginResponse) => {
-          const snackbarData: SnackbarData = {
-            message: 'Sesión iniciada correctamente',
-            iconName: 'check_circle',
-          };
-
-          this.snackBar.openFromComponent(Snackbar, {
-            duration: 3000,
-            verticalPosition: 'bottom',
-            panelClass: 'snackbar-panel',
-            data: snackbarData,
-          });
+          this.showSnackBar('Sesión iniciada correctamente', 'check_circle');
 
           this.authService.handleLoginSuccess(
             response.token,
             response.usuarioID,
-            usuario.recordarme!
+            usuario.recordarme!,
           );
           setTimeout(() => {
             this.router.navigate(['/home']);
@@ -80,8 +70,8 @@ export class FormLogin {
               this.dialog.open(ErrorDialogModal, {
                 data: {
                   message:
-                    "Esta cuenta fue bloqueada por un administrador. " +
-                    "Si creés que esto es un error, contactanos para solucionarlo."
+                    'Esta cuenta fue bloqueada por un administrador. ' +
+                    'Si creés que esto es un error, contactanos para solucionarlo.',
                 },
                 panelClass: 'modal-error',
                 autoFocus: false,
@@ -91,7 +81,7 @@ export class FormLogin {
           } else {
             const backendMsg =
               err.error?.message || err.error?.error || 'Error desconocido en el login';
-  
+
             this.dialog.open(ErrorDialogModal, {
               data: { message: backendMsg },
               panelClass: 'modal-error',
@@ -114,16 +104,26 @@ export class FormLogin {
       next: (res) => {
         this.isResending = false;
         this.unverifiedEmail = null;
-        this.mostrarSnackBar('¡Correo enviado! Revisa tu bandeja de entrada.', 'check_circle');
+        this.showSnackBar('¡Correo enviado! Revisa tu bandeja de entrada.', 'check_circle');
       },
       error: (err) => {
         this.isResending = false;
-        this.mostrarSnackBar('Error al reenviar el correo.', 'error');
-      }
+        this.showSnackBar('Error al reenviar el correo.', 'error');
+      },
     });
   }
 
-  private mostrarSnackBar(msg: string, icon: string) {
-     this.snackBar.open(msg, 'Cerrar', { duration: 4000 });
+  private showSnackBar(message: string, iconName: string) {
+    const snackbarData: SnackbarData = {
+      message: message,
+      iconName: iconName,
+    };
+
+    this.snackBar.openFromComponent(Snackbar, {
+      duration: 3000,
+      verticalPosition: 'bottom',
+      panelClass: 'snackbar-panel',
+      data: snackbarData,
+    });
   }
 }
