@@ -1,14 +1,11 @@
 import { Component, inject, Input } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-modal';
 import { BasesCondicionesModal } from '../../modals/bases-condiciones-modal/bases-condiciones-modal';
-import { MatDialog } from '@angular/material/dialog';
 import { NormasComunidadModal } from '../../modals/normas-comunidad-modal/normas-comunidad-modal';
 import { AuthService } from '../../../services/auth-service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Snackbar } from '../../modals/snackbar/snackbar';
-import { SnackbarData } from '../../../model/snackbar-data.model';
+import { UiNotificationService } from '../../../services/ui-notification-service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-form-registro',
@@ -17,13 +14,14 @@ import { SnackbarData } from '../../../model/snackbar-data.model';
   styleUrl: './form-registro.css',
 })
 export class FormRegistro {
+  private dialog = inject(MatDialog);
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private authService = inject(AuthService);
-  private dialog = inject(MatDialog);
+  private uiNotificationService = inject(UiNotificationService);
+
   showPassword = false;
   showConfirmPassword = false;
-  private snackBar = inject(MatSnackBar);
 
   //Como este form va dentro de una pagina (componente padre) que define el rol desde la URL, lo recibo por Input, luego desde la pagina padre le paso el rol correspondiente.
   @Input() rolUsuario: string = '';
@@ -64,32 +62,11 @@ export class FormRegistro {
       })
       .subscribe({
         next: () => {
-          const snackbarData: SnackbarData = {
-            message: 'Cuenta creada con exito! Inicia sesion',
-            iconName: 'check_circle',
-          };
-
-          this.snackBar.openFromComponent(Snackbar, {
-            duration: 3000,
-            verticalPosition: 'bottom',
-            panelClass: 'snackbar-panel',
-            data: snackbarData,
-          });
+          this.uiNotificationService.abrirSnackBarExito('¡Cuenta creada exitosamente! Ya podés iniciar sesión.');
           this.router.navigate(['/login']);
         },
         error: (err) => {
-          // Por si el backend devuelve un mensaje dentro de error.error (estructura del back)
-          const backendMsg =
-            err.error?.message || err.error?.error || 'Error desconocido en el registro';
-
-          console.error(backendMsg);
-
-          this.dialog.open(ErrorDialogModal, {
-            data: {
-              message: backendMsg,
-            },
-            panelClass: 'modal-error',
-          });
+          this.uiNotificationService.abrirModalError(err);
 
           this.formRegistro.get('password')?.reset();
           this.formRegistro.get('confirmarPassword')?.reset();

@@ -3,11 +3,11 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ReclamoCardComponent } from '../../components/cards/reclamo-card/reclamo-card';
 import { ReclamoService } from '../../services/reclamo-service';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Reclamo } from '../../model/reclamo-response.model';
 import { EstadoReclamo } from '../../enums/estadoReclamo.enum';
 import { AdminGestionReclamoModal } from '../../components/modals/admin-gestion-reclamo-modal/admin-gestion-reclamo-modal';
 import { InfoReclamoTooltipComponent } from '../../components/utils/info-reclamo-tooltip/info-reclamo-tooltip';
+import { UiNotificationService } from '../../services/ui-notification-service';
 
 @Component({
   selector: 'app-admin-reclamos-page',
@@ -18,7 +18,7 @@ import { InfoReclamoTooltipComponent } from '../../components/utils/info-reclamo
 export class AdminReclamosPage implements OnInit {
   private reclamoService = inject(ReclamoService);
   private dialog = inject(MatDialog);
-  private snackBar = inject(MatSnackBar);
+  private uiNotificationService = inject(UiNotificationService);
 
   reclamos = signal<Reclamo[]>([]);
   loading = signal(true);
@@ -52,8 +52,7 @@ export class AdminReclamosPage implements OnInit {
         this.loading.set(false);
       },
       error: (err) => {
-        console.error('Error cargando reclamos', err);
-        this.snackBar.open('Error de conexión al cargar tickets', 'Cerrar');
+        this.uiNotificationService.abrirSnackBarError(err);
         this.loading.set(false);
       }
     });
@@ -80,19 +79,11 @@ export class AdminReclamosPage implements OnInit {
   actualizarReclamo(id: number, nuevoEstado: EstadoReclamo, respuesta: string) {
     this.reclamoService.actualizarEstado(id, nuevoEstado, respuesta).subscribe({
       next: () => {
-        this.snackBar.open('Ticket actualizado y notificación enviada al usuario.', 'Cerrar', {
-          duration: 4000,
-          panelClass: 'snackbar-success',
-          verticalPosition: 'bottom'
-        });
+        this.uiNotificationService.abrirSnackBarExito('Ticket actualizado y notificación enviada al usuario.');
         this.cargarReclamos();
       },
       error: (err) => {
-        console.error(err);
-        this.snackBar.open('Error al actualizar el ticket.', 'Cerrar', {
-          duration: 4000,
-          panelClass: 'snackbar-error'
-        });
+        this.uiNotificationService.abrirSnackBarError(err, 'Error al actualizar el ticket.');
       }
     });
   }

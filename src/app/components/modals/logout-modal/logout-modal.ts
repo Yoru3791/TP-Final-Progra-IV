@@ -2,9 +2,7 @@ import { Component, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../../services/auth-service';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarData } from '../../../model/snackbar-data.model';
-import { Snackbar } from '../snackbar/snackbar';
+import { UiNotificationService } from '../../../services/ui-notification-service';
 
 @Component({
   selector: 'app-logout-modal',
@@ -16,7 +14,7 @@ export class ConfirmarLogout {
   private dialogRef = inject(MatDialogRef<ConfirmarLogout>);
   private authService = inject(AuthService);
   private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
+  private uiNotificationService = inject(UiNotificationService);
 
   cancelar() {
     this.dialogRef.close();
@@ -25,17 +23,7 @@ export class ConfirmarLogout {
   confirmar() {
     this.dialogRef.close();
 
-    const snackbarData: SnackbarData = {
-      message: 'Sesión cerrada correctamente',
-      iconName: 'check_circle',
-    };
-
-    this.snackBar.openFromComponent(Snackbar, {
-      duration: 3000,
-      verticalPosition: 'bottom',
-      panelClass: 'snackbar-panel',
-      data: snackbarData,
-    });
+    this.uiNotificationService.abrirSnackBarExito('Sesión cerrada exitosamente.')
 
     this.authService.handleLogout();
 

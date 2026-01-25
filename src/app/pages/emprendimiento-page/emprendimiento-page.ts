@@ -10,17 +10,14 @@ import { FiltrosViandas } from '../../model/filtros-viandas.model';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { catchError, combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { ViandaAnyResponse, ViandaResponse } from '../../model/vianda-response.model';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Snackbar } from '../../components/modals/snackbar/snackbar';
-import { SnackbarData } from '../../model/snackbar-data.model';
 import { MatDialog } from '@angular/material/dialog';
 import { FormVianda } from '../../components/forms/form-vianda/form-vianda';
 import { FormUpdateEmprendimiento } from '../../components/forms/form-emprendimiento-update/form-emprendimiento-update';
 import { CarritoService } from '../../services/carrito-service';
 import { FormViandaUpdate } from '../../components/forms/form-vianda-update/form-vianda-update';
-import { ErrorDialogModal } from '../../components/modals/error-dialog-modal/error-dialog-modal';
 import { Paginador } from '../../components/utils/paginador/paginador';
 import { PagedResponse, PageMetadata } from '../../model/hateoas-pagination.models';
+import { UiNotificationService } from '../../services/ui-notification-service';
 
 export type PageMode = 'DUENO' | 'CLIENTE' | 'INVITADO' | 'PROHIBIDO' | 'CARGANDO';
 
@@ -37,12 +34,12 @@ export type PageMode = 'DUENO' | 'CLIENTE' | 'INVITADO' | 'PROHIBIDO' | 'CARGAND
 export class EmprendimientoPage {
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
-  private snackBar = inject(MatSnackBar);
   private emprendimientoService = inject(EmprendimientoService);
   private viandaService = inject(ViandaService);
   private routeParams = toSignal(this.route.paramMap);
   private dialog = inject(MatDialog);
   private carritoService = inject(CarritoService);
+  private uiNotificationService = inject(UiNotificationService);
 
   emprendimientoEditado = signal(0); //  Signal para forzar recarga de info de emprendimiento al editarlo
   viandaEditada = signal(0); //  Signal para forzar recarga de viandas y categorias al editar una vianda
@@ -65,20 +62,7 @@ export class EmprendimientoPage {
         if (!id) return of(null);
         return this.emprendimientoService.getEmprendimientoById(id).pipe(
           catchError((err) => {
-            const backendMsg =
-              err.error?.message ||
-              err.error?.error ||
-              'Error desconocido al cargar emprendimiento';
-
-            console.error(backendMsg);
-
-            this.dialog.open(ErrorDialogModal, {
-              data: { message: backendMsg },
-              panelClass: 'modal-error',
-              autoFocus: false,
-              restoreFocus: false,
-            });
-
+            this.uiNotificationService.abrirModalError(err);
             return of(null);
           })
         );
@@ -148,17 +132,7 @@ export class EmprendimientoPage {
   }
 
   abrirSnackbarLoginRequerido() {
-    const snackbarData: SnackbarData = {
-      message: 'Inicie sesión para realizar pedidos',
-      iconName: 'error',
-    };
-
-    this.snackBar.openFromComponent(Snackbar, {
-      duration: 3000,
-      verticalPosition: 'bottom',
-      panelClass: 'snackbar-panel',
-      data: snackbarData,
-    });
+    this.uiNotificationService.abrirSnackBarError(null, 'Iniciá sesión para realizar pedidos.');
   }
 
   //  -------------------  Componente: emprendimiento-filtros-viandas -------------------

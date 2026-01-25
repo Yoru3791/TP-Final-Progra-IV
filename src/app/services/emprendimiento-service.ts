@@ -73,7 +73,7 @@ export class EmprendimientoService {
       .get<PagedResponse<EmprendimientoResponse>>(url, { params })
       .pipe(
         catchError((err) => {
-          console.error('Error al cargar emprendimientos', err);
+          console.error('Error al cargar emprendimientos:', err);
           return of(null);
         })
       )
@@ -100,7 +100,7 @@ export class EmprendimientoService {
       .get<any>(this.baseUrls.ADMIN, { params })
       .pipe(
         catchError((err) => {
-          console.error('Error al cargar emprendimientos (ADMIN)', err);
+          console.error('Error al cargar emprendimientos (ADMIN):', err);
           return of(null);
         })
       )
@@ -145,7 +145,7 @@ export class EmprendimientoService {
     const rol = this.authService.currentUserRole();
 
     if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tienes permisos para crear emprendimientos');
+      throw new Error('No tenés permiso para crear emprendimientos.');
     }
 
     const url = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
@@ -166,7 +166,7 @@ export class EmprendimientoService {
     const rol = this.authService.currentUserRole();
 
     if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tienes permisos para eliminar emprendimientos');
+      throw new Error('No tenés permiso para eliminar emprendimientos.');
     }
 
     const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
@@ -193,7 +193,7 @@ export class EmprendimientoService {
     const rol = this.authService.currentUserRole();
 
     if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tienes permisos para actualizar emprendimientos');
+      throw new Error('No tenés permiso para actualizar emprendimientos.');
     }
 
     const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
@@ -213,7 +213,7 @@ export class EmprendimientoService {
     const rol = this.authService.currentUserRole();
 
     if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tienes permisos para actualizar imágenes');
+      throw new Error('No tenés permisos para actualizar imágenes de emprendimientos.');
     }
 
     const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;

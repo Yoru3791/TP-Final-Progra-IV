@@ -45,7 +45,7 @@ export class ViandaService {
     const rol = this.authService.currentUserRole();
 
     if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tienes permisos para crear viandas');
+      throw new Error('No tenés permiso para crear viandas.');
     }
 
     const url = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
@@ -57,7 +57,7 @@ export class ViandaService {
     const rol = this.authService.currentUserRole();
 
     if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tenes permisos para actualizar viandas');
+      throw new Error('No tenés permiso para actualizar viandas.');
     }
 
     const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
@@ -70,7 +70,7 @@ export class ViandaService {
     const rol = this.authService.currentUserRole();
 
     if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tenes permisos para actualizar viandas');
+      throw new Error('No tenés permiso para actualizar imágenes de viandas.');
     }
 
     const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
@@ -86,7 +86,7 @@ export class ViandaService {
     const rol = this.authService.currentUserRole();
 
     if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tenes permisos para eliminar viandas');
+      throw new Error('No tenés permiso para eliminar viandas.');
     }
 
     const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;

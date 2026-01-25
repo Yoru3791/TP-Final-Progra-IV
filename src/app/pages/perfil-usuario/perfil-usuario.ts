@@ -5,9 +5,8 @@ import { PedidosCard } from '../../components/cards/pedidos-card/pedidos-card';
 import { PanelAccionesCuenta } from '../../components/cards/panel-acciones-cuenta/panel-acciones-cuenta';
 import { UsuarioResponse } from '../../model/usuario-response.model';
 import { UsuarioService } from '../../services/usuario-service';
-import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../services/auth-service';
-import { ErrorDialogModal } from '../../components/modals/error-dialog-modal/error-dialog-modal';
+import { UiNotificationService } from '../../services/ui-notification-service';
 
 @Component({
   selector: 'app-perfil-usuario',
@@ -18,7 +17,7 @@ import { ErrorDialogModal } from '../../components/modals/error-dialog-modal/err
 export class PerfilUsuario implements OnInit {
   private usuarioService = inject(UsuarioService);
   private authService = inject(AuthService);
-  private dialog = inject(MatDialog);
+  private uiNotificationService = inject(UiNotificationService);
 
   usuario = signal<UsuarioResponse | null>(null);
 
@@ -28,16 +27,8 @@ export class PerfilUsuario implements OnInit {
         this.usuario.set(data);
       },
       error: (err) => {
-        const backendMsg =
-          err.error?.message || err.error?.error || 'Error desconocido con el usuario';
-
         this.authService.handleLogout();
-        this.dialog.open(ErrorDialogModal, {
-          data: { message: backendMsg },
-          panelClass: 'modal-error',
-          autoFocus: false,
-          restoreFocus: false,
-        });
+        this.uiNotificationService.abrirModalError(err);
       },
     });
   }

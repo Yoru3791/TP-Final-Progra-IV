@@ -1,15 +1,13 @@
-import { Component, Inject, inject, Input, signal } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ViandaService } from '../../../services/vianda-service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CategoriaVianda } from '../../../enums/categoriaVianda.enum';
 import { ChangeDetectorRef } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-modal';
 import { IconTacc } from '../../utils/icon-tacc/icon-tacc';
 import { IconVegan } from '../../utils/icon-vegan/icon-vegan';
 import { IconVeggie } from '../../utils/icon-veggie/icon-veggie';
+import { UiNotificationService } from '../../../services/ui-notification-service';
 
 @Component({
   selector: 'app-form-vianda',
@@ -23,12 +21,10 @@ import { IconVeggie } from '../../utils/icon-veggie/icon-veggie';
 })
 export class FormVianda {
   private fb = inject(FormBuilder);
-  private router = inject(Router);
   private viandaService = inject(ViandaService);
-  private snackBar = inject(MatSnackBar);
-  private dialog = inject(MatDialog);
   private dialogRef = inject(MatDialogRef);
   private cdr = inject(ChangeDetectorRef); // Ayuda a forzar render
+  private uiNotificationService = inject(UiNotificationService);
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { idEmprendimiento: number }) {}
 
@@ -92,10 +88,9 @@ export class FormVianda {
           this.imagePreviewUrl = null;
           this.selectedFileName = null;
 
-          this.dialog.open(ErrorDialogModal, {
-            data: { message: `La imagen no debe superar ${this.maxWidth}x${this.maxHeight}px` },
-            panelClass: 'modal-error',
-          });
+          this.uiNotificationService.abrirModalError(
+            null, `La imagen no debe superar ${this.maxWidth}x${this.maxHeight}px`
+          );
         }
 
         this.formVianda.get('image')?.markAsTouched();
@@ -125,9 +120,7 @@ export class FormVianda {
     if (this.formVianda.invalid) return;
 
     if (!this.data?.idEmprendimiento) {
-      this.dialog.open(ErrorDialogModal, {
-        data: { message: 'Error: no se recibió el emprendimiento.' },
-      });
+      this.uiNotificationService.abrirModalError(null, 'No se recibió el emprendimiento.');
       return;
     }
 
@@ -152,10 +145,7 @@ export class FormVianda {
       },
       error: (err) => {
         this.loading = false;
-        const backendMsg = err.error?.message || 'Error desconocido al crear la vianda';
-        this.dialog.open(ErrorDialogModal, {
-          data: { message: backendMsg },
-        });
+        this.uiNotificationService.abrirModalError(err);
       },
     });
   }
