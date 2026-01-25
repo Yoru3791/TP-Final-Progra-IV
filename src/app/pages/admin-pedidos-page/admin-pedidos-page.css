@@ -1,7 +1,7 @@
 :host {
   display: block;
   width: 100%;
-  min-height: 100vh;
+  /* min-height: 100vh;  <-- ELIMINADO para que no empuje el footer */
 }
 
 .page-container {
@@ -9,23 +9,40 @@
   flex-direction: column;
   align-items: center;
   padding: 0 2rem;
+
+  /* CORRECCIÓN DE HEADER TAPADO */
+  padding-top: 8rem; /* Espacio para que el navbar no tape el título */
+
   width: 100%;
+  max-width: 115rem;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
+/* --- HEADER --- */
 .header-section {
   width: 100%;
-  text-align: center;
+  text-align: left;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid var(--color-border-light);
+  padding-bottom: 1.5rem;
 }
 
-.main-h1-title {
-  font-size: 3rem;
-  margin: 3rem auto;
-  text-align: center;
-  color: var(--color-text-primary);
+.main-title {
+  font-size: 2.4rem;
+  color: var(--color-primary);
+  margin: 0;
   font-weight: bold;
 }
 
-.filters-container {
+.subtitulo {
+  font-size: 1.6rem;
+  color: var(--color-text-secondary);
+  margin: 0.5rem 0 0 0;
+}
+
+/* --- FILTROS --- */
+.filters {
   display: flex;
   gap: 2rem;
   margin-bottom: 2rem;
@@ -35,32 +52,85 @@
   max-width: 115rem;
 }
 
-.select-wrapper {
+.filter-input,
+.select-trigger,
+.date-picker-wrapper {
   flex: 1;
-  min-width: 22rem;
-  max-width: 30rem;
-}
-
-.date-wrapper {
   min-width: 25rem;
 }
 
-.select-custom {
+.filter-input {
+  height: 5rem;
+  min-height: 5rem;
+  padding: 0 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--color-ui-neutral);
+  font-family: inherit;
+  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+  background-color: white;
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+}
+
+.select-custom-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 25rem;
+}
+
+.select-trigger {
   width: 100%;
-  padding: 1rem 1.5rem;
+  height: 5rem;
+  padding: 0 1.5rem;
   border-radius: 1rem;
   border: 1px solid var(--color-ui-neutral);
   background: white;
   font-size: 1.4rem;
-  height: 4.5rem; 
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+  color: var(--color-text-secondary);
+  box-sizing: border-box;
 }
 
-.select-custom:hover {
+.select-trigger:hover,
+.select-trigger.open {
   border-color: var(--color-primary-light);
+}
+
+.options {
+  position: absolute;
+  top: 105%;
+  left: 0;
+  width: 100%;
+  background: var(--color-background-primary);
+  border-radius: 1rem;
+  padding: 0.6rem 0;
+  margin: 0;
+  list-style: none;
+  z-index: 20;
+  border: 1px solid var(--color-border-light);
+  box-shadow: 0 0.5rem 1.4rem rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.options li {
+  padding: 0.9rem 1.4rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+}
+
+.options li:hover {
+  background: color-mix(in srgb, var(--color-primary-light) 25%, var(--color-background-primary));
 }
 
 .pedidos-list {
@@ -70,6 +140,11 @@
   width: 100%;
   max-width: 115rem;
   padding-bottom: 4rem;
+}
+
+app-pedido-admin-card {
+  width: 100%;
+  display: block;
 }
 
 .estado-vacio {
@@ -84,4 +159,18 @@
   font-size: 1.8rem;
   color: var(--color-ui-disabled-text);
   font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .filters {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .filter-input,
+  .select-custom-wrapper,
+  .date-picker-wrapper {
+    width: 100%;
+    min-width: unset;
+  }
 }

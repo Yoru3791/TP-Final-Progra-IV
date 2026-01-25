@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { DatosUsuarioModal } from '../datos-usuario-modal/datos-usuario-modal';
 import { A11yModule } from '@angular/cdk/a11y';
 import { UiNotificationService } from '../../../services/ui-notification-service';
+import { DatosContactoModalData } from '../../../model/datos-modal-data.model';
 
 @Component({
   selector: 'app-pedido-extended-modal',
@@ -45,7 +46,6 @@ export class PedidoExtendedModal implements OnInit {
 
   ngOnInit(): void {
     this.calcularValidacionesFecha();
-    // Inicializamos el selector con el estado actual del pedido
     this.estadoAdminSeleccionado = this.pedido.estado;
   }
 
@@ -125,13 +125,11 @@ export class PedidoExtendedModal implements OnInit {
   // Método específico para el ADMIN (Selector)
   actualizarEstadoAdmin() {
     if (this.estadoAdminSeleccionado === this.pedido.estado) {
-      // Si no cambió nada, no hacemos la petición
       return;
     }
 
     const body: PedidoUpdateRequest = {
       estado: this.estadoAdminSeleccionado,
-      // El admin podría cambiar la fecha también, pero aquí nos centramos en el estado
       fechaEntrega: this.pedido.fechaEntrega,
     };
 
@@ -139,7 +137,6 @@ export class PedidoExtendedModal implements OnInit {
   }
 
   cambiarFechaEntrega(fecha: string | null) {
-    // ... (lógica existente sin cambios) ...
     if (this.role() !== 'CLIENTE') {
       this.uiNotificationService.abrirModalError(null, 'Solo el cliente puede modificar la fecha de entrega.');
       return;
@@ -181,6 +178,41 @@ export class PedidoExtendedModal implements OnInit {
   verDatosUsuario(usuario: UsuarioResponse) {
     this.dialog.open(DatosUsuarioModal, {
       data: usuario,
+      autoFocus: false,
+      restoreFocus: false,
+    });
+  }
+
+  contactarCliente() {
+    const c = this.pedido.cliente;
+
+    const data: DatosContactoModalData = {
+      nombre: c.nombreCompleto,
+      email: c.email,
+      telefono: c.telefono,
+      imagenUrl: c.imagenUrl,
+    };
+
+    this.dialog.open(DatosUsuarioModal, {
+      data,
+      autoFocus: false,
+      restoreFocus: false,
+    });
+  }
+
+  contactarLocal() {
+    const dueno = this.pedido.emprendimiento.dueno;
+    const emprendimiento = this.pedido.emprendimiento;
+
+    const data: DatosContactoModalData = {
+      nombre: dueno.nombreCompleto,
+      email: dueno.email, 
+      imagenUrl: dueno.imagenUrl,
+      telefono: emprendimiento.telefono,
+    };
+
+    this.dialog.open(DatosUsuarioModal, {
+      data,
       autoFocus: false,
       restoreFocus: false,
     });

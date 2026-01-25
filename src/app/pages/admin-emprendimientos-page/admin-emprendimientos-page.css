@@ -1,13 +1,53 @@
+:host {
+  display: block;
+  width: 100%;
+  /* min-height: 100vh; <-- ELIMINADO */
+}
+
 .page-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 2rem;
+
+  /* CORRECCIÓN DE HEADER TAPADO */
+  padding-top: 8rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+
+  width: 100%;
+  max-width: 115rem;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
+/* --- HEADER --- */
+.header-section {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid var(--color-border-light);
+  padding-bottom: 1.5rem;
+}
+
+.main-title {
+  font-size: 2.4rem;
+  color: var(--color-primary);
+  margin: 0;
+  font-weight: bold;
+}
+
+.subtitulo {
+  font-size: 1.6rem;
+  color: var(--color-text-secondary);
+  margin: 0.5rem 0 0 0;
+}
+
+/* --- FILTROS --- */
 .filters {
   display: flex;
   gap: 2rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
@@ -15,12 +55,18 @@
 }
 
 .filters input {
-  padding: 0.75rem 1.5rem;
+  padding: 0 1.5rem;
+  height: 5rem;
+  min-height: 5rem;
   border-radius: 1rem;
   border: 1px solid var(--color-ui-neutral);
   font-family: inherit;
-  flex: 1; 
-  min-width: 20rem; 
+  font-size: 1.4rem;
+  flex: 1;
+  min-width: 25rem;
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
 }
 
 .filters input:focus {
@@ -30,23 +76,35 @@
 
 .emprendimientos-list {
   display: grid;
-  grid-template-columns: 1fr 1fr; 
-  gap: 1rem;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
   margin-bottom: 2rem;
   width: 100%;
-  max-width: 115rem; 
+  max-width: 115rem;
 }
 
 .no-results {
   font-size: 2.4rem;
   color: var(--color-ui-disabled-text);
-  grid-column: 1 / -1; 
+  grid-column: 1 / -1;
   text-align: center;
+  margin-top: 4rem;
 }
 
 @media (min-width: 900px) {
   .emprendimientos-list {
     display: flex;
     flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .filters {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .filters input {
+    width: 100%;
+    min-width: unset;
   }
 }
