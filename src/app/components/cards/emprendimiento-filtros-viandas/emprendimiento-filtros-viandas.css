@@ -16,6 +16,8 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .btn-toggle-cat {
@@ -470,8 +472,7 @@
 
 .btn-clear:hover {
     background-color: var(--color-background-secondary);
-    color: var(--color-state-error);
-    border-color: var(--color-state-error);
+    color: var(--color-text-dark-secondary);
     transform: translateY(-0.2rem);
 }
 

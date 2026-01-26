@@ -186,7 +186,7 @@ export class ViandaService {
     idEmprendimiento: number,
     filtros?: FiltrosViandas,
     page: number = 0,
-    size: number = 10
+    size: number = 9
   ): Observable<PagedResponse<ViandaAnyResponse>> {
     const params = this.construirParams(filtros, page, size);
     const rol = this.authService.currentUserRole();

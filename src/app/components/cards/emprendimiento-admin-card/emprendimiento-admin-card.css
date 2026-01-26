@@ -15,14 +15,12 @@
   height: 100%;
 }
 
-.emprendimiento-card.eliminado .card-img,
-.emprendimiento-card.unavailable .card-img {
+.emprendimiento-card.eliminado .card-img {
   filter: grayscale(1);
   opacity: 0.9;
 }
 
 .emprendimiento-card.eliminado {
-  background-color: #f4f4f4;
   border-color: var(--color-state-error);
 }
 
@@ -112,11 +110,18 @@
 .estado {
   font-size: 1.2rem;
   font-weight: bold;
+}
+
+.estado.on {
   color: var(--color-state-success);
 }
 
 .estado.off {
-  color: var(--color-state-default);
+  color: var(--color-state-warning);
+}
+
+.estado.deleted {
+    color: var(--color-state-error);
 }
 
 .btn-ver-mas {
