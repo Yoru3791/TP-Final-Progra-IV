@@ -7,23 +7,40 @@
     <input
       type="text"
       placeholder="Filtrar por ciudad..."
+      [value]="emprendimientoService.adminFiltroCiudad()"
       (input)="onCiudadInput($event)"
     />
 
     <input
       type="text"
       placeholder="Filtrar por emprendimiento..."
+      [value]="emprendimientoService.adminFiltroNombre()"
       (input)="onNombreInput($event)"
     />
 
-    <input type="text" placeholder="Filtrar por dueño o email..." (input)="onDuenoInput($event)" />
+    <input 
+      type="text" 
+      placeholder="Filtrar por dueño o email..." 
+      (input)="onDuenoInput($event)" />
   </div>
 
   <div class="emprendimientos-list">
-    @for (emp of emprendimientos(); track emp.id) {
-    <app-emprendimiento-admin-card [emprendimiento]="emp" />
-    } @empty {
-    <p class="no-results">No se encontraron resultados.</p>
+    @if (emprendimientos().length === 0) {
+      <div class="no-results">
+        <p>No se encontraron resultados.</p>
+      </div>
+    } @else {
+      @for (emp of emprendimientos(); track emp.id) {
+        <app-emprendimiento-admin-card [emprendimiento]="emp" />
+      }
+      
+      @if (pageInfo(); as info) {
+        <app-paginador 
+            [currentPage]="info.number" 
+            [totalPages]="info.totalPages" 
+            (pageChange)="onPageChange($event)">
+        </app-paginador>
+      }
     }
   </div>
 </div>
