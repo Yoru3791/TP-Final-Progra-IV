@@ -1,4 +1,4 @@
-import { Component, inject, effect, signal, OnInit, computed } from '@angular/core';
+import { Component, inject, effect, signal, computed } from '@angular/core';
 import { EmprendimientoService } from '../../services/emprendimiento-service';
 import { EmprendimientoCard } from '../../components/cards/emprendimiento-card/emprendimiento-card';
 import { EmprendimientoConViandas } from '../../model/emprendimiento-con-viandas.model';
@@ -12,7 +12,7 @@ import { Paginador } from '../../components/utils/paginador/paginador';
   templateUrl: './home-page.html',
   styleUrl: './home-page.css',
 })
-export class HomePage implements OnInit {
+export class HomePage {
 
   private emprendimientoService = inject(EmprendimientoService);
   private cityFilter = inject(CityFilterService);
@@ -24,10 +24,8 @@ export class HomePage implements OnInit {
   pageInfo = computed(() => this.emprendimientoService.pageInfo());
 
   constructor() {
-    //  Cargo las viandas
     effect(() => {
       const emps = this.emprendimientoService.emprendimientos();
-
       this.emprendimientos.set(emps);
 
       if (emps.length === 0) return;
@@ -37,15 +35,10 @@ export class HomePage implements OnInit {
         .subscribe((fullData) => this.emprendimientos.set(fullData));
     });
 
-    //  Vuelvo a la página 0 si cambio de ciudad
     effect(() => {
         const ciudad = this.cityFilter.city(); 
         this.emprendimientoService.fetchEmprendimientos(0, 10);
     });
-  }
-
-  ngOnInit() {
-    
   }
 
   onPageChange(newPage: number) {
