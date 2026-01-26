@@ -8,6 +8,7 @@ import { EliminarCuentaPaso3 } from '../eliminar-cuenta-paso3/eliminar-cuenta-pa
 import { ErrorDialogModal
 
  } from '../error-dialog-modal/error-dialog-modal';
+import { UiNotificationService } from '../../../services/ui-notification-service';
 @Component({
   selector: 'app-eliminar-cuenta-paso2',
   imports: [ReactiveFormsModule],
@@ -20,6 +21,7 @@ export class EliminarCuentaPaso2 {
   private dialogRef = inject(MatDialogRef<EliminarCuentaPaso2>);
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog);
+  private uiNotificationService = inject(UiNotificationService);
 
   form = this.fb.group({
     confirm: ['', [Validators.required]],
@@ -29,14 +31,14 @@ export class EliminarCuentaPaso2 {
     const value = this.form.get('confirm')?.value?.trim().toLowerCase();
 
     if (value !== 'eliminar') {
-      this.mostrarError("Debe escribir exactamente la palabra 'eliminar'!");
+      this.uiNotificationService.abrirModalError(null, "Tenés que escribir exactamente la palabra 'eliminar'.");
       return;
     }
 
     const id = this.authService.usuarioId();
 
     if (!id) {
-      this.mostrarError('No se encontró el usuario logueado.');
+      this.uiNotificationService.abrirModalError(null, 'No se encontró el usuario logueado.');
       return;
     }
 
@@ -48,24 +50,12 @@ export class EliminarCuentaPaso2 {
         this.dialog.open(EliminarCuentaPaso3);
       },
       error: (err) => {
-        const backendMsg =
-          err.error?.message || err.error?.error || 'Error desconocido al eliminar la cuenta';
-
-        this.mostrarError(backendMsg);
+        this.uiNotificationService.abrirModalError(err);
       },
     });
   }
 
   cancelar() {
     this.dialogRef.close();
-  }
-
-  private mostrarError(message: string) {
-    this.dialog.open(ErrorDialogModal, {
-      data: { message },
-      panelClass: 'modal-error',
-      autoFocus: false,
-      restoreFocus: false,
-    });
   }
 }

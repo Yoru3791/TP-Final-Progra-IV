@@ -17,7 +17,6 @@ export class SearchService {
     // Recalcular resultados cuando cambia el término o la ciudad
     effect(() => {
       const term = this.termino().toLowerCase();
-      const ciudad = this.cityFilter.city();
       const todos = this.emprendimientosService.emprendimientos(); // ya filtrados por ciudad
       if (!term.trim()) {
         this.resultados.set([]);

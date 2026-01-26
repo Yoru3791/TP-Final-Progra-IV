@@ -1,11 +1,9 @@
-import { Component, AfterViewInit, inject, signal } from '@angular/core';
+import { Component, AfterViewInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth-service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginResponse } from '../../../model/login-response.model';
 import { environment } from '../../../environments/environment';
-import { Snackbar } from '../../modals/snackbar/snackbar';
-import { SnackbarData } from '../../../model/snackbar-data.model';
+import { UiNotificationService } from '../../../services/ui-notification-service';
 
 declare var google: any;
 
@@ -18,7 +16,7 @@ declare var google: any;
 export class GoogleLoginButton implements AfterViewInit {
   private authService = inject(AuthService);
   private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
+  private uiNotificationService = inject(UiNotificationService);
 
   ngAfterViewInit(): void {
     google.accounts.id.initialize({
@@ -45,43 +43,30 @@ export class GoogleLoginButton implements AfterViewInit {
 
           this.authService.handleLoginSuccess(res.token, res.usuarioID, true);
 
-          this.showSnackBar('¡Bienvenido! Sesión iniciada con Google.', 'check_circle');
-
+          this.uiNotificationService.abrirSnackBarExito('Sesión iniciada con Google exitosamente.');
+          
           setTimeout(() => {
             this.router.navigate(['/home']).then((success) => {
-              if (success) {
-                console.log('4. Navegación exitosa.');
-              } else {
-                console.error('4. ERROR: La navegación fue bloqueada.');
-              }
+                if (success) {
+                    console.log('Navegación exitosa.');
+                } else {
+                    console.error('Navegación bloqueada.');
+                }
             });
           }, 200);
         },
         error: (err) => {
-          console.error('Error en login Google:', err);
-          let msg = 'Error al iniciar sesión con Google';
+          let msg = 'Error al iniciar sesión con Google.';
+          
+          if (err.status === 403) {
+            msg = 'El correo no está registrado. Por favor registrate primero.';
+          } else if (err.status === 401) {
+            msg = 'Cuenta deshabilitada.';
+          }
 
-          if (err.status === 403)
-            msg = 'El correo no está registrado. Por favor regístrese primero.';
-          else if (err.status === 401) msg = 'Cuenta deshabilitada.';
-
-          this.showSnackBar(msg, 'error');
-        },
+          this.uiNotificationService.abrirSnackBarError(err, msg);
+        }
       });
     }
-  }
-
-  private showSnackBar(message: string, iconName: string) {
-    const snackbarData: SnackbarData = {
-      message: message,
-      iconName: iconName,
-    };
-
-    this.snackBar.openFromComponent(Snackbar, {
-      duration: 3000,
-      verticalPosition: 'bottom',
-      panelClass: 'snackbar-panel',
-      data: snackbarData,
-    });
   }
 }

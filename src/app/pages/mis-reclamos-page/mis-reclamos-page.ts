@@ -6,6 +6,7 @@ import { EstadoReclamo } from '../../enums/estadoReclamo.enum';
 import { ReclamoService } from '../../services/reclamo-service';
 import { Reclamo } from '../../model/reclamo-response.model';
 import { InfoReclamoTooltipComponent } from '../../components/utils/info-reclamo-tooltip/info-reclamo-tooltip';
+import { UiNotificationService } from '../../services/ui-notification-service';
 
 @Component({
   selector: 'app-mis-reclamos-page',
@@ -15,6 +16,7 @@ import { InfoReclamoTooltipComponent } from '../../components/utils/info-reclamo
 })
 export class MisReclamosComponent implements OnInit {
   private reclamoService = inject(ReclamoService);
+  private uiNotificationService = inject(UiNotificationService);
 
   reclamos = signal<Reclamo[]>([]);
   loading = signal(true);
@@ -50,7 +52,7 @@ export class MisReclamosComponent implements OnInit {
         this.loading.set(false);
       },
       error: (err) => {
-        console.error(err);
+        this.uiNotificationService.abrirSnackBarError(err, 'Error al cargar reclamos.');
         this.loading.set(false);
       }
     });
