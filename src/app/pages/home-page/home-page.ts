@@ -1,7 +1,6 @@
 import { Component, inject, effect, signal, computed } from '@angular/core';
 import { EmprendimientoService } from '../../services/emprendimiento-service';
 import { EmprendimientoCard } from '../../components/cards/emprendimiento-card/emprendimiento-card';
-import { EmprendimientoConViandas } from '../../model/emprendimiento-con-viandas.model';
 import { CityFilterService } from '../../services/city-filter-service';
 import { EmprendimientoResponse } from '../../model/emprendimiento-response.model';
 import { Paginador } from '../../components/utils/paginador/paginador';

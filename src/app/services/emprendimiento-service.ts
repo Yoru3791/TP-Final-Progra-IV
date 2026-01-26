@@ -140,6 +140,11 @@ export class EmprendimientoService {
 
   deleteEmprendimiento(id: number) {
     const rol = this.authService.currentUserRole();
+
+    if (rol !== 'DUENO' && rol !== 'ADMIN') {
+      throw new Error('No tenés permiso para eliminar emprendimientos.');
+    }
+
     const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
     const url = `${baseUrl}/id/${id}`;
 
@@ -158,6 +163,11 @@ export class EmprendimientoService {
 
   updateEmprendimiento(id: number, dto: any) {
     const rol = this.authService.currentUserRole();
+
+    if (rol !== 'DUENO' && rol !== 'ADMIN') {
+      throw new Error('No tenés permiso para actualizar emprendimientos.');
+    }
+
     const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
     const url = `${baseUrl}/id/${id}`;
 
@@ -172,6 +182,11 @@ export class EmprendimientoService {
 
   updateImagenEmprendimiento(id: number, formData: FormData) {
     const rol = this.authService.currentUserRole();
+
+    if (rol !== 'DUENO' && rol !== 'ADMIN') {
+      throw new Error('No tenés permisos para actualizar imágenes de emprendimientos.');
+    }
+
     const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
     const url = `${baseUrl}/id/${id}/imagen`;
 

@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CarritoService } from '../../../services/carrito-service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ViandaResponse } from '../../../model/vianda-response.model';
-import { ConfirmarModalService } from '../../../services/confirmar-modal-service';
+import { UiNotificationService } from '../../../services/ui-notification-service';
 import {
   AbstractControl,
   FormBuilder,
@@ -23,10 +23,10 @@ import { Router } from '@angular/router';
 export class CarritoModal implements OnInit {
   private carritoService = inject(CarritoService);
   private changeDetectorRef = inject(ChangeDetectorRef);
-  private confirmarModalService = inject(ConfirmarModalService);
   private dialogRef = inject(MatDialogRef<CarritoModal>);
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
+  private uiNotificationService = inject(UiNotificationService);
 
   public emprendimiento = this.carritoService.emprendimiento;
   public viandaCantidades = this.carritoService.viandaCantidades;
@@ -126,7 +126,7 @@ export class CarritoModal implements OnInit {
     }
 
     const confirmado = await firstValueFrom(
-      this.confirmarModalService.confirmar({
+      this.uiNotificationService.abrirModalConfirmacion({
         titulo: 'Cancelar Pedido',
         texto: texto,
       })
@@ -154,7 +154,7 @@ export class CarritoModal implements OnInit {
         this.carritoService.eliminarViandasEnCero();
 
         const confirmado = await firstValueFrom(
-          this.confirmarModalService.confirmar({
+          this.uiNotificationService.abrirModalConfirmacion({
             titulo: 'Confirmar Pedido',
             texto: '¿Seguro de que querés confirmar el pedido?',
           })

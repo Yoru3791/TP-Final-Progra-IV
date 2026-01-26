@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UsuarioUpdate } from '../../../model/usuario-update.model';
 import { UsuarioService } from '../../../services/usuario-service';
+import { UiNotificationService } from '../../../services/ui-notification-service';
 
 @Component({
   selector: 'app-form-user-update',
@@ -19,9 +20,8 @@ export class FormUserUpdate {
   private usuarioService = inject(UsuarioService);
   private dialogRef = inject(MatDialogRef<FormUserUpdate>);
   private data = inject(MAT_DIALOG_DATA) as UsuarioUpdate | null;
+  private uiNotificationService = inject(UiNotificationService);
 
-  error = signal<string | null>(null);
-  exito = signal<string | null>(null);
   cargando = signal<boolean>(false);
 
   form = this.fb.group({
@@ -44,24 +44,21 @@ export class FormUserUpdate {
     const id = this.data?.id;
     if (this.form.invalid || !id) return;
 
-    this.error.set(null);
-    this.exito.set(null);
     this.cargando.set(true);
 
     const payload: UsuarioUpdate = this.form.value as UsuarioUpdate;
 
     this.usuarioService.updateUsuario(id, payload).subscribe({
       next: (resp) => {
-        const emailCambio = this.data?.email !== payload.email;
-
-        this.exito.set('Datos actualizados correctamente');
         this.cargando.set(false);
-
+        this.uiNotificationService.abrirSnackBarExito('Perfil actualizado correctamente.');
+        
+        const emailCambio = this.data?.email !== payload.email;
         this.dialogRef.close({ resp, emailCambio });
       },
       error: (err) => {
-        this.error.set(err.error?.message || 'Error al actualizar usuario');
         this.cargando.set(false);
+        this.uiNotificationService.abrirModalError(err);
       },
     });
   }

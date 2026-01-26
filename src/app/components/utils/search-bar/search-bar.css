@@ -1,6 +1,6 @@
-/* --- COMPONENTE BARRA DE BÚSQUEDA --- */
 .search-container {
   position: relative;
+  width: 100%;
 }
 
 .search-input {
@@ -148,4 +148,32 @@
   font-size: 2rem;
   padding: 2rem 2rem;
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  .search-input {
+    width: 100%;
+    font-size: 1.4rem;
+    padding: 0.8rem 3.2rem;
+  }
+
+  .search-results {
+    width: 100%;
+  }
+
+  .result-card {
+    padding: 1rem;
+  }
+
+  .card-title {
+    font-size: 1.6rem;
+  }
+
+  .card-img {
+    height: 6rem;
+  }
+
+  .card-sub {
+    font-size: 1.3rem;
+  }
 }

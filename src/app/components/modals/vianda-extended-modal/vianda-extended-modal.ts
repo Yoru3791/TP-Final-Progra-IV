@@ -2,16 +2,13 @@ import { Component, computed, inject, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { Router } from '@angular/router';
 import { IconTacc } from '../../utils/icon-tacc/icon-tacc';
 import { IconVegan } from '../../utils/icon-vegan/icon-vegan';
 import { IconVeggie } from '../../utils/icon-veggie/icon-veggie';
 import { ViandaResponse } from '../../../model/vianda-response.model';
 import { PageMode } from '../../../pages/emprendimiento-page/emprendimiento-page';
 import { CarritoService } from '../../../services/carrito-service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarData } from '../../../model/snackbar-data.model';
-import { Snackbar } from '../snackbar/snackbar';
+import { UiNotificationService } from '../../../services/ui-notification-service';
 
 interface ModalData {
   vianda: ViandaResponse;
@@ -27,13 +24,12 @@ interface ModalData {
 export class ViandaExtendedModal {
 
   private carritoService = inject(CarritoService);
-  private snackBar = inject(MatSnackBar);
+  private uiNotificationService = inject(UiNotificationService);
 
   vianda: ViandaResponse;
   modo: PageMode;
   
   constructor(
-    private router: Router,
     public dialogRef: MatDialogRef<ViandaExtendedModal>,
     @Inject(MAT_DIALOG_DATA) public data: ModalData
     ) {
@@ -79,18 +75,8 @@ export class ViandaExtendedModal {
   }
 
   abrirSnackbarLoginRequerido() {
-      const snackbarData: SnackbarData = {
-        message: 'Inicie sesión para realizar pedidos',
-        iconName: 'error'
-      }
-  
-      this.snackBar.openFromComponent(Snackbar, {
-        duration: 3000,
-        verticalPosition: 'bottom',
-        panelClass: 'snackbar-panel',
-        data: snackbarData
-      });
-    }
+    this.uiNotificationService.abrirSnackBarError(null, 'Iniciá sesión para realizar pedidos.');
+  }
 
   cerrarModal() {
     this.dialogRef.close();

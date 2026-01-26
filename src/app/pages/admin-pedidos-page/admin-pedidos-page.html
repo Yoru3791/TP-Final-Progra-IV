@@ -1,46 +1,39 @@
 <div class="page-container">
+
   <div class="header-section">
-    <h1 class="main-h1-title">PEDIDOS</h1>
+    <h1 class="main-title">PEDIDOS</h1>
+    <p class="subtitulo">Gestión y seguimiento de órdenes</p>
   </div>
 
-  <div class="filters-container">
+  <div class="filters">
+    <!-- Filtro Nombre -->
+    <input
+      type="text"
+      class="filter-input"
+      placeholder="Filtrar por emprendimiento..."
+      [value]="pedidoService.filtroEmprendimiento() || ''"
+      (input)="onEmprendimientoInput($event)"
+    />
 
     <!-- Filtro Estado -->
-    <div class="select-wrapper">
-      <div class="select-custom" [class.open]="openEstado" (click)="toggleEstado($event)">
+    <div class="select-custom-wrapper">
+      <div class="select-trigger" [class.open]="openEstado" (click)="toggleEstado($event)">
         <div class="selected-option">{{ pedidoService.filtroEstado() || 'Estado: Todos' }}</div>
         <div class="arrow">▾</div>
-        @if (openEstado) {
-          <ul class="options">
-            <li (click)="setEstado(null); $event.stopPropagation()">Todos</li>
-            @for (estado of estados; track estado) {
-              <li (click)="setEstado(estado); $event.stopPropagation()">{{ estado }}</li>
-            }
-          </ul>
-        }
       </div>
-    </div>
 
-    <!-- Filtro Emprendimiento -->
-    <div class="select-wrapper">
-      <div class="select-custom" [class.open]="openEmp" (click)="toggleEmp($event)">
-        <div class="selected-option">
-          {{ pedidoService.filtroEmprendimiento() || 'Emprendimiento: Todos' }}
-        </div>
-        <div class="arrow">▾</div>
-        @if (openEmp) {
-          <ul class="options">
-            <li (click)="setEmp(null); $event.stopPropagation()">Todos</li>
-            @for (emp of pedidoService.nombresEmprendimientos(); track emp) {
-              <li (click)="setEmp(emp); $event.stopPropagation()">{{ emp }}</li>
-            }
-          </ul>
-        }
-      </div>
+      @if (openEstado) {
+        <ul class="options">
+          <li (click)="setEstado(null); $event.stopPropagation()">Todos</li>
+          @for (estado of estados; track estado) {
+            <li (click)="setEstado(estado); $event.stopPropagation()">{{ estado }}</li>
+          }
+        </ul>
+      }
     </div>
 
     <!-- Filtro Fecha -->
-    <div class="select-wrapper date-wrapper">
+    <div class="date-picker-wrapper">
       <app-date-range-picker
         (fechasSeleccionadas)="pedidoService.filtroFechas.set($event)"
       ></app-date-range-picker>

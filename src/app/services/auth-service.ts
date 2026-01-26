@@ -32,7 +32,7 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {
     this.init();
-    console.log('AuthService inicializado. Rol actual', this.currentUserRole());
+    console.log('AuthService inicializado. Rol actual:', this.currentUserRole());
   }
 
   init(): void {
@@ -106,7 +106,7 @@ export class AuthService {
     this.currentUserRole.set(this.decodeRolFrom(token));
     this.usuarioId.set(usuarioID);
 
-    console.log('Login exitoso. Rol:', this.currentUserRole(), 'UsuarioID:', this.usuarioId());
+    console.log('Login exitoso. Rol:', this.currentUserRole(), '- ID de usuario:', this.usuarioId());
   }
 
   // Cierre de sesion y elimina la persistencia del refreshToken
@@ -115,8 +115,8 @@ export class AuthService {
       .post(this.apiUrlLogout, {}, { withCredentials: true, responseType: 'text' })
       .subscribe({
         //aca se borra el refreshToken
-        next: () => console.log('Logout en servidor exitoso'),
-        error: (err) => console.error('Error logout servidor', err),
+        next: () => console.log('Logout en servidor exitoso.'),
+        error: (err) => console.error('Error de logout en servidor:', err),
         complete: () => this.clearLocalData(),
       });
   }

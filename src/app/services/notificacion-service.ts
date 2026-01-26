@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { Notificacion } from '../model/notificacion.model';
-import { catchError, map, of } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { AuthService, UserRole } from './auth-service';
 import { PagedResponse, PageMetadata } from '../model/hateoas-pagination.models';
 
@@ -84,7 +84,7 @@ export class NotificacionService {
           );
           this.cantidadNoLeidas.update(cant => Math.max(0, cant - 1));
         },
-        error: (err) => console.error('Error al marcar leida', err)
+        error: (err) => console.error('Error al marcar notificación como leída:', err)
       });
   }
 

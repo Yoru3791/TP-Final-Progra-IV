@@ -1,31 +1,30 @@
 <div class="page-container">
   <div class="header-section">
-    <h1 class="main-h1-title">USUARIOS</h1>
+    <h1 class="main-title">USUARIOS</h1>
+    <p class="subtitulo">Administración de usuarios y permisos</p>
   </div>
 
-  <div class="filters-buttons-container">
-    <div class="filters-container">
-      <input
-        class="filter-input"
-        type="text"
-        placeholder="Filtrar por nombre..."
-        (input)="onNameInput($event)"
-      />
+  <div class="filters">
+    <input
+      class="filter-input"
+      type="text"
+      placeholder="Filtrar por nombre..."
+      [value]="nameFilter()"
+      (input)="onNameInput($event)"
+    />
 
-      <input
-        class="filter-input"
-        type="text"
-        placeholder="Filtrar por email..."
-        (input)="onEmailInput($event)"
-      />
-    </div>
+    <input
+      class="filter-input"
+      type="text"
+      placeholder="Filtrar por email..."
+      [value]="emailFilter()"
+      (input)="onEmailInput($event)"
+    />
 
-    <div class="buttons-container">
-      <button class="btn btn-create" (click)="openUsuarioForm()">
-        <i class="fa-solid fa-plus"></i>
-        <span>Crear usuario</span>
-      </button>
-    </div>
+    <button class="btn btn-create" (click)="openUsuarioForm()">
+      <i class="fa-solid fa-plus"></i>
+      <span>Crear usuario</span>
+    </button>
   </div>
 
   <div class="usuarios-list">

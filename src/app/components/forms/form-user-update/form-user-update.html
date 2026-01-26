@@ -48,13 +48,6 @@
     }
   </div>
 
-  <!-- Mensajes globales -->
-  @if (error()) {
-  <p class="error-global">{{ error() }}</p>
-  } @if (exito()) {
-  <p class="success-global">{{ exito() }}</p>
-  }
-
   <!-- Botones -->
   <div class="actions-row">
     <button type="submit" class="btn btn-crear" [disabled]="form.invalid || cargando()">

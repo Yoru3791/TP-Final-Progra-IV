@@ -1,7 +1,8 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 import { FormsModule } from '@angular/forms';
+import { UiNotificationService } from '../../services/ui-notification-service';
 
 @Component({
   selector: 'app-account-activation',
@@ -12,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 export class AccountActivation implements OnInit {
   private route = inject(ActivatedRoute);
   private authService = inject(AuthService);
-  private router = inject(Router);
+  private uiNotificationService = inject(UiNotificationService);
 
   // Estados de la vista
   isLoading = signal<boolean>(true);
@@ -41,7 +42,7 @@ export class AccountActivation implements OnInit {
         this.message.set(responseMsg);
       },
       error: (err) => {
-        let msg = 'El enlace ha expirado o no es válido.';
+        let msg = 'El enlace expiró o es inválido.';
         if (err.error) {
           try {
             const json = JSON.parse(err.error);
@@ -65,14 +66,14 @@ export class AccountActivation implements OnInit {
 
   public onResend() {
     if (!this.emailToResend() || !this.emailToResend().includes('@')) {
-      alert('Por favor ingresa un email válido');
+      this.uiNotificationService.abrirModalError(null, 'Por favor ingresá un email válido.');
       return;
     }
 
     this.isResending.set(true);
 
     this.authService.resendToken(this.emailToResend()).subscribe({
-      next: (res) => {
+      next: () => {
         this.isResending.set(false);
         this.showResendForm.set(false);
         this.isLoading.set(false);
@@ -82,7 +83,7 @@ export class AccountActivation implements OnInit {
       error: (err) => {
         this.isResending.set(false);
         
-        let mensajeError = 'Intente nuevamente';
+        let mensajeError = 'Intentá nuevamente.';
 
         if (err.error) {
           try {
@@ -95,7 +96,7 @@ export class AccountActivation implements OnInit {
           }
         }
         
-        alert('Error: ' + mensajeError);
+        this.uiNotificationService.abrirModalError(err, mensajeError);
       }
     });
   }

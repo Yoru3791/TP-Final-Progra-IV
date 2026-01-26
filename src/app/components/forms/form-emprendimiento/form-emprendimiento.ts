@@ -1,14 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EmprendimientoService } from '../../../services/emprendimiento-service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../../services/auth-service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarData } from '../../../model/snackbar-data.model';
-import { Snackbar } from '../../modals/snackbar/snackbar';
 import { ChangeDetectorRef } from '@angular/core';
 import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-modal';
 import { CitySelector } from '../../utils/city-selector/city-selector';
+import { UiNotificationService } from '../../../services/ui-notification-service';
 
 @Component({
   selector: 'app-form-emprendimiento',
@@ -18,12 +16,11 @@ import { CitySelector } from '../../utils/city-selector/city-selector';
 })
 export class FormEmprendimiento {
   private fb = inject(FormBuilder);
-  private dialog = inject(MatDialog);
   private emprendimientoService = inject(EmprendimientoService);
   private authService = inject(AuthService);
   private dialogRef = inject(MatDialogRef<FormEmprendimiento>);
-  private snackBar = inject(MatSnackBar);
   private cdr = inject(ChangeDetectorRef); // Necesario para forzar render
+  private uiNotificationService = inject(UiNotificationService);
 
   selectedFileName: string | null = null;
   public imagePreviewUrl: string | ArrayBuffer | null = null;
@@ -81,10 +78,9 @@ export class FormEmprendimiento {
           this.imagePreviewUrl = null;
           this.selectedFileName = null;
 
-          this.dialog.open(ErrorDialogModal, {
-            data: { message: `La imagen no debe superar ${this.maxWidth}x${this.maxHeight}px` },
-            panelClass: 'modal-error',
-          });
+          this.uiNotificationService.abrirModalError(
+            null, `La imagen no debe superar ${this.maxWidth}x${this.maxHeight}px`
+          );
         }
 
         this.formEmprendimiento.get('image')?.markAsTouched();
@@ -123,11 +119,9 @@ export class FormEmprendimiento {
     formData.append('telefono', formValues.telefono!);
 
     const userId = this.authService.usuarioId();
+
     if (!userId) {
-      this.dialog.open(ErrorDialogModal, {
-        data: { message: 'Error: no se pudo obtener el usuario logueado.' },
-        panelClass: 'modal-error',
-      });
+      this.uiNotificationService.abrirModalError(null, 'No se pudo obtener el usuario logueado.');
       return;
     }
 
@@ -135,27 +129,11 @@ export class FormEmprendimiento {
 
     this.emprendimientoService.createEmprendimiento(formData).subscribe({
       next: () => {
-        const snackbarData: SnackbarData = {
-          message: 'Emprendimiento creado con éxito!',
-          iconName: 'check_circle',
-        };
-
-        this.snackBar.openFromComponent(Snackbar, {
-          data: snackbarData,
-          duration: 3000,
-          panelClass: 'snackbar-panel',
-          verticalPosition: 'bottom',
-        });
-
+        this.uiNotificationService.abrirSnackBarExito('Emprendimiento creado exitosamente.');
         this.dialogRef.close(true);
       },
       error: (err) => {
-        const backendMsg = err.error?.message || 'Error desconocido al crear el emprendimiento';
-
-        this.dialog.open(ErrorDialogModal, {
-          data: { message: backendMsg },
-          panelClass: 'modal-error',
-        });
+        this.uiNotificationService.abrirModalError(err);
       },
     });
   }
