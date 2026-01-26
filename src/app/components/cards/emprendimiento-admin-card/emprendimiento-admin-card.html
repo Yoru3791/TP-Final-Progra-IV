@@ -1,4 +1,7 @@
-<div class="emprendimiento-card" [class.unavailable]="!emprendimiento.estaDisponible">
+<div class="emprendimiento-card" 
+    [class.eliminado]="!!emprendimiento.fechaEliminacion"
+    [class.unavailable]="!emprendimiento.estaDisponible && !emprendimiento.fechaEliminacion">
+  
   <img class="card-img" [src]="emprendimiento.imagenUrl" alt="Imagen emprendimiento" />
 
   <div class="main-info">
@@ -27,9 +30,13 @@
 
   <div class="status-action-col">
     <div class="estado-wrapper">
-      <span class="estado" [class.off]="!emprendimiento.estaDisponible">
-        {{ emprendimiento.estaDisponible ? 'Disponible' : 'No disponible' }}
-      </span>
+      @if (emprendimiento.fechaEliminacion) {
+          <span class="estado deleted">ELIMINADO</span>
+      } @else if (!emprendimiento.estaDisponible) {
+          <span class="estado off">NO DISPONIBLE</span>
+      } @else {
+          <span class="estado on">DISPONIBLE</span>
+      }
     </div>
 
     <button class="btn btn-ver-mas" [routerLink]="['/emprendimiento', emprendimiento.id]">
