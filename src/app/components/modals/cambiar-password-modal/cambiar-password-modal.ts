@@ -4,7 +4,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { UsuarioService } from '../../../services/usuario-service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChangePasswordRequest } from '../../../model/change-password-request.model';
-import { ErrorDialogModal } from '../error-dialog-modal/error-dialog-modal';
 import { SuccessDialogModal } from '../success-dialog-modal/success-dialog-modal'; 
 import { AuthService } from '../../../services/auth-service';
 import { Router } from '@angular/router';

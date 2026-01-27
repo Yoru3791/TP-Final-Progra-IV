@@ -19,13 +19,47 @@ export class RecuperarContrasena {
   private uiNotificationService = inject(UiNotificationService);
 
   token: string = '';
-  showPassword = false;
-  isSubmitting = signal(false);
 
-  form = this.fb.group({
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    confirmPassword: ['', [Validators.required]],
-  });
+  showActual = false;
+  showNueva = false;
+  showRepetirNueva = false;
+  isSubmitting = signal<boolean>(false);
+
+  form = this.fb.group(
+    {
+      nueva: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,16}$/
+          ),
+        ],
+      ],
+      repetir: ['', Validators.required],
+    },
+    {
+      validators: [this.validarRepetidaIgual],
+    }
+  );
+
+  // La contraseña repetida debe coincidir
+  validarRepetidaIgual(form: any) {
+    const nueva = form.get('nueva')?.value;
+    const repetir = form.get('repetir')?.value;
+
+    if (nueva && repetir && nueva !== repetir) {
+      form.get('repetir')?.setErrors({ noCoincide: true });
+    } else {
+      const errores = form.get('repetir')?.errors;
+      if (errores) {
+        delete errores['noCoincide'];
+        if (Object.keys(errores).length === 0) form.get('repetir')?.setErrors(null);
+      }
+    }
+
+    return null;
+  }
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -37,21 +71,12 @@ export class RecuperarContrasena {
     });
   }
 
-  togglePassword() {
-    this.showPassword = !this.showPassword;
-  }
-
   onSubmit() {
     if (this.form.invalid) return;
 
-    const { password, confirmPassword } = this.form.value;
-
-    if (password !== confirmPassword) {
-      this.uiNotificationService.abrirSnackBarError(null, 'Las contraseñas no coinciden.');
-      return;
-    }
-
     this.isSubmitting.set(true);
+
+    const password = this.form.value.nueva;
 
     this.authService.resetPassword({ token: this.token, newPassword: password! }).subscribe({
       next: () => {
@@ -60,8 +85,20 @@ export class RecuperarContrasena {
       },
       error: (err) => {
         this.isSubmitting.set(false);
-        this.uiNotificationService.abrirSnackBarError(null, 'El enlace expiró o es inválido.');
+        this.uiNotificationService.abrirSnackBarError(err, 'El enlace expiró o es inválido.');
       },
     });
+  }
+
+  toggleActual() {
+    this.showActual = !this.showActual;
+  }
+
+  toggleNueva() {
+    this.showNueva = !this.showNueva;
+  }
+
+  toggleRepetirNueva() {
+    this.showRepetirNueva = !this.showRepetirNueva;
   }
 }
