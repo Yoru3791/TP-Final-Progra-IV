@@ -20,7 +20,7 @@ export class ContrasenaOlvidadaModal {
   isLoading = signal(false);
 
   form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]]
+    email: ['', [Validators.required, Validators.email]],
   });
 
   enviar() {
@@ -34,7 +34,7 @@ export class ContrasenaOlvidadaModal {
         this.isLoading.set(false);
         this.dialogRef.close();
         
-        this.uiNotificationService.abrirSnackBarExito('Si el correo existe, te enviamos instrucciones.');
+        this.uiNotificationService.abrirSnackBarExito('Instrucciones enviadas, revisá tu correo.');
       },
       error: (err) => {
         this.isLoading.set(false);

@@ -23,7 +23,6 @@ export class FormRegistro {
   showPassword = false;
   showConfirmPassword = false;
 
-  //Como este form va dentro de una pagina (componente padre) que define el rol desde la URL, lo recibo por Input, luego desde la pagina padre le paso el rol correspondiente.
   @Input() rolUsuario: string = '';
 
   formRegistro = this.fb.group(
@@ -39,7 +38,7 @@ export class FormRegistro {
         [
           Validators.required,
           Validators.pattern(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,16}$/
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,16}$/,
           ),
         ],
       ],
@@ -47,7 +46,7 @@ export class FormRegistro {
       aceptarTerminos: [false, Validators.requiredTrue],
       aceptarPoliticas: [false, Validators.requiredTrue],
     },
-    { validators: this.passwordsCoinciden }
+    { validators: this.passwordsCoinciden },
   );
 
   onSubmit() {
@@ -106,7 +105,6 @@ export class FormRegistro {
     });
   }
 
-  // Validador personalizado para verificar que las contraseñas coincidan
   passwordsCoinciden(form: any) {
     const pass = form.get('password')?.value;
     const confirm = form.get('confirmarPassword')?.value;

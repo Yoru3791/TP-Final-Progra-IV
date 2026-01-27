@@ -56,18 +56,24 @@
 
               <button class="btn btn-action" (click)="cerrarModal()">Volver</button>
                 
-              <div class="quantity-selector">
-                <button (click)="quitar()" class="btn-qty" [disabled]="enMinimo()">
-                  <i class="fa-solid fa-minus"></i>
-                </button>
-    
-                <span class="qty-value">{{ cantidad() }}</span>
-    
-                <button (click)="agregar()" class="btn-qty" [disabled]="enMaximo()">
-                  <i class="fa-solid fa-plus"></i>
-                </button>
-              </div>
+              <div class="cart-group">
+                  <div class="quantity-selector">
+                    <button (click)="quitar()" class="btn-qty" [disabled]="enMinimo()">
+                        <i class="fa-solid fa-minus"></i>
+                    </button>
 
+                    <span class="qty-value">{{ cantidad() }}</span>
+
+                    <button (click)="agregar()" class="btn-qty" [disabled]="enMaximo()">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                  </div>
+
+                  <button class="btn btn-cart" (click)="abrirCarrito()" title="Ver Carrito">
+                      <i class="fa-solid fa-cart-shopping"></i>
+                  </button>
+
+              </div>
             </div>
           }
 

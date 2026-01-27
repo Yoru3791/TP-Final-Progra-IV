@@ -9,9 +9,9 @@ declare var google: any;
 
 @Component({
   selector: 'app-google-login-button',
-  imports: [], 
+  imports: [],
   templateUrl: './google-login-button.html',
-  styleUrl: './google-login-button.css'
+  styleUrl: './google-login-button.css',
 })
 export class GoogleLoginButton implements AfterViewInit {
   private authService = inject(AuthService);
@@ -21,36 +21,39 @@ export class GoogleLoginButton implements AfterViewInit {
   ngAfterViewInit(): void {
     google.accounts.id.initialize({
       client_id: environment.googleClientId,
-      callback: (response: any) => this.handleGoogleCredential(response)
+      callback: (response: any) => this.handleGoogleCredential(response),
     });
 
-    google.accounts.id.renderButton(
-      document.getElementById("google-btn"),
-      { theme: "outline", size: "large", width: "350", text: "signin_with", logo_alignment: "left" } 
-    );
+    google.accounts.id.renderButton(document.getElementById('google-btn'), {
+      theme: 'outline',
+      size: 'large',
+      width: '350',
+      text: 'signin_with',
+      logo_alignment: 'left',
+    });
   }
 
   handleGoogleCredential(response: any) {
     if (response.credential) {
-      console.log(" Token recibido de Google");
+      console.log(' Token recibido de Google');
 
       this.authService.loginGoogle(response.credential).subscribe({
         next: (res: LoginResponse) => {
-          console.log("Backend respondió OK. Token recibido.");
+          console.log('Backend respondió OK. Token recibido.');
 
           this.authService.handleLoginSuccess(res.token, res.usuarioID, true);
 
           this.uiNotificationService.abrirSnackBarExito('Sesión iniciada con Google exitosamente.');
           
           setTimeout(() => {
-            this.router.navigate(['/home']).then(success => {
+            this.router.navigate(['/home']).then((success) => {
                 if (success) {
-                    console.log("Navegación exitosa.");
+                    console.log('Navegación exitosa.');
                 } else {
-                    console.error("Navegación bloqueada.");
+                    console.error('Navegación bloqueada.');
                 }
             });
-          }, 200); 
+          }, 200);
         },
         error: (err) => {
           let msg = 'Error al iniciar sesión con Google.';

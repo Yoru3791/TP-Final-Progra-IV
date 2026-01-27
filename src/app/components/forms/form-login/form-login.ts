@@ -48,7 +48,7 @@ export class FormLogin {
           this.authService.handleLoginSuccess(
             response.token,
             response.usuarioID,
-            usuario.recordarme!
+            usuario.recordarme!,
           );
 
           setTimeout(() => {

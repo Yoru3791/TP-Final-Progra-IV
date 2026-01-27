@@ -41,6 +41,15 @@ export class ViandaExtendedModal {
     return this.carritoService.cantidadViandaEnCarrito(this.vianda)();
   });
 
+  abrirCarrito() {
+    if (this.modo === 'INVITADO') {
+      this.abrirSnackbarLoginRequerido();
+      return;
+    }
+    this.cerrarModal();
+    this.carritoService.abrirCarrito(this.vianda.emprendimiento);
+  }
+
   agregar() {
     if (this.modo === 'INVITADO') {
       this.abrirSnackbarLoginRequerido();

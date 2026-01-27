@@ -17,9 +17,8 @@ export class Login {
   openForgotPassword() {
     this.dialog.open(ContrasenaOlvidadaModal, {
       width: '90%',
-      maxWidth: '45rem',
+      maxWidth: '50rem',
       autoFocus: false,
-      panelClass: 'custom-modal-panel' //REVISAR, preguintar a EMI
     });
   }
 }
