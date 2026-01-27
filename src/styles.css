@@ -198,7 +198,6 @@ app-root {
 
 /* --- INPUT CON OJITO --- */
 .input-with-icon {
-  margin-bottom: 1rem;
   position: relative;
   width: 100%;
 }
@@ -439,6 +438,7 @@ app-root {
 
 /* MODAL FORM EMPRENDIMIENTO */
 .cdk-overlay-pane.form-modal {
+  max-height: 95vh !important;
   max-width: 75rem !important;
 }
 
