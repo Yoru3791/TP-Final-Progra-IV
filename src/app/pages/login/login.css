@@ -1,4 +1,3 @@
-/* --- COMPONENTE DE LINKS EN FORMULARIO --- */
 /* Container principal */
 .main-form-container {
   display: flex;
@@ -22,7 +21,6 @@
   width: 100%;
   padding: 2.5rem; 
 }
-
 
 .separator {
   display: flex;
@@ -55,7 +53,8 @@
   justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
-  margin-top: 2.5rem; 
+  margin-top: 2.5rem;
+  margin-bottom: 2rem;
   padding: 0 0.5rem;
 }
 
@@ -63,7 +62,7 @@
   color: var(--color-primary-light, #eb8334);
   text-decoration: none;
   font-weight: 700;
-  font-size: 1.3rem; 
+  font-size: 1.6rem; 
   cursor: pointer;
   transition: all 0.2s ease;
   border-bottom: 0.2rem solid transparent; 

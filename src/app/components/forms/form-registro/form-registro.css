@@ -1,4 +1,8 @@
 /* --- FORMULARIO DE REGISTRO --- */
+:host {
+  width: 100%;
+}
+
 .form-registro {
   display: flex;
   flex-direction: column;
@@ -38,6 +42,7 @@
 }
 
 :host .checkbox-container label:has(input[type='checkbox']:checked) a {
+  color: var(--color-ui-neutral);
   pointer-events: none;
   text-decoration: line-through;
   cursor: default;
@@ -54,9 +59,8 @@
 }
 
 .form-registro .btn {
-  width: 30%;
   font-size: 1.5rem;
   font-weight: bold;
-  padding: 1rem 0;
+  padding: 1rem;
   margin-top: 1.5rem;
 }

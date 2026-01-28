@@ -1,4 +1,49 @@
 /* --- FORMULARIO DE EDICIÓN DE VIANDA --- */
+
+.header-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1rem 2rem 0 2rem;
+}
+
+.header-container h2 {
+  font-size: 2.4rem;
+  margin: 0;
+}
+
+.btn-icon-circle {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--color-text-primary);
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.2);
+  z-index: 15;
+}
+
+.btn-icon-circle:hover {
+  background-color: var(--color-primary-light);
+  color: var(--color-background-primary);
+  transform: scale(1.07);
+}
+
+.btn-close-modal {
+  color: var(--color-text-light);
+}
+
+.btn-close-modal:hover {
+  background-color: var(--color-primary-light);
+  color: var(--color-background-primary);
+}
+
 .form-vianda {
   display: flex;
   flex-direction: column;
@@ -7,7 +52,6 @@
   padding: 2rem;
   width: 100%;
   max-width: 75rem;
-  margin: 2rem auto;
   background: var(--color-background-secondary);
   border-radius: 1rem;
   position: relative;
@@ -31,13 +75,14 @@
   flex: 0 0 60%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.2rem;
 }
 
 textarea.form-input {
   resize: none;
   min-height: 5rem;
 }
+
 .image-upload-delete-right {
   flex: 40%;
   display: flex;
@@ -100,9 +145,11 @@ textarea.form-input {
   text-align: center;
   pointer-events: none;
 }
+
 .preview-badge.new {
   background: var(--color-state-success);
 }
+
 .preview-badge.current {
   background: var(--color-primary-light);
 }
@@ -126,6 +173,7 @@ textarea.form-input {
   transition: transform 0.2s;
   z-index: 10;
 }
+
 .btn-remove-image:hover {
   transform: scale(1.1);
 }
@@ -145,6 +193,7 @@ textarea.form-input {
   opacity: 0;
   transition: opacity 0.2s;
 }
+
 .upload-box-visual:hover .edit-overlay {
   opacity: 1;
 }
@@ -175,39 +224,25 @@ textarea.form-input {
   margin-top: 1.5rem;
 }
 
-.btn-icon-circle {
-  position: absolute;
-  top: 1.2rem;
-  right: 1.2rem;
-  width: 3.6rem;
-  height: 3.6rem;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  color: var(--color-text-primary);
-  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.2);
-}
-
 .image-placeholder-message {
   margin-top: 1rem;
   text-align: center;
   font-size: 0.9rem;
 }
+
 .placeholder-info {
   color: var(--color-text-light);
 }
+
 .success-message {
   color: var(--color-state-success);
 }
+
 .upload-icon {
   font-size: 3rem;
   color: var(--color-text-light);
 }
+
 .upload-text {
   font-size: 1.2rem;
   color: var(--color-text-light);
@@ -217,9 +252,8 @@ textarea.form-input {
 .checkbox-group {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 0.6rem;
   flex-wrap: wrap;
-  margin-top: 1rem;
 }
 
 /* ------- DIETAS ------- */

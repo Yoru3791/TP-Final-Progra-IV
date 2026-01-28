@@ -6,12 +6,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 1.2rem;
   padding: 2rem;
-  width: 40rem;
-}
-
-.form-field {
-  min-height: 10rem;
+  width: 60rem;
 }
 
 .btn {

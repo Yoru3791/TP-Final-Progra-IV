@@ -22,20 +22,20 @@
         </button>
       </div>
 
-      @if (form.get('nueva')?.invalid && (form.get('nueva')?.touched || form.get('nueva')?.dirty)) {
       <div class="error-messages">
-        @if (form.get('nueva')?.hasError('required')) {
-        <p>La nueva contraseña es obligatoria.</p>
-        } @if (form.get('nueva')?.hasError('pattern')) {
-        <p>
-          Debe tener entre 8 y 16 caracteres, una mayúscula, una minúscula, un número y un carácter
-          especial.
-        </p>
-        } @if (form.get('nueva')?.hasError('mismaQueActual')) {
-        <p>La nueva contraseña no puede ser igual a la actual.</p>
+        @if (form.get('nueva')?.invalid && (form.get('nueva')?.touched || form.get('nueva')?.dirty)) {
+          @if (form.get('nueva')?.hasError('required')) {
+            <p>La nueva contraseña es obligatoria.</p>
+          } @if (form.get('nueva')?.hasError('pattern')) {
+            <p>
+              Debe tener entre 8 y 16 caracteres, una mayúscula, una minúscula, un número y un carácter
+              especial.
+            </p>
+          } @if (form.get('nueva')?.hasError('mismaQueActual')) {
+            <p>La nueva contraseña no puede ser igual a la actual.</p>
+          }
         }
       </div>
-      }
     </div>
 
     <!-- Repetir contraseña -->
@@ -59,16 +59,17 @@
         </button>
       </div>
 
-      @if (form.get('repetir')?.invalid && (form.get('repetir')?.touched ||
-      form.get('repetir')?.dirty)) {
       <div class="error-messages">
-        @if (form.get('repetir')?.hasError('required')) {
-        <p>Debe repetir la contraseña.</p>
-        } @if (form.get('repetir')?.hasError('noCoincide')) {
-        <p>Las contraseñas no coinciden.</p>
+        @if (form.get('repetir')?.invalid && (form.get('repetir')?.touched ||
+            form.get('repetir')?.dirty))
+        {
+          @if (form.get('repetir')?.hasError('required')) {
+            <p>Debe repetir la contraseña.</p>
+          } @if (form.get('repetir')?.hasError('noCoincide')) {
+            <p>Las contraseñas no coinciden.</p>
+          }
         }
       </div>
-      }
     </div>
 
     <button

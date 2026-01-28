@@ -1,6 +1,12 @@
-<button type="button" class="btn-icon-circle btn-close-modal" (click)="cerrarModal()">
-  <i class="fa-solid fa-xmark"></i>
-</button>
+<div class="header-container">
+  <h2>
+    Editar Emprendimiento
+  </h2>
+
+  <button type="button" class="btn-icon-circle btn-close-modal" (click)="cerrarModal()">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+</div>
 
 <form class="form-emprendimiento" [formGroup]="formEmprendimiento">
   <div class="form-layout">
@@ -15,17 +21,17 @@
           placeholder="Ej: La Cocina de Ana"
         />
 
-        @if (formEmprendimiento.get('nombreEmprendimiento')?.invalid &&
-        formEmprendimiento.get('nombreEmprendimiento')?.touched) {
-
         <div class="error-messages">
-          @if (formEmprendimiento.get('nombreEmprendimiento')?.hasError('required')) {
-          <p>El nombre es obligatorio.</p>
-          } @if (formEmprendimiento.get('nombreEmprendimiento')?.hasError('maxlength')) {
-          <p>Máximo 255 caracteres.</p>
+          @if (formEmprendimiento.get('nombreEmprendimiento')?.invalid &&
+              formEmprendimiento.get('nombreEmprendimiento')?.touched)
+          {
+            @if (formEmprendimiento.get('nombreEmprendimiento')?.hasError('required')) {
+              <p>El nombre es obligatorio.</p>
+            } @if (formEmprendimiento.get('nombreEmprendimiento')?.hasError('maxlength')) {
+              <p>Máximo 255 caracteres.</p>
+            }
           }
         </div>
-        }
       </div>
 
       <!-- Ciudad -->
@@ -34,18 +40,20 @@
 
         <app-city-selector formControlName="ciudad"></app-city-selector>
 
-        @if (formEmprendimiento.get('ciudad')?.invalid && formEmprendimiento.get('ciudad')?.touched)
-        {
         <div class="error-messages">
-          <p>La ciudad es obligatoria.</p>
+          @if (formEmprendimiento.get('ciudad')?.invalid && formEmprendimiento.get('ciudad')?.touched)
+          {
+            <p>La ciudad es obligatoria.</p>
+          }
         </div>
-        }
       </div>
 
       <!-- Dirección -->
       <div class="form-field">
         <label class="form-label">Dirección</label>
         <input formControlName="direccion" type="text" class="form-input" placeholder="Opcional" />
+
+        <div class="error-messages"></div>
       </div>
 
       <!-- Teléfono -->
@@ -58,46 +66,42 @@
           placeholder="Ej: 1123456789"
         />
 
-        @if (formEmprendimiento.get('telefono')?.invalid &&
-        formEmprendimiento.get('telefono')?.touched) {
-
         <div class="error-messages">
-          <p>Debe tener entre 7 y 15 números.</p>
+          @if (formEmprendimiento.get('telefono')?.invalid &&
+              formEmprendimiento.get('telefono')?.touched)
+          {
+            <p>Debe tener entre 7 y 15 números.</p>
+          }
         </div>
-        }
       </div>
 
       <!-- Disponibilidad -->
       <div class="availability-section">
-            
-            <label class="switch-toggle">
-                <input type="checkbox" formControlName="estaDisponible" />
-                <span class="slider"></span>
-            </label>
+        <label class="switch-toggle">
+          <input type="checkbox" formControlName="estaDisponible" />
+          <span class="slider"></span>
+        </label>
 
-            <div class="availability-info">
-                <span class="availability-title">
-                    {{ formEmprendimiento.get('estaDisponible')?.value ? 'Disponible' : 'No Disponible' }}
-                </span>
-                
-                <span class="availability-subtitle">
-                    {{ formEmprendimiento.get('estaDisponible')?.value ? 'Visible para clientes' : 'Oculto para clientes' }}
-                </span>
-            </div>
-
+        <div class="availability-info">
+          <span class="availability-title">
+            {{ formEmprendimiento.get('estaDisponible')?.value ? 'Disponible' : 'No Disponible' }}
+          </span>
+          
+          <span class="availability-subtitle">
+            {{ formEmprendimiento.get('estaDisponible')?.value ? 'Visible para clientes' : 'Oculto para clientes' }}
+          </span>
+        </div>
       </div>
-
-
     </div>
 
     <!-- Imagen, borrar -->
     <div class="image-upload-delete-right">
       <!-- Imagen actual mostrada solo si NO hay nueva imagen cargada -->
       @if (emprendimiento.imagenUrl && !imagePreviewUrl) {
-      <div class="current-image-section">
-        <label class="form-label">Imagen actual</label>
-        <img [src]="emprendimiento.imagenUrl" alt="Imagen actual" class="current-image" />
-      </div>
+        <div class="current-image-section">
+          <label class="form-label">Imagen actual</label>
+          <img [src]="emprendimiento.imagenUrl" alt="Imagen actual" class="current-image" />
+        </div>
       }
 
       <div class="form-field custom-file-field">
@@ -112,34 +116,30 @@
 
         <label for="imagen-file" class="upload-box-visual" [class.has-preview]="!!imagePreviewUrl">
           @if (imagePreviewUrl) {
+            <div
+              class="image-preview"
+              [style.background-image]="'url(' + imagePreviewUrl + ')'"
+            ></div>
 
-          <div
-            class="image-preview"
-            [style.background-image]="'url(' + imagePreviewUrl + ')'"
-          ></div>
-
-          <button
-            type="button"
-            class="btn-remove-image"
-            (click)="removeImage(); $event.preventDefault()"
-          >
-            <i class="fa-solid fa-trash"></i>
-          </button>
-
+            <button
+              type="button"
+              class="btn-remove-image"
+              (click)="removeImage(); $event.preventDefault()"
+            >
+              <i class="fa-solid fa-trash"></i>
+            </button>
           } @else {
-
-          <span class="upload-icon">⤒</span>
-          <br />
-          <span class="upload-text">Cargar nueva imagen</span>
-
+            <span class="upload-icon">⤒</span>
+            <br />
+            <span class="upload-text">Cargar nueva imagen</span>
           }
         </label>
 
         <div class="image-placeholder-message">
           @if (!imagePreviewUrl) {
-          <p class="placeholder-info">No se seleccionó una nueva imagen.</p>
+            <p class="placeholder-info">No se seleccionó una nueva imagen.</p>
           } @else {
-          <p class="success-message">Archivo cargado: {{ selectedFileName }}</p>
+            <p class="success-message">Archivo cargado: {{ selectedFileName }}</p>
           }
         </div>
       </div>

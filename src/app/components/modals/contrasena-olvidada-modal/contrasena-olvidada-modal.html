@@ -19,16 +19,16 @@
       "
     />
 
-    @if (form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty)) {
-      <div class="error-messages">
+    <div class="error-messages">
+      @if (form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty)) {
         @if (form.get('email')?.hasError('required')) {
           <p>El correo es obligatorio.</p>
         }
         @if (form.get('email')?.hasError('email')) {
           <p>Ingresa un formato de correo válido.</p>
         }
-      </div>
-    }
+      }
+    </div>
   </div>
 
   <div class="acciones">

@@ -10,8 +10,8 @@
       placeholder="Ej: Juan Pérez"
     />
 
-    @if (mostrarError('nombreCompleto')) {
-      <div class="error-messages">
+    <div class="error-messages">
+      @if (mostrarError('nombreCompleto')) {
         @if (form.get('nombreCompleto')?.hasError('required')) {
           <p>El nombre es obligatorio.</p>
         }
@@ -21,8 +21,8 @@
         @if (form.get('nombreCompleto')?.hasError('minLength')) {
           <p>El nombre no debe tener al menos 1 caracter.</p>
         }
-      </div>
-    }
+      }
+    </div>
   </div>
 
   <!-- Email -->
@@ -36,8 +36,8 @@
       placeholder="Ej: tunombre@gmail.com"
     />
 
-    @if (mostrarError('email')) {
-      <div class="error-messages">
+    <div class="error-messages">
+      @if (mostrarError('email')) {
         @if (form.get('email')?.hasError('required')) {
           <p>El email es obligatorio.</p>
         }
@@ -47,8 +47,8 @@
         @if (form.get('email')?.hasError('maxLength')) {
           <p>El mail no debe superar los 100 caracteres.</p>
         }
-      </div>
-    }
+      }
+    </div>
   </div>
 
   <!-- Telefono -->
@@ -62,16 +62,16 @@
       placeholder="Ej: 11234567890"
     />
 
-    @if (mostrarError('telefono')) {
-      <div class="error-messages">
+    <div class="error-messages">
+      @if (mostrarError('telefono')) {
         @if (form.get('telefono')?.hasError('required')) {
           <p>El teléfono es obligatorio.</p>
         }
         @if (form.get('telefono')?.hasError('pattern')) {
           <p>El telefono debe tener entre 10 y 16 caracteres numericos.</p>
         }
-      </div>
-    }
+      }
+    </div>
   </div>
 
   <!-- Imagen -->

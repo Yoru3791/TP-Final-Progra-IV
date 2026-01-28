@@ -18,11 +18,11 @@
       placeholder="Ej: Juan Pérez"
     />
 
-    @if (form.get('nombreCompleto')?.invalid && form.get('nombreCompleto')?.touched) {
     <div class="error-messages">
-      <p>El nombre es obligatorio.</p>
+      @if (form.get('nombreCompleto')?.invalid && form.get('nombreCompleto')?.touched) {
+        <p>El nombre es obligatorio.</p>
+      }
     </div>
-    }
   </div>
 
   <div class="form-field">
@@ -30,11 +30,11 @@
 
     <input type="email" class="form-input" formControlName="email" placeholder="ejemplo@mail.com" />
 
-    @if (form.get('email')?.invalid && form.get('email')?.touched) {
     <div class="error-messages">
-      <p>Ingresá un email válido.</p>
+      @if (form.get('email')?.invalid && form.get('email')?.touched) {
+        <p>Ingresá un email válido.</p>
+      }
     </div>
-    }
   </div>
 
   <div class="form-field">
@@ -47,11 +47,11 @@
       placeholder="Entre 8 y 15 dígitos"
     />
 
-    @if (form.get('telefono')?.invalid && form.get('telefono')?.touched) {
     <div class="error-messages">
-      <p>Debe tener entre 8 y 15 dígitos.</p>
+      @if (form.get('telefono')?.invalid && form.get('telefono')?.touched) {
+        <p>Debe tener entre 8 y 15 dígitos.</p>
+      }
     </div>
-    }
   </div>
 
   <!-- Botones -->
