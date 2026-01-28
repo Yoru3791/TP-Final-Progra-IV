@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { EmprendimientoResponse } from '../model/emprendimiento-response.model';
-import { catchError, forkJoin, map, of, tap } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of, tap } from 'rxjs';
 import { AuthService, UserRole } from './auth-service';
 import { CityFilterService } from './city-filter-service';
 import { ViandaService } from './vianda-service';
@@ -121,6 +121,37 @@ export class EmprendimientoService {
   getEmprendimientoById(id: number) {
     const url = this.getApiUrl();
     return this.http.get<EmprendimientoResponse>(`${url}/id/${id}`);
+  }
+
+  searchByNombre(nombre: string): Observable<EmprendimientoResponse[]> {
+    const rol = this.authService.currentUserRole();
+    const url = this.getApiUrl();
+    
+    let params = new HttpParams()
+        .set('nombre', nombre)
+        .set('page', 0)
+        .set('size', 6);
+
+    if (rol === 'DUENO') {
+    } else {
+      const ciudad = this.cityFilter.city();
+      if (ciudad) {
+        params = params.set('ciudad', ciudad);
+      }
+    }
+
+    return this.http.get<PagedResponse<EmprendimientoResponse>>(url, { params }).pipe(
+      map(response => {
+        if (response && response._embedded) {
+          return response._embedded['emprendimientoDTOList'] || [];
+        }
+        return [];
+      }),
+      catchError(err => {
+        console.error('Error en búsqueda:', err);
+        return of([]);
+      })
+    );
   }
 
   // ----------------------- CRUD -----------------------
