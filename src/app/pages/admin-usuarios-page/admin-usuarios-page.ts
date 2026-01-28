@@ -56,7 +56,7 @@ export class AdminUsuariosPage {
   public openUsuarioForm() {
     this.dialog
       .open(AdminUserCreateModal, {
-        panelClass: 'form-modal', // Asegúrate que esta clase exista en global styles
+        panelClass: 'form-modal',
         autoFocus: false,
         restoreFocus: false,
       })

@@ -22,7 +22,7 @@
         @if (modoVista() === "DUENO" && (!filtrosActivos() || viandas().length > 0)) {
             <div class="card-crear" (click)="abrirViandaForm()">
                 <i class="fa-solid fa-plus"></i>
-                <span>Agrega una vianda</span>
+                <span>Agregá una vianda</span>
             </div>
         }
         
@@ -43,7 +43,7 @@
             <div class="no-results" [class.owner-empty]="modoVista() === 'DUENO' && !filtrosActivos()">
                 @if (filtrosActivos()) {
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <h3>No encontramos viandas con esos filtros</h3>
+                    <h3>No se encontraron viandas con esos filtros</h3>
                     <p>Intentá cambiando los términos de búsqueda.</p>
 
                 } @else {
@@ -55,7 +55,7 @@
                     } @else {
                         <i class="fa-solid fa-utensils"></i> 
                         <h3>No hay viandas disponibles</h3>
-                        <p>Intente nuevamente más tarde o contacte al dueño del emprendimiento.</p>
+                        <p>Intentá nuevamente más tarde o contactá al dueño del emprendimiento.</p>
                     }
                 }
             </div>
@@ -80,7 +80,7 @@
 
         <h1>¡Ups! No encontramos el emprendimiento</h1>
         <p>
-            Parece que el emprendimiento que buscas no existe, 
+            Parece que el emprendimiento que buscás no existe, 
             fue eliminado o el enlace es incorrecto.
         </p>
 

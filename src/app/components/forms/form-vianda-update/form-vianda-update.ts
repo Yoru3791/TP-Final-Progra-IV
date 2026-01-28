@@ -5,7 +5,6 @@ import { ViandaService } from '../../../services/vianda-service';
 import { ViandaResponse } from '../../../model/vianda-response.model';
 import { CategoriaVianda } from '../../../enums/categoriaVianda.enum';
 import { ViandaUpdate } from '../../../model/vianda-update.model';
-import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-modal';
 import { UiNotificationService } from '../../../services/ui-notification-service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
@@ -55,9 +54,9 @@ export class FormViandaUpdate implements OnInit {
   maxHeight = 1080;
 
   formVianda = this.fb.group({
-    nombreVianda: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
+    nombreVianda: ['', [Validators.required, Validators.maxLength(256)]],
     categoria: [null as string | null, Validators.required],
-    descripcion: ['', [Validators.required, Validators.maxLength(250)]],
+    descripcion: ['', [Validators.required, Validators.maxLength(256)]],
     precio: [0, [Validators.required, Validators.min(0)]],
     esVegano: [false, Validators.required],
     esVegetariano: [false, Validators.required],

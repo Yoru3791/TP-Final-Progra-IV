@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-modal';
 import { UsuarioService } from '../../../services/usuario-service';
 import { RolUsuario } from '../../../model/rol-usuario.model';
 import { UiNotificationService } from '../../../services/ui-notification-service';
@@ -13,7 +12,6 @@ import { UiNotificationService } from '../../../services/ui-notification-service
   styleUrl: './form-admin-user-create.css',
 })
 export class FormAdminUserCreate {
-  private dialog = inject(MatDialog);
   private dialogRef = inject<MatDialogRef<unknown>>(MatDialogRef, {
     optional: true,
   });
@@ -29,11 +27,11 @@ export class FormAdminUserCreate {
     {
       nombreCompleto: [
         '',
-        [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
+        [Validators.required, Validators.maxLength(256)],
       ],
       email: [
         '',
-        [Validators.required, Validators.email, Validators.maxLength(50)]
+        [Validators.required, Validators.email, Validators.maxLength(254)]
       ],
       rol: [
         '',
@@ -41,7 +39,7 @@ export class FormAdminUserCreate {
       ],
       telefono: [
         '',
-        [Validators.required, Validators.pattern(/^\d{10,15}$/)]
+        [Validators.required, Validators.pattern(/^\d{6,15}$/)]
       ],
       password: [
         '',

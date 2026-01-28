@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, inject, Input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-modal';
 import { UsuarioService } from '../../../services/usuario-service';
 import { UsuarioResponse } from '../../../model/usuario-response.model';
 import { UiNotificationService } from '../../../services/ui-notification-service';
@@ -16,7 +15,6 @@ export class FormAdminUserUpdate {
   @Input() usuario!: UsuarioResponse;
 
   private cdr = inject(ChangeDetectorRef);
-  private dialog = inject(MatDialog);
   private dialogRef = inject<MatDialogRef<unknown>>(MatDialogRef, {
     optional: true,
   });
@@ -36,15 +34,15 @@ export class FormAdminUserUpdate {
     {
       nombreCompleto: [
         '',
-        [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
+        [Validators.required, Validators.maxLength(256)],
       ],
       email: [
         '',
-        [Validators.required, Validators.email, Validators.maxLength(50)]
+        [Validators.required, Validators.email, Validators.maxLength(254)]
       ],
       telefono: [
         '',
-        [Validators.required, Validators.pattern(/^\d{10,15}$/)]
+        [Validators.required, Validators.pattern(/^\d{6,15}$/)]
       ]
     }
   );

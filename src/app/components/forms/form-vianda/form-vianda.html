@@ -1,6 +1,13 @@
-<button type="button" class="btn-icon-circle btn-close-modal" (click)="cerrarModal()">
-  <i class="fa-solid fa-xmark"></i>
-</button>
+<div class="header-container">
+  <h2>
+    Crear Vianda
+  </h2>
+
+  <button type="button" class="btn-icon-circle btn-close-modal" (click)="cerrarModal()">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+</div>
+
 <form class="form-vianda" [formGroup]="formVianda">
   <div class="form-layout">
     <div class="form-fields-left">
@@ -11,19 +18,20 @@
           formControlName="nombreVianda"
           type="text"
           class="form-input"
-          placeholder="Ej: Milanesa con puré"
+          placeholder="Ej.: Milanesa con puré"
         />
 
-        @if (formVianda.get('nombreVianda')?.invalid && (formVianda.get('nombreVianda')?.dirty ||
-        formVianda.get('nombreVianda')?.touched)) {
         <div class="error-messages">
-          @if (formVianda.get('nombreVianda')?.hasError('required')) {
-          <p>El nombre es obligatorio.</p>
-          } @if (formVianda.get('nombreVianda')?.hasError('maxLength')) {
-          <p>Máximo 255 caracteres.</p>
+          @if (formVianda.get('nombreVianda')?.invalid && (formVianda.get('nombreVianda')?.dirty ||
+               formVianda.get('nombreVianda')?.touched))
+          {
+            @if (formVianda.get('nombreVianda')?.hasError('required')) {
+              <p>El nombre es obligatorio.</p>
+            } @else if (formVianda.get('nombreVianda')?.hasError('maxLength')) {
+              <p>Máximo 256 caracteres.</p>
+            }
           }
         </div>
-        }
       </div>
 
       <!-- Categoria -->
@@ -39,19 +47,20 @@
           <option [ngValue]="null" class="placeholder-option">-- Seleccionar --</option>
 
           @for (cat of categorias; track cat.key) {
-          <!-- Las demás opciones NO deben tener la clase -->
-          <option [value]="cat.key">{{ cat.label }}</option>
+            <!-- Las demás opciones NO deben tener la clase -->
+            <option [value]="cat.key">{{ cat.label }}</option>
           }
         </select>
 
-        @if (formVianda.get('categoria')?.invalid && (formVianda.get('categoria')?.dirty ||
-        formVianda.get('categoria')?.touched)) {
         <div class="error-messages">
-          @if (formVianda.get('categoria')?.hasError('required')) {
-          <p>Debe seleccionar una categoría.</p>
+          @if (formVianda.get('categoria')?.invalid && (formVianda.get('categoria')?.dirty ||
+               formVianda.get('categoria')?.touched))
+          {
+            @if (formVianda.get('categoria')?.hasError('required')) {
+              <p>Campo obligatorio.</p>
+            }
           }
         </div>
-        }
       </div>
 
       <!-- Descripcion -->
@@ -60,42 +69,43 @@
         <textarea
           formControlName="descripcion"
           class="form-input textarea-descripcion"
-          placeholder="Ej: Porción abundante con guarnición"
-          maxlength="250"
+          placeholder="Ej.: Porción abundante con guarnición."
+          maxlength="256"
         ></textarea>
 
-        @if (formVianda.get('descripcion')?.invalid && (formVianda.get('descripcion')?.dirty ||
-        formVianda.get('descripcion')?.touched)) {
         <div class="error-messages">
-          @if (formVianda.get('descripcion')?.hasError('required')) {
-          <p>La descripción es obligatoria.</p>
-          } @if (formVianda.get('descripcion')?.hasError('maxLength')) {
-          <p>Máximo 250 caracteres.</p>
+          @if (formVianda.get('descripcion')?.invalid && (formVianda.get('descripcion')?.dirty ||
+               formVianda.get('descripcion')?.touched))
+          {
+            @if (formVianda.get('descripcion')?.hasError('required')) {
+              <p>Campo obligatorio.</p>
+            } @else if (formVianda.get('descripcion')?.hasError('maxLength')) {
+              <p>Máximo 256 caracteres.</p>
+            }
           }
         </div>
-        }
       </div>
 
       <!-- Precio -->
       <div class="form-field">
         <label for="precio" class="form-label">Precio</label>
-        <input formControlName="precio" type="number" class="form-input" placeholder="Ej: 3500" />
+        <input formControlName="precio" type="number" class="form-input" placeholder="Ej.: 3500" />
 
-        @if (formVianda.get('precio')?.invalid && (formVianda.get('precio')?.dirty ||
-        formVianda.get('precio')?.touched)) {
         <div class="error-messages">
-          @if (formVianda.get('precio')?.hasError('required')) {
-          <p>El precio es obligatorio.</p>
-          } @if (formVianda.get('precio')?.hasError('min')) {
-          <p>Debe ser mayor a 0.</p>
+          @if (formVianda.get('precio')?.invalid && (formVianda.get('precio')?.dirty ||
+               formVianda.get('precio')?.touched))
+          {
+            @if (formVianda.get('precio')?.hasError('required')) {
+              <p>Campo obligatorio.</p>
+            } @else if (formVianda.get('precio')?.hasError('min')) {
+              <p>Debe ser mayor a 0.</p>
+            }
           }
         </div>
-        }
       </div>
 
       <!-- Checkboxes -->
       <div class="form-field checkbox-group">
-        
         <label class="form-label">Características</label>
         
         <div class="diet-chips-container">
@@ -123,7 +133,6 @@
               Vegano
             </span>
           </label>
-
         </div>
       </div>
 
@@ -143,46 +152,45 @@
 
         <label for="imagen-file" class="upload-box-visual" [class.has-preview]="!!imagePreviewUrl">
           @if (imagePreviewUrl) {
+            <div
+              class="image-preview"
+              [style.background-image]="'url(' + imagePreviewUrl + ')'"
+            ></div>
 
-          <div
-            class="image-preview"
-            [style.background-image]="'url(' + imagePreviewUrl + ')'"
-          ></div>
-
-          <button
-            type="button"
-            class="btn-remove-image"
-            (click)="removeImage(); $event.preventDefault()"
-          >
-            <i class="fa-solid fa-trash"></i>
-          </button>
-
+            <button
+              type="button"
+              class="btn-remove-image"
+              (click)="removeImage(); $event.preventDefault()"
+            >
+              <i class="fa-solid fa-trash"></i>
+            </button>
           } @else {
-          <span class="upload-icon">⤒</span>
-          <br />
-          <span class="upload-text">Cargar imagen</span>
+            <span class="upload-icon">⤒</span>
+            <br />
+            <span class="upload-text">Cargar imagen</span>
           }
         </label>
 
         <div class="image-placeholder-message">
           @if (formVianda.get('image')?.invalid && (formVianda.get('image')?.dirty ||
-          formVianda.get('image')?.touched)) {
-          <div class="error-messages">
-            @if (formVianda.get('image')?.hasError('required')) {
-            <p>La imagen es obligatoria.</p>
-            } @else if (formVianda.get('image')?.value === null && selectedFileName === null) {
-            <p>
-              La imagen seleccionada no cumple los requisitos (ej: dimensión máxima) o fue
-              eliminada.
-            </p>
-            }
-          </div>
+               formVianda.get('image')?.touched))
+          {
+            <div class="error-messages">
+              @if (formVianda.get('image')?.hasError('required')) {
+                <p>La imagen es obligatoria.</p>
+              } @else if (formVianda.get('image')?.value === null && selectedFileName === null) {
+                <p>
+                  La imagen seleccionada no cumple los requisitos (ej: dimensión máxima) o fue
+                  eliminada.
+                </p>
+              }
+            </div>
           } @else if (!imagePreviewUrl) {
-          <p class="placeholder-info">
-            No hay un archivo seleccionado. Formatos válidos: jpg, webp, etc
-          </p>
+            <p class="placeholder-info">
+              No hay un archivo seleccionado. Formatos válidos: jpg, webp, etc.
+            </p>
           } @else {
-          <p class="success-message">Archivo cargado: {{ selectedFileName }}</p>
+            <p class="success-message">Archivo cargado: {{ selectedFileName }}</p>
           }
         </div>
       </div>

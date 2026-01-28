@@ -63,8 +63,9 @@
             <input type="date" formControlName="fechaEntrega" [min]="minDate" />
           </form>
 
-          @let fecha = formFecha.get('fechaEntrega'); @if (fecha?.invalid && fecha?.dirty) {
-          <p class="fecha-warning">Ingrese una fecha válida</p>
+          @let fecha = formFecha.get('fechaEntrega');
+          @if (fecha?.invalid && fecha?.dirty) {
+            <p class="fecha-warning">Ingresá una fecha válida (mínimo dos días desde hoy).</p>
           }
         </div>
       </div>

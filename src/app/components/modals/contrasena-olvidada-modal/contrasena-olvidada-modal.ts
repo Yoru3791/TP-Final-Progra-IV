@@ -20,7 +20,7 @@ export class ContrasenaOlvidadaModal {
   isLoading = signal(false);
 
   form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
   });
 
   enviar() {

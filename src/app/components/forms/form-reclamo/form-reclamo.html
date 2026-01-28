@@ -7,14 +7,16 @@
       formControlName="email" 
       type="email" 
       class="form-input" 
-      placeholder="ejemplo@correo.com"
+      placeholder="Ej.: juanperez@gmail.com"
     />
   </div>
 
   <div class="form-field">
     <label for="categoria" class="form-label">Motivo del reporte</label>
+
     <select id="categoria" formControlName="categoria" class="form-input form-select">
       <option value="" disabled selected>Selecciona una opción</option>
+
       @for (opcion of categoriasOptions; track opcion.value) {
         <option [value]="opcion.value">{{ opcion.label }}</option>
       }
@@ -24,8 +26,10 @@
   <div class="form-field">
     <div class="label-container">
       <label for="descripcion" class="form-label">Detalle del problema</label>
+
       <span class="char-counter">{{ charsCount }}/400</span>
     </div>
+    
     <textarea 
       id="descripcion" 
       formControlName="descripcion" 

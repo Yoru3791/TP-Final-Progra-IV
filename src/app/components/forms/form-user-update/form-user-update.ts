@@ -25,9 +25,9 @@ export class FormUserUpdate {
   cargando = signal<boolean>(false);
 
   form = this.fb.group({
-    nombreCompleto: ['', [Validators.required, Validators.minLength(1)]],
-    email: ['', [Validators.required, Validators.email]],
-    telefono: ['', [Validators.required, Validators.pattern(/^\d{8,15}$/)]],
+    nombreCompleto: ['', [Validators.required, Validators.maxLength(256)]],
+    email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
+    telefono: ['', [Validators.required, Validators.pattern(/^\d{6,15}$/)]],
   });
 
   constructor() {

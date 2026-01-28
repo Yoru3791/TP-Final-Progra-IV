@@ -29,10 +29,10 @@ export class FormRegistro {
     {
       nombreCompleto: [
         '',
-        [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
+        [Validators.required, Validators.maxLength(256)],
       ],
-      email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
-      telefono: ['', [Validators.required, Validators.pattern(/^\d{10,15}$/)]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
+      telefono: ['', [Validators.required, Validators.pattern(/^\d{6,15}$/)]],
       password: [
         '',
         [

@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-modal';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EmprendimientoService } from '../../../services/emprendimiento-service';
@@ -34,10 +33,10 @@ export class FormUpdateEmprendimiento {
   newImageFile: File | null = null;
 
   formEmprendimiento = this.fb.group({
-    nombreEmprendimiento: ['', [Validators.required, Validators.maxLength(255)]],
+    nombreEmprendimiento: ['', [Validators.required, Validators.maxLength(256)]],
     ciudad: ['', [Validators.required]],
-    direccion: ['', [Validators.maxLength(255)]],
-    telefono: ['', [Validators.required, Validators.pattern(/^\d{7,15}$/)]],
+    direccion: ['', [Validators.maxLength(256)]],
+    telefono: ['', [Validators.required, Validators.pattern(/^\d{6,15}$/)]],
     estaDisponible: [true, [Validators.required]]
   });
 
