@@ -18,12 +18,12 @@ export class SearchBar {
   public hayTextoEnBuscador = signal<boolean>(false);
 
   public resultados = this.searchService.resultados;
+  public loading = this.searchService.loading;
+  public mensaje = this.searchService.mensaje;
 
   public onInput(event: any) {
     const value: string = event.target.value;
-
     this.hayTextoEnBuscador.set(value !== '');
-
     this.searchService.buscar(value);
   }
 

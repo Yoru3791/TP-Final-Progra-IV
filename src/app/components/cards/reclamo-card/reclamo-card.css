@@ -159,6 +159,18 @@
   background-color: var(--color-primary-hover-dark);
 }
 
+.status-bloqueado {
+  font-size: 1.3rem;
+  color: var(--color-text-light);
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: var(--color-background-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+
 @media (max-width: 600px) {
   .ticket-header {
     flex-direction: column;
@@ -186,5 +198,10 @@
 
   .label-admin {
     text-align: center;
+  }
+
+  .status-bloqueado {
+    width: 100%;
+    justify-content: center;
   }
 }

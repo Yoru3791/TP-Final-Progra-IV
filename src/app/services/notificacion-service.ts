@@ -1,9 +1,10 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { Notificacion } from '../model/notificacion.model';
 import { catchError, of } from 'rxjs';
 import { AuthService, UserRole } from './auth-service';
 import { PagedResponse, PageMetadata } from '../model/hateoas-pagination.models';
+import { SKIP_LOADING } from '../interceptors/loading.interceptor';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +32,7 @@ export class NotificacionService {
   public filtroLeida = signal<boolean | null>(null);  //  null = todas
 
   
-  fetchNotificaciones(page: number = 0, size: number = 10) {
+  fetchNotificaciones(page: number = 0, size: number = 10, skipSpinner: boolean = true) {
     const url = this.getApiUrl();
     
     let params = new HttpParams()
@@ -46,7 +47,12 @@ export class NotificacionService {
     if (desde) params = params.set('desde', desde);
     if (hasta) params = params.set('hasta', hasta);
 
-    this.http.get<PagedResponse<Notificacion>>(url, { params })
+    let context = new HttpContext();
+    if (skipSpinner) {
+        context.set(SKIP_LOADING, true);
+    }
+
+    this.http.get<PagedResponse<Notificacion>>(url, { params, context })
       .pipe(
         catchError((err) => {
           console.error('Error cargando notificaciones:', err);

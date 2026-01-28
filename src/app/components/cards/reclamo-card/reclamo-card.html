@@ -26,9 +26,17 @@
       <div class="admin-actions">
         <div class="action-row">
           <span class="label-admin">Panel de Administrador</span>
-          <button class="btn-gestionar" (click)="onGestionarClick()">
-            <i class="fa-solid fa-pen-to-square"></i> Responder / Cambiar Estado
-          </button>
+          
+          @if (!esFinalizado) {
+              <button class="btn-gestionar" (click)="onGestionarClick()">
+                <i class="fa-solid fa-pen-to-square"></i> Responder / Cambiar Estado
+              </button>
+          } @else {
+              <span class="status-bloqueado">
+                <i class="fa-solid fa-lock"></i> Gestión finalizada
+              </span>
+          }
+
         </div>
       </div>
     }
