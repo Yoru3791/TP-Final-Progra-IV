@@ -188,6 +188,88 @@ app-root {
   box-shadow: none;
 }
 
+.btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  
+  padding: 1.2rem 2rem;
+  border-radius: 1rem;
+  border: 0.1rem solid transparent;
+  
+  font-family: inherit;
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 1;
+  
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background-color: transparent;
+}
+
+.btn-base:disabled,
+.btn-base.disabled {
+  background-color: var(--color-ui-disabled-background) !important;
+  color: var(--color-ui-disabled-text) !important;
+  border-color: transparent !important;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+  pointer-events: none;
+}
+
+.btn-base:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background-color: var(--color-primary-light);
+  color: var(--color-text-inverse);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover-light);
+  box-shadow: 0 0.4rem 0.8rem rgba(254, 144, 57, 0.3);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border-color: var(--color-ui-gray-light);
+  color: var(--color-text-dark-secondary);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-background-secondary);
+  border-color: var(--color-text-secondary);
+  color: var(--color-text-primary);
+}
+
+.btn-danger {
+  background-color: var(--color-state-error);
+  color: var(--color-text-inverse);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: var(--color-state-error-hover);
+  box-shadow: 0 0.4rem 0.8rem rgba(255, 75, 75, 0.25);
+}
+
+.btn-success {
+  background-color: var(--color-state-success);
+  color: var(--color-text-inverse);
+}
+
+.btn-success:hover:not(:disabled) {
+  filter: brightness(0.9); 
+  box-shadow: 0 0.4rem 0.8rem rgba(46, 204, 113, 0.25);
+}
+
+.btn-lift:hover:not(:disabled) {
+  transform: translateY(-0.2rem);
+}
+
 /* --- CHECKBOX GENERICO --- */
 .checkbox-container {
   width: 100%;
