@@ -1,4 +1,4 @@
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -51,9 +51,13 @@ export class FormUserUpdate {
     this.usuarioService.updateUsuario(id, payload).subscribe({
       next: (resp) => {
         this.cargando.set(false);
-        this.uiNotificationService.abrirSnackBarExito('Perfil actualizado correctamente.');
         
         const emailCambio = this.data?.email !== payload.email;
+
+        if (!emailCambio) {
+          this.uiNotificationService.abrirSnackBarExito('Perfil actualizado correctamente.');
+        }
+        
         this.dialogRef.close({ resp, emailCambio });
       },
       error: (err) => {

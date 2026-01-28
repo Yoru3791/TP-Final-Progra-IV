@@ -1,6 +1,12 @@
-<h2 class="titulo-form">Actualizar datos</h2>
+<div class="header-container">
+  <h2 class="titulo-form">Actualizar datos</h2>
 
-<form class="form-emprendimiento" [formGroup]="form" (ngSubmit)="actualizarUsuario()">
+  <button class="btn btn-close" (click)="closeDialog()">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+</div>
+
+<form class="form" [formGroup]="form" (ngSubmit)="actualizarUsuario()">
   <!-- Campos -->
   <div class="form-field">
     <label class="form-label">Nombre completo</label>
@@ -49,12 +55,7 @@
   </div>
 
   <!-- Botones -->
-  <div class="actions-row">
-    <button type="submit" class="btn btn-crear" [disabled]="form.invalid || cargando()">
-      @if (cargando()) { Actualizando... } @else { Guardar cambios }
-    </button>
-    <button type="button" class="btn btn-cancelar" (click)="closeDialog()" [disabled]="cargando()">
-      Cancelar
-    </button>
-  </div>
+  <button type="submit" class="btn btn-crear" [disabled]="form.invalid || cargando()">
+    @if (cargando()) { Actualizando... } @else { Guardar cambios }
+  </button>
 </form>
