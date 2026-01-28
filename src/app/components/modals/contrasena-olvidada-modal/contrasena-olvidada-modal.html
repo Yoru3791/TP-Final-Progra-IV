@@ -1,7 +1,7 @@
 <h2 class="titulo-modal">Recuperar Contraseña</h2>
 
 <p class="texto">
-  Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
+  Ingresá tu email para recibir un enlace para restablecer tu contraseña.
 </p>
 
 <form [formGroup]="form" (ngSubmit)="enviar()">
@@ -22,10 +22,10 @@
     <div class="error-messages">
       @if (form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty)) {
         @if (form.get('email')?.hasError('required')) {
-          <p>El correo es obligatorio.</p>
+          <p>Campo obligatorio.</p>
         }
         @if (form.get('email')?.hasError('email')) {
-          <p>Ingresa un formato de correo válido.</p>
+          <p>Email inválido.</p>
         }
       }
     </div>

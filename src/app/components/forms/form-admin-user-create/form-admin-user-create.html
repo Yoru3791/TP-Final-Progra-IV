@@ -7,19 +7,15 @@
       type="text"
       class="form-input"
       [class.invalid]="mostrarError('nombreCompleto')"
-      placeholder="Ej: Juan Pérez"
+      placeholder="Ej.: Juan Pérez"
     />
 
     <div class="error-messages">
       @if (mostrarError('nombreCompleto')) {
         @if (form.get('nombreCompleto')?.hasError('required')) {
-          <p>El nombre es obligatorio.</p>
-        }
-        @if (form.get('nombreCompleto')?.hasError('maxLength')) {
-          <p>El nombre no debe superar los 100 caracteres.</p>
-        }
-        @if (form.get('nombreCompleto')?.hasError('minLength')) {
-          <p>El nombre no debe tener al menos 1 caracter.</p>
+          <p>Campo obligatorio.</p>
+        } @else if (form.get('nombreCompleto')?.hasError('maxLength')) {
+          <p>Máximo 256 caracteres.</p>
         }
       }
     </div>
@@ -33,19 +29,17 @@
       type="email"
       class="form-input"
       [class.invalid]="mostrarError('email')"
-      placeholder="Ej: tunombre@gmail.com"
+      placeholder="Ej.: juanperez@gmail.com"
     />
 
     <div class="error-messages">
       @if (mostrarError('email')) {
         @if (form.get('email')?.hasError('required')) {
-          <p>El email es obligatorio.</p>
-        }
-        @if (form.get('email')?.hasError('email')) {
-          <p>Ingresa un mail válido.</p>
-        }
-        @if (form.get('email')?.hasError('maxLength')) {
-          <p>El mail no debe superar los 100 caracteres.</p>
+          <p>Campo obligatorio.</p>
+        } @else if (form.get('email')?.hasError('email')) {
+          <p>Email inválido.</p>
+        } @else if (form.get('email')?.hasError('maxLength')) {
+          <p>Máximo 254 caracteres.</p>
         }
       }
     </div>
@@ -59,16 +53,15 @@
       type="text"
       class="form-input"
       [class.invalid]="mostrarError('telefono')"
-      placeholder="Ej: 11234567890"
+      placeholder="Ej.: 2231234567"
     />
 
     <div class="error-messages">
       @if (mostrarError('telefono')) {
         @if (form.get('telefono')?.hasError('required')) {
-          <p>El teléfono es obligatorio.</p>
-        }
-        @if (form.get('telefono')?.hasError('pattern')) {
-          <p>El telefono debe tener entre 10 y 16 caracteres numericos.</p>
+          <p>Campo obligatorio.</p>
+        } @else if (form.get('telefono')?.hasError('pattern')) {
+          <p>Entre 6 y 15 dígitos, sin espacios ni guiones.</p>
         }
       }
     </div>
@@ -89,7 +82,7 @@
     <div class="error-messages">
       @if (mostrarError('rol')) {
         @if (form.get('rol')?.hasError('required')) {
-        <p>Debe seleccionar un rol.</p>
+          <p>Campo obligatorio.</p>
         }
       }
     </div>
@@ -97,7 +90,7 @@
 
   <!-- Password -->
   <div class="form-field password-field">
-    <label for="password" class="form-label">Password</label>
+    <label for="password" class="form-label">Contraseña</label>
 
     <div class="input-with-icon">
       <input
@@ -105,7 +98,7 @@
         [type]="showPassword ? 'text' : 'password'"
         class="form-input"
         [class.invalid]="mostrarError('password')"
-        placeholder="Entre 10 y 16 caracteres, al menos una mayúscula, una minuscula, un número y un caracter especial"
+        placeholder="Entre 8 y 16 caracteres, y al menos una mayúscula, una minúscula, un número y un carácter especial."
       />
       <button type="button" class="toggle-eye" (click)="togglePassword()">
         <i class="fa-solid {{ showPassword ? 'fa-eye-slash' : 'fa-eye' }}"></i>
@@ -115,12 +108,10 @@
     <div class="error-messages">
       @if (mostrarError('password')) {
         @if (form.get('password')?.hasError('required')) {
-          <p>La contraseña es obligatoria.</p>
-        }
-        @if (form.get('password')?.hasError('pattern')) {
+          <p>Campo obligatorio.</p>
+        } @else if (form.get('password')?.hasError('pattern')) {
           <p>
-            Debe tener entre 10 y 16 caracteres, al menos una mayúscula, una minuscula, un número y un
-            caracter especial.
+            Entre 8 y 16 caracteres, y al menos una mayúscula, una minúscula, un número y un carácter especial.
           </p>
         }
       }

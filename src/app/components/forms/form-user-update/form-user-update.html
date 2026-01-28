@@ -1,5 +1,5 @@
 <div class="header-container">
-  <h2 class="titulo-form">Actualizar datos</h2>
+  <h2 class="titulo-form">Actualizar perfil</h2>
 
   <button class="btn btn-close" (click)="closeDialog()">
     <i class="fa-solid fa-xmark"></i>
@@ -15,12 +15,18 @@
       type="text"
       class="form-input"
       formControlName="nombreCompleto"
-      placeholder="Ej: Juan Pérez"
+      placeholder="Ej.: Juan Pérez"
     />
 
     <div class="error-messages">
-      @if (form.get('nombreCompleto')?.invalid && form.get('nombreCompleto')?.touched) {
-        <p>El nombre es obligatorio.</p>
+      @if (form.get('nombreCompleto')?.invalid &&
+           (form.get('nombreCompleto')?.touched || form.get('nombreCompleto')?.dirty))
+      {
+        @if (form.get('nombreCompleto')?.hasError('required')) {
+          <p>Campo obligatorio.</p>
+        } @else if (form.get('nombreCompleto')?.hasError('maxLength')) {
+          <p>Máximo 256 caracteres.</p>
+        }
       }
     </div>
   </div>
@@ -28,11 +34,19 @@
   <div class="form-field">
     <label class="form-label">Email</label>
 
-    <input type="email" class="form-input" formControlName="email" placeholder="ejemplo@mail.com" />
+    <input type="email" class="form-input" formControlName="email" placeholder="Ej.: juanperez@gmail.com" />
 
     <div class="error-messages">
-      @if (form.get('email')?.invalid && form.get('email')?.touched) {
-        <p>Ingresá un email válido.</p>
+      @if (form.get('email')?.invalid && (form.get('email')?.touched ||
+           form.get('email')?.dirty))
+      {
+        @if (form.get('email')?.hasError('required')) {
+          <p>Campo obligatorio.</p>
+        } @else if (form.get('email')?.hasError('email')) {
+          <p>Email inválido.</p>
+        } @else if (form.get('email')?.hasError('maxLength')) {
+          <p>Máximo 254 caracteres.</p>
+        }
       }
     </div>
   </div>
@@ -44,12 +58,18 @@
       type="text"
       class="form-input"
       formControlName="telefono"
-      placeholder="Entre 8 y 15 dígitos"
+      placeholder="Ej.: 2231234567"
     />
 
     <div class="error-messages">
-      @if (form.get('telefono')?.invalid && form.get('telefono')?.touched) {
-        <p>Debe tener entre 8 y 15 dígitos.</p>
+      @if (form.get('telefono')?.invalid && (form.get('telefono')?.touched ||
+           form.get('telefono')?.dirty))
+      {
+        @if (form.get('telefono')?.hasError('required')) {
+          <p>Campo obligatorio.</p>
+        } @else if (form.get('telefono')?.hasError('pattern')) {
+          <p>Entre 6 y 15 dígitos, sin espacios ni guiones.</p>
+        }
       }
     </div>
   </div>

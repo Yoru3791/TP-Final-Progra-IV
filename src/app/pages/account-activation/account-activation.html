@@ -12,7 +12,7 @@
     <h1 class="main-h1-title">¡Todo listo!</h1>
     <p class="description">{{ message() }}</p>
 
-    <p class="sub-description">Revisa tu casilla de correo.</p>
+    <p class="sub-description">Revisa tu correo.</p>
 
     <button routerLink="/login" class="btn btn-large">Ir al Login</button>
   </div>
@@ -27,12 +27,12 @@
 
     @if (showResendForm()) {
     <div class="resend-container">
-      <p class="sub-description">¿Expiró tu link? Ingresa tu email para recibir uno nuevo:</p>
+      <p class="sub-description">¿Expiró tu link? Ingresá tu email para recibir uno nuevo:</p>
 
       <input
         type="email"
         class="form-input"
-        placeholder="tu@email.com"
+        placeholder="Ej.: juanperez@gmail.com"
         [(ngModel)]="emailToResend"
       />
 

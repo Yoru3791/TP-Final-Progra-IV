@@ -4,7 +4,6 @@ import { EmprendimientoService } from '../../../services/emprendimiento-service'
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../../services/auth-service';
 import { ChangeDetectorRef } from '@angular/core';
-import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-modal';
 import { CitySelector } from '../../utils/city-selector/city-selector';
 import { UiNotificationService } from '../../../services/ui-notification-service';
 
@@ -30,14 +29,11 @@ export class FormEmprendimiento {
   maxHeight = 1080;
 
   formEmprendimiento = this.fb.group({
-    nombreEmprendimiento: [
-      '',
-      [Validators.required, Validators.minLength(1), Validators.maxLength(255)],
-    ],
+    nombreEmprendimiento: ['', [Validators.required, Validators.maxLength(256)]],
     image: [null, Validators.required],
     ciudad: ['', [Validators.required]],
-    direccion: ['', Validators.maxLength(255)],
-    telefono: ['', [Validators.required, Validators.pattern(/^\d{7,15}$/)]],
+    direccion: ['', Validators.maxLength(256)],
+    telefono: ['', [Validators.required, Validators.pattern(/^\d{6,15}$/)]],
   });
 
   onFileInputReady(element: HTMLInputElement) {

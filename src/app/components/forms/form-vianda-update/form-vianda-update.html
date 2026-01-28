@@ -18,7 +18,7 @@
           formControlName="nombreVianda"
           type="text"
           class="form-input"
-          placeholder="Ej: Milanesa con puré"
+          placeholder="Ej.: Milanesa con puré"
         />
 
         <div class="error-messages">
@@ -26,9 +26,9 @@
                formVianda.get('nombreVianda')?.touched))
           {
             @if (formVianda.get('nombreVianda')?.hasError('required')) {
-              <p>El nombre es obligatorio.</p>
-            } @if (formVianda.get('nombreVianda')?.hasError('maxLength')) {
-              <p>Máximo 255 caracteres.</p>
+              <p>Campo obligatorio.</p>
+            } @else if (formVianda.get('nombreVianda')?.hasError('maxLength')) {
+              <p>Máximo 256 caracteres.</p>
             }
           }
         </div>
@@ -53,7 +53,7 @@
           @if (formVianda.get('categoria')?.invalid && (formVianda.get('categoria')?.dirty ||
                formVianda.get('categoria')?.touched))
           {
-            <p>Debe seleccionar una categoría.</p>
+            <p>Campo obligatorio.</p>
           }
         </div>
       </div>
@@ -64,8 +64,8 @@
         <textarea
           formControlName="descripcion"
           class="form-input textarea-descripcion"
-          placeholder="Ej: Porción abundante con guarnición"
-          maxlength="250"
+          placeholder="Ej.: Porción abundante con guarnición"
+          maxlength="256"
         ></textarea>
 
         <div class="error-messages">
@@ -73,9 +73,9 @@
                formVianda.get('descripcion')?.touched))
           {
             @if (formVianda.get('descripcion')?.hasError('required')) {
-              <p>La descripción es obligatoria.</p>
-            } @if (formVianda.get('descripcion')?.hasError('maxLength')) {
-              <p>Máximo 250 caracteres.</p>
+              <p>Campo obligatorio.</p>
+            } @else if (formVianda.get('descripcion')?.hasError('maxLength')) {
+              <p>Máximo 256 caracteres.</p>
             }
           }
         </div>
@@ -90,7 +90,11 @@
           @if (formVianda.get('precio')?.invalid && (formVianda.get('precio')?.dirty ||
                formVianda.get('precio')?.touched))
           {
-            <p>El precio es obligatorio y debe ser mayor a 0.</p>
+            @if (formVianda.get('precio')?.hasError('required')) {
+              <p>Campo obligatorio.</p>
+            } @else if (formVianda.get('precio')?.hasError('min')) {
+              <p>Debe ser mayor a 0.</p>
+            }
           }
         </div>
       </div>
@@ -198,9 +202,9 @@
           @if (newImagePreviewUrl) {
             <p class="success-message">Archivo listo: {{ selectedFileName }}</p>
           } @else if (currentImageUrl) {
-            <p class="placeholder-info">Se mantendrá la imagen actual si no subes otra.</p>
+            <p class="placeholder-info">Se mantendrá la imagen actual si no subís otra.</p>
           } @else {
-            <p class="placeholder-info">Haz click para subir una imagen.</p>
+            <p class="placeholder-info">Hacé click para subir una imagen.</p>
           }
         </div>
       </div>

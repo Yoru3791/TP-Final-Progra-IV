@@ -18,7 +18,7 @@
           formControlName="nombreEmprendimiento"
           type="text"
           class="form-input"
-          placeholder="Ej: La Cocina de Ana"
+          placeholder="Ej.: La Cocina de Ana"
         />
 
         <div class="error-messages">
@@ -26,9 +26,9 @@
                (formEmprendimiento.get('nombreEmprendimiento')?.touched))
           {
             @if (formEmprendimiento.get('nombreEmprendimiento')?.hasError('required')) {
-              <p>El nombre es obligatorio.</p>
-            } @if (formEmprendimiento.get('nombreEmprendimiento')?.hasError('maxlength')) {
-              <p>Máximo 255 caracteres.</p>
+              <p>Campo obligatorio.</p>
+            } @else if (formEmprendimiento.get('nombreEmprendimiento')?.hasError('maxlength')) {
+              <p>Máximo 256 caracteres.</p>
             }
           }
         </div>
@@ -43,7 +43,7 @@
         <div class="error-messages">
           @if (formEmprendimiento.get('ciudad')?.invalid && formEmprendimiento.get('ciudad')?.touched)
           {
-            <p>La ciudad es obligatoria.</p>
+            <p>Campo obligatorio.</p>
           }
         </div>
       </div>
@@ -51,9 +51,13 @@
       <!-- Dirección -->
       <div class="form-field">
         <label class="form-label">Dirección</label>
-        <input formControlName="direccion" type="text" class="form-input" placeholder="Opcional" />
+        <input formControlName="direccion" type="text" class="form-input" placeholder="Campo opcional." />
         
-        <div class="error-messages"></div>
+        <div class="error-messages">
+          @if (formEmprendimiento.get('direccion')?.hasError('maxlength')) {
+            <p>Máximo 256 caracteres.</p>
+          }
+        </div>
       </div>
 
       <!-- Teléfono -->
@@ -63,14 +67,14 @@
           formControlName="telefono"
           type="text"
           class="form-input"
-          placeholder="Ej: 1123456789"
+          placeholder="Ej.: 2231234567"
         />
 
         <div class="error-messages">
           @if (formEmprendimiento.get('telefono')?.invalid &&
                formEmprendimiento.get('telefono')?.touched)
           {
-            <p>Debe tener entre 7 y 15 números.</p>
+            <p>Entre 6 y 15 dígitos, sin espacios ni guiones.</p>
           }
         </div>
       </div>

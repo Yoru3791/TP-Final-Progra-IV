@@ -10,7 +10,7 @@
         formRegistro.get('nombreCompleto')?.invalid &&
         (formRegistro.get('nombreCompleto')?.touched || formRegistro.get('nombreCompleto')?.dirty)
       "
-      placeholder="Ej: Juan Pérez"
+      placeholder="Ej.: Juan Pérez"
     />
     <!-- Si el nombre es invalido y el input ya fue tocado de alguna manera, se le agrega la clase invalid al input, asi se manejan visualmente los errores -->
 
@@ -19,11 +19,9 @@
            (formRegistro.get('nombreCompleto')?.touched || formRegistro.get('nombreCompleto')?.dirty))
       {
         @if (formRegistro.get('nombreCompleto')?.hasError('required')) {
-          <p>El nombre es obligatorio.</p>
-        } @if (formRegistro.get('nombreCompleto')?.hasError('maxLength')) {
-          <p>El nombre no debe superar los 100 caracteres.</p>
-        } @if (formRegistro.get('nombreCompleto')?.hasError('minLength')) {
-          <p>El nombre no debe tener al menos 1 caracter.</p>
+          <p>Campo obligatorio.</p>
+        } @else if (formRegistro.get('nombreCompleto')?.hasError('maxLength')) {
+          <p>Máximo 256 caracteres.</p>
         }
       }
     </div>
@@ -40,7 +38,7 @@
         formRegistro.get('email')?.invalid &&
         (formRegistro.get('email')?.touched || formRegistro.get('email')?.dirty)
       "
-      placeholder="Ej: tunombre@gmail.com"
+      placeholder="Ej.: juanperez@gmail.com"
     />
 
     <div class="error-messages">
@@ -48,11 +46,11 @@
            formRegistro.get('email')?.dirty))
       {
         @if (formRegistro.get('email')?.hasError('required')) {
-          <p>El email es obligatorio.</p>
-        } @if (formRegistro.get('email')?.hasError('email')) {
-          <p>Ingresa un mail válido.</p>
-        } @if (formRegistro.get('email')?.hasError('maxLength')) {
-          <p>El mail no debe superar los 100 caracteres.</p>
+          <p>Campo obligatorio.</p>
+        } @else if (formRegistro.get('email')?.hasError('email')) {
+          <p>Email inválido.</p>
+        } @else if (formRegistro.get('email')?.hasError('maxLength')) {
+          <p>Máximo 254 caracteres.</p>
         }
       }
     </div>
@@ -69,7 +67,7 @@
         formRegistro.get('telefono')?.invalid &&
         (formRegistro.get('telefono')?.touched || formRegistro.get('telefono')?.dirty)
       "
-      placeholder="Ej: 11234567890"
+      placeholder="Ej.: 2231234567"
     />
 
     <div class="error-messages">
@@ -77,9 +75,9 @@
            formRegistro.get('telefono')?.dirty))
       {
         @if (formRegistro.get('telefono')?.hasError('required')) {
-          <p>El teléfono es obligatorio.</p>
-        } @if (formRegistro.get('telefono')?.hasError('pattern')) {
-          <p>El telefono debe tener entre 10 y 16 caracteres numericos.</p>
+          <p>Campo obligatorio.</p>
+        } @else if (formRegistro.get('telefono')?.hasError('pattern')) {
+          <p>Entre 6 y 15 dígitos, sin espacios ni guiones.</p>
         }
       }
     </div>
@@ -87,7 +85,7 @@
 
   <!-- Password -->
   <div class="form-field password-field">
-    <label for="password" class="form-label">Password</label>
+    <label for="password" class="form-label">Contraseña</label>
 
     <div class="input-with-icon">
       <input
@@ -98,7 +96,7 @@
           formRegistro.get('password')?.invalid &&
           (formRegistro.get('password')?.touched || formRegistro.get('password')?.dirty)
         "
-        placeholder="Entre 8 y 16 caracteres, al menos una mayúscula, una minuscula, un número y un caracter especial"
+        placeholder="Entre 8 y 16 caracteres, y al menos una mayúscula, una minúscula, un número y un carácter especial."
       />
       <button type="button" class="toggle-eye" (click)="togglePassword()">
         <i class="fa-solid {{ showPassword ? 'fa-eye-slash' : 'fa-eye' }}"></i>
@@ -110,11 +108,10 @@
            formRegistro.get('password')?.dirty))
       {
         @if (formRegistro.get('password')?.hasError('required')) {
-          <p>La contraseña es obligatoria.</p>
-        } @if (formRegistro.get('password')?.hasError('pattern')) {
+          <p>Campo obligatorio.</p>
+        } @else if (formRegistro.get('password')?.hasError('pattern')) {
           <p>
-            Debe tener entre 8 y 16 caracteres, al menos una mayúscula, una minuscula, un número y un
-            caracter especial.
+            Entre 8 y 16 caracteres, y al menos una mayúscula, una minúscula, un número y un carácter especial.
           </p>
         }
       }
@@ -123,7 +120,7 @@
 
   <!-- Confirmar Password -->
   <div class="form-field password-field">
-    <label for="confirmarPassword" class="form-label">Repetir Password</label>
+    <label for="confirmarPassword" class="form-label">Repetir Contraseña</label>
 
     <div class="input-with-icon">
       <input
@@ -136,7 +133,7 @@
           (formRegistro.get('confirmarPassword')?.hasError('required') ||
             formRegistro.hasError('noCoinciden'))
         "
-        placeholder="Repetir la contraseña ingresada"
+        placeholder="Repetí la contraseña."
       />
       <button type="button" class="toggle-eye" (click)="toggleConfirmPassword()">
         <i class="fa-solid {{ showConfirmPassword ? 'fa-eye-slash' : 'fa-eye' }}"></i>
@@ -150,8 +147,8 @@
           formRegistro.hasError('noCoinciden')) )
       {
         @if (formRegistro.get('confirmarPassword')?.hasError('required')) {
-          <p>Debe repetir la contraseña.</p>
-        } @if (formRegistro.hasError('noCoinciden')) {
+          <p>Campo obligatorio.</p>
+        } @else if (formRegistro.hasError('noCoinciden')) {
           <p>Las contraseñas no coinciden.</p>
         }
       }

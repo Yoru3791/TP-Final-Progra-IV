@@ -14,7 +14,7 @@
           [class.invalid]="
             form.get('nueva')?.invalid && (form.get('nueva')?.touched || form.get('nueva')?.dirty)
           "
-          placeholder="Debe cumplir los requisitos de seguridad"
+          placeholder="Entre 8 y 16 caracteres, y al menos una mayúscula, una minúscula, un número y un carácter especial."
         />
 
         <button type="button" class="toggle-eye" (click)="toggleNueva()">
@@ -25,11 +25,10 @@
       <div class="error-messages">
         @if (form.get('nueva')?.invalid && (form.get('nueva')?.touched || form.get('nueva')?.dirty)) {
           @if (form.get('nueva')?.hasError('required')) {
-            <p>La nueva contraseña es obligatoria.</p>
+            <p>Campo obligatorio.</p>
           } @if (form.get('nueva')?.hasError('pattern')) {
             <p>
-              Debe tener entre 8 y 16 caracteres, una mayúscula, una minúscula, un número y un carácter
-              especial.
+              Entre 8 y 16 caracteres, y al menos una mayúscula, una minúscula, un número y un carácter especial.
             </p>
           } @if (form.get('nueva')?.hasError('mismaQueActual')) {
             <p>La nueva contraseña no puede ser igual a la actual.</p>
@@ -51,7 +50,7 @@
             form.get('repetir')?.invalid &&
             (form.get('repetir')?.touched || form.get('repetir')?.dirty)
           "
-          placeholder="Reingrese la nueva contraseña"
+          placeholder="Repetí la nueva contraseña."
         />
 
         <button type="button" class="toggle-eye" (click)="toggleRepetirNueva()">
@@ -64,7 +63,7 @@
             form.get('repetir')?.dirty))
         {
           @if (form.get('repetir')?.hasError('required')) {
-            <p>Debe repetir la contraseña.</p>
+            <p>Campo obligatorio.</p>
           } @if (form.get('repetir')?.hasError('noCoincide')) {
             <p>Las contraseñas no coinciden.</p>
           }
