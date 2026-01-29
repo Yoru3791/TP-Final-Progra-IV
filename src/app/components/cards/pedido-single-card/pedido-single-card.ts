@@ -34,8 +34,9 @@ export class PedidoSingleCard {
   openPedidoModal() {
     this.dialog.open(PedidoExtendedModal, {
       data: this.pedido,
-      minWidth:'95rem',
-      autoFocus:false,
+      width: '95%',
+      maxWidth: '95rem',
+      autoFocus: false,
       restoreFocus: false,
     });
   }
