@@ -32,13 +32,13 @@
   </div>
 
   <div class="acciones">
-    <button type="button" class="btn btn-cancelar" (click)="cancelar()">Cancelar</button>
-    <button type="submit" class="btn btn-confirmar" [disabled]="form.invalid || isLoading()">
+    <button type="submit" class="btn-base btn-primary" [disabled]="form.invalid || isLoading()">
       @if (isLoading()) {
         Enviando...
       } @else {
         Enviar enlace
       }
     </button>
+    <button type="button" class="btn-base btn-secondary" (click)="cancelar()">Cancelar</button>
   </div>
 </form>

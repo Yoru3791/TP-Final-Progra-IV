@@ -23,22 +23,9 @@
 
 .acciones {
   display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
+  justify-content: center;
+  gap: 2rem;
   margin-top: 2rem;
-}
-
-.btn-cancelar {
-  background: transparent;
-  color: var(--color-text-secondary);
-  border: none;
-  font-weight: bold;
-  box-shadow: none;
-}
-
-.btn-cancelar:hover {
-  color: var(--color-text-primary);
-  background: var(--color-background-secondary);
 }
 
 @media (max-width: 600px) {
@@ -50,7 +37,7 @@
     flex-direction: column-reverse;
   }
 
-  .btn {
+  .btn-base {
     width: 100%;
   }
 }
