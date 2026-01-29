@@ -18,7 +18,7 @@
   display: flex;
   align-items: center;
   margin-bottom: 1.5rem;
-  min-height: 3.2rem; /* Para alinear con la altura del header de Datos */
+  min-height: 3.2rem;
 }
 
 .titulo-seccion {
@@ -40,7 +40,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centra las acciones verticalmente */
+  justify-content: center;
 }
 
 .acciones-list {
@@ -81,7 +81,6 @@
   color: var(--color-text-primary);
 }
 
-/* Estilos para acciones críticas */
 .accion-roja p {
   color: var(--color-state-error);
 }
@@ -90,13 +89,57 @@
   color: var(--color-state-error) !important;
 }
 
-/* --- RESPONSIVE --- */
 @media (max-width: 768px) {
   .accion {
-    padding: 1rem 0; /* Más espacio para tocar en celular */
+    padding: 1rem 0;
   }
 
   .card-unificada {
     min-height: auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .acciones-list.layout-split {
+    display: grid;
+    grid-template-columns: 1fr 0.1rem 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 2rem;
+    row-gap: 2.5rem;
+    align-items: center;
+  }
+
+  .acciones-list.layout-split::before {
+    content: '';
+    grid-column: 2;
+    grid-row: 1 / -1;
+    background-color: var(--color-border-light);
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .acciones-list.layout-split .item-1 {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .acciones-list.layout-split .item-2 {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .acciones-list.layout-split .item-3 {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .acciones-list.layout-split .item-4 {
+    grid-column: 3;
+    grid-row: 2;
+  }
+
+  .acciones-list.layout-split .accion:hover {
+    transform: translateX(0.4rem);
   }
 }

@@ -14,7 +14,6 @@ export class PedidoAdminCard {
   @Input() pedido!: PedidoResponse;
   private dialog = inject(MatDialog);
 
-  // Método auxiliar para determinar la clase CSS según el estado
   getEstadoClass(): string {
     switch (this.pedido.estado) {
       case 'ACEPTADO':
@@ -35,7 +34,8 @@ export class PedidoAdminCard {
   openPedidoModal() {
     this.dialog.open(PedidoExtendedModal, {
       data: this.pedido,
-      minWidth: '95rem',
+      width: '95%',
+      maxWidth: '95rem',
       autoFocus: false,
       restoreFocus: false,
     });

@@ -1,8 +1,14 @@
-/* --- COMPONENTE DE TEXTO GENERAL --- */
 :host {
   display: block;
   padding: 2.4rem;
   border-radius: 1.2rem;
+}
+
+.titulo-rojo {
+  font-size: 2rem;
+  color: var(--color-state-error);
+  font-weight: bold;
+  margin: 0 0 1.4rem 0;
 }
 
 .texto {
@@ -11,8 +17,18 @@
   margin-bottom: 2rem;
 }
 
+.texto span {
+  font-weight: bolder;
+  color: var(--color-state-error);
+}
+
 .acciones {
   display: flex;
+  gap: 1rem;
   justify-content: center;
-  gap: 1.6rem;
+  margin-top: 1rem;
+}
+
+.acciones.center {
+  justify-content: center;
 }
