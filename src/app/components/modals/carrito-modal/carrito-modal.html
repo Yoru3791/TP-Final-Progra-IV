@@ -72,14 +72,14 @@
 
       <div class="acciones">
         <button
-          class="btn btn-confirmar"
+          class="btn-base btn-primary"
           (click)="confirmarPedido()"
           [disabled]="vacio() || (formFecha.invalid && formFecha.touched)"
         >
           CONFIRMAR PEDIDO
         </button>
 
-        <button class="btn btn-rechazar" (click)="cancelarPedido()">CANCELAR PEDIDO</button>
+        <button class="btn-base btn-secondary" (click)="cancelarPedido()">CANCELAR PEDIDO</button>
       </div>
     </div>
   </div>
