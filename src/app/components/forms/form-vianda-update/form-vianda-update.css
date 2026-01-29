@@ -199,29 +199,13 @@ textarea.form-input {
 }
 
 .btn-eliminar {
-  background-color: var(--color-state-error);
-  font-size: 1.4rem;
-  font-weight: bold;
   margin-top: 1.5rem;
-  padding: 0.8rem 1rem;
-}
-
-.btn-eliminar:focus-within,
-.btn-eliminar:hover {
-  background-color: color-mix(in srgb, var(--color-state-error) 87.5%, black);
-}
-
-.btn-eliminar:active {
-  background-color: color-mix(in srgb, var(--color-state-error) 75%, black);
-  transition: none;
+  padding: 1rem 4rem;
 }
 
 .btn-crear {
-  width: 40%;
-  font-size: 1.4rem;
-  font-weight: bold;
-  padding: 0.8rem 0;
-  margin-top: 1.5rem;
+  padding: 1rem 4rem;
+  margin-top: 1.2rem;
 }
 
 .image-placeholder-message {
