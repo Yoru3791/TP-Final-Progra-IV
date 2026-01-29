@@ -23,7 +23,7 @@
 
         <div class="error-messages">
           @if (formVianda.get('nombreVianda')?.invalid && (formVianda.get('nombreVianda')?.dirty ||
-               formVianda.get('nombreVianda')?.touched))
+              formVianda.get('nombreVianda')?.touched))
           {
             @if (formVianda.get('nombreVianda')?.hasError('required')) {
               <p>El nombre es obligatorio.</p>
@@ -54,7 +54,7 @@
 
         <div class="error-messages">
           @if (formVianda.get('categoria')?.invalid && (formVianda.get('categoria')?.dirty ||
-               formVianda.get('categoria')?.touched))
+              formVianda.get('categoria')?.touched))
           {
             @if (formVianda.get('categoria')?.hasError('required')) {
               <p>Campo obligatorio.</p>
@@ -75,7 +75,7 @@
 
         <div class="error-messages">
           @if (formVianda.get('descripcion')?.invalid && (formVianda.get('descripcion')?.dirty ||
-               formVianda.get('descripcion')?.touched))
+              formVianda.get('descripcion')?.touched))
           {
             @if (formVianda.get('descripcion')?.hasError('required')) {
               <p>Campo obligatorio.</p>
@@ -93,7 +93,7 @@
 
         <div class="error-messages">
           @if (formVianda.get('precio')?.invalid && (formVianda.get('precio')?.dirty ||
-               formVianda.get('precio')?.touched))
+              formVianda.get('precio')?.touched))
           {
             @if (formVianda.get('precio')?.hasError('required')) {
               <p>Campo obligatorio.</p>
@@ -173,7 +173,7 @@
 
         <div class="image-placeholder-message">
           @if (formVianda.get('image')?.invalid && (formVianda.get('image')?.dirty ||
-               formVianda.get('image')?.touched))
+              formVianda.get('image')?.touched))
           {
             <div class="error-messages">
               @if (formVianda.get('image')?.hasError('required')) {
@@ -199,7 +199,7 @@
 
   <button
     type="button"
-    class="btn btn-crear"
+    class="btn-base btn-primary btn-crear"
     (click)="onSubmit()"
     [disabled]="loading || !formVianda.valid"
   >
