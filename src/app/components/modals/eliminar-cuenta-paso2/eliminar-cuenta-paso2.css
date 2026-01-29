@@ -1,12 +1,59 @@
-/* --- COMPONENTE DE TEXTO GENERAL --- */
 :host {
   display: block;
   padding: 2.4rem;
   border-radius: 1.2rem;
 }
 
+.titulo-rojo {
+  font-size: 2rem;
+  color: var(--color-state-error);
+  font-weight: bold;
+  margin: 0 0 1.4rem 0;
+}
+
 .texto {
   font-size: 1.45rem;
   color: var(--color-text-primary);
   margin-bottom: 2rem;
+}
+
+.texto span {
+  font-weight: bolder;
+  color: var(--color-state-error);
+}
+
+.acciones {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.acciones.center {
+  justify-content: center;
+}
+
+.btn-cancelar {
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+}
+
+.btn-rojo {
+  background: var(--color-state-error);
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  color: var(--color-text-inverse);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-rojo:not(:disabled):hover {
+  background: var(--color-state-error-hover);
+}
+
+.btn-rojo:disabled {
+  background-color: var(--color-ui-disabled-background);
+  cursor: not-allowed;
 }
