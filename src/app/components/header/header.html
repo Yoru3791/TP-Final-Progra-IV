@@ -34,12 +34,12 @@
     </div>
 
     <div class="header-right desktop-only">
-      <a routerLink="/home" class="nav-link">INICIO</a>
-      <a routerLink="/sobre-miviandita" class="nav-link">SOBRE MIVIANDITA</a>
+      <a routerLink="/home" class="nav-link">Inicio</a>
+      <a routerLink="/sobre-miviandita" class="nav-link">Sobre MiViandita</a>
 
       @if (!isLoggedIn()) {
-        <button routerLink="/login" (click)="onLogin()" class="btn btn-primary">
-          INICIAR SESIÓN
+        <button routerLink="/login" (click)="onLogin()" class="btn-base btn-primary btn-iniciar-sesion">
+          Iniciar Sesión
         </button>
       } @else {
         <div class="btns-logged">
