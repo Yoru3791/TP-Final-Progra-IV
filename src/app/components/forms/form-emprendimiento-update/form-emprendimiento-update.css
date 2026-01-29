@@ -175,32 +175,6 @@
   font-weight: 500;
 }
 
-.btn-eliminar {
-  background-color: var(--color-state-error);
-  font-size: 1.4rem;
-  font-weight: bold;
-  margin-top: 1.5rem;
-  padding: 0.8rem 1rem;
-}
-
-.btn-eliminar:focus-within,
-.btn-eliminar:hover {
-  background-color: color-mix(in srgb, var(--color-state-error) 87.5%, black);
-}
-
-.btn-eliminar:active {
-  background-color: color-mix(in srgb, var(--color-state-error) 75%, black);
-  transition: none;
-}
-
-.btn-crear {
-  width: 40%;
-  font-size: 1.4rem;
-  font-weight: bold;
-  padding: 0.8rem 0;
-  margin-top: 1.5rem;
-}
-
 .current-image-section {
   width: 100%;
   margin-bottom: 2rem;
@@ -222,6 +196,7 @@
   gap: 1.2rem;
   
   margin-top: 0.6rem;
+  margin-bottom: 0.8rem;
   padding-left: 0.5rem;
 }
 
@@ -286,4 +261,14 @@ input:checked + .slider {
 
 input:checked + .slider::before {
   transform: translateX(2.2rem);
+}
+
+.btn-actualizar {
+  padding: 1rem 4rem;
+  margin-top: 1rem;
+}
+
+.btn-eliminar {
+  padding: 1rem 4rem;
+  margin-top: 1.2rem;
 }
