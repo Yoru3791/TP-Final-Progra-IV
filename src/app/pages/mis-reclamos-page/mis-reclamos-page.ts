@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  ElementRef,
+  HostListener,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ReclamoCardComponent } from '../../components/cards/reclamo-card/reclamo-card';
 import { EstadoReclamo } from '../../enums/estadoReclamo.enum';
@@ -10,7 +18,7 @@ import { UiNotificationService } from '../../services/ui-notification-service';
 
 @Component({
   selector: 'app-mis-reclamos-page',
-  imports: [CommonModule, RouterLink, ReclamoCardComponent,InfoReclamoTooltipComponent],
+  imports: [CommonModule, RouterLink, ReclamoCardComponent, InfoReclamoTooltipComponent],
   templateUrl: './mis-reclamos-page.html',
   styleUrl: './mis-reclamos-page.css',
 })
@@ -18,10 +26,14 @@ export class MisReclamosComponent implements OnInit {
   private reclamoService = inject(ReclamoService);
   private uiNotificationService = inject(UiNotificationService);
 
+  // Para detectar clicks fuera del dropdown y cerrarlo
+  private elementRef = inject(ElementRef);
+
   reclamos = signal<Reclamo[]>([]);
   loading = signal(true);
-  
+
   filtroActual = signal<string>('TODOS');
+  openFiltro = false;
 
   reclamosFiltrados = computed(() => {
     const filtro = this.filtroActual();
@@ -30,7 +42,7 @@ export class MisReclamosComponent implements OnInit {
     if (filtro === 'TODOS') {
       return lista;
     }
-    return lista.filter(r => r.estado === filtro);
+    return lista.filter((r) => r.estado === filtro);
   });
 
   filtrosDisponibles = [
@@ -38,7 +50,7 @@ export class MisReclamosComponent implements OnInit {
     { label: 'Pendientes', value: EstadoReclamo.PENDIENTE },
     { label: 'En Proceso', value: EstadoReclamo.EN_PROCESO },
     { label: 'Resueltos', value: EstadoReclamo.RESUELTO },
-    { label: 'Cerrados', value: EstadoReclamo.RECHAZADO }
+    { label: 'Cerrados', value: EstadoReclamo.RECHAZADO },
   ];
 
   ngOnInit() {
@@ -54,11 +66,30 @@ export class MisReclamosComponent implements OnInit {
       error: (err) => {
         this.uiNotificationService.abrirSnackBarError(err, 'Error al cargar reclamos.');
         this.loading.set(false);
-      }
+      },
     });
   }
 
   setFiltro(valor: string) {
     this.filtroActual.set(valor);
+    this.openFiltro = false;
+  }
+
+  toggleFiltro(event: Event) {
+    event.stopPropagation();
+    this.openFiltro = !this.openFiltro;
+  }
+
+  getLabelFiltroActual(): string {
+    const actual = this.filtroActual();
+    const filtro = this.filtrosDisponibles.find((f) => f.value === actual);
+    return filtro ? filtro.label : 'Todos';
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event) {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.openFiltro = false;
+    }
   }
 }
