@@ -92,7 +92,10 @@ export class PedidoExtendedModal implements OnInit {
 
     if (this.role() === 'CLIENTE') {
       if (estadoNuevo !== EstadoPedido.CANCELADO || estadoActual !== EstadoPedido.PENDIENTE) {
-        this.uiNotificationService.abrirModalError(null, 'No tenés permiso para cambiar este estado.')
+        this.uiNotificationService.abrirModalError(
+          null,
+          'No tenés permiso para cambiar este estado.',
+        );
         return;
       }
     }
@@ -109,7 +112,7 @@ export class PedidoExtendedModal implements OnInit {
       }
 
       if (!permitido) {
-        this.uiNotificationService.abrirModalError(null, 'Cambio de estado del pedido inválido.')
+        this.uiNotificationService.abrirModalError(null, 'Cambio de estado del pedido inválido.');
         return;
       }
     }
@@ -138,12 +141,18 @@ export class PedidoExtendedModal implements OnInit {
 
   cambiarFechaEntrega(fecha: string | null) {
     if (this.role() !== 'CLIENTE') {
-      this.uiNotificationService.abrirModalError(null, 'Solo el cliente puede modificar la fecha de entrega.');
+      this.uiNotificationService.abrirModalError(
+        null,
+        'Solo el cliente puede modificar la fecha de entrega.',
+      );
       return;
     }
 
     if (this.esDemasiadoTarde) {
-      this.uiNotificationService.abrirModalError(null, 'No podés cambiar el pedido un día antes de la entrega.');
+      this.uiNotificationService.abrirModalError(
+        null,
+        'No podés cambiar el pedido un día antes de la entrega.',
+      );
       return;
     }
 
@@ -153,7 +162,10 @@ export class PedidoExtendedModal implements OnInit {
     }
 
     if (fecha! < this.pedido.fechaEntrega) {
-      this.uiNotificationService.abrirModalError(null, 'La nueva fecha no puede ser anterior a la fecha original.');
+      this.uiNotificationService.abrirModalError(
+        null,
+        'La nueva fecha no puede ser anterior a la fecha original.',
+      );
       return;
     }
 
@@ -178,6 +190,8 @@ export class PedidoExtendedModal implements OnInit {
   verDatosUsuario(usuario: UsuarioResponse) {
     this.dialog.open(DatosUsuarioModal, {
       data: usuario,
+      width: '95%',
+      maxWidth: '60rem',
       autoFocus: false,
       restoreFocus: false,
     });
@@ -195,6 +209,8 @@ export class PedidoExtendedModal implements OnInit {
 
     this.dialog.open(DatosUsuarioModal, {
       data,
+      width: '95%',
+      maxWidth: '60rem',
       autoFocus: false,
       restoreFocus: false,
     });
@@ -206,13 +222,15 @@ export class PedidoExtendedModal implements OnInit {
 
     const data: DatosContactoModalData = {
       nombre: dueno.nombreCompleto,
-      email: dueno.email, 
+      email: dueno.email,
       imagenUrl: dueno.imagenUrl,
       telefono: emprendimiento.telefono,
     };
 
     this.dialog.open(DatosUsuarioModal, {
       data,
+      width: '95%',
+      maxWidth: '60rem',
       autoFocus: false,
       restoreFocus: false,
     });
