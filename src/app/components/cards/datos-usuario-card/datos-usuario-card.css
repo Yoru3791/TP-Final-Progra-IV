@@ -3,7 +3,6 @@
   width: 100%;
 }
 
-/* Contenedor base imitando Notificaciones */
 .card-unificada {
   background-color: var(--color-background-primary);
   border-radius: 1.5rem;
@@ -41,10 +40,9 @@
   flex: 1;
 }
 
-/* Layout de datos: Mobile First (Apilado) */
 .layout-datos {
   display: flex;
-  flex-direction: column-reverse; /* Imagen arriba en mobile */
+  flex-direction: column-reverse; 
   align-items: center;
   gap: 2.5rem;
 }
@@ -76,7 +74,6 @@
   word-break: break-all;
 }
 
-/* Imagen de perfil */
 .datos-imagen {
   position: relative;
   width: 12rem;
@@ -125,10 +122,9 @@
   color: var(--color-primary-light);
 }
 
-/* --- DESKTOP (PC) --- */
 @media (min-width: 768px) {
   .layout-datos {
-    flex-direction: row; /* Lado a lado */
+    flex-direction: row; 
     justify-content: space-between;
     align-items: center;
   }
