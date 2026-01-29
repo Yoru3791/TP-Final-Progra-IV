@@ -45,7 +45,7 @@
 
 .layout-datos {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column-reverse; 
   align-items: center;
   gap: 2.5rem;
 }
@@ -142,7 +142,7 @@
 
 @media (min-width: 768px) {
   .layout-datos {
-    flex-direction: row;
+    flex-direction: row; 
     justify-content: space-between;
     align-items: center;
   }

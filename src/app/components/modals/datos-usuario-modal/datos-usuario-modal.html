@@ -25,14 +25,56 @@
         @if (data.email) {
           <div class="dato">
             <span class="label">Email</span>
-            <span class="valor">{{ data.email }}</span>
+            <div class="valor-con-accion">
+              <span class="valor">{{ data.email }}</span>
+              <a
+                [href]="getGmailLink()"
+                target="_blank"
+                class="btn-icon-action btn-gmail"
+                title="Abrir en Gmail"
+              >
+                <i class="fa-solid fa-envelope"></i>
+              </a>
+            </div>
           </div>
         }
 
         <div class="dato">
           <span class="label">Teléfono</span>
-          <span class="valor">{{ data.telefono }}</span>
+          <div class="valor-con-accion">
+            <span class="valor">{{ data.telefono }}</span>
+            <a
+              [href]="getWhatsappLink()"
+              target="_blank"
+              class="btn-icon-action btn-whatsapp"
+              title="Abrir WhatsApp"
+            >
+              <i class="fa-brands fa-whatsapp"></i>
+            </a>
+          </div>
         </div>
+
+        @if (data.direccion) {
+          <div class="dato">
+            <span class="label">Dirección</span>
+            <div class="valor-con-accion">
+              <span class="valor">
+                {{ data.direccion }}
+                @if (data.ciudad) {
+                  - {{ data.ciudad }}
+                }
+              </span>
+              <a
+                [href]="getMapsLink()"
+                target="_blank"
+                class="btn-icon-action btn-maps"
+                title="Ver en Google Maps"
+              >
+                <i class="fa-solid fa-location-dot"></i>
+              </a>
+            </div>
+          </div>
+        }
       </div>
     </div>
 
