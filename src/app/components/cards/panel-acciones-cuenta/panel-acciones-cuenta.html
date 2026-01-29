@@ -6,24 +6,24 @@
   <div class="divisor"></div>
 
   <div class="contenido-card">
-    <div class="acciones-list">
-      <div class="accion" routerLink="/cliente/mis-reclamos">
+    <div class="acciones-list" [class.layout-split]="!esAdminOriginal()">
+      <div class="accion item-1" routerLink="/cliente/mis-reclamos">
         <i class="fa-solid fa-clipboard-list icon"></i>
         <p>Mis reclamos / Tickets</p>
       </div>
 
-      <div class="accion" (click)="cambiarPassword()">
+      <div class="accion item-2" (click)="cambiarPassword()">
         <i class="fa-solid fa-key icon"></i>
         <p>Cambiar mi contraseña</p>
       </div>
 
-      <div class="accion" (click)="cerrarSesion()">
+      <div class="accion item-3" (click)="cerrarSesion()">
         <i class="fa-solid fa-right-from-bracket icon"></i>
         <p>Cerrar sesión</p>
       </div>
 
       @if (!esAdminOriginal()) {
-        <div class="accion accion-roja" (click)="eliminarCuenta()">
+        <div class="accion item-4 accion-roja" (click)="eliminarCuenta()">
           <i class="fa-solid fa-user-slash icon icon-rojo"></i>
           <p>Eliminar mi cuenta</p>
         </div>
