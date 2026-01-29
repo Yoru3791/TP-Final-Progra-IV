@@ -10,3 +10,9 @@
   color: var(--color-text-primary);
   margin-bottom: 2rem;
 }
+
+.acciones {
+  display: flex;
+  justify-content: center;
+  gap: 1.6rem;
+}
