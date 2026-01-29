@@ -3,7 +3,6 @@
   width: 100%;
 }
 
-/* Contenedor base imitando Notificaciones */
 .card-unificada {
   background-color: var(--color-background-primary);
   border-radius: 1.5rem;
@@ -41,10 +40,9 @@
   flex: 1;
 }
 
-/* Layout de datos: Mobile First (Apilado) */
 .layout-datos {
   display: flex;
-  flex-direction: column-reverse; /* Imagen arriba en mobile */
+  flex-direction: column-reverse;
   align-items: center;
   gap: 2.5rem;
 }
@@ -76,21 +74,22 @@
   word-break: break-all;
 }
 
-/* Imagen de perfil */
 .datos-imagen {
   position: relative;
   width: 12rem;
   height: 12rem;
   cursor: pointer;
   flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 0.2rem solid var(--color-border-light);
 }
 
 .profile-img {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   object-fit: cover;
-  border: 0.2rem solid var(--color-border-light);
+  display: block;
 }
 
 .image-overlay {
@@ -99,19 +98,32 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   color: #fff;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
+  gap: 0.5rem;
+  backdrop-filter: blur(2px);
 }
 
 .datos-imagen:hover .image-overlay {
   opacity: 1;
+}
+
+.image-overlay i {
+  font-size: 2.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.image-overlay span {
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
 }
 
 .edit-icon {
@@ -125,10 +137,9 @@
   color: var(--color-primary-light);
 }
 
-/* --- DESKTOP (PC) --- */
 @media (min-width: 768px) {
   .layout-datos {
-    flex-direction: row; /* Lado a lado */
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
   }
