@@ -32,12 +32,12 @@
   <!-- Boton : "Ingresar" -->
   <button
     type="submit"
-    class="btn"
+    class="btn-base btn-primary btn-login"
     [disabled]="!formLogin.valid"
     [class.disabled]="!formLogin.valid"
   >
     <!-- Si el form no es valido, se desabilita el boton, funcional y estéticamente -->
-    Ingresar
+    Iniciar Sesión
   </button>
 
   @if (unverifiedEmail) {
