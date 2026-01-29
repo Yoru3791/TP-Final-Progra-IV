@@ -3,4 +3,6 @@ export interface DatosContactoModalData {
   email?: string;
   telefono: string;
   imagenUrl?: string;
+  ciudad?: string;
+  direccion?: string;
 }

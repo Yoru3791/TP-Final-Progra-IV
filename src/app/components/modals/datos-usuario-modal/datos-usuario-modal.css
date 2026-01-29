@@ -1,7 +1,7 @@
 .modal-unificado-container {
   width: 100%;
   background-color: var(--color-background-primary);
-  border-radius: 1.5rem; 
+  border-radius: 1.5rem;
   padding: 2.5rem;
   box-shadow: var(--shadow-card);
   display: flex;
@@ -43,7 +43,7 @@
 
 .modal-content {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   gap: 2rem;
 }
 
@@ -58,7 +58,7 @@
   position: relative;
   width: 12rem;
   height: 12rem;
-  flex-shrink: 0; 
+  flex-shrink: 0;
 }
 
 .profile-img {
@@ -74,7 +74,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  text-align: center; 
+  text-align: center; /* Centrado en mobile */
 }
 
 .dato {
@@ -96,6 +96,52 @@
   font-weight: 500;
   word-break: break-word;
 }
+
+/* --- ESTILOS DE LOS BOTONES DE ACCIÓN --- */
+.valor-con-accion {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrado en mobile */
+  gap: 1rem;
+}
+
+.btn-icon-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s;
+  color: white; /* Icono blanco */
+  font-size: 1.6rem;
+  flex-shrink: 0;
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.15);
+}
+
+.btn-icon-action:hover {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+  cursor: pointer;
+}
+
+/* Colores de Marca */
+.btn-gmail {
+  background-color: #ea4335; /* Rojo Gmail */
+}
+
+.btn-whatsapp {
+  background-color: #25d366; /* Verde WhatsApp */
+}
+
+.btn-maps {
+  background-color: #4285f4; /* Azul Google Maps */
+}
+
+/* --- FIN ESTILOS BOTONES --- */
 
 .alerta {
   width: 100%;
@@ -129,8 +175,8 @@
 }
 
 .btn-cerrar {
-  width: 100%; 
-  max-width: 25rem; 
+  width: 100%;
+  max-width: 25rem;
   padding: 1.2rem !important;
   font-size: 1.5rem !important;
   font-weight: bold !important;
@@ -144,14 +190,15 @@
   background-color: var(--color-primary-hover-light);
 }
 
+/* --- DESKTOP --- */
 @media (min-width: 768px) {
   .modal-unificado-container {
-    height: 100%; 
+    height: 100%;
   }
 
   .datos-principales-wrapper {
-    flex-direction: row; 
-    align-items: center; 
+    flex-direction: row;
+    align-items: center;
     justify-content: center;
     gap: 3rem;
     padding: 0 2rem;
@@ -162,9 +209,14 @@
     width: auto;
     flex: 1;
   }
-  
+
+  /* En PC alineamos el texto y botón a la izquierda */
+  .valor-con-accion {
+    justify-content: flex-start;
+  }
+
   .profile-img-container {
-      width: 13rem;
-      height: 13rem;
+    width: 13rem;
+    height: 13rem;
   }
 }

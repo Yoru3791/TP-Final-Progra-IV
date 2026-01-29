@@ -187,9 +187,29 @@ export class PedidoExtendedModal implements OnInit {
     });
   }
 
+  // --- ARREGLADO: Mapeo manual de datos ---
   verDatosUsuario(usuario: UsuarioResponse) {
+    // Verificamos si el usuario a ver es el DUEÑO del pedido actual
+    // Si es así, le adjuntamos la dirección del emprendimiento.
+    let direccionExtra = undefined;
+    let ciudadExtra = undefined;
+
+    if (usuario.id === this.pedido.emprendimiento.dueno.id) {
+      direccionExtra = this.pedido.emprendimiento.direccion;
+      ciudadExtra = this.pedido.emprendimiento.ciudad;
+    }
+
+    const data: DatosContactoModalData = {
+      nombre: usuario.nombreCompleto, // Mapeo clave: nombreCompleto -> nombre
+      email: usuario.email,
+      telefono: usuario.telefono,
+      imagenUrl: usuario.imagenUrl,
+      direccion: direccionExtra,
+      ciudad: ciudadExtra,
+    };
+
     this.dialog.open(DatosUsuarioModal, {
-      data: usuario,
+      data: data,
       width: '95%',
       maxWidth: '60rem',
       autoFocus: false,
@@ -225,6 +245,8 @@ export class PedidoExtendedModal implements OnInit {
       email: dueno.email,
       imagenUrl: dueno.imagenUrl,
       telefono: emprendimiento.telefono,
+      ciudad: emprendimiento.ciudad,
+      direccion: emprendimiento.direccion,
     };
 
     this.dialog.open(DatosUsuarioModal, {
