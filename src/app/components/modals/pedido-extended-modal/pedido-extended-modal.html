@@ -77,38 +77,41 @@
             </div>
           }
           <button
-            class="btn btn-cambiar-fecha"
+            class="btn-base btn-primary"
             [disabled]="esDemasiadoTarde || !nuevaFechaSeleccionada"
             [class.btn-disabled]="esDemasiadoTarde"
             (click)="cambiarFechaEntrega(nuevaFechaSeleccionada)"
           >
             CAMBIAR FECHA
           </button>
-          <button class="btn btn-rechazar" (click)="cambiarEstado(EstadoPedido.CANCELADO)">
-            CANCELAR PEDIDO
-          </button>
         }
 
         @if (role() === 'DUENO' && pedido.estado === 'PENDIENTE') {
-          <button class="btn btn-confirmar" (click)="cambiarEstado(EstadoPedido.ACEPTADO)">
+          <button class="btn-base btn-success" (click)="cambiarEstado(EstadoPedido.ACEPTADO)">
             ACEPTAR PEDIDO
           </button>
-          <button class="btn btn-rechazar" (click)="cambiarEstado(EstadoPedido.RECHAZADO)">
+          <button class="btn-base btn-danger" (click)="cambiarEstado(EstadoPedido.RECHAZADO)">
             RECHAZAR PEDIDO
           </button>
         }
         @if (role() === 'DUENO' && pedido.estado === 'ACEPTADO') {
-          <button class="btn btn-entregado" (click)="cambiarEstado(EstadoPedido.ENTREGADO)">
+          <button class="btn-base btn-entregado" (click)="cambiarEstado(EstadoPedido.ENTREGADO)">
             MARCAR ENTREGADO
           </button>
         }
 
         @if (role() === 'DUENO') {
-          <button class="btn btn-contactar" (click)="contactarCliente()">CONTACTAR CLIENTE</button>
+          <button class="btn-base btn-secondary" (click)="contactarCliente()">CONTACTAR CLIENTE</button>
         }
 
         @if (role() === 'CLIENTE') {
-          <button class="btn btn-contactar" (click)="contactarLocal()">CONTACTAR DUEÑO</button>
+          <button class="btn-base btn-secondary" (click)="contactarLocal()">CONTACTAR DUEÑO</button>
+        }
+
+        @if (role() === 'CLIENTE' && pedido.estado === 'PENDIENTE') {
+          <button class="btn-base btn-danger" (click)="cambiarEstado(EstadoPedido.CANCELADO)">
+            CANCELAR PEDIDO
+          </button>
         }
 
         @if (role() === 'ADMIN') {

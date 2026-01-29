@@ -215,14 +215,20 @@
   align-items: center;
 }
 
-.acciones .btn {
-  width: 22rem !important;
+.acciones button {
+  width: 60%;
   padding: 1.4rem 0 !important;
-  font-size: 1.8rem !important;
-  border-radius: 0.9rem !important;
-  font-weight: 700 !important;
   text-align: center !important;
-  border: none;
+}
+
+.btn-entregado {
+  background: var(--color-state-finish);
+  color: var(--color-text-inverse);
+}
+
+.btn-entregado:hover:not(:disabled) {
+  background-color: #3171d7;
+  box-shadow: 0 0.4rem 0.8rem rgba(83, 63, 238, 0.25);
 }
 
 /* --- ESTILOS ADMIN --- */
