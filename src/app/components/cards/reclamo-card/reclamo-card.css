@@ -141,22 +141,10 @@
 }
 
 .btn-gestionar {
-  background-color: var(--color-primary);
-  color: white;
-  border: none;
   padding: 0.8rem 1.6rem;
-  border-radius: 0.8rem;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1.4rem;
-  transition: 0.2s;
   display: flex;
   align-items: center;
   gap: 0.8rem;
-}
-
-.btn-gestionar:hover {
-  background-color: var(--color-primary-hover-dark);
 }
 
 .status-bloqueado {
