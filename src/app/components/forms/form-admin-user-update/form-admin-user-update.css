@@ -36,14 +36,6 @@
   width: 100%;
 }
 
-.form .btn {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-top: 1.5rem;
-  padding: 1rem 0;
-  width: 30%;
-}
-
 .image-upload {
   --image-size: 16rem;
 
@@ -103,6 +95,7 @@
   margin-top: 1rem;
   text-align: center;
   width: 100%;
+  margin-bottom: 1rem;
 }
 
 .placeholder-info {

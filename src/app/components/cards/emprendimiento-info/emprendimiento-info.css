@@ -150,22 +150,8 @@
   padding-right: 4rem;
 }
 
-.btn-accion {
-  padding: 1rem 2.6rem;
-  font-family: inherit;
-  font-size: 1.6rem;
-  font-weight: 500;
-  letter-spacing: 0.25rem;
-}
-
-.btn-carrito {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 0.75rem;
-  justify-content: center;
-  min-width: 15rem;
-  padding: 1rem 2rem;
+.btn-config {
+  padding: 1.2rem 2.4rem;
 }
 
 /* ------------------ RIGHT ------------------ */

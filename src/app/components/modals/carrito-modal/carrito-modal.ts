@@ -129,6 +129,7 @@ export class CarritoModal implements OnInit {
       this.uiNotificationService.abrirModalConfirmacion({
         titulo: 'Cancelar Pedido',
         texto: texto,
+        critico: false,
       })
     );
 

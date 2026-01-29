@@ -113,7 +113,7 @@ export class UsuarioCard {
       this.uiNotificationService.abrirModalConfirmacion({
           titulo: `${banned ? 'Desbloquear' : 'Bloquear'} usuario`,
           texto: `¿Seguro de que querés ${banned ? 'desbloquear' : 'bloquear'} a este usuario?`,
-          critico: true,
+          critico: banned ? false : true,
       })
     );
 

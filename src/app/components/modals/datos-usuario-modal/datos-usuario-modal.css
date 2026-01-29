@@ -174,22 +174,6 @@
   justify-content: center;
 }
 
-.btn-cerrar {
-  width: 100%;
-  max-width: 25rem;
-  padding: 1.2rem !important;
-  font-size: 1.5rem !important;
-  font-weight: bold !important;
-  border-radius: 0.8rem !important;
-  background-color: var(--color-primary-light);
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-.btn-cerrar:hover {
-  background-color: var(--color-primary-hover-light);
-}
-
 /* --- DESKTOP --- */
 @media (min-width: 768px) {
   .modal-unificado-container {

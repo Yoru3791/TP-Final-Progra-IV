@@ -11,13 +11,21 @@
     }
 
     <div class="btns-container">
-      <button class="btn" [class.btn-rojo]="!esCritico()" (click)="procesar(false)">
+
+      <button
+        class="btn-base"
+        [class.btn-danger]="esCritico()" 
+        [class.btn-primary]="!esCritico()"
+        (click)="procesar(true)">
+        Confirmar
+      </button>
+
+      <button
+        class="btn-base btn-secondary"
+        (click)="procesar(false)">
         Cancelar
       </button>
 
-      <button class="btn" [class.btn-rojo]="esCritico()" (click)="procesar(true)">
-        Confirmar
-      </button>
     </div>
   </div>
 </div>

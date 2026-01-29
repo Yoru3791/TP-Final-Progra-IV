@@ -148,16 +148,16 @@
         </div>
       </div>
 
-      <button class="btn btn-eliminar" (click)="onDelete()">Eliminar Emprendimiento</button>
+      <button class="btn-base btn-danger btn-eliminar" (click)="onDelete()">Eliminar Empr.</button>
     </div>
   </div>
 
   <button
     type="button"
-    class="btn btn-crear"
+    class="btn-base btn-primary btn-actualizar"
     (click)="onSubmit()"
     [disabled]="formEmprendimiento.invalid"
   >
-    Actualizar Emprendimiento
+    Guardar cambios
   </button>
 </form>

@@ -33,7 +33,7 @@
   transition: color 0.2s ease, text-decoration 0.2s ease;
 }
 
-.btn {
+.btn-login {
   width: 60%;
   font-size: 1.5rem;
   font-weight: bold;

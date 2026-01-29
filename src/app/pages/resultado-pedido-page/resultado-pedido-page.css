@@ -110,29 +110,6 @@ h1 {
     margin-top: 1rem;
 }
 
-.btn {
-    padding: 1.2rem;
-    border-radius: 1rem;
-    font-size: 1.6rem;
-    font-weight: 600;
-    width: 100%;
-}
-
-.error-btn {
-    background-color: var(--color-state-error);
-}
-.error-btn:hover {
-    background-color: var(--color-state-error-hover);
-}
-
-.btn-outline {
-    background-color: transparent;
-    border: 0.1rem solid var(--color-text-light);
-    color: var(--color-text-dark-secondary);
-}
-
-.btn-outline:hover {
-    background-color: var(--color-background-secondary);
-    border-color: var(--color-text-secondary);
-    color: var(--color-text-secondary);
+.actions .btn-base {
+    width: 100%; 
 }

@@ -25,35 +25,10 @@
 .acciones {
   display: flex;
   gap: 1rem;
-  justify-content: flex-end;
+  justify-content: center;
   margin-top: 1rem;
 }
 
 .acciones.center {
   justify-content: center;
-}
-
-.btn-cancelar {
-  padding: 1rem 2rem;
-  font-size: 1.5rem;
-}
-
-.btn-rojo {
-  background: var(--color-state-error);
-  padding: 1rem 2rem;
-  font-size: 1.5rem;
-  color: var(--color-text-inverse);
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn-rojo:not(:disabled):hover {
-  background: var(--color-state-error-hover);
-}
-
-.btn-rojo:disabled {
-  background-color: var(--color-ui-disabled-background);
-  cursor: not-allowed;
 }
