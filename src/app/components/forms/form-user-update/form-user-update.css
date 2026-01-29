@@ -1,73 +1,41 @@
-/* --- FORMULARIO DE EDICIÓN/CREACIÓN --- */
+.header-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  justify-content: space-between;
+  margin-top: 2rem;
+  padding: 0 2rem 0 2rem;
+}
+
 .titulo-form {
-  width: 100%;
+  --font-size: 2.4rem;
+
   text-align: center;
-  margin-bottom: 1rem;
-  font-size: 2rem;
+  font-size: var(--font-size);
+  line-height: var(--font-size);
   font-weight: bold;
+  margin: 0;
   color: var(--color-text-primary);
 }
 
+.btn-close {
+  background-color: inherit;
+  color: var(--color-primary);
+  font-size: 3rem;
+}
+
 /* Contenedor principal */
-.form-emprendimiento {
+.form {
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
   padding: 2rem;
   width: 100%;
-  max-width: 55rem;
-  margin: 3rem auto;
   background: var(--color-background-secondary);
   border-radius: 1rem;
-}
-
-/* Campos */
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  min-height: 9rem;
-}
-
-.form-label {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: var(--color-text-secondary);
-}
-
-.form-input {
-  width: 100%;
-  padding: 1rem 1.2rem;
-  background-color: var(--color-background-secondary);
-  border: 0.1rem solid var(--color-border-light);
-  border-radius: 0.6rem;
-  font-size: 1.4rem;
-  color: var(--color-text-secondary);
-}
-
-.form-input:focus {
-  outline: 0.2rem solid var(--input-focus-outline);
-  box-shadow: var(--shadow-focus-primary); /* Asumiendo que el input focus shadow es el primario */
-}
-
-/* Mensajes de error */
-.error-messages p {
-  color: var(--color-state-danger);
-  font-size: 1.3rem;
-}
-
-.error-global {
-  color: var(--color-state-danger);
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-top: -1rem;
-}
-
-.success-global {
-  color: var(--color-state-success);
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-top: -1rem;
 }
 
 /* Botones */
@@ -76,29 +44,4 @@
   justify-content: space-between;
   width: 100%;
   margin-top: 1rem;
-}
-
-.btn {
-  width: 45%;
-  font-size: 1.4rem;
-  font-weight: bold;
-  padding: 0.9rem 0;
-  cursor: pointer;
-  border-radius: 0.6rem;
-}
-
-.btn-crear {
-  background-color: var(--color-primary-light);
-  color: var(--color-text-inverse);
-  border: none;
-}
-
-.btn-crear:disabled {
-  background-color: var(--color-ui-disabled-background);
-}
-
-.btn-cancelar {
-  background-color: var(--color-ui-neutral);
-  color: var(--color-text-dark-secondary); /* Mapeando #333 al color oscuro de texto secundario (o podríamos usar --color-ui-disabled-text) */
-  border: none;
 }

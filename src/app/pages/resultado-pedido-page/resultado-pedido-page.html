@@ -15,20 +15,20 @@
 
             <div class="messages">
                 <p class="main-msg">
-                    Tu pedido fue enviado correctamente. En breve recibirás un correo de confirmación con los detalles del pedido.
+                    Tu pedido fue enviado correctamente. En breve vas a recibir un correo de confirmación con los detalles del pedido.
                 </p>
                 
                 <div class="info-box">
                     <i class="fa-solid fa-circle-info"></i>
                     <p>
-                        Te notificaremos por email en cuanto haya una respuesta por parte del emprendimiento.
+                        Te vamos a notificar por email en cuanto haya una respuesta por parte del emprendimiento.
                     </p>
                 </div>
             </div>
 
             <div class="actions">
-                <button class="btn btn-primary" routerLink="/me">Ver mis Pedidos</button>
-                <button class="btn btn-outline" routerLink="/home">Volver al Inicio</button>
+                <button class="btn-base btn-primary" routerLink="/me">Ver mis Pedidos</button>
+                <button class="btn-base btn-secondary" routerLink="/home">Volver al Inicio</button>
             </div>
         </div>
     }
@@ -42,12 +42,12 @@
             <h1>Hubo un problema</h1>
             
             <p class="main-msg">
-                No pudimos procesar tu pedido en este momento. Por favor, intenta nuevamente.
+                No pudimos procesar tu pedido en este momento. Por favor, intentá nuevamente.
             </p>
 
             <div class="actions">
-                <button class="btn btn-primary error-btn" (click)="volverAtras()">Volver atrás</button>
-                <button class="btn btn-outline" routerLink="/home">Ir al Inicio</button>
+                <button class="btn-base btn-danger" (click)="volverAtras()">Volver atrás</button>
+                <button class="btn-base btn-secondary" routerLink="/home">Ir al Inicio</button>
             </div>
         </div>
     }

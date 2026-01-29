@@ -63,22 +63,23 @@
             <input type="date" formControlName="fechaEntrega" [min]="minDate" />
           </form>
 
-          @let fecha = formFecha.get('fechaEntrega'); @if (fecha?.invalid && fecha?.dirty) {
-          <p class="fecha-warning">Ingrese una fecha válida</p>
+          @let fecha = formFecha.get('fechaEntrega');
+          @if (fecha?.invalid && fecha?.dirty) {
+            <p class="fecha-warning">Ingresá una fecha válida (mínimo dos días desde hoy).</p>
           }
         </div>
       </div>
 
       <div class="acciones">
         <button
-          class="btn btn-confirmar"
+          class="btn-base btn-primary"
           (click)="confirmarPedido()"
           [disabled]="vacio() || (formFecha.invalid && formFecha.touched)"
         >
           CONFIRMAR PEDIDO
         </button>
 
-        <button class="btn btn-rechazar" (click)="cancelarPedido()">CANCELAR PEDIDO</button>
+        <button class="btn-base btn-secondary" (click)="cancelarPedido()">CANCELAR PEDIDO</button>
       </div>
     </div>
   </div>

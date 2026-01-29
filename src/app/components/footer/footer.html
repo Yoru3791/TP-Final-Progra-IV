@@ -32,7 +32,7 @@
 
         <nav>
           @if (esInvitado()) {
-          <p><a routerLink="/registro/dueno">Registrate como Dueño</a></p>
+            <p><a routerLink="/registro/dueno">Registrate como Dueño</a></p>
           }
 
           <p><a routerLink="/normas-comunidad">Normas de la Comunidad</a></p>
@@ -43,7 +43,7 @@
   </div>
 
   <div class="footer-bottom">
-    <span>&copy; MiViandita 2025</span>
+    <span>&copy; MiViandita 2025-{{ anioActual }}</span>
     <span class="separador"> | </span>
     <span>Desarrollado por <a routerLink="/sobre-nosotros">MiViandita Team</a></span>
   </div>

@@ -1,6 +1,13 @@
-/* --- COMPONENTE BARRA DE BÚSQUEDA --- */
 .search-container {
   position: relative;
+  width: 100%;
+}
+
+.search-input-container {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 48rem;
 }
 
 .search-input {
@@ -9,9 +16,10 @@
   font-family: inherit;
   font-size: 1.6rem;
   outline: none;
-  padding: 1rem 3.6rem;
+  padding: 1rem 4.5rem 1rem 3.6rem;
   transition: 0.2s;
-  width: 48rem;
+  width: 100%;
+  max-width: 48rem;
 }
 
 .mostrando-resultados {
@@ -48,8 +56,9 @@
   border: none;
   color: color-mix(in srgb, var(--color-text-primary) 33%, var(--color-background-primary));
   font-size: 1.4rem;
-  right: 1.2rem;
+  right: 1.5rem;
   transition-duration: 0.1s;
+  cursor: pointer;
 }
 
 .btn-clear:focus-within,
@@ -65,7 +74,7 @@
   overflow: hidden;
   position: absolute;
   top: 100%;
-  width: 48rem;
+  width: 100%;
   z-index: 10;
 }
 
@@ -148,4 +157,32 @@
   font-size: 2rem;
   padding: 2rem 2rem;
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  .search-input {
+    width: 100%;
+    font-size: 1.4rem;
+    padding: 0.8rem 3.2rem;
+  }
+
+  .search-results {
+    width: 100%;
+  }
+
+  .result-card {
+    padding: 1rem;
+  }
+
+  .card-title {
+    font-size: 1.6rem;
+  }
+
+  .card-img {
+    height: 6rem;
+  }
+
+  .card-sub {
+    font-size: 1.3rem;
+  }
 }

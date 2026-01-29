@@ -25,14 +25,3 @@
   line-height: 1.6;
   margin-bottom: 2.8rem;
 }
-
-.btn-volver {
-  background-color: var(--color-primary-light);
-  padding: 1rem 2.8rem;
-  font-size: 1.55rem;
-  border-radius: 0.6rem;
-}
-
-.btn-volver:hover {
-  background-color: var(--color-primary-hover-light);
-}

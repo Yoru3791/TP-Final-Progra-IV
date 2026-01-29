@@ -1,10 +1,8 @@
-/* Contenedor relativo para posicionar el dropdown */
 .notificacion-wrapper {
   position: relative;
   display: inline-block;
 }
 
-/* --- BOTÓN DE CAMPANA --- */
 .icon-btn {
   background: none;
   border: none;
@@ -20,21 +18,20 @@
 
 .icon-btn i {
   font-size: 2.2rem;
-  color: var(--color-primary-light); /* Icono Naranja */
+  color: var(--color-primary-light);
   transition: color 0.2s ease;
 }
 
 .icon-btn:hover i {
-  color: var(--color-primary-hover-light); /* Naranja más fuerte */
+  color: var(--color-primary-hover-light);
   transform: scale(1.1);
 }
 
-/* --- BADGE ROJO (CONTADOR) --- */
 .badge {
   position: absolute;
   top: 0;
   right: 0;
-  background-color: var(--color-state-error); /* Rojo error para destacar */
+  background-color: var(--color-state-error);
   color: var(--color-text-inverse);
   font-size: 1rem;
   font-weight: bold;
@@ -45,28 +42,26 @@
   align-items: center;
   justify-content: center;
   padding: 0 0.4rem;
-  box-shadow: 0 0.2rem 0.4rem rgba(0,0,0,0.2);
-  border: 0.1rem solid var(--color-background-primary); /* Borde blanco para separar del icono */
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2);
+  border: 0.1rem solid var(--color-background-primary);
 }
 
-/* --- DROPDOWN FLOTANTE --- */
 .dropdown {
   position: absolute;
-  top: 120%; /* Un poco separado del icono */
-  right: -1rem; /* Alineado a la derecha, ajusta según tu header */
-  width: 34rem; /* Ancho fijo cómodo */
+  top: 120%;
+  right: -1rem;
+  width: 34rem;
   background-color: var(--color-background-primary);
   border-radius: 1.2rem;
   border: 0.1rem solid var(--color-border-light);
-  box-shadow: var(--shadow-form); /* Sombra fuerte para que flote */
+  box-shadow: var(--shadow-form);
   z-index: 1000;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  cursor: default; /* Evita cursor de mano en zonas vacías */
+  cursor: default;
 }
 
-/* Triangulito superior (opcional, estilo tooltip) */
 .dropdown::before {
   content: '';
   position: absolute;
@@ -80,7 +75,6 @@
   transform: rotate(45deg);
 }
 
-/* Animación de entrada */
 .animate {
   animation: slideDown 0.2s ease-out forwards;
   transform-origin: top right;
@@ -97,7 +91,6 @@
   }
 }
 
-/* --- HEADER DEL DROPDOWN --- */
 .dropdown-header {
   display: flex;
   justify-content: space-between;
@@ -114,15 +107,13 @@
   font-weight: bold;
 }
 
-/* --- LISTA --- */
 .lista {
-  max-height: 35rem; /* Altura máxima antes de scroll */
+  max-height: 35rem;
   overflow-y: auto;
   margin-bottom: 1rem;
   padding-right: 0.5rem;
 }
 
-/* Empty State del Dropdown */
 .empty-state {
   text-align: center;
   padding: 2rem 1rem;
@@ -132,7 +123,7 @@
 .empty-state i {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
-  color: var(--color-primary-medium); /* Naranja suave */
+  color: var(--color-primary-medium);
 }
 
 .empty-state p {
@@ -140,7 +131,6 @@
   margin: 0;
 }
 
-/* --- BOTÓN VER TODAS --- */
 .btn-ver {
   background-color: transparent;
   color: var(--color-primary-light);
@@ -158,4 +148,55 @@
 .btn-ver:hover {
   background-color: var(--color-primary-light);
   color: var(--color-text-inverse);
+}
+
+@media (max-width: 768px) {
+  .icon-btn {
+    padding: 0; 
+    width: auto;
+    height: auto;
+  }
+
+  .icon-btn i {
+    font-size: 2.2rem; 
+    margin: 0;
+  }
+
+  .icon-btn::after {
+    display: none;
+  }
+
+  .badge {
+    top: -0.5rem;
+    right: -0.5rem;
+    min-width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .dropdown {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-height: 70vh;
+    border-radius: 1.5rem;
+    box-shadow: 0 0 100vh rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.25s ease-out;
+  }
+
+  .dropdown::before {
+    display: none;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -45%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
 }

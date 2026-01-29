@@ -5,12 +5,8 @@ import { ViandaService } from '../../../services/vianda-service';
 import { ViandaResponse } from '../../../model/vianda-response.model';
 import { CategoriaVianda } from '../../../enums/categoriaVianda.enum';
 import { ViandaUpdate } from '../../../model/vianda-update.model';
-import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-modal';
-import { Snackbar } from '../../modals/snackbar/snackbar';
-import { ConfirmarModalService } from '../../../services/confirmar-modal-service';
-import { SnackbarData } from '../../../model/snackbar-data.model';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { UiNotificationService } from '../../../services/ui-notification-service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
 import { IconTacc } from '../../utils/icon-tacc/icon-tacc';
 import { IconVegan } from '../../utils/icon-vegan/icon-vegan';
@@ -30,11 +26,9 @@ import { IconVeggie } from '../../utils/icon-veggie/icon-veggie';
 export class FormViandaUpdate implements OnInit {
   private fb = inject(FormBuilder);
   private viandaService = inject(ViandaService);
-  private dialog = inject(MatDialog);
   private dialogRef = inject(MatDialogRef);
-  private snackBar = inject(MatSnackBar);
   private cdr = inject(ChangeDetectorRef);
-  private confirmarModalService = inject(ConfirmarModalService);
+  private uiNotificationService = inject(UiNotificationService);
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { vianda: ViandaResponse }) {}
 
@@ -60,9 +54,9 @@ export class FormViandaUpdate implements OnInit {
   maxHeight = 1080;
 
   formVianda = this.fb.group({
-    nombreVianda: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
+    nombreVianda: ['', [Validators.required, Validators.maxLength(256)]],
     categoria: [null as string | null, Validators.required],
-    descripcion: ['', [Validators.required, Validators.maxLength(250)]],
+    descripcion: ['', [Validators.required, Validators.maxLength(256)]],
     precio: [0, [Validators.required, Validators.min(0)]],
     esVegano: [false, Validators.required],
     esVegetariano: [false, Validators.required],
@@ -120,10 +114,10 @@ export class FormViandaUpdate implements OnInit {
           this.formVianda.get('image')?.markAsTouched();
         } else {
           this.resetImageSelection();
-          this.dialog.open(ErrorDialogModal, {
-            data: { message: `La imagen no debe superar ${this.maxWidth}x${this.maxHeight}px` },
-            panelClass: 'modal-error',
-          });
+
+          this.uiNotificationService.abrirModalError(
+            null, `La imagen no debe superar ${this.maxWidth}x${this.maxHeight}px`
+          );
         }
         this.cdr.detectChanges();
       };
@@ -147,7 +141,7 @@ export class FormViandaUpdate implements OnInit {
 
   async onDelete() {
     const confirmado = await firstValueFrom(
-      this.confirmarModalService.confirmar({
+      this.uiNotificationService.abrirModalConfirmacion({
         titulo: 'Eliminar Vianda',
         texto:
           '¿Seguro de que querés eliminar la vianda? <span>Esta acción es irreversible.</span>',
@@ -160,40 +154,13 @@ export class FormViandaUpdate implements OnInit {
 
     this.viandaService.deleteVianda(this.data.vianda.id).subscribe({
       next: () => {
-        this.deleteSuccess();
+        this.uiNotificationService.abrirSnackBarExito('Vianda eliminada exitosamente.');
+        this.dialogRef.close(true);
       },
-      error: () => {
-        this.handleDeleteError(null);
+      error: (err) => {
+        this.uiNotificationService.abrirModalError(err);
       },
     });
-  }
-
-  handleDeleteError(error: any) {
-    const backendMsg =
-      error?.message || 'Error al eliminar la vianda. Es posible que tenga pedidos asociados.';
-
-    this.dialog.open(ErrorDialogModal, {
-      data: { message: backendMsg },
-      panelClass: 'modal-error',
-      autoFocus: false,
-      restoreFocus: false,
-    });
-  }
-
-  private deleteSuccess() {
-    const data: SnackbarData = {
-      message: 'Vianda eliminada con éxito.',
-      iconName: 'check_circle',
-    };
-
-    this.snackBar.openFromComponent(Snackbar, {
-      data,
-      duration: 3000,
-      panelClass: 'snackbar-panel',
-      verticalPosition: 'bottom',
-    });
-
-    this.dialogRef.close(true);
   }
 
   onSubmit() {
@@ -219,13 +186,12 @@ export class FormViandaUpdate implements OnInit {
         if (this.selectedFile) {
           this.uploadImage(viandaId);
         } else {
-          this.loading = false;
-          this.dialogRef.close(true);
+          this.updateSuccess();
         }
       },
       error: (err) => {
         this.loading = false;
-        this.handleError(err);
+        this.uiNotificationService.abrirModalError(err);
       },
     });
   }
@@ -233,23 +199,19 @@ export class FormViandaUpdate implements OnInit {
   uploadImage(id: number) {
     this.viandaService.updateImagenVianda(id, this.selectedFile!).subscribe({
       next: () => {
-        this.loading = false;
-        this.dialogRef.close(true);
+        this.updateSuccess();
       },
       error: (err) => {
         this.loading = false;
-        this.dialog.open(ErrorDialogModal, {
-          data: { message: 'Datos actualizados, pero error al subir la imagen.' },
-        });
+        this.uiNotificationService.abrirModalError(err, 'Vianda actualizada, pero error al subir la imagen.');
       },
     });
   }
 
-  handleError(err: any) {
-    const backendMsg = err.error?.message || 'Error desconocido al actualizar';
-    this.dialog.open(ErrorDialogModal, {
-      data: { message: backendMsg },
-    });
+  private updateSuccess() {
+    this.loading = false;
+    this.uiNotificationService.abrirSnackBarExito('Vianda actualizada exitosamente.');
+    this.dialogRef.close(true);
   }
 
   cerrarModal() {

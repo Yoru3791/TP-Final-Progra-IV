@@ -1,35 +1,73 @@
 <div class="main-form-container">
   <h1 class="main-h1-title">NUEVA CONTRASEÑA</h1>
 
-  <form class="form-login" [formGroup]="form" (ngSubmit)="onSubmit()">
-    
+  <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- Nueva contraseña -->
     <div class="form-field password-field">
-      <label class="form-label">Nueva Contraseña</label>
-      
+      <label class="form-label">Nueva contraseña</label>
+
       <div class="input-with-icon">
         <input
-          formControlName="password"
-          [type]="showPassword ? 'text' : 'password'"
+          formControlName="nueva"
+          [type]="showNueva ? 'text' : 'password'"
           class="form-input"
+          [class.invalid]="
+            form.get('nueva')?.invalid && (form.get('nueva')?.touched || form.get('nueva')?.dirty)
+          "
+          placeholder="Entre 8 y 16 caracteres, y al menos una mayúscula, una minúscula, un número y un carácter especial."
         />
-        <button type="button" class="toggle-eye" (click)="togglePassword()">
-          <i class="fa-solid" [class]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+
+        <button type="button" class="toggle-eye" (click)="toggleNueva()">
+          <i class="fa-solid {{ showNueva ? 'fa-eye' : 'fa-eye-slash' }}"></i>
         </button>
+      </div>
+
+      <div class="error-messages">
+        @if (form.get('nueva')?.invalid && (form.get('nueva')?.touched || form.get('nueva')?.dirty)) {
+          @if (form.get('nueva')?.hasError('required')) {
+            <p>Campo obligatorio.</p>
+          } @if (form.get('nueva')?.hasError('pattern')) {
+            <p>
+              Entre 8 y 16 caracteres, y al menos una mayúscula, una minúscula, un número y un carácter especial.
+            </p>
+          } @if (form.get('nueva')?.hasError('mismaQueActual')) {
+            <p>La nueva contraseña no puede ser igual a la actual.</p>
+          }
+        }
       </div>
     </div>
 
+    <!-- Repetir contraseña -->
     <div class="form-field password-field">
-      <label class="form-label">Repetir Contraseña</label>
-      
+      <label class="form-label">Repetir nueva contraseña</label>
+
       <div class="input-with-icon">
         <input
-          formControlName="confirmPassword"
-          [type]="showPassword ? 'text' : 'password'"
+          formControlName="repetir"
+          [type]="showRepetirNueva ? 'text' : 'password'"
           class="form-input"
+          [class.invalid]="
+            form.get('repetir')?.invalid &&
+            (form.get('repetir')?.touched || form.get('repetir')?.dirty)
+          "
+          placeholder="Repetí la nueva contraseña."
         />
-        <button type="button" class="toggle-eye" (click)="togglePassword()">
-            <i class="fa-solid" [class]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+
+        <button type="button" class="toggle-eye" (click)="toggleRepetirNueva()">
+          <i class="fa-solid {{ showRepetirNueva ? 'fa-eye' : 'fa-eye-slash' }}"></i>
         </button>
+      </div>
+
+      <div class="error-messages">
+        @if (form.get('repetir')?.invalid && (form.get('repetir')?.touched ||
+            form.get('repetir')?.dirty))
+        {
+          @if (form.get('repetir')?.hasError('required')) {
+            <p>Campo obligatorio.</p>
+          } @if (form.get('repetir')?.hasError('noCoincide')) {
+            <p>Las contraseñas no coinciden.</p>
+          }
+        }
       </div>
     </div>
 
@@ -37,7 +75,6 @@
       type="submit"
       class="btn"
       [disabled]="form.invalid || isSubmitting()"
-      [class.disabled]="form.invalid"
     >
       {{ isSubmitting() ? 'Guardando...' : 'Cambiar Contraseña' }}
     </button>

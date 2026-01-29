@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoriaReclamo } from '../../../enums/categoriaReclamo.enum';
 import { CategoriaReclamoLabel } from '../../../constants/categoriaReclamo-labels.const';

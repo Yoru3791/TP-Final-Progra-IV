@@ -22,8 +22,8 @@ export class PanelAccionesCuenta {
 
   cambiarPassword() {
     this.dialog.open(CambiarPasswordModal, {
-      width:'80rem',
-      height:'48rem',
+      panelClass: 'form-modal',
+      width: '60rem',
     });
   }
 

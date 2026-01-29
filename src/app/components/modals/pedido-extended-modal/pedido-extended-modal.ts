@@ -9,12 +9,11 @@ import { PedidosService } from '../../../services/pedido-service';
 import { PedidoUpdateRequest } from '../../../model/pedido-update-request.model';
 import { EstadoPedido } from '../../../enums/estadoPedido.enum';
 import { UsuarioResponse } from '../../../model/usuario-response.model';
-import { Snackbar } from '../snackbar/snackbar';
-import { ErrorDialogModal } from '../error-dialog-modal/error-dialog-modal';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { DatosUsuarioModal } from '../datos-usuario-modal/datos-usuario-modal';
 import { A11yModule } from '@angular/cdk/a11y';
+import { UiNotificationService } from '../../../services/ui-notification-service';
+import { DatosContactoModalData } from '../../../model/datos-modal-data.model';
 
 @Component({
   selector: 'app-pedido-extended-modal',
@@ -32,7 +31,7 @@ export class PedidoExtendedModal implements OnInit {
   private pedidosService = inject(PedidosService);
   private dialogRef = inject(MatDialogRef);
   private dialog = inject(MatDialog);
-  private snackBar = inject(MatSnackBar);
+  private uiNotificationService = inject(UiNotificationService);
 
   public role = this.authService.currentUserRole;
 
@@ -47,7 +46,6 @@ export class PedidoExtendedModal implements OnInit {
 
   ngOnInit(): void {
     this.calcularValidacionesFecha();
-    // Inicializamos el selector con el estado actual del pedido
     this.estadoAdminSeleccionado = this.pedido.estado;
   }
 
@@ -94,7 +92,11 @@ export class PedidoExtendedModal implements OnInit {
 
     if (this.role() === 'CLIENTE') {
       if (estadoNuevo !== EstadoPedido.CANCELADO || estadoActual !== EstadoPedido.PENDIENTE) {
-        return this.mostrarError('No tenés permiso para cambiar este estado.');
+        this.uiNotificationService.abrirModalError(
+          null,
+          'No tenés permiso para cambiar este estado.',
+        );
+        return;
       }
     }
 
@@ -110,7 +112,8 @@ export class PedidoExtendedModal implements OnInit {
       }
 
       if (!permitido) {
-        return this.mostrarError('Cambio de estado del pedido no válido.');
+        this.uiNotificationService.abrirModalError(null, 'Cambio de estado del pedido inválido.');
+        return;
       }
     }
 
@@ -125,13 +128,11 @@ export class PedidoExtendedModal implements OnInit {
   // Método específico para el ADMIN (Selector)
   actualizarEstadoAdmin() {
     if (this.estadoAdminSeleccionado === this.pedido.estado) {
-      // Si no cambió nada, no hacemos la petición
       return;
     }
 
     const body: PedidoUpdateRequest = {
       estado: this.estadoAdminSeleccionado,
-      // El admin podría cambiar la fecha también, pero aquí nos centramos en el estado
       fechaEntrega: this.pedido.fechaEntrega,
     };
 
@@ -139,23 +140,35 @@ export class PedidoExtendedModal implements OnInit {
   }
 
   cambiarFechaEntrega(fecha: string | null) {
-    // ... (lógica existente sin cambios) ...
     if (this.role() !== 'CLIENTE') {
-      this.mostrarError('Solo el cliente puede modificar la fecha de entrega.');
+      this.uiNotificationService.abrirModalError(
+        null,
+        'Solo el cliente puede modificar la fecha de entrega.',
+      );
       return;
     }
+
     if (this.esDemasiadoTarde) {
-      this.mostrarError('No podés modificar el pedido un día antes de la entrega.');
+      this.uiNotificationService.abrirModalError(
+        null,
+        'No podés cambiar el pedido un día antes de la entrega.',
+      );
       return;
     }
+
     if (!fecha) {
-      this.mostrarError('Seleccioná una fecha.');
+      this.uiNotificationService.abrirModalError(null, 'Seleccioná una fecha.');
       return;
     }
+
     if (fecha! < this.pedido.fechaEntrega) {
-      this.mostrarError('La nueva fecha no puede ser anterior a la fecha original.');
+      this.uiNotificationService.abrirModalError(
+        null,
+        'La nueva fecha no puede ser anterior a la fecha original.',
+      );
       return;
     }
+
     const body: PedidoUpdateRequest = { fechaEntrega: fecha };
     this.sendUpdate(body);
   }
@@ -163,28 +176,83 @@ export class PedidoExtendedModal implements OnInit {
   private sendUpdate(body: PedidoUpdateRequest) {
     this.pedidosService.updatePedido(this.pedido.id, body).subscribe({
       next: () => {
-        const data = {
-          message: 'Pedido actualizado correctamente',
-          iconName: 'check_circle',
-        };
-        this.snackBar.openFromComponent(Snackbar, {
-          duration: 3000,
-          verticalPosition: 'bottom',
-          panelClass: 'snackbar-panel',
-          data,
-        });
+        this.uiNotificationService.abrirSnackBarExito('Pedido actualizado exitosamente.');
+
         setTimeout(() => this.pedidosService.fetchPedidos(), 500);
         this.dialogRef.close({ updated: true });
       },
       error: (err) => {
-        this.mostrarError(err.error?.message ?? 'Error desconocido al actualizar el pedido');
+        this.uiNotificationService.abrirModalError(err);
       },
     });
   }
 
+  // --- ARREGLADO: Mapeo manual de datos ---
   verDatosUsuario(usuario: UsuarioResponse) {
+    // Verificamos si el usuario a ver es el DUEÑO del pedido actual
+    // Si es así, le adjuntamos la dirección del emprendimiento.
+    let direccionExtra = undefined;
+    let ciudadExtra = undefined;
+
+    if (usuario.id === this.pedido.emprendimiento.dueno.id) {
+      direccionExtra = this.pedido.emprendimiento.direccion;
+      ciudadExtra = this.pedido.emprendimiento.ciudad;
+    }
+
+    const data: DatosContactoModalData = {
+      nombre: usuario.nombreCompleto, // Mapeo clave: nombreCompleto -> nombre
+      email: usuario.email,
+      telefono: usuario.telefono,
+      imagenUrl: usuario.imagenUrl,
+      direccion: direccionExtra,
+      ciudad: ciudadExtra,
+    };
+
     this.dialog.open(DatosUsuarioModal, {
-      data: usuario,
+      data: data,
+      width: '95%',
+      maxWidth: '60rem',
+      autoFocus: false,
+      restoreFocus: false,
+    });
+  }
+
+  contactarCliente() {
+    const c = this.pedido.cliente;
+
+    const data: DatosContactoModalData = {
+      nombre: c.nombreCompleto,
+      email: c.email,
+      telefono: c.telefono,
+      imagenUrl: c.imagenUrl,
+    };
+
+    this.dialog.open(DatosUsuarioModal, {
+      data,
+      width: '95%',
+      maxWidth: '60rem',
+      autoFocus: false,
+      restoreFocus: false,
+    });
+  }
+
+  contactarLocal() {
+    const dueno = this.pedido.emprendimiento.dueno;
+    const emprendimiento = this.pedido.emprendimiento;
+
+    const data: DatosContactoModalData = {
+      nombre: dueno.nombreCompleto,
+      email: dueno.email,
+      imagenUrl: dueno.imagenUrl,
+      telefono: emprendimiento.telefono,
+      ciudad: emprendimiento.ciudad,
+      direccion: emprendimiento.direccion,
+    };
+
+    this.dialog.open(DatosUsuarioModal, {
+      data,
+      width: '95%',
+      maxWidth: '60rem',
       autoFocus: false,
       restoreFocus: false,
     });
@@ -192,14 +260,5 @@ export class PedidoExtendedModal implements OnInit {
 
   cerrar() {
     this.dialogRef.close();
-  }
-
-  private mostrarError(message: string) {
-    this.dialog.open(ErrorDialogModal, {
-      data: { message },
-      panelClass: 'modal-error',
-      autoFocus: false,
-      restoreFocus: false,
-    });
   }
 }

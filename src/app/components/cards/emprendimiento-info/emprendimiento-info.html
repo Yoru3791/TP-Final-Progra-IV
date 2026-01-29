@@ -34,11 +34,11 @@
     <!-- Medio (botón carrito/configurar, según rol) -->
     <div class="info-center">
       @if (modo() === 'DUENO') {
-      <button class="btn btn-accion" (click)="onButtonClick()">
+      <button class="btn-base btn-primary btn-config" (click)="onButtonClick()">
         Configurar <i class="fa-solid fa-gear"></i>
       </button>
       } @else {
-      <button class="btn btn-accion btn-carrito" (click)="onButtonClick()">
+      <button class="btn-base btn-primary" (click)="onButtonClick()">
         {{ hayCarrito() ? 'Carrito' : 'Nuevo Carrito' }} <i class="fa-solid fa-cart-shopping"></i>
 
         @if (hayCarrito()) {

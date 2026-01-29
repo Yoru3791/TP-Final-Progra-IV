@@ -3,11 +3,7 @@ import { AuthService } from '../../../services/auth-service';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminUserUpdateModal } from '../../modals/admin-user-update-modal/admin-user-update-modal';
 import { UsuarioService } from '../../../services/usuario-service';
-import { ConfirmarModalService } from '../../../services/confirmar-modal-service';
-import { SnackbarData } from '../../../model/snackbar-data.model';
-import { Snackbar } from '../../modals/snackbar/snackbar';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-modal';
+import { UiNotificationService } from '../../../services/ui-notification-service';
 import { firstValueFrom } from 'rxjs';
 import { AdminUserUpdatePasswordModal } from '../../modals/admin-user-update-password-modal/admin-user-update-password-modal';
 import { UsuarioAdminResponse } from '../../../model/usuario-admin-response.model';
@@ -23,9 +19,8 @@ export class UsuarioCard {
   usuarioSignal = signal<UsuarioAdminResponse|null>(null);
 
   private authService = inject(AuthService);
-  private confirmarModalService = inject(ConfirmarModalService);
   private dialog = inject(MatDialog);
-  private snackBar = inject(MatSnackBar);
+  private uiNotificationService = inject(UiNotificationService);
   private usuarioService = inject(UsuarioService);
 
   isDeleted = computed(() =>
@@ -66,12 +61,14 @@ export class UsuarioCard {
           data: this.usuario,
         })
         .afterClosed()
-        .subscribe();
+        .subscribe({
+          error: (err) => this.uiNotificationService.abrirModalError(err)
+        });
   }
 
   async enable() {
     const confirmado = await firstValueFrom(
-      this.confirmarModalService.confirmar({
+      this.uiNotificationService.abrirModalConfirmacion({
           titulo: 'Activar usuario',
           texto: '¿Seguro de que querés activar este usuario?',
       })
@@ -83,11 +80,11 @@ export class UsuarioCard {
       .enableUsuario(this.usuario.id)
       .subscribe({
         next: () => {
-          this.abrirSnackBar("Usuario activado con éxito.");
+          this.uiNotificationService.abrirSnackBarExito("Usuario activado exitosamente.");
           this.usuarioService.readUsuariosAdmin();
         },
-        error: (error) => {
-          this.abrirModalError(error);
+        error: (err) => {
+          this.uiNotificationService.abrirModalError(err);
         },
       });
   }
@@ -113,10 +110,10 @@ export class UsuarioCard {
     const banned = this.isBanned();
 
     const confirmado = await firstValueFrom(
-      this.confirmarModalService.confirmar({
+      this.uiNotificationService.abrirModalConfirmacion({
           titulo: `${banned ? 'Desbloquear' : 'Bloquear'} usuario`,
           texto: `¿Seguro de que querés ${banned ? 'desbloquear' : 'bloquear'} a este usuario?`,
-          critico: true,
+          critico: banned ? false : true,
       })
     );
 
@@ -125,18 +122,18 @@ export class UsuarioCard {
     (banned ? this.usuarioService.unbanUsuario(this.usuario.id) : this.usuarioService.banUsuario(this.usuario.id))
       .subscribe({
         next: () => {
-          this.abrirSnackBar(`Usuario ${banned ? 'desbloqueado' : 'bloqueado'} con éxito`);
+          this.uiNotificationService.abrirSnackBarExito(`Usuario ${banned ? 'desbloqueado' : 'bloqueado'} exitosamente.`);
           this.usuarioService.readUsuariosAdmin();
         },
-        error: (error) => {
-          this.abrirModalError(error);
+        error: (err) => {
+          this.uiNotificationService.abrirModalError(err);
         },
       });
   }
 
   async delete() {
     const confirmado = await firstValueFrom(
-      this.confirmarModalService.confirmar({
+      this.uiNotificationService.abrirModalConfirmacion({
           titulo: 'Eliminar usuario',
           texto: '¿Seguro de que querés eliminar este usuario? <span>Esta acción es irreversible.</span>',
           textoEsHtml: true,
@@ -150,38 +147,12 @@ export class UsuarioCard {
       .deleteUsuarioAdmin(this.usuario.id)
       .subscribe({
         next: () => {
-          this.abrirSnackBar("Usuario eliminado con éxito");
+          this.uiNotificationService.abrirSnackBarExito("Usuario eliminado exitosamente.");
           this.usuarioService.readUsuariosAdmin();
         },
         error: (error) => {
-          this.abrirModalError(error);
+          this.uiNotificationService.abrirModalError(error);
         },
       });
-  }
-
-  private abrirSnackBar(mensaje: string) {
-    const snackbarData: SnackbarData = {
-      message: mensaje,
-      iconName: 'check_circle',
-    };
-
-    this.snackBar.openFromComponent(Snackbar, {
-      duration: 4000,
-      verticalPosition: 'bottom',
-      panelClass: 'snackbar-panel',
-      data: snackbarData,
-    });
-  }
-  
-  private abrirModalError(error: any) {
-    const backendMsg =
-      error?.message || 'Error al eliminar el usuario. Es posible que tenga datos asociados.';
-
-    this.dialog.open(ErrorDialogModal, {
-      data: { message: backendMsg },
-      panelClass: 'modal-error',
-      autoFocus: false,
-      restoreFocus: false,
-    });
   }
 }

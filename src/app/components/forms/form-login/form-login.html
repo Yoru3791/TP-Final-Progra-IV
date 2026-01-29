@@ -7,7 +7,7 @@
 
   <!-- Password -->
   <div class="form-field password-field">
-    <label for="password" class="form-label">Password</label>
+    <label for="password" class="form-label">Contraseña</label>
 
     <div class="input-with-icon">
       <input
@@ -16,7 +16,7 @@
         class="form-input"
       />
       <button type="button" class="toggle-eye" (click)="togglePassword()">
-        <i class="fa-solid {{ showPassword ? 'fa-eye-slash' : 'fa-eye' }}"></i>
+        <i class="fa-solid {{ showPassword ? 'fa-eye' : 'fa-eye-slash' }}"></i>
       </button>
     </div>
   </div>
@@ -32,12 +32,12 @@
   <!-- Boton : "Ingresar" -->
   <button
     type="submit"
-    class="btn"
+    class="btn-base btn-primary btn-login"
     [disabled]="!formLogin.valid"
     [class.disabled]="!formLogin.valid"
   >
     <!-- Si el form no es valido, se desabilita el boton, funcional y estéticamente -->
-    Ingresar
+    Iniciar Sesión
   </button>
 
   @if (unverifiedEmail) {
@@ -47,9 +47,9 @@
         Tu cuenta aún no ha sido validada.
       </p>
       
-      <button type="button" class="btn-resend" (click)="reenviarCorreo()" [disabled]="isResending">
+      <button type="button" class="btn btn-resend" (click)="reenviarCorreo()" [disabled]="isResending">
         @if (isResending) {
-          Enviando...
+          Revisá tu correo.
         } @else {
           Reenviar email de activación
         }

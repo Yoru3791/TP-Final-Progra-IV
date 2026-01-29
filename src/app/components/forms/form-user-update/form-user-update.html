@@ -1,6 +1,12 @@
-<h2 class="titulo-form">Actualizar datos</h2>
+<div class="header-container">
+  <h2 class="titulo-form">Actualizar perfil</h2>
 
-<form class="form-emprendimiento" [formGroup]="form" (ngSubmit)="actualizarUsuario()">
+  <button class="btn btn-close" (click)="closeDialog()">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+</div>
+
+<form class="form" [formGroup]="form" (ngSubmit)="actualizarUsuario()">
   <!-- Campos -->
   <div class="form-field">
     <label class="form-label">Nombre completo</label>
@@ -9,26 +15,40 @@
       type="text"
       class="form-input"
       formControlName="nombreCompleto"
-      placeholder="Ej: Juan Pérez"
+      placeholder="Ej.: Juan Pérez"
     />
 
-    @if (form.get('nombreCompleto')?.invalid && form.get('nombreCompleto')?.touched) {
     <div class="error-messages">
-      <p>El nombre es obligatorio.</p>
+      @if (form.get('nombreCompleto')?.invalid &&
+           (form.get('nombreCompleto')?.touched || form.get('nombreCompleto')?.dirty))
+      {
+        @if (form.get('nombreCompleto')?.hasError('required')) {
+          <p>Campo obligatorio.</p>
+        } @else if (form.get('nombreCompleto')?.hasError('maxLength')) {
+          <p>Máximo 256 caracteres.</p>
+        }
+      }
     </div>
-    }
   </div>
 
   <div class="form-field">
     <label class="form-label">Email</label>
 
-    <input type="email" class="form-input" formControlName="email" placeholder="ejemplo@mail.com" />
+    <input type="email" class="form-input" formControlName="email" placeholder="Ej.: juanperez@gmail.com" />
 
-    @if (form.get('email')?.invalid && form.get('email')?.touched) {
     <div class="error-messages">
-      <p>Ingresá un email válido.</p>
+      @if (form.get('email')?.invalid && (form.get('email')?.touched ||
+           form.get('email')?.dirty))
+      {
+        @if (form.get('email')?.hasError('required')) {
+          <p>Campo obligatorio.</p>
+        } @else if (form.get('email')?.hasError('email')) {
+          <p>Email inválido.</p>
+        } @else if (form.get('email')?.hasError('maxLength')) {
+          <p>Máximo 254 caracteres.</p>
+        }
+      }
     </div>
-    }
   </div>
 
   <div class="form-field">
@@ -38,30 +58,24 @@
       type="text"
       class="form-input"
       formControlName="telefono"
-      placeholder="Entre 8 y 15 dígitos"
+      placeholder="Ej.: 2231234567"
     />
 
-    @if (form.get('telefono')?.invalid && form.get('telefono')?.touched) {
     <div class="error-messages">
-      <p>Debe tener entre 8 y 15 dígitos.</p>
+      @if (form.get('telefono')?.invalid && (form.get('telefono')?.touched ||
+          form.get('telefono')?.dirty))
+      {
+        @if (form.get('telefono')?.hasError('required')) {
+          <p>Campo obligatorio.</p>
+        } @else if (form.get('telefono')?.hasError('pattern')) {
+          <p>Entre 6 y 15 dígitos, sin espacios ni guiones.</p>
+        }
+      }
     </div>
-    }
   </div>
-
-  <!-- Mensajes globales -->
-  @if (error()) {
-  <p class="error-global">{{ error() }}</p>
-  } @if (exito()) {
-  <p class="success-global">{{ exito() }}</p>
-  }
 
   <!-- Botones -->
-  <div class="actions-row">
-    <button type="submit" class="btn btn-crear" [disabled]="form.invalid || cargando()">
-      @if (cargando()) { Actualizando... } @else { Guardar cambios }
-    </button>
-    <button type="button" class="btn btn-cancelar" (click)="closeDialog()" [disabled]="cargando()">
-      Cancelar
-    </button>
-  </div>
+  <button type="submit" class="btn-base btn-primary" [disabled]="form.invalid || cargando()">
+    @if (cargando()) { Actualizando... } @else { Guardar cambios }
+  </button>
 </form>

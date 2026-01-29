@@ -1,12 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-modal';
-import { SnackbarData } from '../../../model/snackbar-data.model';
-import { Snackbar } from '../../modals/snackbar/snackbar';
 import { UsuarioService } from '../../../services/usuario-service';
 import { RolUsuario } from '../../../model/rol-usuario.model';
+import { UiNotificationService } from '../../../services/ui-notification-service';
 
 @Component({
   selector: 'app-form-admin-user-create',
@@ -15,12 +12,11 @@ import { RolUsuario } from '../../../model/rol-usuario.model';
   styleUrl: './form-admin-user-create.css',
 })
 export class FormAdminUserCreate {
-  private dialog = inject(MatDialog);
   private dialogRef = inject<MatDialogRef<unknown>>(MatDialogRef, {
     optional: true,
   });
   private formBuilder = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private uiNotificationService = inject(UiNotificationService);
   private usuarioService = inject(UsuarioService);
 
   showPassword = false;
@@ -31,11 +27,11 @@ export class FormAdminUserCreate {
     {
       nombreCompleto: [
         '',
-        [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
+        [Validators.required, Validators.maxLength(256)],
       ],
       email: [
         '',
-        [Validators.required, Validators.email, Validators.maxLength(50)]
+        [Validators.required, Validators.email, Validators.maxLength(254)]
       ],
       rol: [
         '',
@@ -43,7 +39,7 @@ export class FormAdminUserCreate {
       ],
       telefono: [
         '',
-        [Validators.required, Validators.pattern(/^\d{10,15}$/)]
+        [Validators.required, Validators.pattern(/^\d{6,15}$/)]
       ],
       password: [
         '',
@@ -78,31 +74,13 @@ export class FormAdminUserCreate {
       })
       .subscribe({
         next: () => {
-          this.snackBar.openFromComponent(Snackbar, {
-            duration: 3000,
-            verticalPosition: 'bottom',
-            panelClass: 'snackbar-panel',
-            data: {
-              message: 'Usuario creado con éxito.',
-              iconName: 'check_circle',
-            } as SnackbarData,
-          });
+          this.uiNotificationService.abrirSnackBarExito('Usuario creado exitosamente.')
 
           // El form puede existir dentro de un modal
           this.dialogRef?.close(true);
         },
         error: (err) => {
-          const backendMsg =
-            err.error?.message || err.error?.error || 'Error desconocido en el registro';
-
-          console.error(backendMsg);
-
-          this.dialog.open(ErrorDialogModal, {
-            data: {
-              message: backendMsg,
-            },
-            panelClass: 'modal-error',
-          });
+          this.uiNotificationService.abrirModalError(err);
         },
       });
   }

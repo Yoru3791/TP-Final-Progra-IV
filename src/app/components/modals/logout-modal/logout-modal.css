@@ -5,11 +5,12 @@
   border-radius: 1.2rem;
 }
 
-.titulo-rojo {
+.titulo {
   font-size: 2rem;
-  color: var(--color-state-error);
+  color: var(--color-primary);
   font-weight: bold;
   margin-bottom: 1.4rem;
+  margin-top: 0.6rem;
 }
 
 .texto {
@@ -19,28 +20,8 @@
   line-height: 1.55;
 }
 
-.texto span {
-  font-weight: bolder;
-  color: var(--color-state-error);
-}
-
 .acciones {
   display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-}
-
-.btn-cancelar {
-  padding: 1rem 2rem;
-  font-size: 1.45rem;
-}
-
-.btn-rojo {
-  background: var(--color-state-error);
-  padding: 1rem 2rem;
-  font-size: 1.45rem;
-}
-
-.btn-rojo:hover {
-  background: var(--color-state-error-hover);
+  justify-content: center;
+  gap: 1.4rem;
 }

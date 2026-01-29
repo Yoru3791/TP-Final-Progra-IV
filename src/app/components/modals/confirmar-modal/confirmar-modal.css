@@ -34,21 +34,11 @@
 
 .btns-container {
   display: flex;
-  justify-content: flex-end;
-  gap: 1.4rem;
+  justify-content: center;
+  gap: 2.2rem;
   margin-top: 1rem;
 }
 
-.btns-container .btn {
-  background-color: var(--color-primary-light);
-  color: var(--color-text-inverse);
+.btns-container .btn-base {
   width: 14rem !important;
-  padding: 1.2rem 0 !important;
-  font-size: 1.6rem !important;
-  border-radius: 0.8rem !important;
-  font-weight: bold !important;
-}
-
-.btns-container .btn-rojo {
-  background-color: var(--color-state-danger);
 }

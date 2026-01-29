@@ -4,10 +4,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { UsuarioService } from '../../../services/usuario-service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChangePasswordRequest } from '../../../model/change-password-request.model';
-import { ErrorDialogModal } from '../error-dialog-modal/error-dialog-modal';
 import { SuccessDialogModal } from '../success-dialog-modal/success-dialog-modal'; 
 import { AuthService } from '../../../services/auth-service';
 import { Router } from '@angular/router';
+import { UiNotificationService } from '../../../services/ui-notification-service';
 
 @Component({
   selector: 'app-cambiar-password-modal',
@@ -22,6 +22,7 @@ export class CambiarPasswordModal {
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<CambiarPasswordModal>);
   private dialog = inject(MatDialog);
+  private uiNotificationService = inject(UiNotificationService);
 
   showActual = false;
   showNueva = false;
@@ -108,14 +109,7 @@ export class CambiarPasswordModal {
         }, 1500);
       },
       error: (err) => {
-        const backendMsg =
-          err.error?.message || err.error?.error || 'Error desconocido al cambiar la contraseña';
-        this.dialog.open(ErrorDialogModal, {
-          data: { message: backendMsg },
-          panelClass: 'modal-error',
-          autoFocus: false,
-          restoreFocus: false,
-        });
+        this.uiNotificationService.abrirModalError(err);
       },
     });
   }

@@ -160,19 +160,7 @@
 }
 
 .btn-ver-mas {
-  background-color: var(--color-primary);
-  color: white;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 0.6rem;
-  font-size: 1.3rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn-ver-mas:hover {
-  background-color: var(--color-primary-hover-dark);
+  padding: 0.8rem 1.2rem;
 }
 
 /* --- RESPONSIVE DESKTOP --- */

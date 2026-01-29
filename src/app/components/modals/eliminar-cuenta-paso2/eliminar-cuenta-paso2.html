@@ -1,17 +1,17 @@
 <h2 class="titulo-rojo">Eliminar cuenta</h2>
 
 <p class="texto">
-  Para confirmar esta acción, escriba “<span>eliminar</span>” en el campo inferior.
+  Para confirmar esta acción, escribí “<span>eliminar</span>” en el campo inferior.
 </p>
 
 <form [formGroup]="form">
   <input type="text" class="form-input" formControlName="confirm" placeholder="eliminar" />
 
   <div class="acciones">
-    <button type="button" class="btn btn-cancelar" (click)="cancelar()">Cancelar</button>
-
-    <button type="submit" class="btn btn-rojo" [disabled]="form.invalid" (click)="eliminar()">
+    <button type="submit" class="btn-base btn-danger" [disabled]="form.invalid" (click)="eliminar()">
       Eliminar definitivamente
     </button>
+
+    <button type="button" class="btn-base btn-secondary" (click)="cancelar()">Cancelar</button>
   </div>
 </form>

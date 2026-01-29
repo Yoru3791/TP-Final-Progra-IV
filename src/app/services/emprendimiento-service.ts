@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { EmprendimientoResponse } from '../model/emprendimiento-response.model';
-import { catchError, forkJoin, map, of, tap } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of, tap } from 'rxjs';
 import { AuthService, UserRole } from './auth-service';
 import { CityFilterService } from './city-filter-service';
 import { ViandaService } from './vianda-service';
@@ -16,12 +16,15 @@ export class EmprendimientoService {
   private viandaService = inject(ViandaService);
 
   public allEmprendimientos = signal<EmprendimientoResponse[]>([]);
+  public pageInfo = signal<PageMetadata | null>(null);
+  public emprendimientos = computed(() => this.allEmprendimientos());
+
   public allEmprendimientosAdmin = signal<EmprendimientoAdminResponse[]>([]);
   public adminPageInfo = signal<PageMetadata | null>(null);
-  public pageInfo = signal<PageMetadata | null>(null);
-
-  //Siempre refleja los emprendimientos filtrados por ciudad
-  public emprendimientos = computed(() => this.allEmprendimientos());
+  public adminFiltroNombre = signal<string>('');
+  public adminFiltroCiudad = signal<string>('');
+  public adminFiltroDueno = signal<string>('');
+  
 
   private baseUrls = {
     PUBLIC: 'http://localhost:8080/api/public/emprendimientos',
@@ -48,42 +51,19 @@ export class EmprendimientoService {
     }
   }
 
-  //obtiene los emprendimientos desde el backend y lo guarda en un signal
   fetchEmprendimientos(page: number = 0, size: number = 10, ignorarCiudad: boolean = false) {
-    const rol = this.authService.currentUserRole();
+    const url = this.getApiUrl();
     const ciudad = ignorarCiudad ? null : this.cityFilter.city();
-    const baseUrl = this.getApiUrl();
-
-    let url = baseUrl;
+    
     let params = new HttpParams().set('page', page).set('size', size);
+    if (ciudad) params = params.set('ciudad', ciudad);
 
-    if (rol === 'DUENO') {
-      if (ciudad) {
-        params = params.set('ciudad', ciudad);
-      }
-    } else {
-      if (ciudad) {
-        url = `${baseUrl}/ciudad/${ciudad}`;
-      } else {
-        url = baseUrl;
-      }
-    }
-
-    this.http
-      .get<PagedResponse<EmprendimientoResponse>>(url, { params })
-      .pipe(
-        catchError((err) => {
-          console.error('Error al cargar emprendimientos', err);
-          return of(null);
-        })
-      )
+    this.http.get<PagedResponse<EmprendimientoResponse>>(url, { params })
+      .pipe(catchError(err => { console.error(err); return of(null); }))
       .subscribe((response) => {
         if (response && response._embedded) {
-          const data = (response._embedded['emprendimientoDTOList'] || []).map((item: any) => ({
-            ...item,
-            viandas: [],
-          }));
-
+          const rawData = response._embedded['emprendimientoDTOList'] || [];
+          const data = rawData.map((item: any) => ({ ...item, viandas: [] }));
           this.allEmprendimientos.set(data);
           this.pageInfo.set(response.page);
         } else {
@@ -93,21 +73,26 @@ export class EmprendimientoService {
       });
   }
 
-  fetchEmprendimientosAdmin(page: number = 0, size: number = 20) {
-    const params = new HttpParams().set('page', page).set('size', size);
+  fetchEmprendimientosAdmin(page: number = 0, size: number = 10) {
+    let params = new HttpParams().set('page', page).set('size', size);
+    
+    const nombre = this.adminFiltroNombre();
+    const ciudad = this.adminFiltroCiudad();
+    const dueno = this.adminFiltroDueno();
+
+    if (nombre) params = params.set('nombre', nombre);
+    if (ciudad) params = params.set('ciudad', ciudad);
+    if (dueno) params = params.set('dueno', dueno);
 
     this.http
-      .get<any>(this.baseUrls.ADMIN, { params })
-      .pipe(
-        catchError((err) => {
+      .get<PagedResponse<EmprendimientoAdminResponse>>(this.baseUrls.ADMIN, { params })
+      .pipe(catchError((err) => {
           console.error('Error al cargar emprendimientos (ADMIN)', err);
           return of(null);
-        })
-      )
+      }))
       .subscribe((response) => {
         if (response && response._embedded) {
           const data = response._embedded['emprendimientoAdminDTOList'] ?? [];
-
           this.allEmprendimientosAdmin.set(data);
           this.adminPageInfo.set(response.page);
         } else {
@@ -117,8 +102,6 @@ export class EmprendimientoService {
       });
   }
 
-  public emprendimientosConViandas = computed(() => this.emprendimientos());
-
   loadEmprendimientosConViandas() {
     const emps = this.emprendimientos();
     if (emps.length === 0) {
@@ -127,6 +110,7 @@ export class EmprendimientoService {
 
     const requests = emps.map((e) =>
       this.viandaService.getViandasPreview(e.id, 8).pipe(
+        catchError(() => of([])),
         map((viandas) => ({ ...e, viandas }))
       )
     );
@@ -139,25 +123,48 @@ export class EmprendimientoService {
     return this.http.get<EmprendimientoResponse>(`${url}/id/${id}`);
   }
 
-  // ----------------------- CRUD (ACTUALIZADO PARA ADMIN) -----------------------
+  searchByNombre(nombre: string): Observable<EmprendimientoResponse[]> {
+    const rol = this.authService.currentUserRole();
+    const url = this.getApiUrl();
+    
+    let params = new HttpParams()
+        .set('nombre', nombre)
+        .set('page', 0)
+        .set('size', 6);
+
+    if (rol === 'DUENO') {
+    } else {
+      const ciudad = this.cityFilter.city();
+      if (ciudad) {
+        params = params.set('ciudad', ciudad);
+      }
+    }
+
+    return this.http.get<PagedResponse<EmprendimientoResponse>>(url, { params }).pipe(
+      map(response => {
+        if (response && response._embedded) {
+          return response._embedded['emprendimientoDTOList'] || [];
+        }
+        return [];
+      }),
+      catchError(err => {
+        console.error('Error en búsqueda:', err);
+        return of([]);
+      })
+    );
+  }
+
+  // ----------------------- CRUD -----------------------
 
   createEmprendimiento(formData: FormData) {
     const rol = this.authService.currentUserRole();
-
-    if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tienes permisos para crear emprendimientos');
-    }
+    if (rol !== 'DUENO' && rol !== 'ADMIN') throw new Error('Acceso denegado');
 
     const url = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
 
     return this.http.post<EmprendimientoResponse>(url, formData).pipe(
       tap(() => {
-        // Recargamos la lista que corresponda según el rol
-        if (rol === 'DUENO') {
-          this.fetchEmprendimientos(0, 10);
-        } else {
-          this.fetchEmprendimientosAdmin(0, 10);
-        }
+        this.fetchEmprendimientos(0, 10);
       })
     );
   }
@@ -166,7 +173,7 @@ export class EmprendimientoService {
     const rol = this.authService.currentUserRole();
 
     if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tienes permisos para eliminar emprendimientos');
+      throw new Error('No tenés permiso para eliminar emprendimientos.');
     }
 
     const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
@@ -174,10 +181,7 @@ export class EmprendimientoService {
 
     return this.http.delete<void>(url).pipe(
       tap(() => {
-        // Actualizamos localmente las listas para que la UI responda rápido
         this.allEmprendimientos.update((list) => list.filter((e) => e.id !== id));
-        // Si tienes una lista de admin local, podrías filtrarla también si los tipos coinciden,
-        // o simplemente esperar a que el componente recargue.
       })
     );
   }
@@ -188,43 +192,41 @@ export class EmprendimientoService {
     return emprendimiento ? emprendimiento.dueno.id === usuarioId : false;
   }
 
-  // Actualizar los campos del emprendimiento
   updateEmprendimiento(id: number, dto: any) {
     const rol = this.authService.currentUserRole();
 
     if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tienes permisos para actualizar emprendimientos');
+      throw new Error('No tenés permiso para actualizar emprendimientos.');
     }
 
     const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
     const url = `${baseUrl}/id/${id}`;
 
-    return this.http
-      .put<EmprendimientoResponse>(url, dto)
-      .pipe(
-        tap((actualizado) =>
-          this.allEmprendimientos.update((list) => list.map((e) => (e.id === id ? actualizado : e)))
-        )
-      );
+    return this.http.put<EmprendimientoResponse>(url, dto).pipe(
+      tap((actualizado) => {
+          this.allEmprendimientos.update(list => 
+            list.map(e => e.id === id ? { ...e, ...actualizado } : e)
+          );
+      })
+    );
   }
 
-  // Actualizar la imagen del emprendimiento
   updateImagenEmprendimiento(id: number, formData: FormData) {
     const rol = this.authService.currentUserRole();
 
     if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tienes permisos para actualizar imágenes');
+      throw new Error('No tenés permisos para actualizar imágenes de emprendimientos.');
     }
 
     const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
     const url = `${baseUrl}/id/${id}/imagen`;
 
-    return this.http
-      .put<EmprendimientoResponse>(url, formData)
-      .pipe(
-        tap((actualizado) =>
-          this.allEmprendimientos.update((list) => list.map((e) => (e.id === id ? actualizado : e)))
+    return this.http.put<EmprendimientoResponse>(url, formData).pipe(
+      tap((actualizado) =>
+        this.allEmprendimientos.update(list => 
+            list.map(e => e.id === id ? { ...e, imagenUrl: actualizado.imagenUrl } : e)
         )
-      );
+      )
+    );
   }
 }

@@ -1,36 +1,92 @@
-<div class="modal-container">
-  <h2 class="modal-title">Datos de contacto</h2>
+<div class="modal-unificado-container">
+  <div class="header-modal">
+    <h3 class="titulo-seccion">Datos de contacto</h3>
+    <i class="fa-solid fa-xmark close-icon" (click)="cerrar()"></i>
+  </div>
+
+  <div class="divisor"></div>
 
   <div class="modal-content">
-    <div class="profile-img-container">
-      <img
-        [src]="usuario.imagenUrl || 'assets/placeholder-user.png'"
-        class="profile-img"
-        alt="Foto de perfil"
-      />
-    </div>
+    <div class="datos-principales-wrapper">
+      <div class="profile-img-container">
+        <img
+          [src]="data.imagenUrl || 'assets/placeholder-user.png'"
+          class="profile-img"
+          alt="Foto de perfil"
+        />
+      </div>
 
-    <div class="dato">
-      <span class="label">Nombre</span>
-      <span class="valor">{{ usuario.nombreCompleto }}</span>
-    </div>
+      <div class="info-container">
+        <div class="dato">
+          <span class="label">Nombre</span>
+          <span class="valor">{{ data.nombre }}</span>
+        </div>
 
-    <div class="dato">
-      <span class="label">Email</span>
-      <span class="valor">{{ usuario.email }}</span>
-    </div>
+        @if (data.email) {
+          <div class="dato">
+            <span class="label">Email</span>
+            <div class="valor-con-accion">
+              <span class="valor">{{ data.email }}</span>
+              <a
+                [href]="getGmailLink()"
+                target="_blank"
+                class="btn-icon-action btn-gmail"
+                title="Abrir en Gmail"
+              >
+                <i class="fa-solid fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+        }
 
-    <div class="dato">
-      <span class="label">Teléfono</span>
-      <span class="valor">{{ usuario.telefono }}</span>
+        <div class="dato">
+          <span class="label">Teléfono</span>
+          <div class="valor-con-accion">
+            <span class="valor">{{ data.telefono }}</span>
+            <a
+              [href]="getWhatsappLink()"
+              target="_blank"
+              class="btn-icon-action btn-whatsapp"
+              title="Abrir WhatsApp"
+            >
+              <i class="fa-brands fa-whatsapp"></i>
+            </a>
+          </div>
+        </div>
+
+        @if (data.direccion) {
+          <div class="dato">
+            <span class="label">Dirección</span>
+            <div class="valor-con-accion">
+              <span class="valor">
+                {{ data.direccion }}
+                @if (data.ciudad) {
+                  - {{ data.ciudad }}
+                }
+              </span>
+              <a
+                [href]="getMapsLink()"
+                target="_blank"
+                class="btn-icon-action btn-maps"
+                title="Ver en Google Maps"
+              >
+                <i class="fa-solid fa-location-dot"></i>
+              </a>
+            </div>
+          </div>
+        }
+      </div>
     </div>
 
     @if (role() !== 'ADMIN') {
-      <div class="alerta">⚠️ Recomendación: reunite siempre en un lugar público y concurrido.</div>
+      <div class="alerta">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <p>Recomendación: reunite siempre en un lugar público y concurrido.</p>
+      </div>
     }
   </div>
 
   <div class="acciones">
-    <button class="btn btn-cerrar" (click)="cerrar()">Cerrar</button>
+    <button class="btn-base btn-secondary" (click)="cerrar()">Cerrar</button>
   </div>
 </div>

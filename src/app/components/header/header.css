@@ -1,13 +1,13 @@
-/* --- COMPONENTE CABECERA PRINCIPAL (HEADER) --- */
 .main-header {
   align-items: center;
   background-color: var(--color-background-primary);
   border-bottom: 0.1rem solid color-mix(in srgb, var(--color-background-primary) 80%, black);
-  box-shadow: 0 0.4rem 0.6rem -0.1rem rgba(0, 0, 0, 0.1), 0 0.2rem 0.4rem -0.2rem rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 0.4rem 0.6rem -0.1rem rgba(0, 0, 0, 0.1),
+    0 0.2rem 0.4rem -0.2rem rgba(0, 0, 0, 0.1);
   color: var(--color-text-primary);
   display: flex;
   flex-direction: row;
-  gap: 1rem;
   justify-content: center;
   position: sticky;
   top: 0;
@@ -24,13 +24,10 @@
   width: 100%;
 }
 
-.header-left {
-  flex: 1;
+.header-top-mobile {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 2rem;
-  min-width: max-content;
+  gap: 1rem;
 }
 
 .logo-rol-container {
@@ -39,6 +36,7 @@
   display: flex;
   flex-direction: column;
   height: 5rem;
+  flex-shrink: 0;
 }
 
 .logo-container {
@@ -67,8 +65,6 @@
 }
 
 .header-center {
-  position: static;
-  transform: none;
   flex: 2;
   display: flex;
   justify-content: center;
@@ -121,6 +117,10 @@ app-search-bar {
   padding: 0.75rem 1rem;
 }
 
+.btn-iniciar-sesion {
+  padding: 1rem 2rem;
+}
+
 .btn-profile {
   aspect-ratio: 1/1;
   border-radius: 50%;
@@ -133,16 +133,12 @@ app-search-bar {
   background-color: color-mix(in srgb, var(--color-primary-light) 92.5%, black);
 }
 
-.btn-profile:active {
-  background-color: color-mix(in srgb, var(--color-primary-light) 80%, black);
-  transition: none;
-}
-
 .btn-logout {
   background-color: inherit;
   color: var(--color-primary-light);
   font-size: 2rem;
   padding: 0;
+  border: none;
 }
 
 .btn-logout:focus-within,
@@ -150,7 +146,88 @@ app-search-bar {
   color: color-mix(in srgb, var(--color-primary-light) 87.5%, black);
 }
 
-.btn-logout:active {
-  color: color-mix(in srgb, var(--color-primary-light) 75%, black);
-  transition: none;
+.mobile-only {
+  display: none;
+}
+.desktop-only {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+  .mobile-only {
+    display: flex !important;
+  }
+
+  .header-nav {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .header-top-mobile {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .city-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .header-center {
+    width: 100%;
+    padding: 0;
+    flex: unset;
+  }
+
+  app-search-bar {
+    max-width: none;
+  }
+
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5.5rem;
+    background: var(--color-background-primary);
+    border-top: 0.1rem solid var(--color-border-light);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center; 
+    z-index: 1000;
+    box-shadow: 0 -0.2rem 1rem rgba(0, 0, 0, 0.1);
+  }
+
+  .bottom-item,
+  .bottom-item-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 1rem; 
+    width: auto;
+  }
+
+  .bottom-item i {
+    font-size: 2.2rem;
+    color: var(--color-primary-light);
+    margin: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .bottom-item:active i {
+    transform: scale(0.9);
+  }
+
+  .btn-clean {
+    cursor: pointer;
+  }
 }

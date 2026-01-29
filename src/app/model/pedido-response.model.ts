@@ -11,4 +11,5 @@ export interface PedidoResponse {
   total: number;
   emprendimiento: EmprendimientoResponse;
   viandas: DetalleViandaResponse[];
+  _links?: any;
 }

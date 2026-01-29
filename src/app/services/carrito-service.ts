@@ -3,9 +3,6 @@ import { EmprendimientoResponse } from '../model/emprendimiento-response.model';
 import { ViandaCantidadCarrito } from '../model/vianda-cantidad-carrito.model';
 import { ViandaResponse } from '../model/vianda-response.model';
 import { ViandaService } from './vianda-service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarData } from '../model/snackbar-data.model';
-import { Snackbar } from '../components/modals/snackbar/snackbar';
 import { firstValueFrom, forkJoin, map, tap } from 'rxjs';
 import { PedidoRequest } from '../model/pedido-request.model';
 import { AuthService } from './auth-service';
@@ -13,7 +10,7 @@ import { ViandaCantidadRequest } from '../model/vianda-cantidad-request.model';
 import { PedidosService } from './pedido-service';
 import { MatDialog } from '@angular/material/dialog';
 import { CarritoModal } from '../components/modals/carrito-modal/carrito-modal';
-import { ConfirmarModalService } from './confirmar-modal-service';
+import { UiNotificationService } from './ui-notification-service';
 import { EmprendimientoService } from './emprendimiento-service';
 import { ViandaCantidadLocalStorage } from '../model/vianda-cantidad-localstorage.model';
 
@@ -22,12 +19,11 @@ import { ViandaCantidadLocalStorage } from '../model/vianda-cantidad-localstorag
 })
 export class CarritoService {
   private authService = inject(AuthService);
-  private confirmarModalService = inject(ConfirmarModalService);
   private dialog = inject(MatDialog);
   private emprendimientoService = inject(EmprendimientoService);
   private pedidoService = inject(PedidosService);
   private viandaService = inject(ViandaService);
-  private snackBar = inject(MatSnackBar);
+  private uiNotificationService = inject(UiNotificationService);
 
   private _fechaEntrega = signal<string>('');
   public fechaEntrega = this._fechaEntrega.asReadonly();
@@ -50,7 +46,7 @@ export class CarritoService {
     if (this._emprendimiento()) {
       if (this._emprendimiento()!.id !== emprendimiento.id) {
         const confirmado = await firstValueFrom(
-          this.confirmarModalService.confirmar({
+          this.uiNotificationService.abrirModalConfirmacion({
             titulo: 'Nuevo Carrito',
             texto:
               'El carrito actual corresponde a otro emprendimiento, ' +
@@ -78,7 +74,7 @@ export class CarritoService {
       this.guardarEmprendimientoEnLocalStorage();
     } else if (vianda.emprendimiento.id !== this._emprendimiento()?.id) {
       const confirmado = await firstValueFrom(
-        this.confirmarModalService.confirmar({
+        this.uiNotificationService.abrirModalConfirmacion({
           titulo: 'Nuevo Carrito',
           texto:
             'El carrito actual contiene viandas de un emprendimiento distinto al de la vianda que querés agregar, ' +
@@ -184,7 +180,7 @@ export class CarritoService {
     );
 
     if (seQuitaronViandas) {
-      this.abrirSnackBar('Se eliminaron viandas no disponibles del carrito.');
+      this.uiNotificationService.abrirSnackBarError(null, 'Se eliminaron viandas no disponibles del carrito.');
     }
 
     return seQuitaronViandas;
@@ -198,7 +194,7 @@ export class CarritoService {
     this.guardarEnLocalStorage();
 
     if (anunciar) {
-      this.abrirSnackBar('Carrito vaciado.');
+      this.uiNotificationService.abrirSnackBarExito('Carrito vaciado.');
     }
   }
 
@@ -295,20 +291,6 @@ export class CarritoService {
       width: '90rem',
       autoFocus: false,
       restoreFocus: false,
-    });
-  }
-
-  private abrirSnackBar(mensaje: string) {
-    const snackbarData: SnackbarData = {
-      message: mensaje,
-      iconName: 'check_circle',
-    };
-
-    this.snackBar.openFromComponent(Snackbar, {
-      duration: 4000,
-      verticalPosition: 'bottom',
-      panelClass: 'snackbar-panel',
-      data: snackbarData,
     });
   }
 

@@ -2,6 +2,9 @@ import { inject, Injectable, signal, effect } from '@angular/core';
 import { CityFilterService } from './city-filter-service';
 import { EmprendimientoResponse } from '../model/emprendimiento-response.model';
 import { EmprendimientoService } from './emprendimiento-service';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { debounceTime, distinctUntilChanged, finalize, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SearchService {
@@ -11,25 +14,37 @@ export class SearchService {
   resultados = signal<EmprendimientoResponse[]>([]);
 
   private emprendimientosService = inject(EmprendimientoService);
-  private cityFilter = inject(CityFilterService);
+
+  private termino$ = toObservable(this.termino);
 
   constructor() {
-    // Recalcular resultados cuando cambia el término o la ciudad
-    effect(() => {
-      const term = this.termino().toLowerCase();
-      const ciudad = this.cityFilter.city();
-      const todos = this.emprendimientosService.emprendimientos(); // ya filtrados por ciudad
-      if (!term.trim()) {
-        this.resultados.set([]);
-        this.mensaje.set('');
-        return;
-      }
+    this.termino$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((valor) => {
+        const term = valor.trim();
 
-      const filtrados = todos.filter((e) => e.nombreEmprendimiento.toLowerCase().includes(term));
-      this.resultados.set(filtrados.slice(0, 6));
-      this.mensaje.set(
-        filtrados.length === 0 ? 'No se encontraron emprendimientos con este nombre.' : ''
-      );
+        if (!term) {
+          this.resultados.set([]);
+          this.mensaje.set('');
+          return of([]);
+        }
+
+        this.loading.set(true);
+        this.mensaje.set('');
+
+        return this.emprendimientosService.searchByNombre(term).pipe(
+          finalize(() => this.loading.set(false))
+        );
+      })
+    ).subscribe((res) => {
+      this.resultados.set(res);
+      
+      if (res.length === 0 && this.termino().trim()) {
+        this.mensaje.set('No se encontraron emprendimientos con este nombre.');
+      } else {
+        this.mensaje.set('');
+      }
     });
   }
 

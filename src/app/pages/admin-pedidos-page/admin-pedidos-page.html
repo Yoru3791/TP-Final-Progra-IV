@@ -1,42 +1,39 @@
 <div class="page-container">
+
   <div class="header-section">
-    <h1 class="main-h1-title">PEDIDOS</h1>
+    <h1 class="main-title">PEDIDOS</h1>
+    <p class="subtitulo">Gestión y seguimiento de órdenes</p>
   </div>
 
-  <div class="filters-container">
-    <div class="select-wrapper">
-      <div class="select-custom" [class.open]="openEstado" (click)="toggleEstado($event)">
+  <div class="filters">
+    <!-- Filtro Nombre -->
+    <input
+      type="text"
+      class="filter-input"
+      placeholder="Filtrar por emprendimiento..."
+      [value]="pedidoService.filtroEmprendimiento() || ''"
+      (input)="onEmprendimientoInput($event)"
+    />
+
+    <!-- Filtro Estado -->
+    <div class="select-custom-wrapper">
+      <div class="select-trigger" [class.open]="openEstado" (click)="toggleEstado($event)">
         <div class="selected-option">{{ pedidoService.filtroEstado() || 'Estado: Todos' }}</div>
         <div class="arrow">▾</div>
-        @if (openEstado) {
-          <ul class="options">
-            <li (click)="setEstado(null); $event.stopPropagation()">Todos</li>
-            @for (estado of estados; track estado) {
-              <li (click)="setEstado(estado); $event.stopPropagation()">{{ estado }}</li>
-            }
-          </ul>
-        }
       </div>
+
+      @if (openEstado) {
+        <ul class="options">
+          <li (click)="setEstado(null); $event.stopPropagation()">Todos</li>
+          @for (estado of estados; track estado) {
+            <li (click)="setEstado(estado); $event.stopPropagation()">{{ estado }}</li>
+          }
+        </ul>
+      }
     </div>
 
-    <div class="select-wrapper">
-      <div class="select-custom" [class.open]="openEmp" (click)="toggleEmp($event)">
-        <div class="selected-option">
-          {{ pedidoService.filtroEmprendimiento() || 'Emprendimiento: Todos' }}
-        </div>
-        <div class="arrow">▾</div>
-        @if (openEmp) {
-          <ul class="options">
-            <li (click)="setEmp(null); $event.stopPropagation()">Todos</li>
-            @for (emp of pedidoService.emprendimientosUnicos(); track emp) {
-              <li (click)="setEmp(emp); $event.stopPropagation()">{{ emp }}</li>
-            }
-          </ul>
-        }
-      </div>
-    </div>
-
-    <div class="select-wrapper date-wrapper">
+    <!-- Filtro Fecha -->
+    <div class="date-picker-wrapper">
       <app-date-range-picker
         (fechasSeleccionadas)="pedidoService.filtroFechas.set($event)"
       ></app-date-range-picker>
@@ -44,13 +41,22 @@
   </div>
 
   <div class="pedidos-list">
-    @if (pedidoService.pedidosFiltrados().length === 0) {
+    @if (pedidoService.pedidos().length === 0) {
       <div class="estado-vacio">
         <p class="sin-pedidos">No se encontraron pedidos con estos filtros.</p>
       </div>
     } @else {
-      @for (p of pedidoService.pedidosFiltrados(); track p.id) {
+      @for (p of pedidoService.pedidos(); track p.id) {
         <app-pedido-admin-card [pedido]="p"></app-pedido-admin-card>
+      }
+
+      <!-- Paginación -->
+      @if (pageInfo(); as info) {
+        <app-paginador 
+            [currentPage]="info.number" 
+            [totalPages]="info.totalPages" 
+            (pageChange)="onPageChange($event)">
+        </app-paginador>
       }
     }
   </div>

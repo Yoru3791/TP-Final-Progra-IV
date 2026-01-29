@@ -1,6 +1,6 @@
 <header class="main-header">
   <nav class="header-nav">
-    <div class="header-left">
+    <div class="header-top-mobile">
       <div class="logo-rol-container">
         <a class="logo-container" routerLink="/home">
           <img
@@ -9,53 +9,76 @@
             alt="MiViandita Logo"
           />
         </a>
-
         @if (role() === 'DUENO') {
-        <p class="rol">DUEÑO</p>
-        } @else { @if (role() === 'ADMIN') {
-        <p class="rol">ADMIN</p>
-        } }
+          <p class="rol">DUEÑO</p>
+        } @else if (role() === 'ADMIN') {
+          <p class="rol">ADMIN</p>
+        }
       </div>
 
       @if (role() !== 'ADMIN') {
-      <app-city-selector
-        [ngModel]="cityFilterService.city()"
-        (ngModelChange)="cityFilterService.setCity($event)"
-        [restoreOnBlur]="true"
-      >
-      </app-city-selector>
+        <div class="city-wrapper">
+          <app-city-selector
+            [ngModel]="cityFilterService.city()"
+            (ngModelChange)="cityFilterService.setCity($event)"
+            [restoreOnBlur]="true"
+          ></app-city-selector>
+        </div>
       }
     </div>
 
     <div class="header-center">
-      @if (role() !== 'ADMIN'){
-      <app-search-bar></app-search-bar>
+      @if (role() !== 'ADMIN') {
+        <app-search-bar></app-search-bar>
       }
     </div>
 
-    <div class="header-right">
-      <a routerLink="/home" class="nav-link">INICIO</a>
-      <a routerLink="/sobre-miviandita" class="nav-link">SOBRE MIVIANDITA</a>
+    <div class="header-right desktop-only">
+      <a routerLink="/home" class="nav-link">Inicio</a>
+      <a routerLink="/sobre-miviandita" class="nav-link">Sobre MiViandita</a>
 
       @if (!isLoggedIn()) {
-      <button routerLink="/login" (click)="onLogin()" class="btn btn-primary">
-        INICIAR SESIÓN
-      </button>
+        <button routerLink="/login" (click)="onLogin()" class="btn-base btn-primary btn-iniciar-sesion">
+          Iniciar Sesión
+        </button>
       } @else {
-      <div class="btns-logged">
-        @if (role() !== 'ADMIN') {
-        <app-dropdown-notificacion></app-dropdown-notificacion>
-        }
-
-        <button class="btn btn-profile" routerLink="/me" title="Mi perfil">
-          <i class="fa-regular fa-user"></i>
-        </button>
-
-        <button class="btn btn-logout" (click)="onLogout()" title="Cerrar sesión">
-          <i class="fa-solid fa-right-from-bracket"></i>
-        </button>
-      </div>
+        <div class="btns-logged">
+          @if (role() !== 'ADMIN') {
+            <app-dropdown-notificacion></app-dropdown-notificacion>
+          }
+          <button class="btn btn-profile" routerLink="/me" title="Mi perfil">
+            <i class="fa-regular fa-user"></i>
+          </button>
+          <button class="btn btn-logout" (click)="onLogout()" title="Cerrar sesión">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </button>
+        </div>
       }
     </div>
   </nav>
 </header>
+
+<nav class="bottom-nav mobile-only">
+  <a routerLink="/home" routerLinkActive="active" class="bottom-item" title="Inicio">
+    <i class="fa-solid fa-house"></i>
+  </a>
+
+  @if (isLoggedIn()) {
+    @if (role() !== 'ADMIN') {
+      <div class="bottom-item-wrapper">
+        <app-dropdown-notificacion></app-dropdown-notificacion>
+      </div>
+    }
+
+    <a routerLink="/me" class="bottom-item" title="Mi Perfil">
+      <i class="fa-regular fa-user"></i>
+    </a>
+    <button (click)="onLogout()" class="bottom-item btn-clean" title="Salir">
+      <i class="fa-solid fa-right-from-bracket"></i>
+    </button>
+  } @else {
+    <a routerLink="/login" (click)="onLogin()" class="bottom-item" title="Ingresar">
+      <i class="fa-solid fa-circle-user"></i>
+    </a>
+  }
+</nav>

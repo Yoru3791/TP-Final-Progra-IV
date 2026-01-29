@@ -1,6 +1,5 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { EmprendimientoService } from '../../services/emprendimiento-service';
-import { EmprendimientoConViandas } from '../../model/emprendimiento-con-viandas.model';
 import { EmprendimientoCard } from '../../components/cards/emprendimiento-card/emprendimiento-card';
 import { FormEmprendimiento } from '../../components/forms/form-emprendimiento/form-emprendimiento';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,7 +13,7 @@ import { Paginador } from '../../components/utils/paginador/paginador';
   templateUrl: './home-page-dueno.html',
   styleUrl: './home-page-dueno.css',
 })
-export class HomePageDueno implements OnInit {
+export class HomePageDueno {
   private emprendimientoService = inject(EmprendimientoService);
   private dialog = inject(MatDialog);
   private cityFilter = inject(CityFilterService);
@@ -25,39 +24,26 @@ export class HomePageDueno implements OnInit {
   verTodas = signal(false);
 
   constructor() {
-    //  Cargo datos, viandas y ordeno por disponibilidad
     effect(() => {
       const emps = this.emprendimientoService.emprendimientos();
+      this.emprendimientos.set(emps);
 
-      if (emps.length === 0) {
-        this.emprendimientos.set([]);
-        return;
-      }
+      if (emps.length === 0) return;
 
       this.emprendimientoService
         .loadEmprendimientosConViandas()
         .subscribe((full) => {
-          const ordenados = full.sort((a, b) => {
-            if (a.estaDisponible === b.estaDisponible) {
-                return 0; 
-            }
-            return a.estaDisponible ? -1 : 1;
-          });
-
-          this.emprendimientos.set(ordenados);
+          this.emprendimientos.set(full);
         });
     });
 
-    //  Vuelvo a página 0 si cambia la ciudad o cambia el toggle
+    // Recargo si cambia ciudad o toggle "ver todas"
     effect(() => {
-        const ciudad = this.cityFilter.city();
+        this.cityFilter.city();
         const verTodo = this.verTodas();
-        this.emprendimientoService.fetchEmprendimientos(0, 10, verTodo);
-    }, { allowSignalWrites: true });
-  }
 
-  ngOnInit() {
-    
+        this.emprendimientoService.fetchEmprendimientos(0, 10, verTodo);
+    });
   }
 
   toggleVerTodas() {

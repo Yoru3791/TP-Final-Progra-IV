@@ -1,10 +1,14 @@
 <div class="modal-pedido-container">
-  <div class="pedido-header">
-    <h2>Pedido #{{ pedido.id }} — {{ pedido.emprendimiento.nombreEmprendimiento }}</h2>
+  <div class="header-card-modal">
+    <h3 class="titulo-seccion-modal">
+      Pedido #{{ pedido.id }} — {{ pedido.emprendimiento.nombreEmprendimiento }}
+    </h3>
     <div class="btn-close-icon" (click)="cerrar()">
       <i class="fa-solid fa-xmark"></i>
     </div>
   </div>
+
+  <div class="divisor-modal"></div>
 
   <div class="pedido-content">
     <div class="left-panel scrolleable">
@@ -46,17 +50,18 @@
       </div>
 
       <div class="detalle-general">
-        <p>
-          <span class="label">Fecha de entrega:</span>
-          {{ pedido.fechaEntrega | date: 'dd/MM/yyyy' }}
-        </p>
-        <p>
-          <span class="label">Total: </span> <span class="precio">${{ pedido.total }}</span>
-        </p>
-        <p>
-          <span class="label">Estado: </span>
+        <div class="dato-linea">
+          <span class="label">Fecha entrega:</span>
+          <span class="valor">{{ pedido.fechaEntrega | date: 'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="dato-linea">
+          <span class="label">Total:</span>
+          <span class="precio-total">${{ pedido.total }}</span>
+        </div>
+        <div class="dato-linea">
+          <span class="label">Estado:</span>
           <span class="estado" [class]="pedido.estado.toLowerCase()">{{ pedido.estado }}</span>
-        </p>
+        </div>
       </div>
 
       <div class="acciones">
@@ -73,44 +78,44 @@
           </div>
           @if (esDemasiadoTarde) {
             <div class="alerta-bloqueo">
-              <i class="fa-solid fa-clock"></i><small>Ya no se puede modificar.</small>
+              <i class="fa-solid fa-clock"></i><small>Plazo de modificación vencido</small>
             </div>
           }
           <button
-            class="btn btn-cambiar-fecha"
+            class="btn-base btn-primary"
             [disabled]="esDemasiadoTarde || !nuevaFechaSeleccionada"
             [class.btn-disabled]="esDemasiadoTarde"
             (click)="cambiarFechaEntrega(nuevaFechaSeleccionada)"
           >
             CAMBIAR FECHA
           </button>
-          <button class="btn btn-rechazar" (click)="cambiarEstado(EstadoPedido.CANCELADO)">
-            CANCELAR PEDIDO
-          </button>
         }
 
         @if (role() === 'DUENO' && pedido.estado === 'PENDIENTE') {
-          <button class="btn btn-confirmar" (click)="cambiarEstado(EstadoPedido.ACEPTADO)">
+          <button class="btn-base btn-success" (click)="cambiarEstado(EstadoPedido.ACEPTADO)">
             ACEPTAR PEDIDO
           </button>
-          <button class="btn btn-rechazar" (click)="cambiarEstado(EstadoPedido.RECHAZADO)">
+          <button class="btn-base btn-danger" (click)="cambiarEstado(EstadoPedido.RECHAZADO)">
             RECHAZAR PEDIDO
           </button>
         }
         @if (role() === 'DUENO' && pedido.estado === 'ACEPTADO') {
-          <button class="btn btn-entregado" (click)="cambiarEstado(EstadoPedido.ENTREGADO)">
+          <button class="btn-base btn-entregado" (click)="cambiarEstado(EstadoPedido.ENTREGADO)">
             MARCAR ENTREGADO
           </button>
         }
 
         @if (role() === 'DUENO') {
-          <button class="btn btn-contactar" (click)="verDatosUsuario(pedido.cliente)">
-            CONTACTAR CLIENTE
-          </button>
+          <button class="btn-base btn-secondary" (click)="contactarCliente()">CONTACTAR CLIENTE</button>
         }
+
         @if (role() === 'CLIENTE') {
-          <button class="btn btn-contactar" (click)="verDatosUsuario(pedido.emprendimiento.dueno)">
-            CONTACTAR LOCAL
+          <button class="btn-base btn-secondary" (click)="contactarLocal()">CONTACTAR DUEÑO</button>
+        }
+
+        @if (role() === 'CLIENTE' && pedido.estado === 'PENDIENTE') {
+          <button class="btn-base btn-danger" (click)="cambiarEstado(EstadoPedido.CANCELADO)">
+            CANCELAR PEDIDO
           </button>
         }
 
@@ -138,10 +143,10 @@
               class="btn btn-contactar btn-half"
               (click)="verDatosUsuario(pedido.emprendimiento.dueno)"
             >
-              <i class="fa-solid fa-store"></i> Ver Dueño
+              <i class="fa-solid fa-store"></i> Dueño
             </button>
             <button class="btn btn-contactar btn-half" (click)="verDatosUsuario(pedido.cliente)">
-              <i class="fa-solid fa-user"></i> Ver Cliente
+              <i class="fa-solid fa-user"></i> Cliente
             </button>
           </div>
         }

@@ -1,12 +1,9 @@
 import { Component, inject, Input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-modal';
-import { SnackbarData } from '../../../model/snackbar-data.model';
-import { Snackbar } from '../../modals/snackbar/snackbar';
+import { MatDialogRef } from '@angular/material/dialog';
 import { UsuarioService } from '../../../services/usuario-service';
 import { UsuarioResponse } from '../../../model/usuario-response.model';
+import { UiNotificationService } from '../../../services/ui-notification-service';
 
 @Component({
   selector: 'app-form-admin-user-update-password',
@@ -17,12 +14,11 @@ import { UsuarioResponse } from '../../../model/usuario-response.model';
 export class FormAdminUserUpdatePassword {
   @Input() usuario!: UsuarioResponse;
 
-  private dialog = inject(MatDialog);
   private dialogRef = inject<MatDialogRef<unknown>>(MatDialogRef, {
     optional: true,
   });
   private formBuilder = inject(FormBuilder);
-  private snackBar = inject(MatSnackBar);
+  private uiNotificationService = inject(UiNotificationService);
   private usuarioService = inject(UsuarioService);
 
   showPassword = false;
@@ -58,32 +54,12 @@ export class FormAdminUserUpdatePassword {
       })
       .subscribe({
         next: () => {
-          this.snackBar.openFromComponent(Snackbar, {
-            duration: 3000,
-            verticalPosition: 'bottom',
-            panelClass: 'snackbar-panel',
-            data: {
-              message: 'Contraseña cambiada con éxito.',
-              iconName: 'check_circle',
-            } as SnackbarData,
-          });
+          this.uiNotificationService.abrirSnackBarExito('Contraseña cambiada exitosamente.');
 
           // El form puede existir dentro de un modal
           this.dialogRef?.close(true);
         },
-        error: (err) => {
-          const backendMsg =
-            err.error?.message || err.error?.error || 'Error desconocido al cambiar contraseña';
-
-          console.error(backendMsg);
-
-          this.dialog.open(ErrorDialogModal, {
-            data: {
-              message: backendMsg,
-            },
-            panelClass: 'modal-error',
-          });
-        },
+        error: (err) => this.uiNotificationService.abrirModalError(err)
       });
   }
 

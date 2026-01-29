@@ -15,44 +15,42 @@ import { AdminUserCreateModal } from '../../components/modals/admin-user-create-
 export class AdminUsuariosPage {
   private emprendimientoService = inject(EmprendimientoService);
   private dialog = inject(MatDialog);
-  private usuarioService = inject(UsuarioService);
+  public usuarioService = inject(UsuarioService); // Public para usar en template si es necesario
 
-  private nameFilter = signal<string>("");
-  private emailFilter = signal<string>("");
+  // Señales públicas para bindear al [value] del input
+  public nameFilter = signal<string>('');
+  public emailFilter = signal<string>('');
 
   usuarios = computed(() => {
-    const nameFilter = this.nameFilter();
-    const emailFilter = this.emailFilter();
+    const nameFilter = this.nameFilter().toLowerCase();
+    const emailFilter = this.emailFilter().toLowerCase();
 
-    return this.usuarioService.usuariosAdmin().filter(
-      usuario => {
-        if (nameFilter && !usuario.nombreCompleto.toLowerCase().includes(nameFilter.toLowerCase())) {
-          return false;
-        }
-
-        if (emailFilter && !usuario.email.toLowerCase().includes(emailFilter.toLowerCase())) {
-          return false;
-        }
-
-        return true;
+    return this.usuarioService.usuariosAdmin().filter((usuario) => {
+      if (nameFilter && !usuario.nombreCompleto.toLowerCase().includes(nameFilter)) {
+        return false;
       }
-    );
+
+      if (emailFilter && !usuario.email.toLowerCase().includes(emailFilter)) {
+        return false;
+      }
+
+      return true;
+    });
   });
 
   constructor() {
-    // TO-DO: Usar ruta que devuelva emprendimientos por ID de dueño
     effect(() => {
       this.usuarioService.readUsuariosAdmin();
       this.emprendimientoService.fetchEmprendimientosAdmin(0, 100);
     });
   }
 
-  public onNameInput(event: any) {
-    this.nameFilter.set((event.target.value as string).trim());
+  public onNameInput(event: Event) {
+    this.nameFilter.set((event.target as HTMLInputElement).value.trim());
   }
 
-  public onEmailInput(event: any) {
-    this.emailFilter.set((event.target.value as string).trim());
+  public onEmailInput(event: Event) {
+    this.emailFilter.set((event.target as HTMLInputElement).value.trim());
   }
 
   public openUsuarioForm() {
@@ -63,7 +61,7 @@ export class AdminUsuariosPage {
         restoreFocus: false,
       })
       .afterClosed()
-      .subscribe(result => {
+      .subscribe((result) => {
         if (result === true) {
           this.usuarioService.readUsuariosAdmin();
         }

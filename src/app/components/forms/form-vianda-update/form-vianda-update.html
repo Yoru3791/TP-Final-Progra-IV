@@ -1,8 +1,12 @@
-<button type="button" class="btn-icon-circle btn-close-modal" (click)="cerrarModal()">
-  <i class="fa-solid fa-xmark"></i>
-</button>
+<div class="header-container">
+  <h2>
+    Editar Vianda
+  </h2>
 
-<h2 class="form-title">Editar Vianda</h2>
+  <button type="button" class="btn-icon-circle btn-close-modal" (click)="cerrarModal()">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+</div>
 
 <form class="form-vianda" [formGroup]="formVianda">
   <div class="form-layout">
@@ -14,18 +18,20 @@
           formControlName="nombreVianda"
           type="text"
           class="form-input"
-          placeholder="Ej: Milanesa con puré"
+          placeholder="Ej.: Milanesa con puré"
         />
-        @if (formVianda.get('nombreVianda')?.invalid && (formVianda.get('nombreVianda')?.dirty ||
-        formVianda.get('nombreVianda')?.touched)) {
+
         <div class="error-messages">
-          @if (formVianda.get('nombreVianda')?.hasError('required')) {
-          <p>El nombre es obligatorio.</p>
-          } @if (formVianda.get('nombreVianda')?.hasError('maxLength')) {
-          <p>Máximo 255 caracteres.</p>
+          @if (formVianda.get('nombreVianda')?.invalid && (formVianda.get('nombreVianda')?.dirty ||
+              formVianda.get('nombreVianda')?.touched))
+          {
+            @if (formVianda.get('nombreVianda')?.hasError('required')) {
+              <p>Campo obligatorio.</p>
+            } @else if (formVianda.get('nombreVianda')?.hasError('maxLength')) {
+              <p>Máximo 256 caracteres.</p>
+            }
           }
         </div>
-        }
       </div>
 
       <!-- Categoria -->
@@ -39,15 +45,17 @@
           <option [ngValue]="null" class="placeholder-option">-- Seleccionar --</option>
 
           @for (cat of categorias; track cat.key) {
-          <option [value]="cat.label">{{ cat.label }}</option>
+            <option [value]="cat.label">{{ cat.label }}</option>
           }
         </select>
-        @if (formVianda.get('categoria')?.invalid && (formVianda.get('categoria')?.dirty ||
-        formVianda.get('categoria')?.touched)) {
+
         <div class="error-messages">
-          <p>Debe seleccionar una categoría.</p>
+          @if (formVianda.get('categoria')?.invalid && (formVianda.get('categoria')?.dirty ||
+              formVianda.get('categoria')?.touched))
+          {
+            <p>Campo obligatorio.</p>
+          }
         </div>
-        }
       </div>
 
       <!-- Descripcion -->
@@ -56,41 +64,46 @@
         <textarea
           formControlName="descripcion"
           class="form-input textarea-descripcion"
-          placeholder="Ej: Porción abundante con guarnición"
-          maxlength="250"
+          placeholder="Ej.: Porción abundante con guarnición"
+          maxlength="256"
         ></textarea>
 
-        @if (formVianda.get('descripcion')?.invalid && (formVianda.get('descripcion')?.dirty ||
-        formVianda.get('descripcion')?.touched)) {
         <div class="error-messages">
-          @if (formVianda.get('descripcion')?.hasError('required')) {
-          <p>La descripción es obligatoria.</p>
-          } @if (formVianda.get('descripcion')?.hasError('maxLength')) {
-          <p>Máximo 250 caracteres.</p>
+          @if (formVianda.get('descripcion')?.invalid && (formVianda.get('descripcion')?.dirty ||
+              formVianda.get('descripcion')?.touched))
+          {
+            @if (formVianda.get('descripcion')?.hasError('required')) {
+              <p>Campo obligatorio.</p>
+            } @else if (formVianda.get('descripcion')?.hasError('maxLength')) {
+              <p>Máximo 256 caracteres.</p>
+            }
           }
         </div>
-        }
       </div>
 
       <!-- Precio -->
       <div class="form-field">
         <label for="precio" class="form-label">Precio</label>
         <input formControlName="precio" type="number" class="form-input" />
-        @if (formVianda.get('precio')?.invalid && (formVianda.get('precio')?.dirty ||
-        formVianda.get('precio')?.touched)) {
+
         <div class="error-messages">
-          <p>El precio es obligatorio y debe ser mayor a 0.</p>
+          @if (formVianda.get('precio')?.invalid && (formVianda.get('precio')?.dirty ||
+              formVianda.get('precio')?.touched))
+          {
+            @if (formVianda.get('precio')?.hasError('required')) {
+              <p>Campo obligatorio.</p>
+            } @else if (formVianda.get('precio')?.hasError('min')) {
+              <p>Debe ser mayor a 0.</p>
+            }
+          }
         </div>
-        }
       </div>
 
       <!-- Checkboxes -->
       <div class="form-field checkbox-group">
-        
         <label class="form-label">Características</label>
         
         <div class="diet-chips-container">
-          
           <label class="chip-checkbox">
             <input type="checkbox" formControlName="esSinTacc" />
             <span class="chip-label">
@@ -114,53 +127,50 @@
               Vegano
             </span>
           </label>
-
         </div>
 
-            <div class="availability-section">
-            
-            <label class="switch-toggle">
-                <input type="checkbox" formControlName="estaDisponible" />
-                <span class="slider"></span>
-            </label>
+        <div class="availability-section">
+          <label class="switch-toggle">
+            <input type="checkbox" formControlName="estaDisponible" />
+            <span class="slider"></span>
+          </label>
 
-            <div class="availability-info">
-                <span class="availability-title">
-                    {{ formVianda.get('estaDisponible')?.value ? 'Disponible' : 'No Disponible' }}
-                </span>
-                
-                <span class="availability-subtitle">
-                    {{ formVianda.get('estaDisponible')?.value ? '(Visible para clientes)' : '(Oculto para clientes)' }}
-                </span>
-            </div>
-
-        </div>
-
+          <div class="availability-info">
+            <span class="availability-title">
+              {{ formVianda.get('estaDisponible')?.value ? 'Disponible' : 'No Disponible' }}
+            </span>
+              
+            <span class="availability-subtitle">
+              {{ formVianda.get('estaDisponible')?.value ? '(Visible para clientes)' : '(Oculto para clientes)' }}
+            </span>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- Imagen -->
-      <div class="image-upload-delete-right">
-        <div class="form-field custom-file-field">
-          <input
-            type="file"
-            id="imagen-file-update"
-            #fileInput
-            (change)="onFileSelected($event); onFileInputReady(fileInput)"
-            class="form-file-input"
-            accept="image/jpeg, image/png, image/webp"
-          />
+    <!-- Imagen -->
+    <div class="image-upload-delete-right">
+      <div class="form-field custom-file-field">
+        <input
+          type="file"
+          id="imagen-file-update"
+          #fileInput
+          (change)="onFileSelected($event); onFileInputReady(fileInput)"
+          class="form-file-input"
+          accept="image/jpeg, image/png, image/webp"
+        />
 
-          <label
-            for="imagen-file-update"
-            class="upload-box-visual"
-            [class.has-preview]="!!newImagePreviewUrl || !!currentImageUrl"
-          >
-            @if (newImagePreviewUrl) {
+        <label
+          for="imagen-file-update"
+          class="upload-box-visual"
+          [class.has-preview]="!!newImagePreviewUrl || !!currentImageUrl"
+        >
+          @if (newImagePreviewUrl) {
             <div
               class="image-preview"
               [style.background-image]="'url(' + newImagePreviewUrl + ')'"
             ></div>
+
             <button
               type="button"
               class="btn-remove-image"
@@ -168,46 +178,50 @@
             >
               <i class="fa-solid fa-rotate-left"></i>
             </button>
-            <div class="preview-badge new">NUEVA</div>
 
-            } @else if (currentImageUrl) {
+            <div class="preview-badge new">NUEVA</div>
+          } @else if (currentImageUrl) {
             <div
               class="image-preview"
               [style.background-image]="'url(' + currentImageUrl + ')'"
             ></div>
+
             <div class="edit-overlay">
               <i class="fa-solid fa-pen"></i>
             </div>
-            <div class="preview-badge current">ACTUAL</div>
 
-            } @else {
+            <div class="preview-badge current">ACTUAL</div>
+          } @else {
             <span class="upload-icon">⤒</span>
             <br />
             <span class="upload-text">Cambiar imagen</span>
-            }
-          </label>
+          }
+        </label>
 
-          <div class="image-placeholder-message">
-            @if (newImagePreviewUrl) {
+        <div class="image-placeholder-message">
+          @if (newImagePreviewUrl) {
             <p class="success-message">Archivo listo: {{ selectedFileName }}</p>
-            } @else if (currentImageUrl) {
-            <p class="placeholder-info">Se mantendrá la imagen actual si no subes otra.</p>
-            } @else {
-            <p class="placeholder-info">Haz click para subir una imagen.</p>
-            }
-          </div>
+          } @else if (currentImageUrl) {
+            <p class="placeholder-info">Se mantendrá la imagen actual si no subís otra.</p>
+          } @else {
+            <p class="placeholder-info">Hacé click para subir una imagen.</p>
+          }
         </div>
-
-        <button class="btn btn-eliminar" (click)="onDelete()">Eliminar Vianda</button>
       </div>
-    </div>
 
-    <button
-      type="button"
-      class="btn btn-crear"
-      (click)="onSubmit()"
-      [disabled]="loading || !formVianda.valid"
-    >
-      {{ loading ? 'Guardando...' : 'Guardar Cambios' }}
-    </button>
+      <button class="btn-base btn-danger btn-eliminar"
+        (click)="onDelete()">
+        Eliminar Vianda
+      </button>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="btn-base btn-primary btn-crear"
+    (click)="onSubmit()"
+    [disabled]="loading || !formVianda.valid"
+  >
+    {{ loading ? 'Guardando...' : 'Guardar Cambios' }}
+  </button>
 </form>

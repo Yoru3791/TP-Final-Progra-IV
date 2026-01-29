@@ -1,4 +1,4 @@
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UsuarioUpdate } from '../../../model/usuario-update.model';
 import { UsuarioService } from '../../../services/usuario-service';
+import { UiNotificationService } from '../../../services/ui-notification-service';
 
 @Component({
   selector: 'app-form-user-update',
@@ -19,15 +20,14 @@ export class FormUserUpdate {
   private usuarioService = inject(UsuarioService);
   private dialogRef = inject(MatDialogRef<FormUserUpdate>);
   private data = inject(MAT_DIALOG_DATA) as UsuarioUpdate | null;
+  private uiNotificationService = inject(UiNotificationService);
 
-  error = signal<string | null>(null);
-  exito = signal<string | null>(null);
   cargando = signal<boolean>(false);
 
   form = this.fb.group({
-    nombreCompleto: ['', [Validators.required, Validators.minLength(1)]],
-    email: ['', [Validators.required, Validators.email]],
-    telefono: ['', [Validators.required, Validators.pattern(/^\d{8,15}$/)]],
+    nombreCompleto: ['', [Validators.required, Validators.maxLength(256)]],
+    email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
+    telefono: ['', [Validators.required, Validators.pattern(/^\d{6,15}$/)]],
   });
 
   constructor() {
@@ -44,24 +44,25 @@ export class FormUserUpdate {
     const id = this.data?.id;
     if (this.form.invalid || !id) return;
 
-    this.error.set(null);
-    this.exito.set(null);
     this.cargando.set(true);
 
     const payload: UsuarioUpdate = this.form.value as UsuarioUpdate;
 
     this.usuarioService.updateUsuario(id, payload).subscribe({
       next: (resp) => {
+        this.cargando.set(false);
+        
         const emailCambio = this.data?.email !== payload.email;
 
-        this.exito.set('Datos actualizados correctamente');
-        this.cargando.set(false);
-
+        if (!emailCambio) {
+          this.uiNotificationService.abrirSnackBarExito('Perfil actualizado correctamente.');
+        }
+        
         this.dialogRef.close({ resp, emailCambio });
       },
       error: (err) => {
-        this.error.set(err.error?.message || 'Error al actualizar usuario');
         this.cargando.set(false);
+        this.uiNotificationService.abrirModalError(err);
       },
     });
   }

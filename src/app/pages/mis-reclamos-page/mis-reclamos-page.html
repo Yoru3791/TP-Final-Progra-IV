@@ -1,50 +1,59 @@
-<div class="container-reclamos">
+<div class="page-container">
   <div class="header-section">
-    <div>
-      <div class="titulo-container" style="display: flex; align-items: center; gap: 0.5rem">
-        <h1 class="titulo">Mis Reclamos</h1>
-        <app-info-reclamo-tooltip></app-info-reclamo-tooltip>
-      </div>
-      <p class="subtitulo">Historial de reportes y tickets de soporte</p>
+    <div class="titulo-row">
+      <h1 class="main-title">Mis Reclamos</h1>
+      <app-info-reclamo-tooltip></app-info-reclamo-tooltip>
     </div>
-    <a routerLink="/reclamos" class="btn-nuevo"> <i class="fa-solid fa-plus"></i> Nuevo Reclamo </a>
+    <p class="subtitulo">Historial de reportes y tickets de soporte</p>
   </div>
 
-  <div class="filtros-container">
-    @for (filtro of filtrosDisponibles; track filtro.value) {
-    <button
-      class="chip"
-      [class.active]="filtroActual() === filtro.value"
-      (click)="setFiltro(filtro.value)"
-    >
-      {{ filtro.label }}
-    </button>
-    }
+  <div class="action-section">
+    <a routerLink="/reclamos" class="btn-action">
+      <i class="fa-solid fa-plus"></i> Nuevo Reclamo
+    </a>
   </div>
 
-  @if (loading()) {
-  <div class="loading-state">
-    <div class="spinner"></div>
-    <p>Cargando tus tickets...</p>
+  <div class="filters">
+    <div class="select-custom-wrapper">
+      <div class="select-trigger" [class.open]="openFiltro" (click)="toggleFiltro($event)">
+        <div class="selected-option">{{ getLabelFiltroActual() }}</div>
+        <div class="arrow">▾</div>
+      </div>
+
+      @if (openFiltro) {
+        <ul class="options">
+          @for (filtro of filtrosDisponibles; track filtro.value) {
+            <li (click)="setFiltro(filtro.value); $event.stopPropagation()">{{ filtro.label }}</li>
+          }
+        </ul>
+      }
+    </div>
   </div>
-  } @else if (reclamos().length === 0) {
-  <div class="empty-state">
-    <i class="fa-regular fa-folder-open icon-empty"></i>
-    <h3>No tienes reclamos registrados</h3>
-    <p>Si tienes algún inconveniente, crea un nuevo reporte.</p>
-  </div>
-  } @else if (reclamosFiltrados().length === 0) {
-  <div class="empty-filter">
-    <p>
-      No hay reclamos con el estado <strong>{{ filtroActual() }}</strong
-      >.
-    </p>
-  </div>
-  } @else {
+
   <div class="lista-reclamos">
-    @for (ticket of reclamosFiltrados(); track ticket.id) {
-    <app-reclamo-card [reclamo]="ticket"></app-reclamo-card>
+    @if (loading()) {
+      <div class="state-msg">
+        <p>Cargando tus tickets...</p>
+      </div>
+    } @else if (reclamos().length === 0) {
+      <div class="state-msg empty">
+        <i class="fa-regular fa-folder-open icon-empty"></i>
+        <h3>No tenés reclamos registrados</h3>
+        <p>Si tenés algún inconveniente, creá un nuevo reporte.</p>
+      </div>
+    } @else if (reclamosFiltrados().length === 0) {
+      <div class="state-msg empty">
+        <i class="fa-solid fa-filter icon-empty"></i>
+        <h3>No hay resultados</h3>
+        <p>
+          No hay reclamos con el estado <strong>{{ getLabelFiltroActual() }}</strong
+          >.
+        </p>
+      </div>
+    } @else {
+      @for (ticket of reclamosFiltrados(); track ticket.id) {
+        <app-reclamo-card [reclamo]="ticket"></app-reclamo-card>
+      }
     }
   </div>
-  }
 </div>

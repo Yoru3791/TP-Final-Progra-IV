@@ -42,7 +42,7 @@ export const emprendimientoDuenoGuardFn: CanActivateFn = (route: ActivatedRouteS
         return false;
       }
     }),
-    catchError((error) => {
+    catchError(() => {
       router.navigateByUrl('/error/403'); //
       return of(false);
     })

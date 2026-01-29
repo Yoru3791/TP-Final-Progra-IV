@@ -1,14 +1,10 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { ErrorDialogModal } from '../../modals/error-dialog-modal/error-dialog-modal';
-import { Snackbar } from '../../modals/snackbar/snackbar';
-import { SnackbarData } from '../../../model/snackbar-data.model';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EmprendimientoService } from '../../../services/emprendimiento-service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { EmprendimientoResponse } from '../../../model/emprendimiento-response.model';
 import { firstValueFrom } from 'rxjs';
-import { ConfirmarModalService } from '../../../services/confirmar-modal-service';
+import { UiNotificationService } from '../../../services/ui-notification-service';
 import { Router } from '@angular/router';
 import { CitySelector } from '../../utils/city-selector/city-selector';
 
@@ -22,13 +18,11 @@ export class FormUpdateEmprendimiento {
   public emprendimiento: EmprendimientoResponse = inject(MAT_DIALOG_DATA);
 
   private fb = inject(FormBuilder);
-  private dialog = inject(MatDialog);
   private dialogRef = inject(MatDialogRef<FormUpdateEmprendimiento>);
   private emprendimientoService = inject(EmprendimientoService);
-  private snackBar = inject(MatSnackBar);
   private cdr = inject(ChangeDetectorRef);
-  private confirmarModalService = inject(ConfirmarModalService);
   private router = inject(Router);
+  private uiNotificationService = inject(UiNotificationService);
 
   selectedFileName: string | null = null;
   imagePreviewUrl: string | ArrayBuffer | null = null;
@@ -39,10 +33,10 @@ export class FormUpdateEmprendimiento {
   newImageFile: File | null = null;
 
   formEmprendimiento = this.fb.group({
-    nombreEmprendimiento: ['', [Validators.required, Validators.maxLength(255)]],
+    nombreEmprendimiento: ['', [Validators.required, Validators.maxLength(256)]],
     ciudad: ['', [Validators.required]],
-    direccion: ['', [Validators.maxLength(255)]],
-    telefono: ['', [Validators.required, Validators.pattern(/^\d{7,15}$/)]],
+    direccion: ['', [Validators.maxLength(256)]],
+    telefono: ['', [Validators.required, Validators.pattern(/^\d{6,15}$/)]],
     estaDisponible: [true, [Validators.required]]
   });
 
@@ -86,12 +80,9 @@ export class FormUpdateEmprendimiento {
       const img = new Image();
       img.onload = () => {
         if (img.width > this.maxWidth || img.height > this.maxHeight) {
-          this.dialog.open(ErrorDialogModal, {
-            data: {
-              message: `La imagen no debe superar ${this.maxWidth}x${this.maxHeight}px`,
-            },
-            panelClass: 'modal-error',
-          });
+          this.uiNotificationService.abrirModalError(
+            null, `La imagen no debe superar ${this.maxWidth}x${this.maxHeight}px`
+          );
 
           this.newImageFile = null;
           this.selectedFileName = null;
@@ -119,7 +110,7 @@ export class FormUpdateEmprendimiento {
 
   async onDelete() {
     const confirmado = await firstValueFrom(
-      this.confirmarModalService.confirmar({
+      this.uiNotificationService.abrirModalConfirmacion({
         titulo: 'Eliminar Emprendimiento',
         texto:
           '¿Seguro de que querés eliminar el emprendimiento? <span>Esta acción es irreversible.</span>',
@@ -132,31 +123,15 @@ export class FormUpdateEmprendimiento {
 
     this.emprendimientoService.deleteEmprendimiento(this.emprendimiento.id).subscribe({
       next: () => {
-        this.deleteSuccess();
+        this.uiNotificationService.abrirSnackBarExito('Emprendimiento eliminado exitosamente.');
+
+        this.dialogRef.close(true);
+        this.router.navigateByUrl('home');
       },
-      error: () => {
-        this.showError(
-          'Error al eliminar el emprendimiento. Es posible que tenga pedidos asociados.'
-        );
+      error: (err) => {
+        this.uiNotificationService.abrirModalError(err);
       },
     });
-  }
-
-  private deleteSuccess() {
-    const data: SnackbarData = {
-      message: 'Emprendimiento eliminado con éxito.',
-      iconName: 'check_circle',
-    };
-
-    this.snackBar.openFromComponent(Snackbar, {
-      data,
-      duration: 3000,
-      panelClass: 'snackbar-panel',
-      verticalPosition: 'bottom',
-    });
-
-    this.dialogRef.close(true);
-    this.router.navigateByUrl('home');
   }
 
   onSubmit() {
@@ -174,37 +149,19 @@ export class FormUpdateEmprendimiento {
             .updateImagenEmprendimiento(this.emprendimiento.id, fd)
             .subscribe({
               next: () => this.finishSuccess(),
-              error: () => this.showError('Error actualizando imagen'),
+              error: (err) => this.uiNotificationService.abrirModalError(err, 'Error al actualizar la imagen.'),
             });
         } else {
           this.finishSuccess();
         }
       },
-      error: () => this.showError('Error actualizando datos'),
+      error: (err) => this.uiNotificationService.abrirModalError(err, 'Error al actualizar los datos.'),
     });
   }
 
   private finishSuccess() {
-    const data: SnackbarData = {
-      message: 'Emprendimiento actualizado con éxito!',
-      iconName: 'check_circle',
-    };
-
-    this.snackBar.openFromComponent(Snackbar, {
-      data,
-      duration: 3000,
-      panelClass: 'snackbar-panel',
-      verticalPosition: 'bottom',
-    });
-
+    this.uiNotificationService.abrirSnackBarExito('Emprendimiento actualizado exitosamente.');
     this.dialogRef.close(true);
-  }
-
-  private showError(msg: string) {
-    this.dialog.open(ErrorDialogModal, {
-      data: { message: msg },
-      panelClass: 'modal-error',
-    });
   }
 
   cerrarModal() {

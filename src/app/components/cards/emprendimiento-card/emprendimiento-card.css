@@ -103,29 +103,6 @@
 }
 
 /* ------- Botón "Ver más" ------- */
-.btn-ver-mas {
-  background-color: var(--color-primary-medium);
-  color: var(--color-text-inverse);
-  border: none;
-  border-radius: 5rem;
-  padding: 0.8rem 1.8rem;
-  font-size: 1.2rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  transition: all 0.2s ease;
-  box-shadow: 0 0.4rem 0.6rem rgba(255, 159, 67, 0.3); /* Usando el valor original de la sombra */
-}
-
-.btn-ver-mas i {
-  font-size: 1.2rem;
-  color: var(--color-text-inverse);
-}
-
 .btn-ver-mas:hover {
   background-color: var(--color-primary-medium-hover);
   transform: translateX(0.3rem);

@@ -16,6 +16,8 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .btn-toggle-cat {
@@ -431,26 +433,17 @@
 }
 
 /* Botón Filtrar */
-.btn-action-apply {
-    background-color: var(--color-primary-medium);
-    color: var(--color-text-inverse);
-    border: none;
-    border-radius: 5rem;
-    padding: 0.8rem 2rem;
+.btn-filtrar {
+    padding: 1rem 2rem;
     font-size: 1.4rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.1rem;
+    letter-spacing: 0.2rem;
 }
 
-.btn-action-apply:hover {
-    background-color: var(--color-primary-medium-hover);
+.btn-filtrar:hover {
     transform: translateY(-0.2rem);
 }
 
-.btn-action-apply:active {
+.btn-filtrar:active {
     transform: translateY(0);
 }
 
@@ -470,8 +463,7 @@
 
 .btn-clear:hover {
     background-color: var(--color-background-secondary);
-    color: var(--color-state-error);
-    border-color: var(--color-state-error);
+    color: var(--color-text-dark-secondary);
     transform: translateY(-0.2rem);
 }
 

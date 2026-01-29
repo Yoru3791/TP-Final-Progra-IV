@@ -218,48 +218,10 @@
   margin-top: 2rem;
 }
 
-.acciones .btn {
-  width: 22rem !important;
-  padding: 1.6rem 2rem !important;
-  font-size: 1.5rem !important;
-}
-
-.btn-rechazar {
-  background: var(--color-state-danger);
-  color: var(--color-text-inverse);
-  transition-duration: 0.2s;
-}
-
-.btn-rechazar:focus-within, .btn-rechazar:hover {
-  background: color-mix(in srgb, var(--color-state-danger) 87.5%, black);
-}
-
-.btn-rechazar:active {
-  background: color-mix(in srgb, var(--color-state-danger) 75%, black);
-  transition: none;
-}
-
-.btn-rechazar:disabled {
-  background: var(--color-ui-disabled-background);
-  color: var(--color-ui-disabled-text);
-}
-
-.btn-confirmar {
-  background: var(--color-state-success);
-  color: var(--color-text-inverse);
-  transition-duration: 0.2s;
-}
-
-.btn-confirmar:focus-within, .btn-confirmar:hover {
-  background: color-mix(in srgb, var(--color-state-success) 87.5%, black);
-}
-
-.btn-confirmar:active {
-  background: color-mix(in srgb, var(--color-state-success) 75%, black);
-  transition: none;
-}
-
-.btn-confirmar:disabled {
-  background: var(--color-ui-disabled-background);
-  color: var(--color-ui-disabled-text);
+.acciones .btn-base {
+  width: 100%;
+  padding: 1.6rem 2rem;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
 }

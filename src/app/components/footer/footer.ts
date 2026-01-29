@@ -10,6 +10,8 @@ import { AuthService } from '../../services/auth-service';
 export class Footer {
   private authService = inject(AuthService);
 
+  public anioActual = (new Date()).getFullYear();
+
   public esInvitado() {
     return this.authService.currentUserRole() === 'INVITADO';
   }
