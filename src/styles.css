@@ -266,6 +266,15 @@ app-root {
   box-shadow: 0 0.4rem 0.8rem rgba(46, 204, 113, 0.25);
 }
 
+.btn-rounded {
+  border-radius: 5rem;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
+
 .btn-lift:hover:not(:disabled) {
   transform: translateY(-0.2rem);
 }
