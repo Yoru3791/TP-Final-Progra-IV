@@ -63,7 +63,7 @@
 
     <div class="error-messages">
       @if (form.get('telefono')?.invalid && (form.get('telefono')?.touched ||
-           form.get('telefono')?.dirty))
+          form.get('telefono')?.dirty))
       {
         @if (form.get('telefono')?.hasError('required')) {
           <p>Campo obligatorio.</p>
@@ -75,7 +75,7 @@
   </div>
 
   <!-- Botones -->
-  <button type="submit" class="btn btn-crear" [disabled]="form.invalid || cargando()">
+  <button type="submit" class="btn-base btn-primary" [disabled]="form.invalid || cargando()">
     @if (cargando()) { Actualizando... } @else { Guardar cambios }
   </button>
 </form>
