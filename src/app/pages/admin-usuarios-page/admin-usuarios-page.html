@@ -9,7 +9,7 @@
       class="filter-input"
       type="text"
       placeholder="Filtrar por nombre..."
-      [value]="nameFilter()"
+      [value]="usuarioService.adminFiltroNombre()"
       (input)="onNameInput($event)"
     />
 
@@ -17,7 +17,7 @@
       class="filter-input"
       type="text"
       placeholder="Filtrar por email..."
-      [value]="emailFilter()"
+      [value]="usuarioService.adminFiltroEmail()"
       (input)="onEmailInput($event)"
     />
 
@@ -28,10 +28,22 @@
   </div>
 
   <div class="usuarios-list">
-    @for (usuario of usuarios(); track usuario.id) {
-      <app-usuario-card [usuario]="usuario"></app-usuario-card>
-    } @empty {
-      <p class="no-results">No se encontraron resultados.</p>
+    @if (usuarios().length === 0) {
+        <div class="no-results">
+            <p>No se encontraron resultados.</p>
+        </div>
+    } @else {
+        @for (usuario of usuarios(); track usuario.id) {
+            <app-usuario-card [usuario]="usuario"></app-usuario-card>
+        }
+
+        @if (pageInfo(); as info) {
+            <app-paginador 
+                [currentPage]="info.number" 
+                [totalPages]="info.totalPages" 
+                (pageChange)="onPageChange($event)">
+            </app-paginador>
+        }
     }
   </div>
 </div>
