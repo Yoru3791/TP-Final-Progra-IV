@@ -1,14 +1,12 @@
 <div class="card-info">
-
-  <!-- Izquierda (imagen + nombre) -->
   <div class="info-left">
-      <div
-        class="logo-circle"
-        (click)="openImagenModal()"
-        [class.clickable]="emprendimiento().imagenUrl"
-        [class.unavailable]="!emprendimiento().estaDisponible">
-        
-        @if (emprendimiento().imagenUrl && !imageLoadError()) {
+    <div
+      class="logo-circle"
+      (click)="openImagenModal()"
+      [class.clickable]="emprendimiento().imagenUrl"
+      [class.unavailable]="!emprendimiento().estaDisponible"
+    >
+      @if (emprendimiento().imagenUrl && !imageLoadError()) {
         <div class="img-wrapper">
           <img [src]="emprendimiento().imagenUrl" alt="Logo" (error)="handleImageError()" />
 
@@ -16,58 +14,72 @@
             <i class="fa-solid fa-magnifying-glass-plus lupa-icon"></i>
           </div>
         </div>
-        } @else {
+      } @else {
         <i class="fa-solid fa-store placeholder-icon"></i>
-        }
-      </div>
-      
-      <div class="title-container">
-        <h1 class="titulo">{{ emprendimiento().nombreEmprendimiento }}</h1>
-        
-        @if (!emprendimiento().estaDisponible) {
-            <span class="badge-unavailable">NO DISPONIBLE</span>
-        }
-      </div>
-
+      }
     </div>
 
-    <!-- Medio (botón carrito/configurar, según rol) -->
-    <div class="info-center">
-      @if (modo() === 'DUENO') {
+    <div class="title-container">
+      <h1 class="titulo">{{ emprendimiento().nombreEmprendimiento }}</h1>
+
+      @if (!emprendimiento().estaDisponible) {
+        <span class="badge-unavailable">NO DISPONIBLE</span>
+      }
+    </div>
+  </div>
+
+  <div class="info-center">
+    @if (modo() === 'DUENO') {
       <button class="btn-base btn-primary btn-config" (click)="onButtonClick()">
         Configurar <i class="fa-solid fa-gear"></i>
       </button>
-      } @else {
+    } @else {
       <button class="btn-base btn-primary" (click)="onButtonClick()">
         {{ hayCarrito() ? 'Carrito' : 'Nuevo Carrito' }} <i class="fa-solid fa-cart-shopping"></i>
 
         @if (hayCarrito()) {
-        <span>{{ cantidadViandasUnicasEnCarrito() }}</span>
+          <span>{{ cantidadViandasUnicasEnCarrito() }}</span>
         }
       </button>
-      }
+    }
   </div>
 
-  <!-- Derecha (dirección + teléfono + nombre del dueño) -->
   <div class="info-right">
     <div class="text-icon-container">
       <p class="direccion">{{ emprendimiento().direccion }}</p>
-      <i class="fa-solid fa-location-dot"></i>
+      <a
+        [href]="getMapsLink()"
+        target="_blank"
+        class="btn-icon-action btn-maps"
+        title="Ver en Google Maps"
+      >
+        <i class="fa-solid fa-location-dot"></i>
+      </a>
     </div>
+
     <div class="text-icon-container">
       <p class="telefono">{{ emprendimiento().telefono }}</p>
-      <i class="fa-solid fa-phone"></i>
+      <a
+        [href]="getWhatsappLink()"
+        target="_blank"
+        class="btn-icon-action btn-whatsapp"
+        title="Contactar por WhatsApp"
+      >
+        <i class="fa-solid fa-phone"></i>
+      </a>
     </div>
+
     <div class="text-icon-container">
       <p class="dueno">{{ emprendimiento().dueno.nombreCompleto }}</p>
-      <i class="fa-solid fa-user"></i>
+      <div class="btn-icon-action btn-primary-icon static-icon">
+        <i class="fa-solid fa-user"></i>
+      </div>
     </div>
   </div>
-
 </div>
 
 @if (showImagenModal) {
-<div class="modal-backdrop" (click)="closeImagenModal()">
-  <img class="modal-img" [src]="imagenModalUrl" />
-</div>
+  <div class="modal-backdrop" (click)="closeImagenModal()">
+    <img class="modal-img" [src]="imagenModalUrl" />
+  </div>
 }

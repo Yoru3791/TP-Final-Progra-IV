@@ -10,7 +10,7 @@
   --color-text-secondary: #444; /* Texto de inputs */
   --color-text-inverse: #ffffff;
   --color-text-light: #888888; /* Texto de footer */
-  --color-primary-medium-price:#f97316;
+  --color-primary-medium-price: #f97316;
 
   /* Colores de Texto (Variaciones Oscuras) */
   --color-text-dark-secondary: #4b5563; /* Texto de no-results, not-found-container */
@@ -25,6 +25,11 @@
   --color-primary-medium: #ff9f43; /* Hover de card-crear, icono empty owner, botón Home */
   --color-primary-medium-hover: #e68a35; /* Hover del botón Home */
   --color-background-soft-orange: #fff7ed; /* Fondo hover de card-crear */
+
+  /* Colores de Marcas (Redes Sociales / Externos) */
+  --color-brand-gmail: #ea4335;
+  --color-brand-whatsapp: #25d366;
+  --color-brand-maps: #4285f4;
 
   /* Colores de Interfaz (Bordes, Deshabilitado, Scroll) */
   --color-border-light: #e5e7eb; /* Bordes de footer y inputs */
@@ -151,7 +156,7 @@ app-root {
 .error-messages {
   --font-size: 1.2rem;
 
-  content: ""; /* El contenedor debe ocupar espacio aunque no se muestren errores */
+  content: ''; /* El contenedor debe ocupar espacio aunque no se muestren errores */
   font-size: var(--font-size);
   margin-top: 0.5rem;
   min-height: calc(var(--font-size) * 1.2);
@@ -193,17 +198,17 @@ app-root {
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
-  
+
   padding: 1.2rem 2rem;
   border-radius: 1rem;
   border: 0.1rem solid transparent;
-  
+
   font-family: inherit;
   font-size: 1.6rem;
   font-weight: 600;
   text-decoration: none;
   line-height: 1;
-  
+
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   background-color: transparent;
@@ -262,7 +267,7 @@ app-root {
 }
 
 .btn-success:hover:not(:disabled) {
-  filter: brightness(0.9); 
+  filter: brightness(0.9);
   box-shadow: 0 0.4rem 0.8rem rgba(46, 204, 113, 0.25);
 }
 
@@ -571,7 +576,7 @@ app-root {
   color: var(--color-primary-light);
 }
 
-/* ----- PÁGINAS VARIAS -----  */
+/* ----- PÁGINAS VARIAS -----  */
 
 .info-page-container {
   align-items: center;
@@ -670,4 +675,52 @@ app-root {
   padding: 1.5rem 1rem;
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+/* --- ESTILOS GLOBALES DE BOTONES DE ACCIÓN (ICONOS) --- */
+.valor-con-accion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn-icon-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s;
+  color: white;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.btn-icon-action:hover {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+.btn-gmail {
+  background-color: var(--color-brand-gmail);
+}
+
+.btn-whatsapp {
+  background-color: var(--color-brand-whatsapp);
+}
+
+.btn-maps {
+  background-color: var(--color-brand-maps);
+}
+
+/* Color de la App (para iconos como Dueño) */
+.btn-primary-icon {
+  background-color: var(--color-primary-light);
 }
