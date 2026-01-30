@@ -17,10 +17,6 @@
   border-bottom: none;
 }
 
-.pedido-item:hover {
-  background: rgba(0, 0, 0, 0.025);
-}
-
 .info {
   flex: 1;
 }

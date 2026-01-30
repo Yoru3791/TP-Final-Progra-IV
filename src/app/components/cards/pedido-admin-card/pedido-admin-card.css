@@ -10,13 +10,7 @@
   padding: 1.5rem;
 
   width: 100%;
-  /* Height auto para mobile, fijo en desktop */
   height: auto;
-}
-
-/* Eliminamos el hover de borde de color */
-.pedido-card:hover {
-  border-color: var(--color-ui-neutral);
 }
 
 .main-info {
@@ -62,7 +56,6 @@
   margin: 0;
 }
 
-/* Nuevos estilos para labels inline */
 .label-dato {
   font-weight: normal;
   color: var(--color-text-light);
@@ -91,7 +84,6 @@
   text-align: center;
 }
 
-/* Columna Dueño */
 .dueno-col {
   display: flex;
   flex-direction: column;
@@ -124,10 +116,9 @@
   max-width: 100%;
 }
 
-/* Columna Estado y Acción */
 .status-action-col {
   display: flex;
-  flex-direction: row; /* En mobile suelen ir juntos */
+  flex-direction: row; 
   justify-content: space-between;
   align-items: center;
   margin-top: 0.5rem;
@@ -141,7 +132,6 @@
   border-radius: 0.5rem;
 }
 
-/* Colores de Estado */
 .estado-aceptado {
   color: var(--color-state-success);
   background: #eafff0;
@@ -163,7 +153,6 @@
   padding: 0.8rem 1.2rem;
 }
 
-/* --- RESPONSIVE DESKTOP --- */
 @media (min-width: 900px) {
   .pedido-card {
     flex-direction: row;
@@ -176,7 +165,7 @@
 
   .main-info {
     justify-content: center;
-    border-right: 1px solid transparent; /* Espaciador si fuera necesario */
+    border-right: 1px solid transparent;
   }
 
   .dueno-col {
