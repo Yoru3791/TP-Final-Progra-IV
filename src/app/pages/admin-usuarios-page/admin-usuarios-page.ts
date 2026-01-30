@@ -5,52 +5,44 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { EmprendimientoService } from '../../services/emprendimiento-service';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminUserCreateModal } from '../../components/modals/admin-user-create-modal/admin-user-create-modal';
+import { Paginador } from '../../components/utils/paginador/paginador';
 
 @Component({
   selector: 'app-admin-usuarios-page',
-  imports: [UsuarioCard],
+  imports: [UsuarioCard, Paginador],
   templateUrl: './admin-usuarios-page.html',
   styleUrl: './admin-usuarios-page.css',
 })
 export class AdminUsuariosPage {
-  private emprendimientoService = inject(EmprendimientoService);
+
   private dialog = inject(MatDialog);
-  public usuarioService = inject(UsuarioService); // Public para usar en template si es necesario
+  public usuarioService = inject(UsuarioService);
 
-  // Señales públicas para bindear al [value] del input
-  public nameFilter = signal<string>('');
-  public emailFilter = signal<string>('');
-
-  usuarios = computed(() => {
-    const nameFilter = this.nameFilter().toLowerCase();
-    const emailFilter = this.emailFilter().toLowerCase();
-
-    return this.usuarioService.usuariosAdmin().filter((usuario) => {
-      if (nameFilter && !usuario.nombreCompleto.toLowerCase().includes(nameFilter)) {
-        return false;
-      }
-
-      if (emailFilter && !usuario.email.toLowerCase().includes(emailFilter)) {
-        return false;
-      }
-
-      return true;
-    });
-  });
+  usuarios = computed(() => this.usuarioService.usuariosAdmin());
+  pageInfo = computed(() => this.usuarioService.adminPageInfo());
 
   constructor() {
     effect(() => {
-      this.usuarioService.readUsuariosAdmin();
-      this.emprendimientoService.fetchEmprendimientosAdmin(0, 100);
+      this.usuarioService.adminFiltroNombre();
+      this.usuarioService.adminFiltroEmail();
+      
+      this.usuarioService.fetchUsuariosAdmin(0, 10);
     });
   }
 
   public onNameInput(event: Event) {
-    this.nameFilter.set((event.target as HTMLInputElement).value.trim());
+    const val = (event.target as HTMLInputElement).value;
+    this.usuarioService.adminFiltroNombre.set(val.trim());
   }
 
   public onEmailInput(event: Event) {
-    this.emailFilter.set((event.target as HTMLInputElement).value.trim());
+    const val = (event.target as HTMLInputElement).value;
+    this.usuarioService.adminFiltroEmail.set(val.trim());
+  }
+
+  onPageChange(page: number) {
+      this.usuarioService.fetchUsuariosAdmin(page, 10);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   public openUsuarioForm() {
@@ -63,7 +55,7 @@ export class AdminUsuariosPage {
       .afterClosed()
       .subscribe((result) => {
         if (result === true) {
-          this.usuarioService.readUsuariosAdmin();
+          this.usuarioService.fetchUsuariosAdmin(0, 10);
         }
       });
   }

@@ -1,4 +1,4 @@
-import { Component, computed, inject, Input, signal, Signal } from '@angular/core';
+import { Component, computed, inject, input, Input, signal, Signal } from '@angular/core';
 import { AuthService } from '../../../services/auth-service';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminUserUpdateModal } from '../../modals/admin-user-update-modal/admin-user-update-modal';
@@ -15,41 +15,33 @@ import { UsuarioAdminResponse } from '../../../model/usuario-admin-response.mode
   styleUrl: './usuario-card.css',
 })
 export class UsuarioCard {
-  @Input({ required: true }) usuario!: UsuarioAdminResponse;
-  usuarioSignal = signal<UsuarioAdminResponse|null>(null);
+  usuario = input.required<UsuarioAdminResponse>();
 
   private authService = inject(AuthService);
   private dialog = inject(MatDialog);
   private uiNotificationService = inject(UiNotificationService);
   private usuarioService = inject(UsuarioService);
 
-  isDeleted = computed(() =>
-    this.usuarioSignal()?.deletedAt !== null
+  isDeleted = computed(() => !!this.usuario().deletedAt);
+
+  deletionDate = computed(() => 
+    this.usuario().deletedAt ? this.usuario().deletedAt.split('T')[0] : ''
   );
 
-  deletionDate = "";
+  isBanned = computed(() => !!this.usuario().bannedAt);
 
-  isBanned = computed(() =>
-    this.usuarioSignal()?.bannedAt !== null
+  banDate = computed(() => 
+    this.usuario().bannedAt ? this.usuario().bannedAt.split('T')[0] : ''
   );
 
-  banDate = "";
+  isEditable = computed(() => {
+    const u = this.usuario();
+    return u.id !== 1 && u.id !== this.authService.usuarioId() && !u.deletedAt;
+  });
 
-  isEditable = computed(() =>
-    this.usuarioSignal()?.id !== 1 && this.usuarioSignal()?.id !== this.authService.usuarioId()
-    && !this.isDeleted()
-  );
-
-  ngOnChanges() {
-    this.usuarioSignal.set(this.usuario);
-
-    if (this.isDeleted()) {
-      this.deletionDate = this.usuario.deletedAt.split('T')[0];
-    }
-
-    if (this.isBanned()) {
-      this.banDate = this.usuario.bannedAt.split('T')[0];
-    }
+  private refreshList() {
+    const currentPage = this.usuarioService.adminPageInfo()?.number || 0;
+    this.usuarioService.fetchUsuariosAdmin(currentPage);
   }
 
   changePassword() {
@@ -58,7 +50,7 @@ export class UsuarioCard {
           panelClass: 'form-modal',
           autoFocus: false,
           restoreFocus: false,
-          data: this.usuario,
+          data: this.usuario(),
         })
         .afterClosed()
         .subscribe({
@@ -70,22 +62,20 @@ export class UsuarioCard {
     const confirmado = await firstValueFrom(
       this.uiNotificationService.abrirModalConfirmacion({
           titulo: 'Activar usuario',
-          texto: '¿Seguro de que querés activar este usuario?',
+          texto: '¿Seguro de que querés activar este usuario manualmente?',
       })
     );
 
     if (!confirmado) return;
 
     this.usuarioService
-      .enableUsuario(this.usuario.id)
+      .enableUsuario(this.usuario().id)
       .subscribe({
         next: () => {
           this.uiNotificationService.abrirSnackBarExito("Usuario activado exitosamente.");
-          this.usuarioService.readUsuariosAdmin();
+          this.refreshList();
         },
-        error: (err) => {
-          this.uiNotificationService.abrirModalError(err);
-        },
+        error: (err) => this.uiNotificationService.abrirModalError(err),
       });
   }
 
@@ -95,12 +85,12 @@ export class UsuarioCard {
           panelClass: 'form-modal',
           autoFocus: false,
           restoreFocus: false,
-          data: this.usuario,
+          data: this.usuario(),
         })
         .afterClosed()
         .subscribe((result) => {
             if (result === true) {
-              this.usuarioService.readUsuariosAdmin();
+              this.refreshList();
             }
           }
         );
@@ -113,21 +103,22 @@ export class UsuarioCard {
       this.uiNotificationService.abrirModalConfirmacion({
           titulo: `${banned ? 'Desbloquear' : 'Bloquear'} usuario`,
           texto: `¿Seguro de que querés ${banned ? 'desbloquear' : 'bloquear'} a este usuario?`,
-          critico: banned ? false : true,
+          critico: !banned,
       })
     );
 
     if (!confirmado) return;
 
-    (banned ? this.usuarioService.unbanUsuario(this.usuario.id) : this.usuarioService.banUsuario(this.usuario.id))
-      .subscribe({
+    const action$ = banned 
+        ? this.usuarioService.unbanUsuario(this.usuario().id) 
+        : this.usuarioService.banUsuario(this.usuario().id);
+
+    action$.subscribe({
         next: () => {
           this.uiNotificationService.abrirSnackBarExito(`Usuario ${banned ? 'desbloqueado' : 'bloqueado'} exitosamente.`);
-          this.usuarioService.readUsuariosAdmin();
+          this.refreshList();
         },
-        error: (err) => {
-          this.uiNotificationService.abrirModalError(err);
-        },
+        error: (err) => this.uiNotificationService.abrirModalError(err),
       });
   }
 
@@ -144,15 +135,13 @@ export class UsuarioCard {
     if (!confirmado) return;
 
     this.usuarioService
-      .deleteUsuarioAdmin(this.usuario.id)
+      .deleteUsuarioAdmin(this.usuario().id)
       .subscribe({
         next: () => {
           this.uiNotificationService.abrirSnackBarExito("Usuario eliminado exitosamente.");
-          this.usuarioService.readUsuariosAdmin();
+          this.refreshList();
         },
-        error: (error) => {
-          this.uiNotificationService.abrirModalError(error);
-        },
+        error: (error) => this.uiNotificationService.abrirModalError(error),
       });
   }
 }

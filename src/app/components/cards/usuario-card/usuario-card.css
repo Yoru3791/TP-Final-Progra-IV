@@ -30,6 +30,19 @@ p {
   transition: box-shadow 0.2s ease;
 }
 
+.usuario-card.eliminado {
+  background-color: #f9f9f9;
+  border-color: #e0e0e0;
+  opacity: 0.8;
+}
+.usuario-card.eliminado .card-img {
+    filter: grayscale(1);
+}
+
+.usuario-card.bloqueado {
+    border-left: 5px solid var(--color-state-error);
+}
+
 .card-img {
   width: 8rem;
   height: 8rem;
