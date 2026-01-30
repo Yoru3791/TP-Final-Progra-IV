@@ -15,9 +15,10 @@
     <!-- Si el nombre es invalido y el input ya fue tocado de alguna manera, se le agrega la clase invalid al input, asi se manejan visualmente los errores -->
 
     <div class="error-messages">
-      @if (formRegistro.get('nombreCompleto')?.invalid &&
-           (formRegistro.get('nombreCompleto')?.touched || formRegistro.get('nombreCompleto')?.dirty))
-      {
+      @if (
+        formRegistro.get('nombreCompleto')?.invalid &&
+        (formRegistro.get('nombreCompleto')?.touched || formRegistro.get('nombreCompleto')?.dirty)
+      ) {
         @if (formRegistro.get('nombreCompleto')?.hasError('required')) {
           <p>Campo obligatorio.</p>
         } @else if (formRegistro.get('nombreCompleto')?.hasError('maxLength')) {
@@ -42,9 +43,10 @@
     />
 
     <div class="error-messages">
-      @if (formRegistro.get('email')?.invalid && (formRegistro.get('email')?.touched ||
-           formRegistro.get('email')?.dirty))
-      {
+      @if (
+        formRegistro.get('email')?.invalid &&
+        (formRegistro.get('email')?.touched || formRegistro.get('email')?.dirty)
+      ) {
         @if (formRegistro.get('email')?.hasError('required')) {
           <p>Campo obligatorio.</p>
         } @else if (formRegistro.get('email')?.hasError('email')) {
@@ -71,9 +73,10 @@
     />
 
     <div class="error-messages">
-      @if (formRegistro.get('telefono')?.invalid && (formRegistro.get('telefono')?.touched ||
-           formRegistro.get('telefono')?.dirty))
-      {
+      @if (
+        formRegistro.get('telefono')?.invalid &&
+        (formRegistro.get('telefono')?.touched || formRegistro.get('telefono')?.dirty)
+      ) {
         @if (formRegistro.get('telefono')?.hasError('required')) {
           <p>Campo obligatorio.</p>
         } @else if (formRegistro.get('telefono')?.hasError('pattern')) {
@@ -104,14 +107,16 @@
     </div>
 
     <div class="error-messages">
-      @if (formRegistro.get('password')?.invalid && (formRegistro.get('password')?.touched ||
-           formRegistro.get('password')?.dirty))
-      {
+      @if (
+        formRegistro.get('password')?.invalid &&
+        (formRegistro.get('password')?.touched || formRegistro.get('password')?.dirty)
+      ) {
         @if (formRegistro.get('password')?.hasError('required')) {
           <p>Campo obligatorio.</p>
         } @else if (formRegistro.get('password')?.hasError('pattern')) {
           <p>
-            Entre 8 y 16 caracteres, y al menos una mayúscula, una minúscula, un número y un carácter especial.
+            Entre 8 y 16 caracteres, y al menos una mayúscula, una minúscula, un número y un
+            carácter especial.
           </p>
         }
       }
@@ -141,11 +146,12 @@
     </div>
 
     <div class="error-messages">
-      @if ((formRegistro.get('confirmarPassword')?.touched ||
+      @if (
+        (formRegistro.get('confirmarPassword')?.touched ||
           formRegistro.get('confirmarPassword')?.dirty) &&
-          (formRegistro.get('confirmarPassword')?.hasError('required') ||
-          formRegistro.hasError('noCoinciden')) )
-      {
+        (formRegistro.get('confirmarPassword')?.hasError('required') ||
+          formRegistro.hasError('noCoinciden'))
+      ) {
         @if (formRegistro.get('confirmarPassword')?.hasError('required')) {
           <p>Campo obligatorio.</p>
         } @else if (formRegistro.hasError('noCoinciden')) {
@@ -161,9 +167,7 @@
       <label>
         <input type="checkbox" formControlName="aceptarTerminos" />
 
-        <p>
-          He leído y acepto las <a (click)="openBasesCondiciones()">bases y condiciones</a>.
-        </p>
+        <p>He leído y acepto las <a (click)="openBasesCondiciones()">bases y condiciones</a>.</p>
       </label>
     </div>
 

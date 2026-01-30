@@ -1,67 +1,50 @@
 @import url('https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 
-/* Variables de Paleta de Colores Minimalista */
 :root {
-  /* Fondo y Texto General */
   --color-background-primary: #ffffff;
-  --color-background-secondary: #f9f8f8; /* Uso en formularios, modales, etc. */
+  --color-background-secondary: #f9f8f8;
   --color-background-inverse: #000000;
   --color-text-primary: #000000;
-  --color-text-secondary: #444; /* Texto de inputs */
+  --color-text-secondary: #444;
   --color-text-inverse: #ffffff;
-  --color-text-light: #888888; /* Texto de footer */
+  --color-text-light: #888888;
   --color-primary-medium-price: #f97316;
-
-  /* Colores de Texto (Variaciones Oscuras) */
-  --color-text-dark-secondary: #4b5563; /* Texto de no-results, not-found-container */
-  --color-text-dark-primary: #1f2937; /* Título de not-found-container */
-
-  /* Color Principal (Naranja) */
-  --color-primary: #eb8334; /* Base/Rol header */
-  --color-primary-light: #fe9039; /* Botones, links, íconos, precios, etc. */
-  --color-primary-hover-dark: #e07b3d; /* Header links, link-hover */
-  --color-primary-hover-light: #ff7d1a; /* Botón hover */
-  --color-primary-action: #e68033; /* Carrito botones secundarios */
-  --color-primary-medium: #ff9f43; /* Hover de card-crear, icono empty owner, botón Home */
-  --color-primary-medium-hover: #e68a35; /* Hover del botón Home */
-  --color-background-soft-orange: #fff7ed; /* Fondo hover de card-crear */
-
-  /* Colores de Marcas (Redes Sociales / Externos) */
+  --color-text-dark-secondary: #4b5563;
+  --color-text-dark-primary: #1f2937;
+  --color-primary: #eb8334;
+  --color-primary-light: #fe9039;
+  --color-primary-hover-dark: #e07b3d;
+  --color-primary-hover-light: #ff7d1a;
+  --color-primary-action: #e68033;
+  --color-primary-medium: #ff9f43;
+  --color-primary-medium-hover: #e68a35;
+  --color-background-soft-orange: #fff7ed;
   --color-brand-gmail: #ea4335;
   --color-brand-whatsapp: #25d366;
   --color-brand-maps: #4285f4;
-
-  /* Colores de Interfaz (Bordes, Deshabilitado, Scroll) */
-  --color-border-light: #e5e7eb; /* Bordes de footer y inputs */
-  --color-ui-neutral: #ccc; /* Scrollbar, line-through */
-  --color-ui-neutral-hover: #bbb; /* Scrollbar hover */
-  --color-ui-disabled-background: #ccc; /* Botones y UI deshabilitada */
-  --color-ui-disabled-text: #666; /* Texto deshabilitado */
-  --color-ui-gray-light: #d1d5db; /* Border, icono de no-results */
-  --color-text-placeholder: #9ca3af; /* Texto de card-crear, no-results */
-
-  /* Colores de Estado (Éxito, Error, Alerta) */
-  --color-state-success: #2ecc71; /* Aceptado */
-  --color-state-warning: #f39c12; /* Pendiente */
-  --color-state-error: #ff4b4b; /* Error, Invalid, Eliminar (rojo fuerte) */
-  --color-state-error-hover: #b00; /* Eliminar hover */
-  --color-state-danger: #e74c3c; /* Botón cancelar (rojo menos fuerte) */
-  --color-state-default: #6b7280; /* Estado default */
-  --color-state-finish: #3b82f6; /* Entregado */
-
-  /* Colores de Alerta Específicos */
+  --color-border-light: #e5e7eb;
+  --color-ui-neutral: #ccc;
+  --color-ui-neutral-hover: #bbb;
+  --color-ui-disabled-background: #ccc;
+  --color-ui-disabled-text: #666;
+  --color-ui-gray-light: #d1d5db;
+  --color-text-placeholder: #9ca3af;
+  --color-state-success: #2ecc71;
+  --color-state-warning: #f39c12;
+  --color-state-error: #ff4b4b;
+  --color-state-error-hover: #b00;
+  --color-state-danger: #e74c3c;
+  --color-state-default: #6b7280;
+  --color-state-finish: #3b82f6;
   --color-alert-warning-background: #fff4e0;
   --color-alert-warning-text: #7a4a00;
-
-  /* Sombras y Otros */
   --shadow-form: 0 0.6rem 1.2rem rgba(0, 0, 0, 0.3);
   --shadow-card: 0 0.5rem 1.2rem rgba(0, 0, 0, 0.15);
   --shadow-focus-primary: 0 0 0 0.3rem rgba(254, 144, 57, 0.25);
   --shadow-focus-error: 0 0 0 0.3rem rgba(255, 75, 75, 0.25);
-  --input-focus-outline: var(--color-primary-light); /* Alias para mantener lógica */
+  --input-focus-outline: var(--color-primary-light);
 }
 
-/* --- TODA LA WEB --- */
 html {
   box-sizing: border-box;
   font-size: 62.5%;
@@ -87,7 +70,6 @@ app-root {
   min-height: 100vh;
 }
 
-/* --- TITULOS DE CADA PAGE --- */
 .main-h1-title {
   font-size: 3rem;
   margin: 5rem auto 3rem auto;
@@ -104,16 +86,15 @@ app-root {
   margin: 0;
 }
 
-/* --- FORMULARIOS --- */
 .main-content {
-  flex: 1; /* Ocupa el espacio dejado por el header y el footer */
+  flex: 1;
 }
 
 .form-label {
   display: block;
-  font-size: 1.1rem;
-  font-weight: lighter;
-  color: var(--color-text-primary);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-text-dark-primary);
   margin-bottom: 0.8rem;
   letter-spacing: 0.05rem;
   text-transform: uppercase;
@@ -122,30 +103,46 @@ app-root {
 .form-input {
   width: 100%;
   display: block;
-  padding: 1rem 1.4rem;
+  padding: 1.2rem 1.6rem;
   border: 0.1rem solid var(--color-border-light);
-  border-radius: 2.5rem;
-  font-size: 1.4rem;
-  color: var(--color-text-secondary);
+  border-radius: 1rem;
+  font-size: 1.5rem;
+  color: var(--color-text-primary);
   outline: none;
+  background-color: white;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+}
+
+input[type='password'] {
+  font-family: Verdana, sans-serif;
+  letter-spacing: 0.15rem;
+  font-weight: bold;
+}
+
+input[type='password']::placeholder {
+  font-family: 'Inria Sans', sans-serif;
+  letter-spacing: normal;
+  font-weight: normal;
+  font-size: 1.5rem;
 }
 
 .form-input:focus {
-  border-color: var(--input-focus-outline);
-  outline: none;
-  box-shadow: var(--shadow-focus-error); /* ¡OJO! EL ORIGINAL USA EL SHADOW-ERROR AQUÍ */
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 0.3rem rgba(254, 144, 57, 0.15);
 }
 
 .form-input::placeholder {
   color: var(--color-text-secondary);
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
 .form-field {
   width: 100%;
-  min-height: 6rem;
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .invalid {
@@ -154,22 +151,54 @@ app-root {
 }
 
 .error-messages {
-  --font-size: 1.2rem;
-
-  content: ''; /* El contenedor debe ocupar espacio aunque no se muestren errores */
-  font-size: var(--font-size);
-  margin-top: 0.5rem;
-  min-height: calc(var(--font-size) * 1.2);
+  min-height: 1.8rem;
+  font-size: 1.2rem;
+  margin-top: 0.2rem;
 }
 
 .error-messages p {
   color: var(--color-state-error);
-  margin-top: 0.1rem;
-  margin-bottom: 0;
-  font-weight: lighter;
+  margin: 0;
+  font-weight: 500;
 }
 
-/* --- BOTONES --- */
+.form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  background-color: white;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fe9039' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.5rem center;
+  background-size: 1.5rem;
+  padding-right: 4rem;
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 10rem;
+  line-height: 1.5;
+}
+
+textarea.form-input::-webkit-scrollbar {
+  width: 0.6rem;
+}
+
+textarea.form-input::-webkit-scrollbar-track {
+  background: transparent;
+  margin-block: 0.5rem;
+}
+
+textarea.form-input::-webkit-scrollbar-thumb {
+  background: var(--color-ui-neutral);
+  border-radius: 1rem;
+}
+
+textarea.form-input::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-light);
+}
+
 .btn {
   background-color: var(--color-primary-light);
   color: var(--color-text-inverse);
@@ -198,17 +227,14 @@ app-root {
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
-
   padding: 1.2rem 2rem;
   border-radius: 1rem;
   border: 0.1rem solid transparent;
-
   font-family: inherit;
   font-size: 1.6rem;
   font-weight: 600;
   text-decoration: none;
   line-height: 1;
-
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   background-color: transparent;
@@ -284,7 +310,6 @@ app-root {
   transform: translateY(-0.2rem);
 }
 
-/* --- CHECKBOX GENERICO --- */
 .checkbox-container {
   width: 100%;
   color: var(--color-text-primary);
@@ -304,7 +329,6 @@ app-root {
   margin: 0;
 }
 
-/* --- INPUT CON OJITO --- */
 .input-with-icon {
   position: relative;
   width: 100%;
@@ -341,8 +365,6 @@ app-root {
   justify-content: center;
   align-items: center;
 }
-
-/* --- MODALES ELIMINAR CUENTA --- */
 
 .titulo-rojo {
   font-size: 2rem;
@@ -385,8 +407,6 @@ app-root {
 .btn-rojo:hover {
   background: var(--color-state-error-hover);
 }
-
-/* --- MODAL ERROR --- */
 
 .modal-container .content-container p span {
   color: var(--color-state-error);
@@ -432,8 +452,6 @@ app-root {
   margin: 0;
 }
 
-/* --- MODAL EXITO --- */
-
 .modal-exito .mat-mdc-dialog-title {
   background-color: var(--color-background-secondary);
   color: var(--color-state-success) !important;
@@ -473,8 +491,6 @@ app-root {
   margin: 0;
 }
 
-/* --- MODAL SCROLLEABLE--- */
-
 .modal-scrolleable .mat-mdc-dialog-title {
   background-color: #ff8c00;
   color: white !important;
@@ -506,8 +522,6 @@ app-root {
   border: none;
 }
 
-/* --- SNACKBAR --- */
-
 .snackbar-panel {
   background-color: var(--color-background-primary);
   margin-bottom: 4rem !important;
@@ -524,13 +538,11 @@ app-root {
   width: 100% !important;
 }
 
-/* --- MODAL VIANDA --- */
 .cdk-overlay-pane.modal-vianda {
   width: 95rem !important;
   max-width: 95rem !important;
 }
 
-/* --- SCROLLBAR GENERICO --- */
 *::-webkit-scrollbar {
   width: 0.8rem;
 }
@@ -544,7 +556,6 @@ app-root {
   background: var(--color-ui-neutral-hover);
 }
 
-/* MODAL FORM EMPRENDIMIENTO */
 .cdk-overlay-pane.form-modal {
   max-height: 95vh !important;
   max-width: 75rem !important;
@@ -560,7 +571,6 @@ app-root {
   margin: 0 !important;
 }
 
-/* ICONOS RESTRICCIONES DE ALIMENTOS */
 .icon {
   width: 3rem;
   height: 3rem;
@@ -575,8 +585,6 @@ app-root {
 .icon:hover {
   color: var(--color-primary-light);
 }
-
-/* ----- PÁGINAS VARIAS -----  */
 
 .info-page-container {
   align-items: center;
@@ -599,8 +607,6 @@ app-root {
 .info-page-container a {
   color: var(--color-primary-light);
 }
-
-/* --- SELECTOR GENERICO --- */
 
 .select-custom {
   position: relative;
@@ -634,38 +640,6 @@ app-root {
   color: var(--color-primary-light);
 }
 
-.options {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background: var(--color-background-primary);
-  border-radius: 1rem;
-  padding: 0.6rem 0;
-  margin: 0;
-  list-style: none;
-  z-index: 20;
-  border: 0.1px solid var(--color-border-light);
-  box-shadow: 0 0.5rem 1.4rem rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-}
-
-.options li {
-  padding: 0.9rem 1.4rem;
-  cursor: pointer;
-  transition: 0.15s ease;
-  color: var(--color-text-secondary);
-}
-
-.options li:hover {
-  background: color-mix(in srgb, #fe9039 25%, var(--color-background-primary));
-}
-
-.options li.selected {
-  background: color-mix(in srgb, #fe9039 40%, var(--color-background-primary));
-  color: var(--color-text-primary);
-}
-
 .textarea-descripcion {
   resize: none;
   width: 100%;
@@ -677,11 +651,9 @@ app-root {
   word-break: break-word;
 }
 
-/* --- ESTILOS GLOBALES DE BOTONES DE ACCIÓN (ICONOS) --- */
 .valor-con-accion {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 1rem;
 }
 
@@ -720,7 +692,153 @@ app-root {
   background-color: var(--color-brand-maps);
 }
 
-/* Color de la App (para iconos como Dueño) */
 .btn-primary-icon {
   background-color: var(--color-primary-light);
+}
+
+.filters-container {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 115rem;
+  align-items: center;
+}
+
+.filter-input {
+  height: 5rem;
+  min-height: 5rem;
+  padding: 0 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--color-ui-neutral);
+  font-family: inherit;
+  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+  background-color: white;
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  flex: 1;
+  min-width: 25rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 0.2rem rgba(254, 144, 57, 0.15);
+}
+
+.select-custom-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 25rem;
+}
+
+.select-trigger {
+  width: 100%;
+  height: 5rem;
+  padding: 0 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--color-ui-neutral);
+  background: white;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  box-sizing: border-box;
+  user-select: none;
+  transition: border-color 0.2s ease;
+}
+
+.select-trigger:hover,
+.select-trigger.open {
+  border-color: var(--color-primary-light);
+}
+
+.select-trigger .arrow {
+  font-size: 1.2rem;
+  color: var(--color-text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.select-trigger.open .arrow {
+  transform: rotate(180deg);
+  color: var(--color-primary-light);
+}
+
+.selected-option {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 1rem;
+}
+
+.options {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: 100%;
+  max-height: 30rem;
+  overflow-y: auto;
+  background: var(--color-background-primary);
+  border-radius: 1rem;
+  padding: 0.5rem 0;
+  margin: 0;
+  list-style: none;
+  z-index: 100;
+  border: 1px solid var(--color-border-light);
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+}
+
+.options::-webkit-scrollbar {
+  width: 0.6rem;
+}
+
+.options::-webkit-scrollbar-thumb {
+  background: var(--color-ui-neutral);
+  border-radius: 1rem;
+}
+
+.option-item,
+.options li {
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+  transition: background-color 0.1s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.option-item:hover,
+.options li:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--color-primary-light) 15%,
+    var(--color-background-primary)
+  );
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 768px) {
+  .filters-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+  }
+
+  .filter-input,
+  .select-custom-wrapper,
+  .btn-create,
+  .date-picker-wrapper {
+    width: 100% !important;
+    min-width: 0 !important;
+    flex: none !important;
+  }
 }

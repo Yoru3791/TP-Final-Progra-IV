@@ -1,7 +1,6 @@
 :host {
   display: block;
   width: 100%;
-  /* min-height: 100vh; <-- ELIMINADO */
 }
 
 .page-container {
@@ -9,19 +8,13 @@
   flex-direction: column;
   align-items: center;
   padding: 2rem;
-
-  /* CORRECCIÓN DE HEADER TAPADO */
   padding-top: 8rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
-
   width: 100%;
   max-width: 115rem;
   margin: 0 auto;
   box-sizing: border-box;
 }
 
-/* --- HEADER --- */
 .header-section {
   width: 100%;
   text-align: left;
@@ -41,37 +34,6 @@
   font-size: 1.6rem;
   color: var(--color-text-secondary);
   margin: 0.5rem 0 0 0;
-}
-
-/* --- FILTROS --- */
-.filters {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-  max-width: 115rem;
-}
-
-.filters input {
-  padding: 0 1.5rem;
-  height: 5rem;
-  min-height: 5rem;
-  border-radius: 1rem;
-  border: 1px solid var(--color-ui-neutral);
-  font-family: inherit;
-  font-size: 1.4rem;
-  flex: 1;
-  min-width: 25rem;
-  -webkit-appearance: none;
-  appearance: none;
-  box-sizing: border-box;
-}
-
-.filters input:focus {
-  outline: none;
-  border-color: var(--color-primary-light);
 }
 
 .emprendimientos-list {
@@ -99,12 +61,4 @@
 }
 
 @media (max-width: 600px) {
-  .filters {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  .filters input {
-    width: 100%;
-    min-width: unset;
-  }
 }

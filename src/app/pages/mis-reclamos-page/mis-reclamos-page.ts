@@ -25,8 +25,6 @@ import { UiNotificationService } from '../../services/ui-notification-service';
 export class MisReclamosComponent implements OnInit {
   private reclamoService = inject(ReclamoService);
   private uiNotificationService = inject(UiNotificationService);
-
-  // Para detectar clicks fuera del dropdown y cerrarlo
   private elementRef = inject(ElementRef);
 
   reclamos = signal<Reclamo[]>([]);
@@ -64,7 +62,12 @@ export class MisReclamosComponent implements OnInit {
         this.loading.set(false);
       },
       error: (err) => {
-        this.uiNotificationService.abrirSnackBarError(err, 'Error al cargar reclamos.');
+        // Ignoramos el error 404 (Not Found) asumiendo que significa "sin reclamos"
+        if (err.status === 404) {
+          this.reclamos.set([]);
+        } else {
+          this.uiNotificationService.abrirSnackBarError(err, 'Error al cargar reclamos.');
+        }
         this.loading.set(false);
       },
     });

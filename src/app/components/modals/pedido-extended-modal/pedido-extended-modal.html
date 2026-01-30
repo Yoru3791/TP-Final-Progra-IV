@@ -1,70 +1,79 @@
 <div class="modal-pedido-container">
-  <div class="header-card-modal">
-    <h3 class="titulo-seccion-modal">
+  <div class="pedido-header">
+    <h3 class="titulo-modal">
       Pedido #{{ pedido.id }} — {{ pedido.emprendimiento.nombreEmprendimiento }}
     </h3>
-    <div class="btn-close-icon" (click)="cerrar()">
+    <button class="btn-close-icon" (click)="cerrar()">
       <i class="fa-solid fa-xmark"></i>
-    </div>
+    </button>
   </div>
 
-  <div class="divisor-modal"></div>
+  <div class="divisor"></div>
 
   <div class="pedido-content">
     <div class="left-panel scrolleable">
       @for (detalle of pedido.viandas; track detalle.viandaId) {
         <div class="item-vianda">
-          <div class="info">
-            <p class="nombre">{{ detalle.nombreVianda }}</p>
-            <p class="unitario">
-              Precio unitario: <span class="precio">${{ detalle.precioUnitario }}</span>
-            </p>
-            <p class="cantidad">
-              Cantidad: <strong>{{ detalle.cantidad }}</strong>
-            </p>
-            <p class="subtotal">
-              Subtotal: <span class="precio">${{ detalle.subtotal }}</span>
-            </p>
+          <img
+            [src]="detalle.imagenUrl || 'assets/placeholder-food.png'"
+            class="item-img"
+            alt="{{ detalle.nombreVianda }}"
+          />
+          <div class="item-info">
+            <p class="item-nombre">{{ detalle.nombreVianda }}</p>
+            <div class="item-meta">
+              <span class="item-precio">${{ detalle.precioUnitario }}</span>
+              <span class="item-cantidad">x{{ detalle.cantidad }}</span>
+            </div>
           </div>
+          <p class="item-subtotal">${{ detalle.subtotal }}</p>
         </div>
       }
     </div>
 
     <div class="right-panel">
-      <div class="imagen-contexto">
+      <div class="contexto-section">
         @if (role() === 'DUENO') {
           <img
             [src]="pedido.cliente.imagenUrl || 'assets/placeholder-user.png'"
-            class="img-redonda"
+            class="img-contexto"
             alt="Cliente"
           />
-          <p class="nombre-contexto">{{ pedido.cliente.nombreCompleto }}</p>
+          <div class="contexto-data">
+            <span class="contexto-label">Cliente</span>
+            <p class="contexto-nombre">{{ pedido.cliente.nombreCompleto }}</p>
+          </div>
         } @else {
           <img
             [src]="pedido.emprendimiento.imagenUrl || 'assets/placeholder-food.png'"
-            class="img-redonda"
+            class="img-contexto"
             alt="Emprendimiento"
           />
-          <p class="nombre-contexto">{{ pedido.emprendimiento.nombreEmprendimiento }}</p>
+          <div class="contexto-data">
+            <span class="contexto-label">Emprendimiento</span>
+            <p class="contexto-nombre">{{ pedido.emprendimiento.nombreEmprendimiento }}</p>
+          </div>
         }
       </div>
 
-      <div class="detalle-general">
-        <div class="dato-linea">
-          <span class="label">Fecha entrega:</span>
-          <span class="valor">{{ pedido.fechaEntrega | date: 'dd/MM/yyyy' }}</span>
+      <div class="resumen-section">
+        <div class="fila-resumen">
+          <span>Fecha de entrega:</span>
+          <strong>{{ pedido.fechaEntrega | date: 'dd/MM/yyyy' }}</strong>
         </div>
-        <div class="dato-linea">
-          <span class="label">Total:</span>
-          <span class="precio-total">${{ pedido.total }}</span>
+        <div class="fila-resumen">
+          <span>Total:</span>
+          <strong class="precio-total">${{ pedido.total }}</strong>
         </div>
-        <div class="dato-linea">
-          <span class="label">Estado:</span>
-          <span class="estado" [class]="pedido.estado.toLowerCase()">{{ pedido.estado }}</span>
+        <div class="fila-resumen">
+          <span>Estado:</span>
+          <span class="estado-badge" [class]="pedido.estado.toLowerCase()">
+            {{ pedido.estado }}
+          </span>
         </div>
       </div>
 
-      <div class="acciones">
+      <div class="acciones-section">
         @if (role() === 'CLIENTE' && pedido.estado === 'PENDIENTE') {
           <div class="grupo-fecha">
             <label>Nueva fecha</label>
@@ -77,75 +86,84 @@
             />
           </div>
           @if (esDemasiadoTarde) {
-            <div class="alerta-bloqueo">
-              <i class="fa-solid fa-clock"></i><small>Plazo de modificación vencido</small>
-            </div>
+            <div class="alerta-bloqueo"><i class="fa-solid fa-clock"></i> Plazo vencido</div>
           }
           <button
-            class="btn-base btn-primary"
+            class="btn-base btn-primary full-width"
             [disabled]="esDemasiadoTarde || !nuevaFechaSeleccionada"
-            [class.btn-disabled]="esDemasiadoTarde"
             (click)="cambiarFechaEntrega(nuevaFechaSeleccionada)"
           >
             CAMBIAR FECHA
           </button>
+          <button
+            class="btn-base btn-danger full-width"
+            (click)="cambiarEstado(EstadoPedido.CANCELADO)"
+          >
+            CANCELAR PEDIDO
+          </button>
         }
 
         @if (role() === 'DUENO' && pedido.estado === 'PENDIENTE') {
-          <button class="btn-base btn-success" (click)="cambiarEstado(EstadoPedido.ACEPTADO)">
+          <button
+            class="btn-base btn-success full-width"
+            (click)="cambiarEstado(EstadoPedido.ACEPTADO)"
+          >
             ACEPTAR PEDIDO
           </button>
-          <button class="btn-base btn-danger" (click)="cambiarEstado(EstadoPedido.RECHAZADO)">
+          <button
+            class="btn-base btn-danger full-width"
+            (click)="cambiarEstado(EstadoPedido.RECHAZADO)"
+          >
             RECHAZAR PEDIDO
           </button>
         }
+
         @if (role() === 'DUENO' && pedido.estado === 'ACEPTADO') {
-          <button class="btn-base btn-entregado" (click)="cambiarEstado(EstadoPedido.ENTREGADO)">
+          <button
+            class="btn-base btn-primary full-width"
+            (click)="cambiarEstado(EstadoPedido.ENTREGADO)"
+          >
             MARCAR ENTREGADO
           </button>
         }
 
         @if (role() === 'DUENO') {
-          <button class="btn-base btn-secondary" (click)="contactarCliente()">CONTACTAR CLIENTE</button>
+          <button class="btn-base btn-secondary full-width" (click)="contactarCliente()">
+            CONTACTAR CLIENTE
+          </button>
         }
 
         @if (role() === 'CLIENTE') {
-          <button class="btn-base btn-secondary" (click)="contactarLocal()">CONTACTAR DUEÑO</button>
-        }
-
-        @if (role() === 'CLIENTE' && pedido.estado === 'PENDIENTE') {
-          <button class="btn-base btn-danger" (click)="cambiarEstado(EstadoPedido.CANCELADO)">
-            CANCELAR PEDIDO
+          <button class="btn-base btn-secondary full-width" (click)="contactarLocal()">
+            CONTACTAR DUEÑO
           </button>
         }
 
         @if (role() === 'ADMIN') {
-          <div class="admin-control-panel">
-            <label class="label-admin">Administrar Estado</label>
-            <div class="admin-row-input">
-              <select [(ngModel)]="estadoAdminSeleccionado" class="select-admin">
+          <div class="admin-panel">
+            <label>Administrar Estado</label>
+            <div class="admin-row">
+              <select [(ngModel)]="estadoAdminSeleccionado" class="form-select admin-select">
                 @for (est of estadosPosibles; track est) {
                   <option [value]="est">{{ est }}</option>
                 }
               </select>
-              <button
-                class="btn-icon-admin"
-                (click)="actualizarEstadoAdmin()"
-                title="Guardar cambio"
-              >
+              <button class="btn-base btn-primary btn-icon" (click)="actualizarEstadoAdmin()">
                 <i class="fa-solid fa-floppy-disk"></i>
               </button>
             </div>
           </div>
-
-          <div class="admin-actions-row">
+          <div class="admin-actions">
             <button
-              class="btn btn-contactar btn-half"
+              class="btn-base btn-secondary half-width"
               (click)="verDatosUsuario(pedido.emprendimiento.dueno)"
             >
               <i class="fa-solid fa-store"></i> Dueño
             </button>
-            <button class="btn btn-contactar btn-half" (click)="verDatosUsuario(pedido.cliente)">
+            <button
+              class="btn-base btn-secondary half-width"
+              (click)="verDatosUsuario(pedido.cliente)"
+            >
               <i class="fa-solid fa-user"></i> Cliente
             </button>
           </div>

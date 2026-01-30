@@ -41,102 +41,29 @@
   margin: 0.5rem 0 0 0;
 }
 
-.action-section {
+/* Contenedor unificado para controles (Filtro + Botón) */
+.controls-container {
   width: 100%;
-  margin-bottom: 1.5rem;
   display: flex;
-  justify-content: flex-end;
-}
-
-.btn-action {
-  background-color: var(--color-primary-light);
-  color: white;
-  padding: 1rem 2rem;
-  border-radius: 0.8rem;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1.5rem;
-  transition: 0.2s;
-  display: flex;
+  justify-content: space-between; /* Filtro izq, Botón der */
   align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  border: none;
-  cursor: pointer;
-  width: auto;
-}
-
-.btn-action:hover {
-  background-color: var(--color-primary-hover-light);
-}
-
-.filters {
-  display: flex;
-  width: 100%;
   margin-bottom: 2rem;
+  gap: 2rem;
 }
 
 .select-custom-wrapper {
-  position: relative;
+  flex: 0 0 auto;
   width: 30rem;
-  max-width: 100%;
+  min-width: unset;
+  position: relative;
 }
 
-.select-trigger {
-  width: 100%;
-  height: 5rem;
-  padding: 0 1.5rem;
-  border-radius: 1rem;
-  border: 1px solid var(--color-ui-neutral);
-  background: white;
-  font-size: 1.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  color: var(--color-text-secondary);
-  box-sizing: border-box;
-  user-select: none;
-  transition: border-color 0.2s;
-}
-
-.select-trigger:hover,
-.select-trigger.open {
-  border-color: var(--color-primary-light);
-}
-
-.selected-option {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.options {
-  position: absolute;
-  top: 105%;
-  left: 0;
-  width: 100%;
-  background: var(--color-background-primary);
-  border-radius: 1rem;
-  padding: 0.6rem 0;
-  margin: 0;
-  list-style: none;
-  z-index: 20;
-  border: 1px solid var(--color-border-light);
-  box-shadow: 0 0.5rem 1.4rem rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-}
-
-.options li {
-  padding: 1rem 1.5rem;
-  cursor: pointer;
-  font-size: 1.4rem;
-  color: var(--color-text-secondary);
-  transition: 0.2s;
-}
-
-.options li:hover {
-  background: color-mix(in srgb, var(--color-primary-light) 25%, var(--color-background-primary));
+.btn-action {
+  width: auto;
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  white-space: nowrap; /* Evita que el texto del botón se rompa */
 }
 
 .lista-reclamos {
@@ -177,23 +104,25 @@
     padding: 1.5rem;
   }
 
-  .action-section {
-    width: 100%;
+  .main-title {
+    font-size: 2rem;
   }
 
-  .btn-action {
-    width: 100%;
+  .controls-container {
+    flex-direction: column-reverse; /* Botón arriba, Filtro abajo (o al revés según prefieras) */
+    align-items: stretch;
+    gap: 1.5rem;
   }
 
-  .filters {
-    flex-direction: column;
-  }
+  /* En mobile: Botón arriba, filtro abajo es un patrón común, 
+     pero si preferís el orden del HTML (Filtro arriba), usá flex-direction: column */
 
   .select-custom-wrapper {
     width: 100%;
   }
 
-  .main-title {
-    font-size: 2rem;
+  .btn-action {
+    width: 100%;
+    justify-content: center;
   }
 }

@@ -7,13 +7,7 @@
     <p class="subtitulo">Historial de reportes y tickets de soporte</p>
   </div>
 
-  <div class="action-section">
-    <a routerLink="/reclamos" class="btn-action">
-      <i class="fa-solid fa-plus"></i> Nuevo Reclamo
-    </a>
-  </div>
-
-  <div class="filters">
+  <div class="controls-container">
     <div class="select-custom-wrapper">
       <div class="select-trigger" [class.open]="openFiltro" (click)="toggleFiltro($event)">
         <div class="selected-option">{{ getLabelFiltroActual() }}</div>
@@ -28,6 +22,10 @@
         </ul>
       }
     </div>
+
+    <a routerLink="/reclamos" class="btn btn-primary btn-action">
+      <i class="fa-solid fa-plus"></i> Nuevo Reclamo
+    </a>
   </div>
 
   <div class="lista-reclamos">

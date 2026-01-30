@@ -1,12 +1,10 @@
 <div class="page-container">
-
   <div class="header-section">
     <h1 class="main-title">PEDIDOS</h1>
     <p class="subtitulo">Gestión y seguimiento de órdenes</p>
   </div>
 
-  <div class="filters">
-    <!-- Filtro Nombre -->
+  <div class="filters-container">
     <input
       type="text"
       class="filter-input"
@@ -15,7 +13,6 @@
       (input)="onEmprendimientoInput($event)"
     />
 
-    <!-- Filtro Estado -->
     <div class="select-custom-wrapper">
       <div class="select-trigger" [class.open]="openEstado" (click)="toggleEstado($event)">
         <div class="selected-option">{{ pedidoService.filtroEstado() || 'Estado: Todos' }}</div>
@@ -32,8 +29,7 @@
       }
     </div>
 
-    <!-- Filtro Fecha -->
-    <div class="date-picker-wrapper">
+    <div class="select-custom-wrapper">
       <app-date-range-picker
         (fechasSeleccionadas)="pedidoService.filtroFechas.set($event)"
       ></app-date-range-picker>
@@ -50,12 +46,12 @@
         <app-pedido-admin-card [pedido]="p"></app-pedido-admin-card>
       }
 
-      <!-- Paginación -->
       @if (pageInfo(); as info) {
-        <app-paginador 
-            [currentPage]="info.number" 
-            [totalPages]="info.totalPages" 
-            (pageChange)="onPageChange($event)">
+        <app-paginador
+          [currentPage]="info.number"
+          [totalPages]="info.totalPages"
+          (pageChange)="onPageChange($event)"
+        >
         </app-paginador>
       }
     }
