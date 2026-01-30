@@ -2,45 +2,43 @@
   <div class="header-card">
     <h3 class="titulo-seccion">Pedidos</h3>
 
-    <div class="filtros-container">
-
-      <!-- Filtro Estado -->
-      <div class="select-wrapper">
-        <label class="select-label">Estado</label>
-        <div class="select-custom" [class.open]="openEstado" (click)="toggleEstado($event)">
+    <div class="filters-container">
+      <div class="select-custom-wrapper">
+        <label class="form-label">Estado</label>
+        <div class="select-trigger" [class.open]="openEstado" (click)="toggleEstado($event)">
           <div class="selected-option">{{ pedidoService.filtroEstado() || 'Todos' }}</div>
           <div class="arrow">▾</div>
-          @if (openEstado) {
+        </div>
+
+        @if (openEstado) {
           <ul class="options">
             <li (click)="setEstado(null); $event.stopPropagation()">Todos</li>
             @for (estado of estados; track estado) {
-            <li (click)="setEstado(estado); $event.stopPropagation()">{{ estado }}</li>
+              <li (click)="setEstado(estado); $event.stopPropagation()">{{ estado }}</li>
             }
           </ul>
-          }
-        </div>
+        }
       </div>
 
-      <!-- Filtro Emprendimiento -->
-      <div class="select-wrapper">
-        <label class="select-label">Emprendimiento</label>
-        <div class="select-custom" [class.open]="openEmp" (click)="toggleEmp($event)">
+      <div class="select-custom-wrapper">
+        <label class="form-label">Emprendimiento</label>
+        <div class="select-trigger" [class.open]="openEmp" (click)="toggleEmp($event)">
           <div class="selected-option">{{ pedidoService.filtroEmprendimiento() || 'Todos' }}</div>
           <div class="arrow">▾</div>
-          @if (openEmp) {
+        </div>
+
+        @if (openEmp) {
           <ul class="options">
             <li (click)="setEmp(null); $event.stopPropagation()">Todos</li>
             @for (emp of pedidoService.nombresEmprendimientos(); track emp) {
-            <li (click)="setEmp(emp); $event.stopPropagation()">{{ emp }}</li>
+              <li (click)="setEmp(emp); $event.stopPropagation()">{{ emp }}</li>
             }
           </ul>
-          }
-        </div>
+        }
       </div>
 
-      <!-- Filtro Fecha -->
-      <div class="select-wrapper">
-        <label class="select-label">Fecha</label>
+      <div class="select-custom-wrapper">
+        <label class="form-label">Fecha</label>
         <app-date-range-picker
           (fechasSeleccionadas)="pedidoService.filtroFechas.set($event)"
         ></app-date-range-picker>
@@ -52,22 +50,22 @@
 
   <div class="contenido-card">
     @if (pedidoService.pedidos().length === 0) {
-    <div class="estado-vacio">
-      <p class="sin-pedidos">No tenés pedidos todavía.</p>
-    </div>
+      <div class="estado-vacio">
+        <p class="sin-pedidos">No tenés pedidos todavía.</p>
+      </div>
     } @else {
-    <div class="lista-pedidos">
-      @for (p of pedidoService.pedidos(); track $index) {
-      <app-pedido-single-card [pedido]="p"></app-pedido-single-card>
-      }
-    </div>
+      <div class="lista-pedidos">
+        @for (p of pedidoService.pedidos(); track $index) {
+          <app-pedido-single-card [pedido]="p"></app-pedido-single-card>
+        }
+      </div>
 
-    <!-- Paginación -->
       @if (pageInfo(); as info) {
-        <app-paginador 
-            [currentPage]="info.number" 
-            [totalPages]="info.totalPages" 
-            (pageChange)="onPageChange($event)">
+        <app-paginador
+          [currentPage]="info.number"
+          [totalPages]="info.totalPages"
+          (pageChange)="onPageChange($event)"
+        >
         </app-paginador>
       }
     }
