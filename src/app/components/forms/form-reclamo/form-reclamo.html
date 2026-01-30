@@ -1,12 +1,11 @@
 <form class="form-reclamo" [formGroup]="formReclamo" (ngSubmit)="onSubmit()">
-  
   <div class="form-field">
     <label for="email" class="form-label">Email de contacto</label>
-    <input 
-      id="email" 
-      formControlName="email" 
-      type="email" 
-      class="form-input" 
+    <input
+      id="email"
+      formControlName="email"
+      type="email"
+      class="form-input"
       placeholder="Ej.: juanperez@gmail.com"
     />
   </div>
@@ -14,33 +13,34 @@
   <div class="form-field">
     <label for="categoria" class="form-label">Motivo del reporte</label>
 
-    <select id="categoria" formControlName="categoria" class="form-input form-select">
-      <option value="" disabled selected>Selecciona una opción</option>
+    <div class="select-wrapper">
+      <select id="categoria" formControlName="categoria" class="form-input form-select">
+        <option value="" disabled selected>Selecciona una opción</option>
 
-      @for (opcion of categoriasOptions; track opcion.value) {
-        <option [value]="opcion.value">{{ opcion.label }}</option>
-      }
-    </select>
+        @for (opcion of categoriasOptions; track opcion.value) {
+          <option [value]="opcion.value">{{ opcion.label }}</option>
+        }
+      </select>
+    </div>
   </div>
 
   <div class="form-field">
     <div class="label-container">
       <label for="descripcion" class="form-label">Detalle del problema</label>
-
       <span class="char-counter">{{ charsCount }}/400</span>
     </div>
-    
-    <textarea 
-      id="descripcion" 
-      formControlName="descripcion" 
-      class="form-input form-textarea" 
-      rows="5"
+
+    <textarea
+      id="descripcion"
+      formControlName="descripcion"
+      class="form-input form-textarea"
+      rows="6"
     ></textarea>
   </div>
 
   <button
     type="submit"
-    class="btn-base btn-primary"
+    class="btn-base btn-primary btn-submit"
     [disabled]="formReclamo.invalid"
     [class.disabled]="formReclamo.invalid"
   >
