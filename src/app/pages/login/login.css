@@ -1,25 +1,32 @@
-/* Container principal */
 .main-form-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 55rem;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 2rem;
+  min-height: 80vh;
+  justify-content: center;
+}
+
+.header-container {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .main-h1-title {
-  margin: 2rem 0 1.5rem 0;
-  color: var(--color-primary-dark, #333);
+  margin: 0 0 0.5rem 0;
+  color: var(--color-primary);
   text-align: center;
-  font-size: 2.2rem;
+  font-size: 2.8rem;
   font-weight: 800;
+  text-transform: uppercase;
 }
 
-:host ::ng-deep .form-login {
-  width: 100%;
-  padding: 2.5rem; 
+.subtitle {
+  font-size: 1.5rem;
+  color: var(--color-text-dark-secondary);
+  margin: 0;
 }
 
 .separator {
@@ -27,75 +34,70 @@
   align-items: center;
   text-align: center;
   width: 100%;
-  margin: 2rem 0; 
-  color: #999;
+  max-width: 50rem;
+  margin: 2.5rem 0;
+  color: var(--color-text-light);
   font-weight: 500;
 }
 
-.separator::before, .separator::after {
+.separator::before,
+.separator::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 0.1rem solid var(--color-border-light);
 }
 
 .separator span {
   margin: 0 1.5rem;
-  font-size: 1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 0.1rem;
-  font-size: 0.85rem;
 }
 
 .links-container {
   width: 100%;
+  max-width: 50rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
-  margin-top: 2.5rem;
+  margin-top: 1rem;
   margin-bottom: 2rem;
-  padding: 0 0.5rem;
 }
 
 .link {
-  color: var(--color-primary-light, #eb8334);
+  color: var(--color-primary-light);
   text-decoration: none;
   font-weight: 700;
-  font-size: 1.6rem; 
+  font-size: 1.4rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  border-bottom: 0.2rem solid transparent; 
+  border-bottom: 0.2rem solid transparent;
 }
 
 .link:hover {
-  color: var(--color-primary-dark, #d6762b);
-  border-bottom: 0.2rem solid var(--color-primary-dark, #d6762b); 
-  transform: translateY(-0.2rem);
+  color: var(--color-primary-hover-dark);
+  border-bottom-color: var(--color-primary-hover-dark);
+  transform: translateY(-0.1rem);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .main-form-container {
-    padding: 1rem;
-    max-width: 100%;
+    padding: 1.5rem;
   }
 
   .main-h1-title {
-    font-size: 1.8rem;
-    margin-top: 1rem;
+    font-size: 2.4rem;
   }
 
-  :host ::ng-deep .form-login {
-    padding: 1.5rem !important;
-  }
-  
   .links-container {
     flex-direction: column;
-    gap: 1.2rem;
-    margin-top: 2rem;
+    gap: 2rem;
+    align-items: center;
   }
 
   .link {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
 }
