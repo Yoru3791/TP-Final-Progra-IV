@@ -24,7 +24,7 @@ export class EmprendimientoInfo {
   public hayCarrito = computed(
     () =>
       this.modo() === 'CLIENTE' &&
-      this.carritoService.emprendimiento()?.id === this.emprendimiento().id
+      this.carritoService.emprendimiento()?.id === this.emprendimiento().id,
   );
 
   onButtonClick() {
@@ -45,5 +45,25 @@ export class EmprendimientoInfo {
 
   handleImageError() {
     this.imageLoadError.set(true);
+  }
+
+  getWhatsappLink(): string {
+    const tel = this.emprendimiento().telefono;
+    if (!tel) return '';
+
+    let numeroLimpio = tel.replace(/\D/g, '');
+
+    if (!numeroLimpio.startsWith('54')) {
+      numeroLimpio = '549' + numeroLimpio;
+    }
+
+    return `https://wa.me/${numeroLimpio}`;
+  }
+
+  getMapsLink(): string {
+    const direccion = this.emprendimiento().direccion;
+    if (!direccion) return '';
+
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(direccion)}`;
   }
 }
