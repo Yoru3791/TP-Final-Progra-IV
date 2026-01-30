@@ -1,44 +1,48 @@
-/* --- FORMULARIO DE REGISTRO --- */
 :host {
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .form-registro {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.2rem;
-  padding: 2rem;
+  padding: 3rem;
   width: 100%;
-  margin: 5rem auto;
+  max-width: 55rem; /* Ancho controlado */
+  margin: 2rem auto;
   background: var(--color-background-secondary);
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   box-shadow: var(--shadow-form);
 }
 
-.form-registro div {
-  width: 100%;
-}
-
+/* Checkboxes específicos de registro (términos y condiciones) */
 :host .checkbox-container {
   display: flex;
-  align-items: center;
-  margin-bottom: 0.8rem;
+  align-items: flex-start;
+  margin-bottom: 1.2rem;
   font-size: 1.4rem;
+  width: 100%;
 }
 
 :host .checkbox-container label {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1rem;
   cursor: pointer;
-  transition: color 0.2s ease, text-decoration 0.2s ease;
+  transition: color 0.2s ease;
+  line-height: 1.4;
+  color: var(--color-text-secondary);
 }
 
+:host .checkbox-container label p {
+  margin: 0;
+}
+
+/* Efecto tachado al aceptar */
 :host .checkbox-container label:has(input[type='checkbox']:checked) {
   color: var(--color-ui-neutral);
-  text-decoration: line-through;
 }
 
 :host .checkbox-container label:has(input[type='checkbox']:checked) a {
@@ -58,13 +62,16 @@
   text-decoration: underline;
 }
 
-.form-registro .btn {
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding: 1rem;
+.btn-registro {
+  width: 100%;
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 1.4rem;
   margin-top: 1.5rem;
 }
 
-.btn-registro {
-  padding: 1rem 6rem;
+@media (max-width: 480px) {
+  .form-registro {
+    padding: 2rem 1.5rem;
+  }
 }
