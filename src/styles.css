@@ -105,11 +105,14 @@ app-root {
 }
 
 /* --- FORMULARIOS (ESTILO UNIFICADO TIPO REGISTRO) --- */
+.main-content {
+  flex: 1; /* Ocupa el espacio dejado por el header y el footer */
+}
 
 /* Label más grande y legible */
 .form-label {
   display: block;
-  font-size: 1.3rem; /* Tamaño aumentado */
+  font-size: 1.3rem;
   font-weight: 600;
   color: var(--color-text-dark-primary);
   margin-bottom: 0.8rem;
@@ -121,10 +124,10 @@ app-root {
 .form-input {
   width: 100%;
   display: block;
-  padding: 1.2rem 1.6rem; /* Más relleno */
+  padding: 1.2rem 1.6rem;
   border: 0.1rem solid var(--color-border-light);
-  border-radius: 1rem; /* Bordes más suaves */
-  font-size: 1.5rem; /* Texto más grande al escribir */
+  border-radius: 1rem;
+  font-size: 1.5rem;
   color: var(--color-text-primary);
   outline: none;
   background-color: white;
@@ -132,9 +135,21 @@ app-root {
   font-family: inherit;
 }
 
+input[type='password'] {
+  font-family: Verdana, sans-serif;
+  letter-spacing: 0.15rem;
+  font-weight: bold;
+}
+
+input[type='password']::placeholder {
+  font-family: 'Inria Sans', sans-serif;
+  letter-spacing: normal;
+  font-weight: normal;
+  font-size: 1.5rem;
+}
 .form-input:focus {
   border-color: var(--color-primary-light);
-  box-shadow: 0 0 0 0.3rem rgba(254, 144, 57, 0.15); /* Sombra sutil al foco */
+  box-shadow: 0 0 0 0.3rem rgba(254, 144, 57, 0.15);
 }
 
 .form-input::placeholder {
@@ -147,7 +162,12 @@ app-root {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin-bottom: 1.5rem; /* Espacio estandar entre campos */
+  margin-bottom: 1.5rem;
+}
+
+.invalid {
+  border-color: var(--color-state-error);
+  box-shadow: var(--shadow-focus-error);
 }
 
 /* Error messages unificados */
@@ -163,14 +183,13 @@ app-root {
   font-weight: 500;
 }
 
-/* --- SELECT NATIVO ESTILIZADO (Agregado para Reclamos y otros) --- */
+/* --- SELECT NATIVO ESTILIZADO (Flecha Naranja) --- */
 .form-select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   cursor: pointer;
   background-color: white;
-  /* Flecha SVG Naranja incrustada */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fe9039' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1.5rem center;
@@ -178,7 +197,7 @@ app-root {
   padding-right: 4rem;
 }
 
-/* --- SCROLLBAR PARA TEXTAREAS (Agregado para Reclamos y otros) --- */
+/* --- SCROLLBAR PARA TEXTAREAS --- */
 textarea.form-input {
   resize: vertical;
   min-height: 10rem;
@@ -715,7 +734,7 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
 .valor-con-accion {
   display: flex;
   align-items: center;
-  justify-content: center;
+
   gap: 1rem;
 }
 

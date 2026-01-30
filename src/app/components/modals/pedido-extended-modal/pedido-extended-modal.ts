@@ -23,8 +23,6 @@ import { DatosContactoModalData } from '../../../model/datos-modal-data.model';
 })
 export class PedidoExtendedModal implements OnInit {
   EstadoPedido = EstadoPedido;
-
-  // Lista de estados para el selector del ADMIN
   estadosPosibles = Object.values(EstadoPedido);
 
   private authService = inject(AuthService);
@@ -38,8 +36,6 @@ export class PedidoExtendedModal implements OnInit {
   nuevaFechaSeleccionada: string | null = null;
   minDate: string = '';
   esDemasiadoTarde: boolean = false;
-
-  // Variable para el selector del Admin
   estadoAdminSeleccionado!: EstadoPedido;
 
   constructor(@Inject(MAT_DIALOG_DATA) public pedido: PedidoResponse) {}
@@ -86,7 +82,6 @@ export class PedidoExtendedModal implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  // Método general para Cliente/Dueño (botones específicos)
   cambiarEstado(estadoNuevo: EstadoPedido) {
     const estadoActual = this.pedido.estado;
 
@@ -125,7 +120,6 @@ export class PedidoExtendedModal implements OnInit {
     this.sendUpdate(body);
   }
 
-  // Método específico para el ADMIN (Selector)
   actualizarEstadoAdmin() {
     if (this.estadoAdminSeleccionado === this.pedido.estado) {
       return;
@@ -177,7 +171,6 @@ export class PedidoExtendedModal implements OnInit {
     this.pedidosService.updatePedido(this.pedido.id, body).subscribe({
       next: () => {
         this.uiNotificationService.abrirSnackBarExito('Pedido actualizado exitosamente.');
-
         setTimeout(() => this.pedidosService.fetchPedidos(), 500);
         this.dialogRef.close({ updated: true });
       },
@@ -187,29 +180,9 @@ export class PedidoExtendedModal implements OnInit {
     });
   }
 
-  // --- ARREGLADO: Mapeo manual de datos ---
   verDatosUsuario(usuario: UsuarioResponse) {
-    // Verificamos si el usuario a ver es el DUEÑO del pedido actual
-    // Si es así, le adjuntamos la dirección del emprendimiento.
-    let direccionExtra = undefined;
-    let ciudadExtra = undefined;
-
-    if (usuario.id === this.pedido.emprendimiento.dueno.id) {
-      direccionExtra = this.pedido.emprendimiento.direccion;
-      ciudadExtra = this.pedido.emprendimiento.ciudad;
-    }
-
-    const data: DatosContactoModalData = {
-      nombre: usuario.nombreCompleto, // Mapeo clave: nombreCompleto -> nombre
-      email: usuario.email,
-      telefono: usuario.telefono,
-      imagenUrl: usuario.imagenUrl,
-      direccion: direccionExtra,
-      ciudad: ciudadExtra,
-    };
-
     this.dialog.open(DatosUsuarioModal, {
-      data: data,
+      data: usuario,
       width: '95%',
       maxWidth: '60rem',
       autoFocus: false,
@@ -219,14 +192,12 @@ export class PedidoExtendedModal implements OnInit {
 
   contactarCliente() {
     const c = this.pedido.cliente;
-
     const data: DatosContactoModalData = {
       nombre: c.nombreCompleto,
       email: c.email,
       telefono: c.telefono,
       imagenUrl: c.imagenUrl,
     };
-
     this.dialog.open(DatosUsuarioModal, {
       data,
       width: '95%',
@@ -239,16 +210,12 @@ export class PedidoExtendedModal implements OnInit {
   contactarLocal() {
     const dueno = this.pedido.emprendimiento.dueno;
     const emprendimiento = this.pedido.emprendimiento;
-
     const data: DatosContactoModalData = {
       nombre: dueno.nombreCompleto,
       email: dueno.email,
       imagenUrl: dueno.imagenUrl,
       telefono: emprendimiento.telefono,
-      ciudad: emprendimiento.ciudad,
-      direccion: emprendimiento.direccion,
     };
-
     this.dialog.open(DatosUsuarioModal, {
       data,
       width: '95%',
