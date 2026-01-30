@@ -9,4 +9,5 @@ export interface UsuarioAdminResponse {
   createdAt: string;
   bannedAt: string;
   deletedAt: string;
+  _links?: any;
 }
