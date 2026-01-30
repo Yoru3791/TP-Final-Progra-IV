@@ -1,60 +1,43 @@
-/* --- FORMULARIO RECLAMO --- */
 .form-reclamo {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.2rem;
-  padding: 2rem;
+  padding: 3rem;
   width: 100%;
-  margin: 2rem auto; 
+  max-width: 55rem; /* Ancho controlado */
+  margin: 0 auto;
   background: var(--color-background-secondary);
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   box-shadow: var(--shadow-form);
 }
 
-.form-field {
+/* Contenedor del select para posicionamiento relativo si fuera necesario */
+.select-wrapper {
+  position: relative;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.form-label {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: var(--color-text-primary, #333); 
-}
-
-.form-input {
-  width: 100%;
-  padding: 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-family: inherit;
-}
-
-.form-input:focus {
-  outline: 2px solid var(--color-primary-light);
-  border-color: transparent;
-}
-
-.form-textarea {
-  resize: none;
-}
-
-.form-select {
-  background-color: white;
-  cursor: pointer;
 }
 
 .label-container {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
 }
 
 .char-counter {
-  font-size: 0.9rem;
-  color: #666;
+  font-size: 1.1rem;
+  color: var(--color-text-light);
+  font-weight: 500;
+}
+
+.btn-submit {
+  width: 100%;
+  margin-top: 1rem;
+  font-size: 1.6rem;
+  padding: 1.4rem;
+}
+
+@media (max-width: 480px) {
+  .form-reclamo {
+    padding: 2rem 1.5rem;
+  }
 }
