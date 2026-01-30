@@ -11,16 +11,43 @@
   </div>
 
   <div class="form-field">
-    <label for="categoria" class="form-label">Motivo del reporte</label>
+    <label class="form-label">Motivo del reporte</label>
 
-    <div class="select-wrapper">
-      <select id="categoria" formControlName="categoria" class="form-input form-select">
-        <option value="" disabled selected>Selecciona una opción</option>
+    <div class="select-custom-wrapper">
+      <div
+        class="form-input dropdown-trigger"
+        [class.open]="openCategoria"
+        (click)="toggleCategoria($event)"
+      >
+        <span [class.placeholder-text]="!formReclamo.get('categoria')?.value" class="selected-text">
+          {{ getSelectedLabel() }}
+        </span>
 
-        @for (opcion of categoriasOptions; track opcion.value) {
-          <option [value]="opcion.value">{{ opcion.label }}</option>
-        }
-      </select>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="arrow-icon"
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+
+      @if (openCategoria) {
+        <ul class="options">
+          @for (opcion of categoriasOptions; track opcion.value) {
+            <li (click)="selectCategoria(opcion.value); $event.stopPropagation()">
+              {{ opcion.label }}
+            </li>
+          }
+        </ul>
+      }
     </div>
   </div>
 
