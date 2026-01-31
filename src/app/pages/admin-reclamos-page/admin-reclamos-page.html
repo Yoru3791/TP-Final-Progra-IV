@@ -26,20 +26,27 @@
   </div>
 
   <div class="lista-reclamos">
-    @if (loading()) {
-      <div class="state-msg">
-        <p>Cargando tickets...</p>
-      </div>
-    } @else if (reclamosFiltrados().length === 0) {
+    @if (reclamos().length === 0) {
       <div class="state-msg empty">
         <i class="fa-solid fa-clipboard-check icon-empty"></i>
         <h3>No hay reclamos en esta categoría</h3>
         <p>¡Buen trabajo! Todo parece estar en orden.</p>
       </div>
     } @else {
-      @for (ticket of reclamosFiltrados(); track ticket.id) {
-        <app-reclamo-card [reclamo]="ticket" [isAdmin]="true" (gestionar)="abrirGestion($event)">
+      @for (ticket of reclamos(); track ticket.id) {
+        <app-reclamo-card 
+            [reclamo]="ticket" 
+            [isAdmin]="true" 
+            (gestionar)="abrirGestion($event)">
         </app-reclamo-card>
+      }
+
+      @if (pageInfo(); as info) {
+        <app-paginador 
+            [currentPage]="info.number" 
+            [totalPages]="info.totalPages" 
+            (pageChange)="onPageChange($event)">
+        </app-paginador>
       }
     }
   </div>
