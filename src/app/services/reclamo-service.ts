@@ -1,35 +1,96 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
 import { ReclamoRequest } from '../model/reclamo-request.model';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { Reclamo } from '../model/reclamo-response.model';
 import { EstadoReclamo } from '../enums/estadoReclamo.enum';
+import { PagedResponse, PageMetadata } from '../model/hateoas-pagination.models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReclamoService {
-  private apiUrl = 'http://localhost:8080/api/public/reclamos';
+
+  private http = inject(HttpClient);
+
+  private apiUrlPublic = 'http://localhost:8080/api/public/reclamos';
   private apiUrlCliente = 'http://localhost:8080/api/cliente/reclamos';
   private apiUrlAdmin = 'http://localhost:8080/api/admin/reclamos';
 
-  constructor(private http: HttpClient) {}
+  // --- CLIENTE (Mis Reclamos) ---
+  public misReclamos = signal<Reclamo[]>([]);
+  public misReclamosPageInfo = signal<PageMetadata | null>(null);
+  public filtroEstadoCliente = signal<EstadoReclamo | 'TODOS'>('TODOS');
 
-  enviarReclamo(reclamo: ReclamoRequest): Observable<string> {
-    return this.http.post(this.apiUrl, reclamo, { responseType: 'text' });
+  // --- ADMIN (Gestión) ---
+  public adminReclamos = signal<Reclamo[]>([]);
+  public adminPageInfo = signal<PageMetadata | null>(null);
+  public filtroEstadoAdmin = signal<EstadoReclamo | 'TODOS'>('TODOS');
+
+  // --- CLIENTE / DUEÑO ---
+  fetchMisReclamos(page: number = 0, size: number = 10) {
+    let params = new HttpParams().set('page', page).set('size', size);
+    
+    const estado = this.filtroEstadoCliente();
+    if (estado && estado !== 'TODOS') {
+      params = params.set('estado', estado);
+    }
+
+    this.http.get<PagedResponse<Reclamo>>(this.apiUrlCliente, { params })
+      .pipe(catchError(err => {
+        console.error('Error cargando mis reclamos', err);
+        return of(null);
+      }))
+      .subscribe(response => {
+        if (response && response._embedded) {
+          const data = response._embedded['reclamoDTOList'] || []; 
+          this.misReclamos.set(data);
+          this.misReclamosPageInfo.set(response.page);
+        } else {
+          this.misReclamos.set([]);
+          this.misReclamosPageInfo.set(null);
+        }
+      });
   }
 
-  getMisReclamos() {
-    return this.http.get<Reclamo[]>(`${this.apiUrlCliente}`);
+  // --- ADMIN ---
+  fetchAdminReclamos(page: number = 0, size: number = 10) {
+    let params = new HttpParams().set('page', page).set('size', size);
+
+    const estado = this.filtroEstadoAdmin();
+    if (estado && estado !== 'TODOS') {
+      params = params.set('estado', estado);
+    }
+
+    this.http.get<PagedResponse<Reclamo>>(this.apiUrlAdmin, { params })
+      .pipe(catchError(err => {
+        console.error('Error cargando reclamos admin', err);
+        return of(null);
+      }))
+      .subscribe(response => {
+        if (response && response._embedded) {
+          const data = response._embedded['reclamoDTOList'] || [];
+          this.adminReclamos.set(data);
+          this.adminPageInfo.set(response.page);
+        } else {
+          this.adminReclamos.set([]);
+          this.adminPageInfo.set(null);
+        }
+      });
   }
 
-  // === METODOS ADMIN ===
-  getAllReclamos() {
-    return this.http.get<Reclamo[]>(`${this.apiUrlAdmin}`);
+
+  enviarReclamo(reclamo: ReclamoRequest) {
+    return this.http.post(this.apiUrlPublic, reclamo);
   }
 
   actualizarEstado(id: number, nuevoEstado: EstadoReclamo, respuestaAdmin: string) {
     const body = { nuevoEstado, respuestaAdmin };
-    return this.http.put(`${this.apiUrlAdmin}/id/${id}/estado`, body);
+    return this.http.put(`${this.apiUrlAdmin}/id/${id}/estado`, body).pipe(
+      tap(() => {
+        const currentPage = this.adminPageInfo()?.number || 0;
+        this.fetchAdminReclamos(currentPage);
+      })
+    );
   }
 }

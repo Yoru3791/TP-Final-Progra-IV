@@ -29,28 +29,23 @@
   </div>
 
   <div class="lista-reclamos">
-    @if (loading()) {
-      <div class="state-msg">
-        <p>Cargando tus tickets...</p>
-      </div>
-    } @else if (reclamos().length === 0) {
+    @if (reclamos().length === 0) {
       <div class="state-msg empty">
         <i class="fa-regular fa-folder-open icon-empty"></i>
-        <h3>No tenés reclamos registrados</h3>
-        <p>Si tenés algún inconveniente, creá un nuevo reporte.</p>
-      </div>
-    } @else if (reclamosFiltrados().length === 0) {
-      <div class="state-msg empty">
-        <i class="fa-solid fa-filter icon-empty"></i>
-        <h3>No hay resultados</h3>
-        <p>
-          No hay reclamos con el estado <strong>{{ getLabelFiltroActual() }}</strong
-          >.
-        </p>
+        <h3>No se encontraron reclamos</h3>
+        <p>No hay tickets que coincidan con tu búsqueda o aún no has creado ninguno.</p>
       </div>
     } @else {
-      @for (ticket of reclamosFiltrados(); track ticket.id) {
+      @for (ticket of reclamos(); track ticket.id) {
         <app-reclamo-card [reclamo]="ticket"></app-reclamo-card>
+      }
+
+      @if (pageInfo(); as info) {
+        <app-paginador 
+            [currentPage]="info.number" 
+            [totalPages]="info.totalPages" 
+            (pageChange)="onPageChange($event)">
+        </app-paginador>
       }
     }
   </div>

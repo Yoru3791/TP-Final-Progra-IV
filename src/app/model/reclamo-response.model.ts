@@ -11,4 +11,5 @@ export interface Reclamo {
   estado: EstadoReclamo;
   fechaCreacion: string;
   respuestaAdmin?: string;
+  _links?: any;
 }
