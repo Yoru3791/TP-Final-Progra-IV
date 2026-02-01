@@ -17,6 +17,21 @@
   border-bottom: none;
 }
 
+.img-wrapper {
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.emp-avatar {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--color-border-light);
+  background-color: var(--color-background-secondary);
+  display: block;
+}
+
 .info {
   flex: 1;
 }
