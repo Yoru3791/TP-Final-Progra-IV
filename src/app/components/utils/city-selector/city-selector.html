@@ -1,6 +1,10 @@
 <div class="city-selector">
-  <div class="input-container">
+  <div class="input-container" (click)="inputRef.focus()">
+    
+    <i class="fa-solid fa-location-dot location-icon"></i>
+
     <input 
+      #inputRef 
       type="text"
       [ngModel]="inputValue()"
       (ngModelChange)="inputValue.set($event); open.set(true)"
@@ -12,9 +16,14 @@
       autocomplete="off"
     />
     
-    <div class="icon">
-      @if (loading()) { <span class="loader"></span> }
+    <div class="status-icon">
+      @if (loading()) { 
+        <span class="loader"></span> 
+      } @else {
+        <i class="fa-solid fa-chevron-down arrow-icon" [class.rotate]="open()"></i>
+      }
     </div>
+
   </div>
 
   @if (open() && !loading()) {
