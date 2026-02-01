@@ -64,21 +64,37 @@
 }
 
 .estado span {
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   font-weight: 700;
   text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem;
+  display: inline-block;
 }
 
 .aceptado {
   color: var(--color-state-success);
+  background: #eafff0;
 }
 
 .rechazado {
-  color: var(--color-state-danger);
+  color: var(--color-state-error);
+  background: #ffebeb;
 }
 
 .pendiente {
   color: var(--color-state-warning);
+  background: #fff8e1;
+}
+
+.entregado {
+  color: var(--color-state-finish);
+  background: #eef6ff;
+}
+
+.cancelado {
+  color: var(--color-state-danger);
+  background: #ffebeb;
 }
 
 .btn-ver {
