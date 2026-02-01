@@ -49,6 +49,27 @@
   overflow-y: auto;
   padding-right: 0.5rem;
   max-height: 35rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary-medium) transparent;
+}
+
+/* Barra de Scroll */
+.lista-pedidos::-webkit-scrollbar {
+  width: 0.6rem;
+}
+
+.lista-pedidos::-webkit-scrollbar-track {
+  background: transparent;
+  margin-block: 0.5rem;
+}
+
+.lista-pedidos::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary-medium);
+  border-radius: 1rem;
+}
+
+.lista-pedidos::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary-medium-hover);
 }
 
 .estado-vacio {
