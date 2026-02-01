@@ -27,6 +27,18 @@
       placeholder="Filtrar por dueño o email..."
       (input)="onDuenoInput($event)"
     />
+
+    <label class="filter-input toggle-wrapper">
+      <div class="switch">
+        <input
+          type="checkbox"
+          [checked]="emprendimientoService.adminSoloEliminados()"
+          (change)="onToggleEliminados($event)"
+        />
+        <span class="slider round"></span>
+      </div>
+      <span class="toggle-label">Ver eliminados</span>
+    </label>
   </div>
 
   <div class="emprendimientos-list">
