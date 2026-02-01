@@ -61,7 +61,7 @@ export class FormRegistro {
       })
       .subscribe({
         next: () => {
-          this.uiNotificationService.abrirSnackBarExito('¡Cuenta creada exitosamente! Ya podés iniciar sesión.');
+          this.uiNotificationService.abrirSnackBarExito('¡Casi listo! Validá tu email para empezar a usar la cuenta.');
           this.router.navigate(['/login']);
         },
         error: (err) => {
