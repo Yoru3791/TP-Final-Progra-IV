@@ -160,17 +160,15 @@
           }
         }
 
-        @if (role() === 'CLIENTE') {
-          @if (!pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado_')) {
-            <button class="btn-base btn-secondary full-width" (click)="contactarLocal()">
-              CONTACTAR DUEÑO
-            </button>
-          } @else {
-            <button class="btn-base btn-secondary full-width" disabled>
-              EMPRENDIMIENTO CERRADO
-            </button>
-          }
-        }
+        @if (!pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado')) {
+              <button class="btn-base btn-secondary full-width" (click)="contactarLocal()">
+                CONTACTAR DUEÑO
+              </button>
+           } @else {
+              <button class="btn-base btn-secondary full-width" disabled>
+                EMPRENDIMIENTO CERRADO
+              </button>
+           }
 
         @if (role() === 'ADMIN') {
           <div class="admin-panel">

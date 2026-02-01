@@ -11,9 +11,9 @@
       
       <div class="profile-img-container">
         <img
-          [src]="data.imagenUrl || 'assets/placeholder-user.png'"
+          [src]="data.imagenUrl"
           class="profile-img"
-          [class.grayscale]="!data.telefono" 
+          [class.grayscale]="data.nombre?.includes('Eliminado') || data.nombre?.includes('borrado')"
           alt="Foto de perfil"
         />
       </div>
@@ -23,17 +23,21 @@
         <div class="dato">
           <span class="label">Nombre</span>
           <span class="valor">
-            {{ (data.nombre && data.nombre.includes('usuario_borrado')) ? 'Usuario Eliminado' : data.nombre }}
+            {{ 
+               (data.nombre?.includes('usuario_borrado') || data.nombre === 'Emprendimiento Eliminado') 
+               ? 'Usuario no disponible' 
+               : data.nombre
+            }}
           </span>
         </div>
 
-        @if (!data.telefono || data.telefono.includes('borrado_')) {
+        @if (!data.telefono || data.telefono === 'No disponible' || data.telefono.includes('borrado_') || data.telefono.includes('Eliminado_')) {
             <div class="aviso-eliminado">
-                <i class="fa-solid fa-user-slash"></i>
-                <p>Este usuario ya no se encuentra activo en la plataforma.</p>
+                <i class="fa-solid fa-store-slash"></i>
+                <p>La información de contacto no está disponible.</p>
             </div>
         } @else {
-            @if (data.email && !data.email.includes('usuario_borrado')) {
+            @if (data.email && data.email !== 'No disponible' && !data.email.includes('borrado')) {
               <div class="dato">
                 <span class="label">Email</span>
                 <div class="valor-con-accion">
@@ -65,13 +69,13 @@
               </div>
             </div>
 
-            @if (data.direccion && !data.direccion.includes('Eliminado')) {
+            @if (data.direccion && data.direccion !== 'No disponible' && !data.direccion.includes('Eliminado')) {
               <div class="dato">
                 <span class="label">Dirección</span>
                 <div class="valor-con-accion">
                   <span class="valor">
                     {{ data.direccion }}
-                    @if (data.ciudad) { - {{ data.ciudad }} }
+                    @if (data.ciudad && data.ciudad !== 'No disponible') { - {{ data.ciudad }} }
                   </span>
                   <a
                     [href]="getMapsLink()"
@@ -84,10 +88,11 @@
                 </div>
               </div>
             }
-        } </div>
+        }
+      </div>
     </div>
 
-    @if (role() !== 'ADMIN' && data.telefono && !data.telefono.includes('borrado_')) {
+    @if (role() !== 'ADMIN' && data.telefono && data.telefono !== 'No disponible' && !data.telefono.includes('borrado_')) {
       <div class="alerta">
         <i class="fa-solid fa-triangle-exclamation"></i>
         <p>Recomendación: reunite siempre en un lugar público y concurrido.</p>
