@@ -26,9 +26,8 @@
       <i class="fa-solid fa-x"></i>
     </button>
     }
-  </div>
 
-  @if (mostrarResultados()) {
+    @if (mostrarResultados()) {
   <div class="search-results">
     @for (item of resultados(); track item.id) {
     <div
@@ -59,4 +58,7 @@
     }
   </div>
   }
+
+  </div>
+  
 </div>
