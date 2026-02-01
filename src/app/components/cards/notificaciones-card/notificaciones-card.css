@@ -94,9 +94,9 @@
   min-height: 20rem;
   display: flex;
   flex-direction: column;
+  max-height: 65rem;
 }
 
-/* Estado Vacío */
 .estado-vacio {
   display: flex;
   flex-direction: column;
@@ -123,7 +123,7 @@ app-paginador {
   padding-top: 2rem;
 }
 
-/* Ajustes Responsive */
+
 @media (max-width: 600px) {
   .header-seccion {
     flex-direction: column;
