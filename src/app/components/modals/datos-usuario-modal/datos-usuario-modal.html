@@ -8,77 +8,86 @@
 
   <div class="modal-content">
     <div class="datos-principales-wrapper">
+      
       <div class="profile-img-container">
         <img
           [src]="data.imagenUrl || 'assets/placeholder-user.png'"
           class="profile-img"
+          [class.grayscale]="!data.telefono" 
           alt="Foto de perfil"
         />
       </div>
 
       <div class="info-container">
+        
         <div class="dato">
           <span class="label">Nombre</span>
-          <span class="valor">{{ data.nombre }}</span>
+          <span class="valor">
+            {{ (data.nombre && data.nombre.includes('usuario_borrado')) ? 'Usuario Eliminado' : data.nombre }}
+          </span>
         </div>
 
-        @if (data.email) {
-          <div class="dato">
-            <span class="label">Email</span>
-            <div class="valor-con-accion">
-              <span class="valor">{{ data.email }}</span>
-              <a
-                [href]="getGmailLink()"
-                target="_blank"
-                class="btn-icon-action btn-gmail"
-                title="Abrir en Gmail"
-              >
-                <i class="fa-solid fa-envelope"></i>
-              </a>
+        @if (!data.telefono || data.telefono.includes('borrado_')) {
+            <div class="aviso-eliminado">
+                <i class="fa-solid fa-user-slash"></i>
+                <p>Este usuario ya no se encuentra activo en la plataforma.</p>
             </div>
-          </div>
-        }
+        } @else {
+            @if (data.email && !data.email.includes('usuario_borrado')) {
+              <div class="dato">
+                <span class="label">Email</span>
+                <div class="valor-con-accion">
+                  <span class="valor">{{ data.email }}</span>
+                  <a
+                    [href]="getGmailLink()"
+                    target="_blank"
+                    class="btn-icon-action btn-gmail"
+                    title="Abrir en Gmail"
+                  >
+                    <i class="fa-solid fa-envelope"></i>
+                  </a>
+                </div>
+              </div>
+            }
 
-        <div class="dato">
-          <span class="label">Teléfono</span>
-          <div class="valor-con-accion">
-            <span class="valor">{{ data.telefono }}</span>
-            <a
-              [href]="getWhatsappLink()"
-              target="_blank"
-              class="btn-icon-action btn-whatsapp"
-              title="Abrir WhatsApp"
-            >
-              <i class="fa-brands fa-whatsapp"></i>
-            </a>
-          </div>
-        </div>
-
-        @if (data.direccion) {
-          <div class="dato">
-            <span class="label">Dirección</span>
-            <div class="valor-con-accion">
-              <span class="valor">
-                {{ data.direccion }}
-                @if (data.ciudad) {
-                  - {{ data.ciudad }}
-                }
-              </span>
-              <a
-                [href]="getMapsLink()"
-                target="_blank"
-                class="btn-icon-action btn-maps"
-                title="Ver en Google Maps"
-              >
-                <i class="fa-solid fa-location-dot"></i>
-              </a>
+            <div class="dato">
+              <span class="label">Teléfono</span>
+              <div class="valor-con-accion">
+                <span class="valor">{{ data.telefono }}</span>
+                <a
+                  [href]="getWhatsappLink()"
+                  target="_blank"
+                  class="btn-icon-action btn-whatsapp"
+                  title="Abrir WhatsApp"
+                >
+                  <i class="fa-brands fa-whatsapp"></i>
+                </a>
+              </div>
             </div>
-          </div>
-        }
-      </div>
+
+            @if (data.direccion && !data.direccion.includes('Eliminado')) {
+              <div class="dato">
+                <span class="label">Dirección</span>
+                <div class="valor-con-accion">
+                  <span class="valor">
+                    {{ data.direccion }}
+                    @if (data.ciudad) { - {{ data.ciudad }} }
+                  </span>
+                  <a
+                    [href]="getMapsLink()"
+                    target="_blank"
+                    class="btn-icon-action btn-maps"
+                    title="Ver en Google Maps"
+                  >
+                    <i class="fa-solid fa-location-dot"></i>
+                  </a>
+                </div>
+              </div>
+            }
+        } </div>
     </div>
 
-    @if (role() !== 'ADMIN') {
+    @if (role() !== 'ADMIN' && data.telefono && !data.telefono.includes('borrado_')) {
       <div class="alerta">
         <i class="fa-solid fa-triangle-exclamation"></i>
         <p>Recomendación: reunite siempre en un lugar público y concurrido.</p>

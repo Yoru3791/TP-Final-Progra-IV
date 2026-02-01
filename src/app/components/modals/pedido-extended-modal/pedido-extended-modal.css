@@ -250,6 +250,14 @@
   color: var(--color-text-inverse);
 }
 
+/* Estilos adicionales para estado deshabilitado manual */
+.btn-base:disabled {
+  background-color: var(--color-ui-disabled-background);
+  color: var(--color-ui-disabled-text);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
 .btn-icon {
   width: 4rem;
   padding: 0;
@@ -321,6 +329,11 @@
   align-items: center;
   gap: 0.5rem;
   justify-content: center;
+}
+
+.grayscale {
+  filter: grayscale(100%);
+  opacity: 0.6;
 }
 
 @media (min-width: 768px) {
