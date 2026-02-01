@@ -121,9 +121,32 @@
   padding: 1.5rem 3rem;
   overflow-x: auto;
   scroll-behavior: smooth;
+}
 
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-primary-medium) var(--color-border-light);
+/* Barra de Scroll */
+.viandas-container::-webkit-scrollbar {
+  height: 0.6rem;
+}
+
+.viandas-container::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 0; 
+}
+
+.viandas-container::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary-medium);
+  border-radius: 1rem;
+}
+
+.viandas-container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary-medium-hover);
+}
+
+.viandas-container::-webkit-scrollbar-button:start:decrement,
+.viandas-container::-webkit-scrollbar-button:end:increment {
+  display: block;
+  width: 3rem;
+  background-color: transparent;
 }
 
 app-vianda-card {
