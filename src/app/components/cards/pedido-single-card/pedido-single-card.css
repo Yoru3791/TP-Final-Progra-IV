@@ -17,6 +17,21 @@
   border-bottom: none;
 }
 
+.img-wrapper {
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.emp-avatar {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--color-border-light);
+  background-color: var(--color-background-secondary);
+  display: block;
+}
+
 .info {
   flex: 1;
 }
@@ -49,21 +64,37 @@
 }
 
 .estado span {
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   font-weight: 700;
   text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem;
+  display: inline-block;
 }
 
 .aceptado {
   color: var(--color-state-success);
+  background: #eafff0;
 }
 
 .rechazado {
-  color: var(--color-state-danger);
+  color: var(--color-state-error);
+  background: #ffebeb;
 }
 
 .pendiente {
   color: var(--color-state-warning);
+  background: #fff8e1;
+}
+
+.entregado {
+  color: var(--color-state-finish);
+  background: #eef6ff;
+}
+
+.cancelado {
+  color: var(--color-state-danger);
+  background: #ffebeb;
 }
 
 .btn-ver {

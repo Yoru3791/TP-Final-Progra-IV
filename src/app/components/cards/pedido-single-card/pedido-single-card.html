@@ -1,4 +1,13 @@
 <div class="pedido-item">
+
+  <div class="img-wrapper">
+      <img 
+        [src]="pedido.emprendimiento.imagenUrl || 'assets/placeholder-food.png'" 
+        class="emp-avatar" 
+        alt="Logo"
+      />
+    </div>
+
   <div class="info">
     <p class="id">
       Pedido #{{ pedido.id }} —

@@ -174,22 +174,30 @@
 .estado-badge {
   text-transform: uppercase;
   font-weight: 700;
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
 }
 
 .estado-badge.aceptado {
   color: var(--color-state-success);
+  background: #eafff0;
 }
 .estado-badge.rechazado {
-  color: var(--color-state-danger);
+  color: var(--color-state-error);
+  background: #ffebeb;
 }
 .estado-badge.pendiente {
   color: var(--color-state-warning);
+  background: #fff8e1;
 }
 .estado-badge.entregado {
   color: var(--color-state-finish);
+  background: #eef6ff;
 }
 .estado-badge.cancelado {
   color: var(--color-state-danger);
+  background: #ffebeb;
 }
 
 .acciones-section {

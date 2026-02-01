@@ -18,19 +18,6 @@ export class PedidoSingleCard {
     return new Date(this.pedido.fechaEntrega).toLocaleDateString('es-AR');
   }
 
-  getEstadoColor(): string {
-    switch (this.pedido.estado) {
-      case 'PENDIENTE':
-        return '#eab308';
-      case 'ACEPTADO':
-        return '#22c55e';
-      case 'RECHAZADO':
-        return '#ef4444';
-      default:
-        return '#6b7280';
-    }
-  }
-
   openPedidoModal() {
     this.dialog.open(PedidoExtendedModal, {
       data: this.pedido,

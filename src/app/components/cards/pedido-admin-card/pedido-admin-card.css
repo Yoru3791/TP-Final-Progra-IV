@@ -20,6 +20,23 @@
   flex: 1;
 }
 
+.img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.emp-logo {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-border-light);
+  background-color: var(--color-background-secondary);
+}
+
 .nombre {
   font-size: 1.8rem;
   font-weight: 700;
@@ -159,8 +176,20 @@
     align-items: center;
     padding: 1rem 2rem;
     height: 10rem;
-    gap: 3rem;
+    gap: 2rem;
     max-width: 115rem;
+  }
+
+  .img-container {
+    border-bottom: none;
+    padding-bottom: 0;
+    width: auto;
+    margin-left: 1rem;
+  }
+
+  .emp-logo {
+    width: 6rem;
+    height: 6rem;
   }
 
   .main-info {
