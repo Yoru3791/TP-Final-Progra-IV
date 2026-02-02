@@ -1,11 +1,11 @@
 <div class="modal-pedido-container">
   <div class="pedido-header">
     <h3 class="titulo-modal">
-      Pedido #{{ pedido.id }} — 
-      {{ 
-        pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado_') 
-        ? 'Emprendimiento Eliminado' 
-        : pedido.emprendimiento.nombreEmprendimiento 
+      Pedido #{{ pedido.id }} —
+      {{
+        pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado_')
+          ? 'Emprendimiento Eliminado'
+          : pedido.emprendimiento.nombreEmprendimiento
       }}
     </h3>
     <button class="btn-close-icon" (click)="cerrar()">
@@ -37,7 +37,6 @@
     </div>
 
     <div class="right-panel">
-      
       <div class="contexto-section">
         @if (role() === 'DUENO') {
           <img
@@ -49,10 +48,10 @@
           <div class="contexto-data">
             <span class="contexto-label">Cliente</span>
             <p class="contexto-nombre">
-              {{ 
-                pedido.cliente.nombreCompleto.includes('usuario_borrado') 
-                ? 'Usuario Eliminado' 
-                : pedido.cliente.nombreCompleto 
+              {{
+                pedido.cliente.nombreCompleto.includes('usuario_borrado')
+                  ? 'Usuario Eliminado'
+                  : pedido.cliente.nombreCompleto
               }}
             </p>
           </div>
@@ -66,10 +65,10 @@
           <div class="contexto-data">
             <span class="contexto-label">Emprendimiento</span>
             <p class="contexto-nombre">
-              {{ 
-                pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado_') 
-                ? 'Emprendimiento Eliminado' 
-                : pedido.emprendimiento.nombreEmprendimiento 
+              {{
+                pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado_')
+                  ? 'Emprendimiento Eliminado'
+                  : pedido.emprendimiento.nombreEmprendimiento
               }}
             </p>
           </div>
@@ -94,7 +93,6 @@
       </div>
 
       <div class="acciones-section">
-        
         @if (role() === 'CLIENTE' && pedido.estado === 'PENDIENTE') {
           <div class="grupo-fecha">
             <label>Nueva fecha</label>
@@ -154,21 +152,19 @@
               CONTACTAR CLIENTE
             </button>
           } @else {
-            <button class="btn-base btn-secondary full-width" disabled>
-              CLIENTE INACTIVO
-            </button>
+            <button class="btn-base btn-secondary full-width" disabled>CLIENTE INACTIVO</button>
           }
         }
 
-        @if (!pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado')) {
+        @if (role() !== 'ADMIN') {
+            @if (!pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado')) {
               <button class="btn-base btn-secondary full-width" (click)="contactarLocal()">
                 CONTACTAR DUEÑO
               </button>
-           } @else {
-              <button class="btn-base btn-secondary full-width" disabled>
-                EMPRENDIMIENTO CERRADO
-              </button>
-           }
+            } @else {
+              <button class="btn-base btn-secondary full-width" disabled>EMPRENDIMIENTO CERRADO</button>
+            }
+        }
 
         @if (role() === 'ADMIN') {
           <div class="admin-panel">
