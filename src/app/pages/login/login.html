@@ -4,16 +4,20 @@
     <p class="subtitle">Ingresá tu correo y contraseña</p>
   </div>
 
-  <app-form-login></app-form-login>
+  <div class="login-wrapper">
 
-  <div class="separator">
-    <span>O continuá con</span>
-  </div>
+    <app-form-login></app-form-login>
 
-  <app-google-login-button></app-google-login-button>
+    <div class="separator">
+      <span>O continuá con</span>
+    </div>
 
-  <div class="links-container">
-    <a (click)="openForgotPassword()" class="link">Olvidé mi contraseña</a>
-    <a routerLink="/registro/cliente" class="link">No tengo cuenta</a>
+    <app-google-login-button></app-google-login-button>
+
+    <div class="links-container">
+      <a (click)="openForgotPassword()" class="link">Olvidé mi contraseña</a>
+      <a routerLink="/registro/cliente" class="link">No tengo cuenta</a>
+    </div>
+
   </div>
 </div>

@@ -29,13 +29,20 @@
   margin: 0;
 }
 
+.login-wrapper {
+  width: 100%;
+  max-width: 42rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .separator {
   display: flex;
   align-items: center;
   text-align: center;
   width: 100%;
-  max-width: 50rem;
-  margin: 2.5rem 0;
+  margin: 4rem 0 2.2rem 0;
   color: var(--color-text-light);
   font-weight: 500;
 }
@@ -56,14 +63,14 @@
 
 .links-container {
   width: 100%;
-  max-width: 50rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
-  margin-top: 1rem;
+  margin-top: 4rem;
   margin-bottom: 2rem;
+  padding: 0 4rem;
 }
 
 .link {

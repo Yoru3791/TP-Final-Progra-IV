@@ -4,14 +4,15 @@
   align-items: center;
   padding: 3rem;
   width: 100%;
-  max-width: 50rem; /* Un poco más angosto que registro/reclamo */
+  max-width: none;
   background: var(--color-background-secondary);
   border-radius: 1.5rem;
   box-shadow: var(--shadow-form);
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
-/* Estilos específicos del checkbox de "Recordarme" */
+/* "Recordarme" */
 .checkbox-container {
   width: 100%;
   display: flex;
