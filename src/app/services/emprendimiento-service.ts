@@ -24,6 +24,7 @@ export class EmprendimientoService {
   public adminFiltroNombre = signal<string>('');
   public adminFiltroCiudad = signal<string>('');
   public adminFiltroDueno = signal<string>('');
+  public adminSoloEliminados = signal<boolean>(false);
   
 
   private baseUrls = {
@@ -79,10 +80,12 @@ export class EmprendimientoService {
     const nombre = this.adminFiltroNombre();
     const ciudad = this.adminFiltroCiudad();
     const dueno = this.adminFiltroDueno();
+    const soloEliminados = this.adminSoloEliminados();
 
     if (nombre) params = params.set('nombre', nombre);
     if (ciudad) params = params.set('ciudad', ciudad);
     if (dueno) params = params.set('dueno', dueno);
+    if (soloEliminados) params = params.set('soloEliminados', 'true');
 
     this.http
       .get<PagedResponse<EmprendimientoAdminResponse>>(this.baseUrls.ADMIN, { params })

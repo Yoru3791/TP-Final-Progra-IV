@@ -4,9 +4,9 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class CityFilterService {
-  // Por defecto MAR DEL PLATA, para que apenas abramos la web solo muestre esos y no todos los del back
+  // Por defecto "Mar Del Plata"
 
-  private citySignal = signal<string>('MAR DEL PLATA');
+  private citySignal = signal<string>('Mar Del Plata');
 
   public city = this.citySignal.asReadonly();
 

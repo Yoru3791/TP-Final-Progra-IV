@@ -181,8 +181,17 @@ export class PedidoExtendedModal implements OnInit {
   }
 
   verDatosUsuario(usuario: UsuarioResponse) {
+    const data: DatosContactoModalData = {
+      nombre: usuario.nombreCompleto,
+      email: usuario.email,
+      telefono: usuario.telefono,
+      imagenUrl: usuario.imagenUrl,
+      direccion: 'No disponible', 
+      ciudad: 'No disponible'
+    };
+
     this.dialog.open(DatosUsuarioModal, {
-      data: usuario,
+      data: data,
       width: '95%',
       maxWidth: '60rem',
       autoFocus: false,

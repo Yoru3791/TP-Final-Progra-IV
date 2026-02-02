@@ -1,7 +1,12 @@
 <div class="modal-pedido-container">
   <div class="pedido-header">
     <h3 class="titulo-modal">
-      Pedido #{{ pedido.id }} — {{ pedido.emprendimiento.nombreEmprendimiento }}
+      Pedido #{{ pedido.id }} —
+      {{
+        pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado_')
+          ? 'Emprendimiento Eliminado'
+          : pedido.emprendimiento.nombreEmprendimiento
+      }}
     </h3>
     <button class="btn-close-icon" (click)="cerrar()">
       <i class="fa-solid fa-xmark"></i>
@@ -37,21 +42,35 @@
           <img
             [src]="pedido.cliente.imagenUrl || 'assets/placeholder-user.png'"
             class="img-contexto"
+            [class.grayscale]="pedido.cliente.nombreCompleto.includes('usuario_borrado')"
             alt="Cliente"
           />
           <div class="contexto-data">
             <span class="contexto-label">Cliente</span>
-            <p class="contexto-nombre">{{ pedido.cliente.nombreCompleto }}</p>
+            <p class="contexto-nombre">
+              {{
+                pedido.cliente.nombreCompleto.includes('usuario_borrado')
+                  ? 'Usuario Eliminado'
+                  : pedido.cliente.nombreCompleto
+              }}
+            </p>
           </div>
         } @else {
           <img
             [src]="pedido.emprendimiento.imagenUrl || 'assets/placeholder-food.png'"
             class="img-contexto"
+            [class.grayscale]="pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado_')"
             alt="Emprendimiento"
           />
           <div class="contexto-data">
             <span class="contexto-label">Emprendimiento</span>
-            <p class="contexto-nombre">{{ pedido.emprendimiento.nombreEmprendimiento }}</p>
+            <p class="contexto-nombre">
+              {{
+                pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado_')
+                  ? 'Emprendimiento Eliminado'
+                  : pedido.emprendimiento.nombreEmprendimiento
+              }}
+            </p>
           </div>
         }
       </div>
@@ -128,15 +147,23 @@
         }
 
         @if (role() === 'DUENO') {
-          <button class="btn-base btn-secondary full-width" (click)="contactarCliente()">
-            CONTACTAR CLIENTE
-          </button>
+          @if (!pedido.cliente.nombreCompleto.includes('usuario_borrado')) {
+            <button class="btn-base btn-secondary full-width" (click)="contactarCliente()">
+              CONTACTAR CLIENTE
+            </button>
+          } @else {
+            <button class="btn-base btn-secondary full-width" disabled>CLIENTE INACTIVO</button>
+          }
         }
 
-        @if (role() === 'CLIENTE') {
-          <button class="btn-base btn-secondary full-width" (click)="contactarLocal()">
-            CONTACTAR DUEÑO
-          </button>
+        @if (role() !== 'ADMIN') {
+            @if (!pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado')) {
+              <button class="btn-base btn-secondary full-width" (click)="contactarLocal()">
+                CONTACTAR DUEÑO
+              </button>
+            } @else {
+              <button class="btn-base btn-secondary full-width" disabled>EMPRENDIMIENTO CERRADO</button>
+            }
         }
 
         @if (role() === 'ADMIN') {

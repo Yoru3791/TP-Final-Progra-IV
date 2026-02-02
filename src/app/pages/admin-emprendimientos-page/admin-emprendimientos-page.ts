@@ -21,6 +21,7 @@ export class AdminEmprendimientosPage {
         this.emprendimientoService.adminFiltroNombre();
         this.emprendimientoService.adminFiltroCiudad();
         this.emprendimientoService.adminFiltroDueno();
+        this.emprendimientoService.adminSoloEliminados();
 
         this.emprendimientoService.fetchEmprendimientosAdmin(0, 10);
     });
@@ -44,5 +45,10 @@ export class AdminEmprendimientosPage {
   onDuenoInput(event: Event) {
     const val = (event.target as HTMLInputElement).value;
     this.emprendimientoService.adminFiltroDueno.set(val.trim());
+  }
+
+  onToggleEliminados(event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    this.emprendimientoService.adminSoloEliminados.set(isChecked);
   }
 }

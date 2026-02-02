@@ -27,7 +27,9 @@
 .header-top-mobile {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 3rem;
+  flex: 1; 
+  flex-basis: 0;
 }
 
 .logo-rol-container {
@@ -65,14 +67,16 @@
 }
 
 .header-center {
-  flex: 2;
+  flex: 0 1 auto;
   display: flex;
   justify-content: center;
   padding: 0 2rem;
+  width: 40%;
 }
 
 .header-right {
   flex: 1;
+  flex-basis: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -88,14 +92,32 @@ app-search-bar {
 .nav-link {
   color: var(--color-text-primary);
   font-size: 1.5rem;
-  padding: 0;
-  transition: color 0.2s ease;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
   text-decoration: none;
+  position: relative; 
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -0.6rem;
+  left: 0;
+  width: 0%;
+  height: 0.2rem;
+  background-color: var(--color-primary-light);
+  transition: width 0.3s ease;
+  border-radius: 1rem;
 }
 
 .nav-link:hover {
-  color: var(--color-primary-hover-dark);
-  text-decoration: underline;
+  color: var(--color-primary-light);
+  text-decoration: none;
+}
+
+.nav-link:hover::after {
+  width: 100%; 
 }
 
 .btns-logged {

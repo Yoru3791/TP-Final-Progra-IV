@@ -16,8 +16,7 @@
   display: block;
   padding: 1.2rem 4.5rem 1.2rem 4.5rem;
   border: 0.1rem solid var(--color-border-light);
-  /* CAMBIO: De 3rem a 1rem para ser "más cuadradito" como el city-selector */
-  border-radius: 1rem;
+  border-radius: 2rem;
   font-family: inherit;
   font-size: 1.5rem;
   color: var(--color-text-primary);
@@ -36,7 +35,8 @@
 }
 
 .search-input:focus,
-.search-input.mostrando-resultados {
+.search-input.mostrando-resultados,
+.search-input:hover {
   border-color: var(--color-primary-light);
   box-shadow: 0 0 0 0.3rem rgba(254, 144, 57, 0.15);
 }
@@ -76,7 +76,7 @@
 }
 
 .btn-clear:hover {
-  color: var(--color-state-error);
+  color: var(--color-primary-light);
 }
 
 /* --- RESULTADOS --- */
@@ -84,12 +84,12 @@
   background-color: white;
   border: 0.1rem solid var(--color-primary-light);
   border-top: none;
-  /* CAMBIO: Ajustado a 1rem para coincidir con el input */
   border-radius: 0 0 1rem 1rem;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
   overflow: hidden;
   position: absolute;
   top: 100%;
+  left: 0;
   width: 100%;
   z-index: 10;
 }
