@@ -14,6 +14,7 @@ import { DatosUsuarioModal } from '../datos-usuario-modal/datos-usuario-modal';
 import { A11yModule } from '@angular/cdk/a11y';
 import { UiNotificationService } from '../../../services/ui-notification-service';
 import { DatosContactoModalData } from '../../../model/datos-modal-data.model';
+import { EmprendimientoAdminResponse } from '../../../model/emprendimiento-admin-response.model';
 
 @Component({
   selector: 'app-pedido-extended-modal',
@@ -39,6 +40,11 @@ export class PedidoExtendedModal implements OnInit {
   estadoAdminSeleccionado!: EstadoPedido;
 
   constructor(@Inject(MAT_DIALOG_DATA) public pedido: PedidoResponse) {}
+
+  get fechaEliminacionEmprendimiento(): string | null {
+    const emp = this.pedido.emprendimiento as unknown as EmprendimientoAdminResponse;
+    return emp.fechaEliminacion || null;
+  }
 
   ngOnInit(): void {
     this.calcularValidacionesFecha();
