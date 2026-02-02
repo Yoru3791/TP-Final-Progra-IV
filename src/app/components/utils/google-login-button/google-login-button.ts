@@ -27,7 +27,7 @@ export class GoogleLoginButton implements AfterViewInit {
     google.accounts.id.renderButton(document.getElementById('google-btn'), {
       theme: 'outline',
       size: 'large',
-      width: '350',
+      width: '340',
       text: 'signin_with',
       logo_alignment: 'left',
     });
