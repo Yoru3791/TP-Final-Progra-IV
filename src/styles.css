@@ -71,7 +71,9 @@ app-root {
 }
 
 .main-h1-title {
+  color: var(--color-primary);
   font-size: 3rem;
+  line-height: 1;
   margin: 5rem auto 3rem auto;
   text-align: center;
 }

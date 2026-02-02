@@ -1,4 +1,9 @@
+.main-h1-title {
+  color: var(--color-text-primary);
+}
+
 /* --- ESTADO VACÍO --- */
+
 .estado-vacio {
   width: 100%;
   text-align: center;

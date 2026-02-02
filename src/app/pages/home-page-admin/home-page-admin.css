@@ -17,6 +17,10 @@
   margin-bottom: 4rem;
 }
 
+.main-h1-title {
+  color: var(--color-text-primary);
+}
+
 .subtitle {
   font-size: 1.6rem;
   color: var(--color-text-dark-secondary);
