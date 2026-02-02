@@ -126,11 +126,12 @@
 .dueno-email {
   font-size: 1.2rem;
   color: var(--color-text-secondary);
-  text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
+  margin: 0;        
+  cursor: default; 
 }
 
 .status-action-col {

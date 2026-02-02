@@ -1,7 +1,8 @@
-<div class="emprendimiento-card" 
-    [class.eliminado]="!!emprendimiento.fechaEliminacion"
-    [class.unavailable]="!emprendimiento.estaDisponible && !emprendimiento.fechaEliminacion">
-  
+<div
+  class="emprendimiento-card"
+  [class.eliminado]="!!emprendimiento.fechaEliminacion"
+  [class.unavailable]="!emprendimiento.estaDisponible && !emprendimiento.fechaEliminacion"
+>
   <img class="card-img" [src]="emprendimiento.imagenUrl" alt="Imagen emprendimiento" />
 
   <div class="main-info">
@@ -15,7 +16,7 @@
 
       <p class="dato">
         <i class="fa-solid fa-phone icon-small"></i>
-        <a [href]="'tel:' + emprendimiento.telefono">{{ emprendimiento.telefono }}</a>
+        <span>{{ emprendimiento.telefono }}</span>
       </p>
     </div>
   </div>
@@ -23,23 +24,28 @@
   <div class="dueno-col">
     <span class="label">Dueño:</span>
     <p class="dueno-nombre">{{ emprendimiento.dueno.nombreCompleto }}</p>
-    <a [href]="'mailto:' + emprendimiento.dueno.email" class="dueno-email">
+    
+    <p class="dueno-email">
       {{ emprendimiento.dueno.email }}
-    </a>
+    </p>
   </div>
 
   <div class="status-action-col">
     <div class="estado-wrapper">
       @if (emprendimiento.fechaEliminacion) {
-          <span class="estado deleted">ELIMINADO</span>
+        <span class="estado deleted">ELIMINADO</span>
       } @else if (!emprendimiento.estaDisponible) {
-          <span class="estado off">NO DISPONIBLE</span>
+        <span class="estado off">NO DISPONIBLE</span>
       } @else {
-          <span class="estado on">DISPONIBLE</span>
+        <span class="estado on">DISPONIBLE</span>
       }
     </div>
 
-    <button class="btn-base btn-primary btn-ver-mas" [routerLink]="['/emprendimiento', emprendimiento.id]">
+    <button
+      class="btn-base btn-primary btn-ver-mas"
+      [disabled]="!!emprendimiento.fechaEliminacion"
+      [routerLink]="emprendimiento.fechaEliminacion ? null : ['/emprendimiento', emprendimiento.id]"
+    >
       Ver emprendimiento
     </button>
   </div>
