@@ -130,6 +130,34 @@
   justify-content: center;
 }
 
+.grayscale {
+    filter: grayscale(100%);
+    opacity: 0.6;
+}
+
+.aviso-eliminado {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem;
+    background-color: #f3f4f6; 
+    border-radius: 0.5rem;
+    border-left: 4px solid #9ca3af; 
+    color: #4b5563;
+}
+
+.aviso-eliminado i {
+    font-size: 1.8rem;
+    margin-bottom: 0.2rem;
+}
+
+.aviso-eliminado p {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
 /* --- DESKTOP --- */
 @media (min-width: 768px) {
   .modal-unificado-container {
