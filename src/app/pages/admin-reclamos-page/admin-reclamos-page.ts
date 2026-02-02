@@ -43,7 +43,7 @@ export class AdminReclamosPage {
     effect(() => {
         this.reclamoService.filtroEstadoAdmin();
         this.reclamoService.fetchAdminReclamos(0, 10);
-    }, { allowSignalWrites: true });
+    });
   }
 
   onPageChange(page: number) {
