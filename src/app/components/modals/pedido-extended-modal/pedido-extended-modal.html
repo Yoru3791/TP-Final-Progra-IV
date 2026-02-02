@@ -3,7 +3,7 @@
     <h3 class="titulo-modal">
       Pedido #{{ pedido.id }} —
       {{
-        pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado_')
+        (fechaEliminacionEmprendimiento || pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado'))
           ? 'Emprendimiento Eliminado'
           : pedido.emprendimiento.nombreEmprendimiento
       }}
@@ -59,14 +59,14 @@
           <img
             [src]="pedido.emprendimiento.imagenUrl || 'assets/placeholder-food.png'"
             class="img-contexto"
-            [class.grayscale]="pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado_')"
+            [class.grayscale]="fechaEliminacionEmprendimiento || pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado')"
             alt="Emprendimiento"
           />
           <div class="contexto-data">
             <span class="contexto-label">Emprendimiento</span>
             <p class="contexto-nombre">
               {{
-                pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado_')
+                (fechaEliminacionEmprendimiento || pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado'))
                   ? 'Emprendimiento Eliminado'
                   : pedido.emprendimiento.nombreEmprendimiento
               }}
@@ -156,13 +156,22 @@
           }
         }
 
-        @if (role() !== 'ADMIN') {
-            @if (!pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado')) {
-              <button class="btn-base btn-secondary full-width" (click)="contactarLocal()">
-                CONTACTAR DUEÑO
-              </button>
-            } @else {
-              <button class="btn-base btn-secondary full-width" disabled>EMPRENDIMIENTO CERRADO</button>
+        @if (
+             fechaEliminacionEmprendimiento || 
+             pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado_') ||
+             pedido.emprendimiento.nombreEmprendimiento === 'Emprendimiento Eliminado'
+        ) {
+            
+            <button class="btn-base btn-secondary full-width" disabled>
+                EMPRENDIMIENTO CERRADO
+            </button>
+
+        } @else {
+            
+            @if (role() === 'CLIENTE') {
+                <button class="btn-base btn-secondary full-width" (click)="contactarLocal()">
+                    CONTACTAR DUEÑO
+                </button>
             }
         }
 
@@ -180,6 +189,7 @@
               </button>
             </div>
           </div>
+          
           <div class="admin-actions">
             <button
               class="btn-base btn-secondary half-width"
@@ -187,6 +197,7 @@
             >
               <i class="fa-solid fa-store"></i> Dueño
             </button>
+
             <button
               class="btn-base btn-secondary half-width"
               (click)="verDatosUsuario(pedido.cliente)"

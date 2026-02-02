@@ -25,6 +25,7 @@ export class AdminUsuariosPage {
     effect(() => {
       this.usuarioService.adminFiltroNombre();
       this.usuarioService.adminFiltroEmail();
+      this.usuarioService.adminSoloEliminados();
       
       this.usuarioService.fetchUsuariosAdmin(0, 10);
     });
@@ -38,6 +39,11 @@ export class AdminUsuariosPage {
   public onEmailInput(event: Event) {
     const val = (event.target as HTMLInputElement).value;
     this.usuarioService.adminFiltroEmail.set(val.trim());
+  }
+
+  onToggleEliminados(event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    this.usuarioService.adminSoloEliminados.set(isChecked);
   }
 
   onPageChange(page: number) {

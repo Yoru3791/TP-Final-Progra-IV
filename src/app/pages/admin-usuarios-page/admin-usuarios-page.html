@@ -21,6 +21,18 @@
       (input)="onEmailInput($event)"
     />
 
+    <label class="filter-input toggle-wrapper">
+      <div class="switch">
+        <input
+          type="checkbox"
+          [checked]="usuarioService.adminSoloEliminados()"
+          (change)="onToggleEliminados($event)"
+        />
+        <span class="slider round"></span>
+      </div>
+      <span class="toggle-label">Ver eliminados</span>
+    </label>
+
     <button class="btn btn-create" (click)="openUsuarioForm()">
       <i class="fa-solid fa-plus"></i>
       <span>Crear usuario</span>

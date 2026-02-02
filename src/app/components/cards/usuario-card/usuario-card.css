@@ -68,16 +68,11 @@ p {
   font-size: 1.4rem;
 }
 
-.email-telefono-container a {
+.email-telefono-container p {
   color: var(--color-text-secondary);
-  text-decoration: none;
-  display: block;
   margin-bottom: 0.2rem;
-}
-
-.email-telefono-container a:hover {
-  color: var(--color-primary-light);
-  text-decoration: underline;
+  margin-top: 0; 
+  cursor: default; 
 }
 
 .status-container {
