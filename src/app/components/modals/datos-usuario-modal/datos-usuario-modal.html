@@ -13,7 +13,7 @@
         <img
           [src]="data.imagenUrl"
           class="profile-img"
-          [class.grayscale]="data.nombre?.includes('Eliminado') || data.nombre?.includes('borrado')"
+          [class.grayscale]="data.nombre.includes('Eliminado') || data.nombre.includes('borrado')"
           alt="Foto de perfil"
         />
       </div>
@@ -24,7 +24,7 @@
           <span class="label">Nombre</span>
           <span class="valor">
             {{ 
-               (data.nombre?.includes('usuario_borrado') || data.nombre === 'Emprendimiento Eliminado') 
+               (data.nombre.includes('usuario_borrado') || data.nombre === 'Emprendimiento Eliminado') 
                ? 'Usuario no disponible' 
                : data.nombre
             }}
