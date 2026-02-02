@@ -86,7 +86,7 @@ export class FormLogin {
       next: (res) => {
         this.isResending = false;
         this.unverifiedEmail = null;
-        this.uiNotificationService.abrirSnackBarExito('¡Correo enviado! Revisá tu correo.');
+        this.uiNotificationService.abrirSnackBarExito('¡Correo enviado! Revisá tu bandeja de entrada.');
       },
       error: (err) => {
         this.isResending = false;
