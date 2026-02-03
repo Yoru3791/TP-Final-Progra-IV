@@ -137,6 +137,18 @@ app-root {
   margin-bottom: 1.5rem;
 }
 
+textarea.form-input {
+  resize: none !important; 
+  min-height: 10rem;
+  line-height: 1.5;
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+}
+
+textarea.form-input::-webkit-scrollbar {
+  width: 0.6rem;
+}
+
 .error-messages {
   min-height: 1.8rem;
   font-size: 1.2rem;
@@ -458,6 +470,139 @@ input:checked + .slider:before { transform: translateX(2.4rem); }
   .footer-right, .footer-left { width: 100%; justify-content: center; }
   .btn-primary-action, .btn-secondary-action { width: 100%; }
 }
+
+.diet-chips-container {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.chip-checkbox {
+  position: relative;
+}
+
+.chip-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.chip-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  
+  padding: 0.8rem 1.6rem;
+  border-radius: 5rem;
+  border: 0.1rem solid var(--color-ui-neutral);
+  background-color: white;
+  
+  color: var(--color-text-secondary);
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.chip-label:hover {
+  border-color: var(--color-primary-light);
+  background-color: var(--color-background-soft-orange);
+  color: var(--color-primary);
+}
+
+.chip-checkbox input:checked + .chip-label {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+  box-shadow: 0 2px 5px rgba(235, 131, 52, 0.3);
+}
+
+.custom-icon {
+  width: 1.8rem;
+  height: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  fill: currentColor;
+}
+
+/* --- Selector personalizado --- */
+.select-custom-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-trigger {
+  cursor: pointer;
+  user-select: none;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dropdown-trigger.open {
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 3px rgba(254, 144, 57, 0.15);
+}
+
+.arrow-icon {
+  font-size: 1.2rem;
+  color: var(--color-text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.dropdown-trigger.open .arrow-icon {
+  transform: rotate(180deg);
+  color: var(--color-primary-light);
+}
+
+.selected-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 1rem;
+  flex: 1;
+  color: var(--color-text-primary);
+}
+
+.placeholder-text {
+  color: var(--color-text-secondary);
+  opacity: 0.5;
+}
+
+.options-list {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: 100%;
+  max-height: 25rem;
+  overflow-y: auto;
+  background: white;
+  border: 0.1rem solid var(--color-border-light);
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0;
+  margin: 0;
+  list-style: none;
+  z-index: 100;
+}
+
+.options-list li {
+  padding: 1rem 1.6rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+  transition: background-color 0.1s ease;
+}
+
+.options-list li:hover {
+  background-color: var(--color-background-soft-orange);
+  color: var(--color-text-primary);
+}
+
+.options-list::-webkit-scrollbar { width: 0.6rem; }
+.options-list::-webkit-scrollbar-thumb { background: var(--color-ui-neutral); border-radius: 1rem; }
 
 /* --- BOTONES DE ACCIÓN (Ya existentes) --- */
 .btn-primary-action {
@@ -1146,11 +1291,6 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
   box-shadow: 0 0 0 0.2rem rgba(254, 144, 57, 0.15);
 }
 
-.select-custom-wrapper {
-  position: relative;
-  flex: 1;
-  min-width: 25rem;
-}
 
 .select-trigger {
   width: 100%;
