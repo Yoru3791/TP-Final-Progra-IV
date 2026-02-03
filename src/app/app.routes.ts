@@ -34,7 +34,7 @@ export const routes: Routes = [
 
   /* -------------------- PERFIL (solo logeados) -------------------- */
   { path: 'me', component: PerfilUsuario, canActivate: [authGuardFn] },
-  { path: 'cliente/mis-reclamos', component: MisReclamosComponent, canActivate: [authGuardFn] },
+  { path: 'mis-reclamos', component: MisReclamosComponent, canActivate: [authGuardFn] },
 
   /* -------------------- REGISTROS (solo invitados) -------------------- */
   { path: 'registro/dueno', component: RegisterPageDueno, canActivate: [invitadoGuardFn] },
