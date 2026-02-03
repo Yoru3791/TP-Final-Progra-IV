@@ -93,34 +93,44 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-background-primary);
-  border: none;
+  background-color: white;
+  border: 0.1rem solid var(--color-ui-neutral);
   border-radius: 1rem;
-  padding: 1.2rem 3.2rem;
+  padding: 1.2rem 2.5rem;
   font-family: inherit;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  color: var(--color-ui-disabled-text);
+  color: var(--color-text-secondary);
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   text-transform: uppercase;
-  letter-spacing: 0.25rem;
+  letter-spacing: 0.20rem;
   user-select: none;
-  border: 0.1rem solid var(--color-ui-disabled-background);
+  position: relative;
+  top: 0;
 }
 
 .chip-categoria:hover {
+  border-color: var(--color-primary-light);
+  color: var(--color-primary-light);
   background-color: var(--color-background-soft-orange);
-  border-color: var(--color-background-soft-orange);
-  color: var(--color-text-dark-secondary);
+  transform: translateY(-0.2rem);
+  box-shadow: 0 0.4rem 0.8rem rgba(254, 144, 57, 0.15);
 }
 
 .chip-categoria.active {
-  background-color: var(--color-background-soft-orange);
-  border-color: var(--color-background-soft-orange);
-  color: #4a3b32;
-  box-shadow: inset 0 0.3rem 0.6rem rgba(0, 0, 0, 0.12);
-  transform: translateY(0.1rem);
+  background-color: var(--color-primary-light);
+  border-color: transparent;
+  color: white;
+  box-shadow: inset 0 0.3rem 0.5rem rgba(0, 0, 0, 0.2); 
+  top: 0.2rem; 
+}
+
+.chip-categoria.active:hover {
+  background-color: var(--color-primary-hover-light);
+  color: white;
+  border-color: transparent;
+  box-shadow: inset 0 0.3rem 0.5rem rgba(0, 0, 0, 0.2);
 }
 
 /* -------- FILTROS INFERIORES -------- */
@@ -413,11 +423,11 @@
 
 .segmented-control button:hover {
   background-color: var(--color-background-soft-orange);
-  color: var(--color-primary-action);
+  color: var(--color-primary-light);
 }
 
 .segmented-control button.active {
-  background-color: var(--color-primary-medium);
+  background-color: var(--color-primary-light);
   color: var(--color-text-inverse);
 }
 

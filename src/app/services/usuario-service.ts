@@ -24,6 +24,7 @@ export class UsuarioService {
   
   public adminFiltroNombre = signal<string>('');
   public adminFiltroEmail = signal<string>('');
+  public adminSoloEliminados = signal<boolean>(false);
 
   private apiUrl = 'http://localhost:8080/api/usuarios';
 
@@ -45,9 +46,11 @@ export class UsuarioService {
     
     const nombre = this.adminFiltroNombre();
     const email = this.adminFiltroEmail();
+    const soloEliminados = this.adminSoloEliminados();
 
     if (nombre) params = params.set('nombre', nombre);
     if (email) params = params.set('email', email);
+    if (soloEliminados) params = params.set('soloEliminados', 'true');
 
     this.http.get<PagedResponse<UsuarioAdminResponse>>(this.getApiUrl(), { params })
       .pipe(

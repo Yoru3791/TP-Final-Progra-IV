@@ -8,8 +8,8 @@
     <p class="nombre">{{ usuario().nombreCompleto }}</p>
 
     <div class="email-telefono-container">
-      <a [href]="'mailto:' + usuario().email">{{ usuario().email }}</a>
-      <a [href]="'tel:' + usuario().telefono">{{ usuario().telefono }}</a>
+      <p>{{ usuario().email }}</p>
+      <p>{{ usuario().telefono }}</p>
     </div>
   </div>
 
