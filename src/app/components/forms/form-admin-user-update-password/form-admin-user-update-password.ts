@@ -23,25 +23,23 @@ export class FormAdminUserUpdatePassword {
 
   showPassword = false;
 
-  form = this.formBuilder.group(
-    {
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,16}$/
-          ),
-        ],
-      ]
-    }
-  );
+  form = this.formBuilder.group({
+    password: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,16}$/
+        ),
+      ],
+    ],
+  });
 
   mostrarError(formControlName: string) {
     return (
       this.form.get(formControlName)?.invalid &&
       (this.form.get(formControlName)?.touched ||
-       this.form.get(formControlName)?.dirty)
+        this.form.get(formControlName)?.dirty)
     );
   }
 
@@ -54,9 +52,9 @@ export class FormAdminUserUpdatePassword {
       })
       .subscribe({
         next: () => {
-          this.uiNotificationService.abrirSnackBarExito('Contraseña cambiada exitosamente.');
-
-          // El form puede existir dentro de un modal
+          this.uiNotificationService.abrirSnackBarExito(
+            'Contraseña cambiada exitosamente.'
+          );
           this.dialogRef?.close(true);
         },
         error: (err) => this.uiNotificationService.abrirModalError(err)
@@ -65,5 +63,9 @@ export class FormAdminUserUpdatePassword {
 
   togglePassword() {
     this.showPassword = !this.showPassword;
+  }
+
+  cerrarModal() {
+    this.dialogRef?.close();
   }
 }
