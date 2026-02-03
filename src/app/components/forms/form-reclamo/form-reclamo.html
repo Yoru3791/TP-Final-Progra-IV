@@ -31,7 +31,7 @@
 
       <!-- Desplegable -->
       @if (openCategoria) {
-        <ul class="options">
+        <ul class="options-list">
           @for (opcion of categoriasOptions; track opcion.value) {
             <li (click)="selectCategoria(opcion.value); $event.stopPropagation()">
               {{ opcion.label }}
