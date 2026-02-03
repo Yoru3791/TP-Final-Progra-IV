@@ -24,7 +24,7 @@ export class FormUserUpdate {
 
   cargando = signal<boolean>(false);
 
-  form = this.fb.group({
+  form = this.formBuilder.group({
     nombreCompleto: ['', [Validators.required, Validators.maxLength(256)]],
     email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
     telefono: ['', [Validators.required, Validators.pattern(/^\d{6,15}$/)]],
@@ -38,6 +38,10 @@ export class FormUserUpdate {
         telefono: this.data.telefono,
       });
     }
+  }
+
+  get formBuilder() {
+    return this.fb;
   }
 
   actualizarUsuario() {
