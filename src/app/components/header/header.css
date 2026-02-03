@@ -66,6 +66,26 @@
   margin: 0;
 }
 
+.btn-admin-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn-admin {
+  --font-size: 2rem;
+
+  border-radius: 2rem !important;
+  font-size: var(--font-size);
+  width: calc(var(--font-size) * 2.5);
+}
+
+.btn-admin i {
+  font-size: 2rem;
+}
+
 .header-center {
   flex: 0 1 auto;
   display: flex;
