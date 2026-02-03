@@ -81,7 +81,9 @@ export class FormRegistro {
   openBasesCondiciones() {
     const dialogRef = this.dialog.open(BasesCondicionesModal, {
       disableClose: true,
-      panelClass: 'modal-scrolleable',
+      panelClass: 'form-modal',
+      width: '55rem',
+      maxWidth: '95vw',
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {

@@ -1,15 +1,20 @@
-import { Component } from '@angular/core';
-import {
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
-} from '@angular/material/dialog';
+import { Component, inject } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-bases-condiciones-modal',
-  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose],
+  imports: [],
   templateUrl: './bases-condiciones-modal.html',
   styleUrl: './bases-condiciones-modal.css',
 })
-export class BasesCondicionesModal {}
+export class BasesCondicionesModal {
+  private dialogRef = inject(MatDialogRef<BasesCondicionesModal>);
+
+  aceptar() {
+    this.dialogRef.close(true);
+  }
+
+  rechazar() {
+    this.dialogRef.close(false);
+  }
+}
