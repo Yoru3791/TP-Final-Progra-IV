@@ -325,6 +325,10 @@ app-root {
   margin: 0;
 }
 
+.file-name.success {
+  color: var(--color-state-success);
+}
+
 .btn-mini-action {
   width: 4rem;
   height: 4rem;
@@ -343,6 +347,7 @@ app-root {
 
 .btn-mini-action:hover { transform: scale(1.1); }
 .btn-edit-img:hover { color: var(--color-primary); }
+.btn-delete-img:hover { color: var(--color-state-error); }
 
 .btn-upload-trigger {
   background-color: rgba(255, 255, 255, 0.2);
