@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, inject } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Reclamo } from '../../../model/reclamo-response.model';
@@ -15,8 +15,10 @@ import { EstadoReclamoHelper } from '../../../constants/estadoReclamo-labels.con
 export class AdminGestionReclamoModal {
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<AdminGestionReclamoModal>);
+  private elementRef = inject(ElementRef);
 
   form: FormGroup; 
+  openEstado = false;
 
   estadosOptions = Object.values(EstadoReclamo).map(e => ({
     value: e,
@@ -28,7 +30,7 @@ export class AdminGestionReclamoModal {
       estado: [this.data.estado, [Validators.required]],
       respuesta: [this.data.respuestaAdmin || '', []]
     });
-
+    this.actualizarValidaciones(this.data.estado);
     this.form.get('estado')?.valueChanges.subscribe((estado) => {
       this.actualizarValidaciones(estado as EstadoReclamo);
     });
@@ -43,6 +45,30 @@ export class AdminGestionReclamoModal {
       respuestaControl?.clearValidators();
     }
     respuestaControl?.updateValueAndValidity();
+  }
+
+  toggleEstado(event: Event) {
+    event.stopPropagation();
+    this.openEstado = !this.openEstado;
+  }
+
+  selectEstado(valor: EstadoReclamo) {
+    this.form.get('estado')?.setValue(valor);
+    this.openEstado = false;
+  }
+
+  getSelectedEstadoLabel(): string {
+    const val = this.form.get('estado')?.value;
+    if (!val) return 'Seleccionar Estado';
+    const option = this.estadosOptions.find(o => o.value === val);
+    return option ? option.label : val;
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event) {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.openEstado = false;
+    }
   }
 
   guardar() {

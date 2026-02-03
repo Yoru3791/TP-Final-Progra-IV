@@ -1,37 +1,84 @@
-<div class="dialog-container">
-  <h2 class="dialog-title">Gestionar Ticket: {{ data.codigoTicket }}</h2>
+<div class="modal-wrapper">
+  
+  <div class="modal-header">
+    <h2 class="modal-title">Gestionar Ticket: {{ data.codigoTicket }}</h2>
+    <button type="button" class="btn-icon-close" (click)="cerrar()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
 
-  <form [formGroup]="form" (ngSubmit)="guardar()">
-    <div class="form-group">
-      <label>Estado del Reclamo</label>
-      <select formControlName="estado" class="form-input">
-        @for (opt of estadosOptions; track opt.value) {
-          <option [value]="opt.value">{{ opt.label }}</option>
+  <form [formGroup]="form" class="modal-body simple-form-layout">
+    
+    <!-- Estado (selector personalizado) -->
+    <div class="form-field">
+      <label class="form-label">Estado del Reclamo</label>
+      
+      <div class="select-custom-wrapper">
+        <div
+          class="form-input dropdown-trigger"
+          [class.open]="openEstado"
+          (click)="toggleEstado($event)"
+        >
+          <span class="selected-text">
+            {{ getSelectedEstadoLabel() }}
+          </span>
+          <i class="fa-solid fa-chevron-down arrow-icon"></i>
+        </div>
+
+        @if (openEstado) {
+          <ul class="options-list">
+            @for (opt of estadosOptions; track opt.value) {
+              <li (click)="selectEstado(opt.value); $event.stopPropagation()">
+                {{ opt.label }}
+              </li>
+            }
+          </ul>
         }
-      </select>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label>Devolución / Respuesta</label>
+    <!-- Respuesta -->
+    <div class="form-field">
+      <label class="form-label">Devolución / Respuesta</label>
       <textarea
         formControlName="respuesta"
-        rows="5"
-        class="form-input textarea"
-        placeholder="Escribí la solución o respuesta para el usuario."
-      >
-      </textarea>
+        class="form-input form-textarea"
+        rows="6"
+        placeholder="Escribí la solución o respuesta para el usuario..."
+      ></textarea>
 
-      @if (form.get('respuesta')?.hasError('required') && form.get('respuesta')?.touched) {
-        <p class="error-msg">
-          <i class="fa-solid fa-triangle-exclamation"></i>
-          Para cerrar el ticket, es obligatorio escribir una devolución.
-        </p>
-      }
+      <div class="error-messages">
+        @if (form.get('respuesta')?.hasError('required') && form.get('respuesta')?.touched) {
+          <p>
+            <i class="fa-solid fa-circle-exclamation"></i>
+            Es obligatorio escribir una devolución.
+          </p>
+        }
+        @if (form.get('respuesta')?.hasError('minlength') && form.get('respuesta')?.touched) {
+          <p>La respuesta es muy corta (mínimo 10 caracteres).</p>
+        }
+      </div>
     </div>
 
-    <div class="dialog-actions">
-      <button type="submit" class="btn-base btn-primary" [disabled]="form.invalid">Guardar Cambios</button>
-      <button type="button" class="btn-base btn-secondary" (click)="cerrar()">Cancelar</button>
-    </div>
   </form>
+
+  <div class="modal-footer">
+    <div class="footer-left"></div>
+    
+    <div class="footer-right">
+      <button type="button" class="btn-secondary-action" (click)="cerrar()">
+        Cancelar
+      </button>
+      
+      <button
+        type="button"
+        class="btn-primary-action"
+        (click)="guardar()"
+        [disabled]="form.invalid"
+      >
+        <i class="fa-solid fa-check"></i> Guardar Cambios
+      </button>
+    </div>
+  </div>
+
 </div>
