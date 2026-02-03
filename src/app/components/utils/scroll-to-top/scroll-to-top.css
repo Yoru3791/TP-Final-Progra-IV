@@ -1,7 +1,7 @@
 :host {
-  --spacing: 1.5rem;
+  --spacing: 3rem;
 
-  bottom: 0;
+  bottom: var(--spacing);
   display: flex;
   flex-direction: row;
   justify-content: right;
@@ -19,11 +19,10 @@
   cursor: none;
   font-size: 3rem;
   height: 6rem;
-  margin-right: var(--spacing);
   opacity: 0;
   pointer-events: none;
   position: absolute;
-  transform: translateY(calc(-100% - var(--spacing)));
+  transform: translateY(calc(-100% + 1rem));
   transition-duration: 0.25s;
   z-index: 1000;
 }
@@ -40,6 +39,6 @@
 
 @media (max-width: 768px) {
   .btn {
-    transform: translateY(calc(-100% - var(--spacing) - 5.5rem));
+    transform: translateY(calc(-100% + 1rem - 5.5rem));
   }
 }

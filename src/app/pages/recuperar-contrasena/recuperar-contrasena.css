@@ -1,3 +1,7 @@
+.main-h1-title {
+  margin-bottom: 2rem;
+}
+
 .form {
   align-items: center;
   background-color: var(--color-background-secondary);
