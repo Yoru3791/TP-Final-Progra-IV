@@ -83,6 +83,8 @@ export class UsuarioCard {
       this.dialog
         .open(AdminUserUpdateModal, {
           panelClass: 'form-modal',
+          width: '75rem',
+          maxWidth: '95vw',
           autoFocus: false,
           restoreFocus: false,
           data: this.usuario(),
