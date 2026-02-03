@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { ReclamoRequest } from '../model/reclamo-request.model';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { Reclamo } from '../model/reclamo-response.model';
 import { EstadoReclamo } from '../enums/estadoReclamo.enum';
 import { PagedResponse, PageMetadata } from '../model/hateoas-pagination.models';
@@ -14,7 +14,7 @@ export class ReclamoService {
   private http = inject(HttpClient);
 
   private apiUrlPublic = 'http://localhost:8080/api/public/reclamos';
-  private apiUrlCliente = 'http://localhost:8080/api/cliente/reclamos';
+  private apiUrlClienteDueno = 'http://localhost:8080/api/logged/reclamos';
   private apiUrlAdmin = 'http://localhost:8080/api/admin/reclamos';
 
   // --- CLIENTE (Mis Reclamos) ---
@@ -36,7 +36,7 @@ export class ReclamoService {
       params = params.set('estado', estado);
     }
 
-    this.http.get<PagedResponse<Reclamo>>(this.apiUrlCliente, { params })
+    this.http.get<PagedResponse<Reclamo>>(this.apiUrlClienteDueno, { params })
       .pipe(catchError(err => {
         console.error('Error cargando mis reclamos', err);
         return of(null);
@@ -81,7 +81,7 @@ export class ReclamoService {
 
 
   enviarReclamo(reclamo: ReclamoRequest) {
-    return this.http.post(this.apiUrlPublic, reclamo);
+    return this.http.post(this.apiUrlPublic, reclamo, { responseType: 'text' });
   }
 
   actualizarEstado(id: number, nuevoEstado: EstadoReclamo, respuestaAdmin: string) {
