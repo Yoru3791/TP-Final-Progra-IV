@@ -1,4 +1,6 @@
 <form class="form-reclamo" [formGroup]="formReclamo" (ngSubmit)="onSubmit()">
+  
+  <!-- Email -->
   <div class="form-field">
     <label for="email" class="form-label">Email de contacto</label>
     <input
@@ -10,6 +12,7 @@
     />
   </div>
 
+  <!-- Motivo (Selector) -->
   <div class="form-field">
     <label class="form-label">Motivo del reporte</label>
 
@@ -23,22 +26,10 @@
           {{ getSelectedLabel() }}
         </span>
 
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="arrow-icon"
-        >
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+        <i class="fa-solid fa-chevron-down arrow-icon"></i>
       </div>
 
+      <!-- Desplegable -->
       @if (openCategoria) {
         <ul class="options">
           @for (opcion of categoriasOptions; track opcion.value) {
@@ -51,6 +42,7 @@
     </div>
   </div>
 
+  <!-- Descripción -->
   <div class="form-field">
     <div class="label-container">
       <label for="descripcion" class="form-label">Detalle del problema</label>
@@ -61,16 +53,17 @@
       id="descripcion"
       formControlName="descripcion"
       class="form-input form-textarea"
+      placeholder="Contanos qué pasó..."
       rows="6"
     ></textarea>
   </div>
 
   <button
     type="submit"
-    class="btn-base btn-primary btn-submit"
+    class="btn-primary-action btn-full-width"
     [disabled]="formReclamo.invalid"
-    [class.disabled]="formReclamo.invalid"
   >
     Enviar Reporte
   </button>
+
 </form>

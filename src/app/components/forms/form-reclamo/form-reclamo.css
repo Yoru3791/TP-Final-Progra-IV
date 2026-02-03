@@ -1,58 +1,55 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
 .form-reclamo {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 2rem;
+  align-items: flex-start;
+  gap: 1.5rem; 
   padding: 3rem;
   width: 100%;
-  max-width: 55rem;
-  margin: 0 auto;
+  max-width: 55rem; 
   background: var(--color-background-secondary);
   border-radius: 1.5rem;
   box-shadow: var(--shadow-form);
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
-/* Estilos específicos para el div que simula el input */
+.form-textarea {
+  height: auto !important; 
+  min-height: 12rem;
+  resize: none;
+  line-height: 1.5 !important;
+  padding-top: 1.2rem !important;
+  padding-bottom: 1.2rem !important;
+}
+
+.btn-full-width {
+  width: 100% !important;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+.select-custom-wrapper {
+  position: relative;
+  width: 100%;
+}
+
 .dropdown-trigger {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   cursor: pointer;
   user-select: none;
-  /* Asegura que use los mismos colores de transición que un input normal */
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+  display: flex !important; 
+  align-items: center;
+  justify-content: space-between;
 }
 
-/* Estado activo/abierto: replica EXACTAMENTE el foco del input global */
-.dropdown-trigger.open {
-  border-color: var(--color-primary-light);
-  box-shadow: 0 0 0 0.3rem rgba(254, 144, 57, 0.15);
-}
-
-.selected-text {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-right: 1rem;
-  flex: 1; /* Ocupa el espacio disponible */
-}
-
-.placeholder-text {
-  color: var(--color-text-secondary);
-  opacity: 0.5;
-}
-
-/* Estilos para la nueva flecha SVG */
 .arrow-icon {
-  width: 1.8rem;
-  height: 1.8rem;
+  font-size: 1.2rem;
   color: var(--color-text-secondary);
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease;
-  flex-shrink: 0; /* Evita que se aplaste */
+  transition: transform 0.2s ease;
 }
 
 .dropdown-trigger.open .arrow-icon {
@@ -60,33 +57,71 @@
   color: var(--color-primary-light);
 }
 
-.form-textarea {
-  resize: none;
-  min-height: 12rem;
-  line-height: 1.5;
+.dropdown-trigger.open {
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 3px rgba(254, 144, 57, 0.15);
+}
+
+.selected-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 1rem;
+  flex: 1;
+  color: var(--color-text-primary);
+}
+
+.placeholder-text {
+  color: var(--color-text-secondary);
+  opacity: 0.5;
+}
+
+.options {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: 100%;
+  max-height: 25rem;
+  overflow-y: auto;
+  background: white;
+  border: 0.1rem solid var(--color-border-light);
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0;
+  margin: 0;
+  list-style: none;
+  z-index: 50;
+}
+
+.options li {
+  padding: 1rem 1.6rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+  transition: background-color 0.1s ease;
+}
+
+.options li:hover {
+  background-color: var(--color-background-soft-orange);
+  color: var(--color-text-primary);
 }
 
 .label-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .char-counter {
   font-size: 1.1rem;
   color: var(--color-text-light);
-  font-weight: 500;
-}
-
-.btn-submit {
-  width: 100%;
-  margin-top: 1rem;
-  font-size: 1.6rem;
-  padding: 1.4rem;
+  font-weight: 600;
 }
 
 @media (max-width: 480px) {
   .form-reclamo {
-    padding: 2rem 1.5rem;
+    padding: 2rem;
+    max-width: 100%;
   }
 }
