@@ -50,7 +50,10 @@ export class FormRegistro {
   );
 
   onSubmit() {
+    if (this.formRegistro.invalid) return;
+
     const usuario = this.formRegistro.value;
+    
     this.authService
       .register({
         nombreCompleto: usuario.nombreCompleto || '',
