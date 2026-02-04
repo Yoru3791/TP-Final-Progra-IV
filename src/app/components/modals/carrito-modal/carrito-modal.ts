@@ -12,11 +12,12 @@ import {
 } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
+import { CurrencyPipe } from '@angular/common';
 
 
 @Component({
   selector: 'app-carrito-modal',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CurrencyPipe],
   templateUrl: './carrito-modal.html',
   styleUrl: './carrito-modal.css',
 })
@@ -39,11 +40,9 @@ export class CarritoModal implements OnInit {
 
     if (!fechaIngresadaControl) return { invalidValue: true };
 
-    // Para solucionar un problema de zona horaria
     const [y, m, d] = fechaIngresadaControl.split('-').map(Number);
-
-    const fechaIngresada = new Date(y, m - 1, d),
-    fechaHoy = new Date();
+    const fechaIngresada = new Date(y, m - 1, d);
+    const fechaHoy = new Date();
 
     fechaIngresada.setHours(0, 0, 0, 0);
     fechaHoy.setHours(0, 0, 0, 0);
@@ -61,10 +60,8 @@ export class CarritoModal implements OnInit {
   private calcularMinDate() {
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
-
     const fechaMinima = new Date(hoy);
     fechaMinima.setDate(hoy.getDate() + 2); 
-
     this.minDate = this.formatDate(fechaMinima);
   }
 
@@ -118,9 +115,7 @@ export class CarritoModal implements OnInit {
 
   public async cancelarPedido() {
     this.modalBloqueado = true;
-
     let texto = '¿Seguro de que querés cancelar el pedido?';
-
     if (!this.carritoService.vacio()) {
       texto = texto.concat(' El carrito se va a vaciar.');
     }
@@ -138,9 +133,7 @@ export class CarritoModal implements OnInit {
         this.carritoService.vaciar(true);
         this.cerrar();
       }
-
       this.modalBloqueado = false;
-
       this.changeDetectorRef.detectChanges();
     }, 0);
   }
@@ -163,57 +156,49 @@ export class CarritoModal implements OnInit {
 
         setTimeout(() => {
           if (confirmado) {
-            
             const empId = this.carritoService.emprendimiento()?.id;
             const observablePedido = this.carritoService.crearPedido();
             
             if (observablePedido) {
-                observablePedido.subscribe({
-                    next: (pedidoCreado) => {
-                        this.cerrar();
-                        
-                        this.router.navigate(['/resultado-pedido'], {
-                            state: {
-                                resultado: 'exito',
-                                pedidoId: pedidoCreado.id,
-                                emprendimientoId: empId
-                            }
-                        });
-                    },
-                    error: (err) => {
-                        this.cerrar();
-
-                        this.router.navigate(['/resultado-pedido'], {
-                            state: { 
-                                resultado: 'error',
-                                emprendimientoId: empId
-                            }
-                        });
+              observablePedido.subscribe({
+                next: (pedidoCreado) => {
+                  this.cerrar();
+                  this.router.navigate(['/resultado-pedido'], {
+                    state: {
+                      resultado: 'exito',
+                      pedidoId: pedidoCreado.id,
+                      emprendimientoId: empId
                     }
-                });
+                  });
+                },
+                error: (err) => {
+                  this.cerrar();
+                  this.router.navigate(['/resultado-pedido'], {
+                    state: { 
+                      resultado: 'error',
+                      emprendimientoId: empId
+                    }
+                  });
+                }
+              });
             } else {
-                  this.modalBloqueado = false;
+              this.modalBloqueado = false;
             }
-
           } else {
             this.modalBloqueado = false;
           }
-          
           this.changeDetectorRef.detectChanges();
         }, 0);
-
         return;
       }
     } else {
       this.formFecha.markAllAsDirty();
       this.formFecha.markAllAsTouched();
     }
-
     this.modalBloqueado = false;
   }
 
   public cerrar() {
     this.dialogRef.close();
   }
-
 }

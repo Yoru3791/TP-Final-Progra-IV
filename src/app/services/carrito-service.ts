@@ -286,11 +286,13 @@ export class CarritoService {
 
   private abrirModalCarrito() {
     this.dialog.open(CarritoModal, {
-      maxHeight: '90vh',
-      maxWidth: '90rem',
-      width: '90rem',
-      autoFocus: false,
-      restoreFocus: false,
+    maxHeight: '90vh',
+    maxWidth: '95vw',
+    width: '90rem',
+    height: 'auto',
+    panelClass: 'form-modal',
+    autoFocus: false,
+    restoreFocus: false
     });
   }
 

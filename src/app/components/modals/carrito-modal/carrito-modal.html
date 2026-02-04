@@ -1,86 +1,131 @@
-<div class="carrito" [class.bloqueado]="modalBloqueado">
-  <div class="carrito-header">
-    <h2><span>Carrito:</span> {{ emprendimiento()?.nombreEmprendimiento ?? 'vacío' }}</h2>
-
-    <button class="btn btn-close-icon" (click)="cerrar()">
+<div class="modal-wrapper" [class.bloqueado]="modalBloqueado">
+  
+  <div class="modal-header">
+    <h2 class="modal-title">
+      <i class="fa-solid fa-cart-shopping highlight-icon"></i> 
+      <span class="title-text">Carrito</span>
+      <span class="divider">|</span>
+      <span class="shop-name">{{ emprendimiento()?.nombreEmprendimiento || 'Sin nombre' }}</span>
+    </h2>
+    
+    <button type="button" class="btn-icon-close" (click)="cerrar()">
       <i class="fa-solid fa-xmark"></i>
     </button>
   </div>
 
-  <div class="carrito-layout">
-    <div class="left-panel scrolleable">
-      @for (viandaCantidad of viandaCantidades(); track $index) {
-      <div class="carrito-item">
-        <img class="item-img" [src]="viandaCantidad.vianda.imagenUrl" />
+  <div class="modal-body cart-layout">
+    
+    <!-- Izquierda: Lista de Items -->
+    <div class="cart-items-panel">
+      @if (viandaCantidades().length > 0) {
+        <div class="items-list">
+          @for (item of viandaCantidades(); track $index) {
+            <div class="cart-item">
+              <!-- Imagen -->
+              <img [src]="item.vianda.imagenUrl" alt="{{ item.vianda.nombreVianda }}" class="item-img" />
+              
+              <!-- Info -->
+              <div class="item-info">
+                <h3 class="item-name">{{ item.vianda.nombreVianda }}</h3>
+                <p class="item-price-unit">
+                  {{ item.vianda.precio | currency:'ARS':'symbol-narrow':'1.0-0' }} c/u
+                </p>
+              </div>
 
-        <div class="item-info">
-          <p class="item-nombre">{{ viandaCantidad.vianda.nombreVianda }}</p>
-          <p class="item-precio-unit">${{ viandaCantidad.vianda.precio.toFixed(2) }}</p>
+              <!-- Controles y Subtotal -->
+              <div class="item-actions">
+                <div class="qty-control">
+                  <button 
+                    class="btn-qty" 
+                    [disabled]="cantidadViandaEnMinimo(item.vianda)"
+                    (click)="restarVianda(item.vianda)"
+                  >
+                    <i class="fa-solid fa-minus"></i>
+                  </button>
+                  
+                  <span class="qty-value">{{ item.cantidad }}</span>
+                  
+                  <button 
+                    class="btn-qty" 
+                    [disabled]="cantidadViandaEnMaximo(item.vianda)"
+                    (click)="sumarVianda(item.vianda)"
+                  >
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                
+                <!-- Subtotal -->
+                <p class="item-subtotal">
+                  {{ (item.vianda.precio * item.cantidad) | currency:'ARS':'symbol-narrow':'1.0-0' }}
+                </p>
+              </div>
+            </div>
+          }
         </div>
-
-        <p class="item-subtotal">
-          ${{ (viandaCantidad.vianda.precio * viandaCantidad.cantidad).toFixed(2) }}
-        </p>
-
-        <div class="item-cantidad-btns">
-          <button
-            class="btn btn-circle"
-            [disabled]="cantidadViandaEnMinimo(viandaCantidad.vianda)"
-            (click)="restarVianda(viandaCantidad.vianda)"
-          >
-            <i class="fa-solid fa-minus"></i>
-          </button>
-
-          <p class="item-cantidad">{{ viandaCantidad.cantidad }}</p>
-
-          <button
-            class="btn btn-circle"
-            [disabled]="cantidadViandaEnMaximo(viandaCantidad.vianda)"
-            (click)="sumarVianda(viandaCantidad.vianda)"
-          >
-            <i class="fa-solid fa-plus"></i>
-          </button>
+      } @else {
+        <!-- Estado Vacío -->
+        <div class="empty-state">
+          <div class="empty-icon">
+            <i class="fa-solid fa-basket-shopping"></i>
+          </div>
+          <h3>Tu carrito está vacío</h3>
+          <p>¡Agregá alguna vianda para empezar!</p>
+          <button class="btn-secondary-action" (click)="cerrar()">Volver al menú</button>
         </div>
-      </div>
-      } @empty {
-      <div class="carrito-lista-vacia">
-        <p>Agregá viandas del emprendimiento para realizar un pedido.</p>
-      </div>
       }
     </div>
 
-    <div class="right-panel">
-      <div class="detalle-general">
-        <p>
-          <span class="label">Total:</span>
-          <span class="precio-total"> ${{ total.toFixed(2) }}</span>
-        </p>
+    <!-- Derecha: Resumen, Fecha y Botones -->
+    <div class="cart-summary-panel">
+      
+      <div class="summary-center-container">
+        
+        <div class="total-section">
+          <span class="total-label">Total a Pagar</span>
+          <span class="total-amount">{{ total | currency:'ARS':'symbol-narrow':'1.0-0' }}</span>
+        </div>
 
-        <div class="fecha-container">
-          <label>Fecha de entrega:</label>
-
+        <div class="date-section">
+          <label class="form-label">Fecha de entrega</label>
           <form [formGroup]="formFecha">
-            <input type="date" formControlName="fechaEntrega" [min]="minDate" />
+            <input 
+              type="date" 
+              formControlName="fechaEntrega" 
+              class="form-input"
+              [min]="minDate" 
+            />
           </form>
-
           @let fecha = formFecha.get('fechaEntrega');
           @if (fecha?.invalid && fecha?.dirty) {
-            <p class="fecha-warning">Ingresá una fecha válida (mínimo dos días desde hoy).</p>
+            <p class="date-error">
+              <i class="fa-solid fa-circle-exclamation"></i> 
+              Elegí una fecha válida (min. 48hs).
+            </p>
           }
         </div>
-      </div>
 
-      <div class="acciones">
-        <button
-          class="btn-base btn-primary"
-          (click)="confirmarPedido()"
-          [disabled]="vacio() || (formFecha.invalid && formFecha.touched)"
-        >
-          CONFIRMAR PEDIDO
-        </button>
+        <div class="checkout-actions">
+          <button
+            type="button"
+            class="btn-primary-action btn-block"
+            (click)="confirmarPedido()"
+            [disabled]="vacio() || formFecha.invalid"
+          >
+            <i class="fa-solid fa-check"></i> Confirmar Pedido
+          </button>
 
-        <button class="btn-base btn-secondary" (click)="cancelarPedido()">CANCELAR PEDIDO</button>
+          <button 
+            type="button" 
+            class="btn-ghost-danger btn-block" 
+            (click)="cancelarPedido()"
+            [disabled]="vacio()"
+          >
+            <i class="fa-regular fa-trash-can"></i> Vaciar Carrito
+          </button>
+        </div>
+
       </div>
     </div>
+
   </div>
 </div>
