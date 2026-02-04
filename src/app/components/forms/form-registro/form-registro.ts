@@ -98,7 +98,9 @@ export class FormRegistro {
   openNormasComunidad() {
     const dialogRef = this.dialog.open(NormasComunidadModal, {
       disableClose: true,
-      panelClass: 'modal-scrolleable',
+      panelClass: 'form-modal',
+      width: '55rem',
+      maxWidth: '95vw',
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
