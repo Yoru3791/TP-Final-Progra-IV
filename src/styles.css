@@ -1232,10 +1232,6 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
   background: var(--color-ui-neutral-hover);
 }
 
-.cdk-overlay-pane.form-modal {
-  max-height: 95vh !important;
-  max-width: 75rem !important;
-}
 
 .form-modal .mat-mdc-dialog-surface,
 .form-modal .mat-mdc-dialog-container,

@@ -16,8 +16,8 @@ export class Login {
 
   openForgotPassword() {
     this.dialog.open(ContrasenaOlvidadaModal, {
-      width: '90%',
-      maxWidth: '50rem',
+      width: '50rem',
+      maxWidth: '90vw',
       autoFocus: false,
     });
   }

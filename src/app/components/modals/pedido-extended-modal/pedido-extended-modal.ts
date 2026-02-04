@@ -202,8 +202,8 @@ export class PedidoExtendedModal implements OnInit {
 
     this.dialog.open(DatosUsuarioModal, {
       data: data,
-      width: '95%',
-      maxWidth: '60rem',
+      width: '50rem',
+      maxWidth: '90vw',
       autoFocus: false,
       restoreFocus: false,
     });
@@ -221,8 +221,8 @@ export class PedidoExtendedModal implements OnInit {
     };
     this.dialog.open(DatosUsuarioModal, {
       data,
-      width: '95%',
-      maxWidth: '60rem',
+      width: '50rem',
+      maxWidth: '90vw',
       autoFocus: false,
       restoreFocus: false,
     });
@@ -241,8 +241,8 @@ export class PedidoExtendedModal implements OnInit {
     };
     this.dialog.open(DatosUsuarioModal, {
       data,
-      width: '95%',
-      maxWidth: '60rem',
+      width: '50rem',
+      maxWidth: '90vw',
       autoFocus: false,
       restoreFocus: false,
     });

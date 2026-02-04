@@ -46,8 +46,8 @@ export class EliminarCuentaPaso2 {
         this.dialogRef.close();
         this.authService.handleLogout();
         this.dialog.open(EliminarCuentaPaso3, {
-            width: '90%',
-            maxWidth: '50rem',
+            width: '40rem',
+            maxWidth: '90vw',
             autoFocus: false
         });
       },
