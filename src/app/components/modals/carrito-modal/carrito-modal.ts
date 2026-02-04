@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CarritoService } from '../../../services/carrito-service';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ViandaResponse } from '../../../model/vianda-response.model';
 import { UiNotificationService } from '../../../services/ui-notification-service';
 import {
@@ -13,11 +13,22 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 @Component({
   selector: 'app-carrito-modal',
-  imports: [ReactiveFormsModule, CurrencyPipe],
+  imports: [
+    ReactiveFormsModule,
+    CurrencyPipe,
+    MatDialogModule,
+    MatDatepickerModule
+  ],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'es-AR' },
+    provideNativeDateAdapter()
+  ],
   templateUrl: './carrito-modal.html',
   styleUrl: './carrito-modal.css',
 })
@@ -32,29 +43,28 @@ export class CarritoModal implements OnInit {
   public emprendimiento = this.carritoService.emprendimiento;
   public viandaCantidades = this.carritoService.viandaCantidades;
 
-  minDate: string = '';
+  minDate: Date = new Date();
   public modalBloqueado = false;
 
   private validadorFecha = (control: AbstractControl): ValidationErrors | null => {
-    const fechaIngresadaControl: string = control.value;
+    const fechaIngresada: Date = control.value;
 
-    if (!fechaIngresadaControl) return { invalidValue: true };
+    if (!fechaIngresada) return { invalidValue: true };
 
-    const [y, m, d] = fechaIngresadaControl.split('-').map(Number);
-    const fechaIngresada = new Date(y, m - 1, d);
     const fechaHoy = new Date();
-
-    fechaIngresada.setHours(0, 0, 0, 0);
     fechaHoy.setHours(0, 0, 0, 0);
+    
+    const fechaComparar = new Date(fechaIngresada);
+    fechaComparar.setHours(0, 0, 0, 0);
 
     const fechaMinima = new Date(fechaHoy);
-    fechaMinima.setDate(fechaHoy.getDate() + 2);
+    fechaMinima.setDate(fechaHoy.getDate() + 2); // Regla de 48hs
 
-    return fechaIngresada < fechaMinima ? { invalidValue: true } : null;
+    return fechaComparar < fechaMinima ? { invalidValue: true } : null;
   };
 
-  formFecha = this.formBuilder.nonNullable.group({
-    fechaEntrega: ['', [Validators.required, this.validadorFecha]],
+  formFecha = this.formBuilder.group({
+    fechaEntrega: [null as Date | null, [Validators.required, this.validadorFecha]],
   });
 
   private calcularMinDate() {
@@ -62,10 +72,11 @@ export class CarritoModal implements OnInit {
     hoy.setHours(0, 0, 0, 0);
     const fechaMinima = new Date(hoy);
     fechaMinima.setDate(hoy.getDate() + 2); 
-    this.minDate = this.formatDate(fechaMinima);
+    this.minDate = fechaMinima;
   }
 
-  private formatDate(date: Date): string {
+  // Utilidad para convertir Date a String YYYY-MM-DD para el servicio
+  private formatDateToString(date: Date): string {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, '0');
     const d = String(date.getDate()).padStart(2, '0');
@@ -75,13 +86,17 @@ export class CarritoModal implements OnInit {
   ngOnInit(): void {
     this.calcularMinDate();
 
-    this.formFecha.patchValue({
-      fechaEntrega: this.carritoService.fechaEntrega(),
-    });
+    const fechaStr = this.carritoService.fechaEntrega();
+    if (fechaStr) {
+      const [y, m, d] = fechaStr.split('-').map(Number);
+      const fechaObj = new Date(y, m - 1, d);
+      this.formFecha.patchValue({ fechaEntrega: fechaObj });
+    }
 
     this.formFecha.valueChanges.subscribe((value) => {
-      if (this.formFecha.valid) {
-        this.carritoService.setFechaEntrega(value.fechaEntrega!);
+      if (this.formFecha.valid && value.fechaEntrega) {
+        const fechaStr = this.formatDateToString(value.fechaEntrega);
+        this.carritoService.setFechaEntrega(fechaStr);
       }
     });
   }

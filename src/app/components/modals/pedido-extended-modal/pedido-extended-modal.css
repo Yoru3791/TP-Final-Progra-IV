@@ -321,7 +321,6 @@
 .btn-blue { background-color: var(--color-state-finish) !important; }
 .btn-blue:hover { background-color: #2563eb !important; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
 
-/* Cambio de fecha */
 .date-change-block {
   background-color: white;
   padding: 1rem;
@@ -339,15 +338,37 @@
   text-transform: uppercase;
 }
 
-.input-group { display: flex; gap: 0.5rem; }
+.input-group { 
+  display: flex; 
+  gap: 0.5rem; 
+  align-items: center;
+}
+
+.datepicker-mini-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
 
 .form-input-mini {
-  flex: 1;
+  width: 100%;
   border: 1px solid var(--color-border-light);
   border-radius: 0.5rem;
   padding: 0.5rem;
+  padding-right: 2.5rem;
   font-family: inherit;
   font-size: 1.3rem;
+  height: 3rem;
+  cursor: pointer;
+}
+
+.toggle-icon-mini {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) scale(0.8);
+  color: var(--color-text-secondary);
 }
 
 .btn-mini-primary {
@@ -356,10 +377,12 @@
   border: none;
   border-radius: 0.5rem;
   width: 3rem;
+  height: 3rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 .btn-mini-primary:hover:not(:disabled) { background-color: var(--color-primary-hover-dark); }
 .btn-mini-primary:disabled { background-color: var(--color-ui-disabled-background); cursor: not-allowed; }

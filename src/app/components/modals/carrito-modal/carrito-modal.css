@@ -273,6 +273,26 @@
   gap: 0.8rem;
 }
 
+.datepicker-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.date-input-custom {
+  cursor: pointer;
+  padding-right: 4rem;
+}
+
+.toggle-icon {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-secondary);
+}
+
 .date-error {
   color: var(--color-state-error);
   font-size: 1.2rem;

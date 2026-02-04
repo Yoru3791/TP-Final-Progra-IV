@@ -724,6 +724,107 @@ input[type='password']::placeholder {
   border-color: var(--color-primary-light);
 }
 
+/* Calendario personalizado */
+.mat-datepicker-content {
+  background-color: var(--color-background-secondary) !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.mat-datepicker-content .mat-calendar {
+  font-family: 'Inria Sans', sans-serif !important;
+  width: 320px !important;
+}
+
+.mat-calendar-table-header {
+  color: var(--color-text-secondary) !important;
+  font-weight: 700 !important;
+}
+
+.mat-calendar-table-header th {
+  font-size: 1.1rem !important;
+  text-transform: uppercase !important;
+  color: var(--color-text-secondary) !important;
+  padding: 0 !important;
+}
+
+.mat-calendar-previous-button, 
+.mat-calendar-next-button {
+  color: var(--color-text-secondary) !important;
+}
+
+.mat-calendar-previous-button:hover, 
+.mat-calendar-next-button:hover {
+  background-color: var(--color-background-soft-orange) !important;
+}
+
+.mat-calendar-period-button {
+  font-family: 'Inria Sans', sans-serif !important;
+  font-size: 1.5rem !important;
+  font-weight: 800 !important;
+  color: var(--color-text-primary) !important;
+  text-transform: capitalize !important;
+  border-radius: 0.8rem !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.mat-calendar-period-button:hover,
+.mat-calendar-period-button:focus,
+.mat-calendar-period-button.cdk-program-focused,
+.mat-calendar-period-button.cdk-focused {
+  background-color: var(--color-background-soft-orange) !important;
+}
+
+.mat-calendar-body-label {
+  visibility: hidden !important;
+  font-size: 0 !important;
+  padding: 0 !important;
+}
+
+.mat-calendar-body-cell-content {
+  border-radius: 50% !important;
+  font-family: 'Inria Sans', sans-serif !important;
+  font-size: 1.3rem !important;
+  color: var(--color-text-primary) !important;
+  border: 1px solid transparent !important;
+}
+
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover .mat-calendar-body-cell-content:not(.mat-calendar-body-selected) {
+  background-color: var(--color-background-soft-orange) !important;
+  color: var(--color-primary) !important;
+}
+
+.mat-calendar-body-selected {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 5px rgba(235, 131, 52, 0.3) !important;
+  border-color: transparent !important;
+}
+
+.mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  border: 1px solid var(--color-primary) !important;
+  color: var(--color-primary) !important;
+  font-weight: 700 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.mat-calendar-body-today.mat-calendar-body-selected {
+  box-shadow: 0 2px 5px rgba(235, 131, 52, 0.3) !important;
+  border: none !important;
+}
+
+.mat-calendar-body-cell-content.mat-calendar-body-active {
+    background-color: var(--color-background-soft-orange) !important;
+    color: var(--color-primary) !important;
+    font-weight: 700 !important;
+}
+
+.mat-calendar-body-cell:focus .mat-calendar-body-cell-content {
+  background-color: var(--color-background-soft-orange) !important;
+}
 
 
 .form-select {

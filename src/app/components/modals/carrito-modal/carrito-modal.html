@@ -88,13 +88,22 @@
         <div class="date-section">
           <label class="form-label">Fecha de entrega</label>
           <form [formGroup]="formFecha">
-            <input 
-              type="date" 
-              formControlName="fechaEntrega" 
-              class="form-input"
-              [min]="minDate" 
-            />
+            <div class="datepicker-wrapper">
+              <input 
+                matInput 
+                [matDatepicker]="picker" 
+                formControlName="fechaEntrega" 
+                class="form-input date-input-custom"
+                [min]="minDate"
+                (click)="picker.open()" 
+                readonly
+                placeholder="Seleccionar fecha"
+              >
+              <mat-datepicker-toggle matIconSuffix [for]="picker" class="toggle-icon"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </div>
           </form>
+          
           @let fecha = formFecha.get('fechaEntrega');
           @if (fecha?.invalid && fecha?.dirty) {
             <p class="date-error">

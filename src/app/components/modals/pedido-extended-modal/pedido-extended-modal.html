@@ -50,7 +50,6 @@
         
         <div class="user-profile-section">
           
-          <!-- Info Contacto -->
           @if (role() === 'DUENO') {
             <img
               [src]="pedido.cliente.imagenUrl || 'assets/placeholder-user.png'"
@@ -133,17 +132,26 @@
             <div class="date-change-block">
               <label class="form-label-mini">Cambiar fecha</label>
               <div class="input-group">
-                <input
-                  type="date"
-                  [(ngModel)]="nuevaFechaSeleccionada"
-                  class="form-input-mini"
-                  [min]="minDate"
-                  [disabled]="esDemasiadoTarde"
-                />
+                <div class="datepicker-mini-wrapper">
+                  <input
+                    matInput
+                    [matDatepicker]="picker"
+                    [(ngModel)]="nuevaFechaSeleccionada"
+                    class="form-input-mini date-input-custom"
+                    [min]="minDate"
+                    [disabled]="esDemasiadoTarde"
+                    (click)="picker.open()"
+                    readonly
+                    placeholder="DD/MM/AAAA"
+                  />
+                  <mat-datepicker-toggle matIconSuffix [for]="picker" class="toggle-icon-mini"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </div>
+
                 <button 
                   class="btn-mini-primary"
                   [disabled]="esDemasiadoTarde || !nuevaFechaSeleccionada"
-                  (click)="cambiarFechaEntrega(nuevaFechaSeleccionada)"
+                  (click)="cambiarFechaEntrega()"
                   title="Guardar nueva fecha"
                 >
                   <i class="fa-solid fa-floppy-disk"></i>
