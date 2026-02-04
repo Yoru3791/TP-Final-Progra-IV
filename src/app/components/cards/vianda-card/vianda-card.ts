@@ -15,7 +15,7 @@ export class ViandaCard {
 
   openViandaModal() {
     this.dialog.open(ViandaExtendedModal, {
-      width: '60rem',
+      width: '40rem', 
       maxWidth: '95vw', 
       height: 'auto',
       maxHeight: '90vh',

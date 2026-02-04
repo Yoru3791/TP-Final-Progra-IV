@@ -1118,11 +1118,6 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
   width: 100% !important;
 }
 
-.cdk-overlay-pane.modal-vianda {
-  width: 95rem !important;
-  max-width: 95rem !important;
-}
-
 *::-webkit-scrollbar {
   width: 0.8rem;
 }

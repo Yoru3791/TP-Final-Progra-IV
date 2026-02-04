@@ -41,6 +41,10 @@ export class ViandaExtendedModal {
     return this.carritoService.cantidadViandaEnCarrito(this.vianda)();
   });
 
+  esEliminada() {
+    return this.vianda.fechaEliminacion && this.vianda.fechaEliminacion !== null;
+  }
+
   abrirCarrito() {
     if (this.modo === 'INVITADO') {
       this.abrirSnackbarLoginRequerido();
