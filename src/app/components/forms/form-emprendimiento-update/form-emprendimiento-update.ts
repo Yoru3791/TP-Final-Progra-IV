@@ -96,7 +96,7 @@ export class FormUpdateEmprendimiento implements OnInit {
       this.uiNotificationService.abrirModalConfirmacion({
         titulo: 'Eliminar Emprendimiento',
         texto:
-          '¿Seguro de que querés eliminar el emprendimiento? <span>Esta acción es irreversible.</span>',
+          '¿Estás seguro que querés eliminar el emprendimiento? <span>Esta acción es irreversible.</span>',
         textoEsHtml: true,
         critico: true,
       })

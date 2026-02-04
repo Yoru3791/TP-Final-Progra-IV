@@ -10,7 +10,6 @@ import { ConfirmarModalData } from '../../../model/confirmar-modal-data.model';
 })
 export class ConfirmarModal {
   public data: ConfirmarModalData = inject(MAT_DIALOG_DATA);
-
   private dialogRef = inject(MatDialogRef<ConfirmarModal>);
 
   public esCritico() {

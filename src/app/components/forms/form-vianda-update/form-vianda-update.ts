@@ -159,7 +159,7 @@ export class FormViandaUpdate implements OnInit {
     const confirmado = await firstValueFrom(
       this.uiNotificationService.abrirModalConfirmacion({
         titulo: 'Eliminar Vianda',
-        texto: '¿Seguro de que querés eliminar la vianda? <span>Esta acción es irreversible.</span>',
+        texto: '¿Estás seguro que querés eliminar la vianda? <span>Esta acción es irreversible.</span>',
         textoEsHtml: true,
         critico: true,
       })

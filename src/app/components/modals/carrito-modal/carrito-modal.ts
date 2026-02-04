@@ -115,7 +115,7 @@ export class CarritoModal implements OnInit {
 
   public async cancelarPedido() {
     this.modalBloqueado = true;
-    let texto = '¿Seguro de que querés cancelar el pedido?';
+    let texto = '¿Estás seguro que querés cancelar el pedido?';
     if (!this.carritoService.vacio()) {
       texto = texto.concat(' El carrito se va a vaciar.');
     }
@@ -150,7 +150,7 @@ export class CarritoModal implements OnInit {
         const confirmado = await firstValueFrom(
           this.uiNotificationService.abrirModalConfirmacion({
             titulo: 'Confirmar Pedido',
-            texto: '¿Seguro de que querés confirmar el pedido?',
+            texto: '¿Estás seguro que querés confirmar el pedido?',
           })
         );
 

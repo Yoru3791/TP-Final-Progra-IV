@@ -64,7 +64,7 @@ export class UsuarioCard {
     const confirmado = await firstValueFrom(
       this.uiNotificationService.abrirModalConfirmacion({
           titulo: 'Activar usuario',
-          texto: '¿Seguro de que querés activar este usuario manualmente?',
+          texto: '¿Estás seguro que querés activar este usuario manualmente?',
       })
     );
 
@@ -106,7 +106,7 @@ export class UsuarioCard {
     const confirmado = await firstValueFrom(
       this.uiNotificationService.abrirModalConfirmacion({
           titulo: `${banned ? 'Desbloquear' : 'Bloquear'} usuario`,
-          texto: `¿Seguro de que querés ${banned ? 'desbloquear' : 'bloquear'} a este usuario?`,
+          texto: `¿Estás seguro que querés ${banned ? 'desbloquear' : 'bloquear'} a este usuario?`,
           critico: !banned,
       })
     );
@@ -130,7 +130,7 @@ export class UsuarioCard {
     const confirmado = await firstValueFrom(
       this.uiNotificationService.abrirModalConfirmacion({
           titulo: 'Eliminar usuario',
-          texto: '¿Seguro de que querés eliminar este usuario? <span>Esta acción es irreversible.</span>',
+          texto: '¿Estás seguro que querés eliminar este usuario? <span>Esta acción es irreversible.</span>',
           textoEsHtml: true,
           critico: true,
       })
