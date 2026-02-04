@@ -14,7 +14,12 @@ export class EliminarCuentaPaso1 {
 
   confirmar() {
     this.dialogRef.close();
-    this.dialog.open(EliminarCuentaPaso2);
+    
+    this.dialog.open(EliminarCuentaPaso2, {
+        width: '90%',
+        maxWidth: '50rem',
+        autoFocus: false
+    });
   }
 
   cancelar() {

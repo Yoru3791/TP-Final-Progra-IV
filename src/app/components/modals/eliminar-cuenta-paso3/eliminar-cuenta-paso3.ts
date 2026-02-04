@@ -13,13 +13,17 @@ export class EliminarCuentaPaso3 {
   private router = inject(Router);
 
   constructor() {
-    // Si el usuario clickea fuera del modal redirige a Home
+    // Si el usuario clickea fuera del modal (backdrop), redirige a Home
     this.dialogRef.backdropClick().subscribe(() => {
-      this.router.navigate(['/home']);
+      this.navegarHome();
     });
   }
 
-  volverInicio() {
+  cerrar() {
+    this.navegarHome();
+  }
+
+  private navegarHome() {
     this.dialogRef.close();
     this.router.navigate(['/home']);
   }

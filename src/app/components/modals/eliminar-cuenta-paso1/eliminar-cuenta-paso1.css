@@ -1,18 +1,97 @@
-/* --- COMPONENTE DE TEXTO GENERAL --- */
-:host {
-  display: block;
-  padding: 2.4rem;
-  border-radius: 1.2rem;
-}
-
-.texto {
-  font-size: 1.45rem;
-  color: var(--color-text-primary);
-  margin-bottom: 2.6rem;
-}
-
-.acciones {
+.modal-body.simple-body {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  gap: 1.4rem;
+  align-items: center;
+  padding: 3rem;
+  gap: 2rem;
+}
+
+.danger-title {
+  color: var(--color-state-error) !important;
+}
+
+.alert-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.icon-warning-container {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  background-color: #fef2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-warning-container i {
+  font-size: 3rem;
+  color: var(--color-state-error);
+}
+
+.texto-advertencia {
+  font-size: 1.6rem;
+  color: var(--color-text-primary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.text-danger {
+  color: var(--color-state-error);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.modal-footer.center-footer {
+  justify-content: center;
+}
+
+.footer-actions {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-danger-action {
+  background-color: var(--color-state-error);
+  color: white;
+  border-radius: 1rem;
+  font-weight: 700;
+  height: 4.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3.5rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  letter-spacing: 0.05rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px rgba(220, 38, 38, 0.25);
+}
+
+.btn-danger-action:hover {
+  background-color: var(--color-state-error-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(220, 38, 38, 0.35);
+}
+
+.btn-danger-action:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 600px) {
+  .footer-actions {
+    flex-direction: column-reverse;
+  }
+  
+  .btn-secondary-action, .btn-danger-action {
+    width: 100%;
+  }
 }
