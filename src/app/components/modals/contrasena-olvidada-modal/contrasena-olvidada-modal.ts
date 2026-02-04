@@ -24,7 +24,10 @@ export class ContrasenaOlvidadaModal {
   });
 
   enviar() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     this.isLoading.set(true);
     const email = this.form.value.email!;
