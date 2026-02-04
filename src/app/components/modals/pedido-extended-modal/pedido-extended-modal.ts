@@ -212,6 +212,8 @@ export class PedidoExtendedModal implements OnInit {
       email: c.email,
       telefono: c.telefono,
       imagenUrl: c.imagenUrl,
+      direccion: 'No disponible', 
+      ciudad: 'No disponible'
     };
     this.dialog.open(DatosUsuarioModal, {
       data,
@@ -230,6 +232,8 @@ export class PedidoExtendedModal implements OnInit {
       email: dueno.email,
       imagenUrl: dueno.imagenUrl,
       telefono: emprendimiento.telefono,
+      direccion: emprendimiento.direccion,
+      ciudad: emprendimiento.ciudad
     };
     this.dialog.open(DatosUsuarioModal, {
       data,
