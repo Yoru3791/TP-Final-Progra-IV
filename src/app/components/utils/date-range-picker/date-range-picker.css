@@ -1,3 +1,8 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
 .select-wrapper {
   display: flex;
   flex-direction: column;
@@ -16,9 +21,14 @@
   justify-content: space-between;
   cursor: pointer;
   width: 100%;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   color: var(--color-text-secondary);
   box-sizing: border-box;
+}
+
+.select-custom:hover,
+.select-custom.open {
+  border-color: var(--color-primary-light);
 }
 
 .selected-option {
@@ -28,11 +38,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .icons-right {
   display: flex;
   align-items: center;
   gap: 0.8rem;
 }
+
 .clear-icon {
   font-size: 1.2rem;
   color: var(--color-text-secondary);
@@ -42,14 +54,21 @@
 .clear-icon:hover {
   color: var(--color-state-error);
 }
+
 .arrow {
   color: var(--color-text-secondary);
   font-size: 1.2rem;
+  transition: transform 0.2s;
+}
+
+.select-custom.open .arrow {
+  transform: rotate(180deg);
+  color: var(--color-primary-light);
 }
 
 .calendar-dropdown {
   position: absolute;
-  top: 110%;
+  top: calc(100% + 0.5rem);
   right: 0; 
   left: 0;
   background: var(--color-background-secondary);
@@ -66,6 +85,10 @@
 
 .backdrop {
   display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: transparent;
 }
 
 .calendar-header {
@@ -218,14 +241,8 @@
 @media (max-width: 768px) {
   .backdrop {
     display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(2px);
-    z-index: 9998;
   }
 
   .calendar-dropdown {
@@ -233,27 +250,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
-    right: auto;
-    bottom: auto;
-    margin: 0;
-
     width: 90%;
     max-width: 350px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    z-index: 9999;
-    border: none;
-  }
-
-  .day-btn {
-    height: 38px;
-    width: 38px;
-    font-size: 1.2rem;
-  }
-  .calendar-header {
-    height: 4rem;
-  }
-  .nav-btn {
-    padding: 1rem;
+    z-index: 10000;
   }
 }
