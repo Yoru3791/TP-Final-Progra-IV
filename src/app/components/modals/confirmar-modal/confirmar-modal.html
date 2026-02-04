@@ -1,7 +1,7 @@
 <div class="modal-wrapper">
   
-  <div class="modal-header">
-    <h2 class="modal-title" [class.text-danger]="esCritico()">
+  <div class="modal-header header-clean">
+    <h2 class="modal-title" [class.danger-title]="esCritico()" [class.primary-title]="!esCritico()">
       {{ data.titulo }}
     </h2>
     <button type="button" class="btn-icon-close" (click)="procesar(false)">
@@ -9,20 +9,28 @@
     </button>
   </div>
 
-  <div class="modal-body confirmation-body">
-    <div class="message-content">
-      @if (data.textoEsHtml) {
-        <p [innerHTML]="data.texto"></p>
-      } @else {
-        <p>{{ data.texto }}</p>
-      }
+  <div class="modal-body row-body">
+    
+    <div class="icon-column">
+      <div class="icon-background" [class.bg-danger]="esCritico()" [class.bg-primary]="!esCritico()">
+        <i class="fa-solid" [class.fa-triangle-exclamation]="esCritico()" [class.fa-question]="!esCritico()"></i>
+      </div>
     </div>
+
+    <div class="text-column">
+      <div class="message-content">
+        @if (data.textoEsHtml) {
+          <p [innerHTML]="data.texto"></p>
+        } @else {
+          <p>{{ data.texto }}</p>
+        }
+      </div>
+    </div>
+
   </div>
 
-  <div class="modal-footer">
-    <div class="footer-left"></div>
-    
-    <div class="footer-right">
+  <div class="modal-footer footer-clean">
+    <div class="footer-actions">
       <button type="button" class="btn-secondary-action" (click)="procesar(false)">
         Cancelar
       </button>

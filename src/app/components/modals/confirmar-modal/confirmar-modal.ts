@@ -12,7 +12,7 @@ export class ConfirmarModal {
   public data: ConfirmarModalData = inject(MAT_DIALOG_DATA);
   private dialogRef = inject(MatDialogRef<ConfirmarModal>);
 
-  public esCritico() {
+  public esCritico(): boolean {
     return this.data.critico === true;
   }
 
