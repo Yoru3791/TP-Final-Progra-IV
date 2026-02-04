@@ -26,7 +26,7 @@ export class ViandaExtendedModal {
   private carritoService = inject(CarritoService);
   private uiNotificationService = inject(UiNotificationService);
 
-  vianda: ViandaResponse;
+  vianda: any;
   modo: PageMode;
   
   constructor(

@@ -1,90 +1,123 @@
-<div class="modal-container">
-  <!-- Header -->
+<div class="modal-wrapper">
+  
   <div class="modal-header">
     <h2 class="modal-title">{{ vianda.nombreVianda }}</h2>
+    <button type="button" class="btn-icon-close" (click)="cerrarModal()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
   </div>
 
-  <div class="modal-body">
-    <div class="left-panel">
-      <!-- Categoría -->
-      <div class="info-group">
-        <label>Categoría</label>
-        <p>{{ vianda.categoria }}</p>
-      </div>
+  <!-- Info + Imagen -->
+  <div class="modal-body product-body">
+    
+    <!-- Izquierda: Info -->
+    <div class="info-panel">
+      
+      <div class="info-content-wrapper">
+        <!-- Categoría -->
+        <div class="info-group">
+          <label class="label-muted">Categoría</label>
+          <p class="text-main category-text">{{ vianda.categoria }}</p>
+        </div>
 
-      <!-- Descripción -->
-      <div class="info-group">
-        <label>Descripción</label>
-        <p class="descripcion-text">{{ vianda.descripcion }}</p>
-      </div>
+        <!-- Descripción -->
+        <div class="info-group">
+          <label class="label-muted">Descripción</label>
+          <p class="text-description">{{ vianda.descripcion }}</p>
+        </div>
 
-      <!-- Precio -->
-      <div class="info-group">
-        <label>Precio</label>
-        <span class="precio-badge">$ {{ vianda.precio }}</span>
-      </div>
-
-      <!-- Iconos -->
-      <div class="restricciones-container">
-        @if (vianda.esVegano) {
-          <div class="icon-badge" title="Vegano">
-            <app-icon-vegan class="icon active"></app-icon-vegan>
-          </div>
-        }
-
-        @if (vianda.esVegetariano) {
-          <div class="icon-badge" title="Vegetariano">
-            <app-icon-veggie class="icon active"></app-icon-veggie>
-          </div>
-        }
-        
-        @if (vianda.esSinTacc) {
-          <div class="icon-badge" title="Sin TACC">
-            <app-icon-tacc class="icon active"></app-icon-tacc>
-          </div>
-        }
-      </div>
-
-      <!-- Botones -->
-      <div class="modal-actions">
-        
-        @if (modo === 'DUENO') {
-          <button class="btn-base btn-primary btn-rounded btn-action" (click)="cerrarModal()">Volver</button>
-        } @else {
-          <div class="control-row">
-            <button class="btn-base btn-primary btn-rounded btn-volver" (click)="cerrarModal()">Volver</button>
-              
-            <div class="cart-group">
-                <div class="quantity-selector">
-                  <button (click)="quitar()" class="btn-qty" [disabled]="enMinimo()">
-                      <i class="fa-solid fa-minus"></i>
-                  </button>
-
-                  <span class="qty-value">{{ cantidad() }}</span>
-
-                  <button (click)="agregar()" class="btn-qty" [disabled]="enMaximo()">
-                      <i class="fa-solid fa-plus"></i>
-                  </button>
+        <!-- Restricciones -->
+        @if (vianda.esVegano || vianda.esVegetariano || vianda.esSinTacc) {
+          <div class="info-group">
+            <label class="label-muted">Etiquetas</label>
+            <div class="restricciones-container">
+              @if (vianda.esVegano) {
+                <div class="icon-badge" title="Vegano">
+                  <app-icon-vegan class="icon active"></app-icon-vegan>
                 </div>
-
-                <button class="btn btn-cart" (click)="abrirCarrito()" title="Ver Carrito">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                </button>
+              }
+              @if (vianda.esVegetariano) {
+                <div class="icon-badge" title="Vegetariano">
+                  <app-icon-veggie class="icon active"></app-icon-veggie>
+                </div>
+              }
+              @if (vianda.esSinTacc) {
+                <div class="icon-badge" title="Sin TACC">
+                  <app-icon-tacc class="icon active"></app-icon-tacc>
+                </div>
+              }
             </div>
           </div>
         }
       </div>
+
     </div>
 
-    <!-- Imagen -->
-    <div class="right-panel">
-      <div class="card-image-container">
-        @if (vianda.imagenUrl){
+    <!-- Derecha: Imagen -->
+    <div class="image-panel">
+      <div class="image-frame">
+        @if (vianda.imagenUrl) {
           <img [src]="vianda.imagenUrl" [alt]="vianda.nombreVianda" class="product-image" />
         } @else {
-          <img src="logo-miviandita-removebg-preview.png" alt="Imagen de vianda no disponible" class="no-image" />
+          <div class="placeholder-container">
+            <i class="fa-solid fa-utensils"></i>
+          </div>
         }
       </div>
     </div>
+
   </div>
+
+  <div class="modal-footer footer-product">
+    
+    <!-- Izquierda: Precio -->
+    <div class="footer-left">
+      <span class="price-display">$ {{ vianda.precio }}</span>
+    </div>
+    
+    <!-- Derecha: Controles -->
+    <div class="footer-right">
+      
+      @if (modo === 'DUENO') {
+        <button class="btn-secondary-action" (click)="cerrarModal()">
+          Cerrar
+        </button>
+      } @else {
+        <div class="client-controls">
+          
+          <div class="quantity-selector">
+            <button 
+              class="btn-qty" 
+              (click)="quitar()" 
+              [disabled]="enMinimo()"
+            >
+              <i class="fa-solid fa-minus"></i>
+            </button>
+
+            <span class="qty-value">{{ cantidad() }}</span>
+
+            <button 
+              class="btn-qty" 
+              (click)="agregar()" 
+              [disabled]="enMaximo()"
+            >
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+
+          <button 
+            class="btn-primary-action btn-cart-action" 
+            (click)="abrirCarrito()" 
+            title="Ver Carrito"
+          >
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="btn-text">Ver Carrito</span>
+          </button>
+
+        </div>
+      }
+
+    </div>
+  </div>
+
 </div>
