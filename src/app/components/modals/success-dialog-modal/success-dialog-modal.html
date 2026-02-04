@@ -1,12 +1,32 @@
-<h2 mat-dialog-title>
-  <mat-icon>check_circle</mat-icon>
-  ¡ÉXITO!
-</h2>
+<div class="modal-wrapper">
+  
+  <div class="modal-header header-clean">
+    <h2 class="modal-title success-title">Operación Exitosa</h2>
+    <button type="button" class="btn-icon-close" [mat-dialog-close]="true">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
 
-<mat-dialog-content>
-  <p>{{ data.message }}</p>
-</mat-dialog-content>
+  <div class="modal-body row-body">
+    
+    <div class="icon-column">
+      <div class="icon-background">
+        <i class="fa-solid fa-check"></i>
+      </div>
+    </div>
 
-<mat-dialog-actions>
-  <button class="btn-base btn-secondary" [mat-dialog-close]="true">Cerrar</button>
-</mat-dialog-actions>
+    <div class="text-column">
+      <p class="success-message">
+        {{ data.message }}
+      </p>
+    </div>
+
+  </div>
+
+  <div class="modal-footer footer-clean">
+    <button type="button" class="btn-base btn-success-action" [mat-dialog-close]="true">
+      Continuar
+    </button>
+  </div>
+
+</div>
