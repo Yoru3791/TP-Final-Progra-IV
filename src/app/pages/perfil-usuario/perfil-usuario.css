@@ -39,7 +39,7 @@ app-panel-acciones-cuenta {
 @media (min-width: 1024px) {
   .main-container {
     width: 85%;
-    margin: 4rem auto;
+    margin: 2rem auto;
   }
 
   .perfil-layout {

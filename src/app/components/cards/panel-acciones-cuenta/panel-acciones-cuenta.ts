@@ -16,8 +16,10 @@ export class PanelAccionesCuenta {
   private authService = inject(AuthService);
   private dialog = inject(MatDialog);
 
+  esAdmin = computed(() => this.authService.currentUserRole() === 'ADMIN');
+
   esAdminOriginal = computed(() =>
-    this.authService.currentUserRole() === 'ADMIN' && this.authService.usuarioId() === 1
+    this.esAdmin() && this.authService.usuarioId() === 1
   );
 
   cambiarPassword() {

@@ -37,7 +37,7 @@ export class ContrasenaOlvidadaModal {
         this.isLoading.set(false);
         this.dialogRef.close();
         
-        this.uiNotificationService.abrirSnackBarExito('Instrucciones enviadas, revisá tu correo.');
+        this.uiNotificationService.abrirSnackBarExito('Instrucciones enviadas, revisá tu bandeja de entrada.');
       },
       error: (err) => {
         this.isLoading.set(false);

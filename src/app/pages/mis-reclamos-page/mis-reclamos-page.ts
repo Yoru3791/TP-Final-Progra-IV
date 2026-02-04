@@ -50,7 +50,7 @@ export class MisReclamosComponent {
       effect(() => {
           this.reclamoService.filtroEstadoCliente();
           this.reclamoService.fetchMisReclamos(0, 10);
-      }, { allowSignalWrites: true });
+      });
   }
 
   onPageChange(page: number) {

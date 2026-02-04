@@ -16,7 +16,25 @@
         }
       </div>
 
-      @if (role() !== 'ADMIN') {
+      @if (role() === 'ADMIN') {
+        <nav class="btn-admin-container">
+          <button class="btn btn-admin" routerLink="/admin/usuarios">
+            <i class="fa-solid fa-user"></i>
+          </button>
+
+          <button class="btn btn-admin" routerLink="/admin/reclamos">
+            <i class="fa-solid fa-receipt"></i>
+          </button>
+
+          <button class="btn btn-admin" routerLink="/admin/emprendimientos">
+            <i class="fa-solid fa-industry"></i>
+          </button>
+
+          <button class="btn btn-admin" routerLink="/admin/pedidos">
+            <i class="fa-solid fa-basket-shopping"></i>
+          </button>
+        </nav>
+      } @else {
         <div class="city-wrapper">
           <app-city-selector
             [ngModel]="cityFilterService.city()"

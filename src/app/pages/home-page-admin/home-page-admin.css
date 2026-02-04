@@ -7,14 +7,17 @@
    para que entren los botones grandes cómodamente */
 .main-form-container {
   max-width: 90rem;
-  padding-top: 5rem;
-  min-height: 80vh;
+  padding-top: 0;
   justify-content: flex-start;
 }
 
 .header-container {
   text-align: center;
   margin-bottom: 4rem;
+}
+
+.main-h1-title {
+  color: var(--color-text-primary);
 }
 
 .subtitle {
