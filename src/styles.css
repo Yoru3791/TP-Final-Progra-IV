@@ -1272,17 +1272,17 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding: 2rem 0;
-  width: 120rem;
+  max-width: 120rem;
+  width: 100%;
 }
 
 .info-page-container content {
-  width: 100rem;
+  width: 100%;
 }
 
 .info-page-container p {
   font-size: 1.6rem;
-  line-height: 2rem;
+  line-height: 1.25;
 }
 
 .info-page-container a {
