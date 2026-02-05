@@ -45,6 +45,8 @@
   --input-focus-outline: var(--color-primary-light);
   --color-border-light: #e5e7eb;
   --color-background-soft-orange: #fff7ed;
+
+  --header-mobile-bottom-nav-height: 5.5rem;
 }
 
 html {
@@ -1480,7 +1482,10 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
 
 @media (max-width: 768px) {
   .main-content {
-    padding: 2rem;
+    --padding: 2rem;
+
+    padding: var(--padding);
+    padding-bottom: calc(var(--padding) + var(--header-mobile-bottom-nav-height));
   }
 
   .filters-container {
