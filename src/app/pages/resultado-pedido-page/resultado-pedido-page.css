@@ -86,7 +86,7 @@ h1 {
     font-size: 1.4rem;
     display: flex;
     gap: 1rem;
-    align-items: start;
+    align-items: center;
     text-align: left;
 }
 
