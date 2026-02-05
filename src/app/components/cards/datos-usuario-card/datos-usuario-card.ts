@@ -67,6 +67,7 @@ export class DatosUsuarioCard implements OnInit {
     const dialogRef = this.dialog.open(FormUserUpdate, {
       data: this.usuarioSignal(),
       width: '60rem',
+      maxWidth: '95vw',
       panelClass: 'form-modal',
       autoFocus: false,
       restoreFocus: false,

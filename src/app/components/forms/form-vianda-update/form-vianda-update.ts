@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, Inject, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, Inject, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ViandaService } from '../../../services/vianda-service';
 import { ViandaResponse } from '../../../model/vianda-response.model';
@@ -29,6 +29,7 @@ export class FormViandaUpdate implements OnInit {
   private dialogRef = inject(MatDialogRef);
   private cdr = inject(ChangeDetectorRef);
   private uiNotificationService = inject(UiNotificationService);
+  private elementRef = inject(ElementRef);
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { vianda: ViandaResponse }) {}
 
@@ -37,11 +38,8 @@ export class FormViandaUpdate implements OnInit {
     label,
   }));
 
-  private categoriaMap: Map<string, string> = new Map(
-    Object.entries(CategoriaVianda).map(([key, label]) => [label, key])
-  );
-
   loading = false;
+  openCategoria = false;
 
   selectedFile: File | null = null;
   selectedFileName: string | null = null;
@@ -88,22 +86,41 @@ export class FormViandaUpdate implements OnInit {
     this.currentImageUrl = vianda.imagenUrl || null;
   }
 
+  toggleCategoria(event: Event) {
+    event.stopPropagation();
+    this.openCategoria = !this.openCategoria;
+  }
+
+  selectCategoria(valor: string) {
+    this.formVianda.get('categoria')?.setValue(valor);
+    this.openCategoria = false;
+  }
+
+  getSelectedLabel(): string {
+    const val = this.formVianda.get('categoria')?.value;
+    if (!val) return '-- Seleccionar --';
+    const option = this.categorias.find((c) => c.key === val);
+    return option ? option.label : val;
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event) {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.openCategoria = false;
+    }
+  }
+
   onFileInputReady(element: HTMLInputElement) {
     this.fileInputRef = element;
   }
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
-
-    if (!file) {
-      this.resetImageSelection();
-      return;
-    }
+    if (!file) return;
 
     const reader = new FileReader();
     reader.onload = (e: any) => {
       const tempUrl = e.target.result;
-
       const img = new Image();
       img.onload = () => {
         if (img.width <= this.maxWidth && img.height <= this.maxHeight) {
@@ -114,7 +131,6 @@ export class FormViandaUpdate implements OnInit {
           this.formVianda.get('image')?.markAsTouched();
         } else {
           this.resetImageSelection();
-
           this.uiNotificationService.abrirModalError(
             null, `La imagen no debe superar ${this.maxWidth}x${this.maxHeight}px`
           );
@@ -143,8 +159,7 @@ export class FormViandaUpdate implements OnInit {
     const confirmado = await firstValueFrom(
       this.uiNotificationService.abrirModalConfirmacion({
         titulo: 'Eliminar Vianda',
-        texto:
-          '¿Seguro de que querés eliminar la vianda? <span>Esta acción es irreversible.</span>',
+        texto: '¿Estás seguro que querés eliminar la vianda? <span>Esta acción es irreversible.</span>',
         textoEsHtml: true,
         critico: true,
       })
@@ -157,9 +172,7 @@ export class FormViandaUpdate implements OnInit {
         this.uiNotificationService.abrirSnackBarExito('Vianda eliminada exitosamente.');
         this.dialogRef.close(true);
       },
-      error: (err) => {
-        this.uiNotificationService.abrirModalError(err);
-      },
+      error: (err) => this.uiNotificationService.abrirModalError(err),
     });
   }
 
@@ -198,9 +211,7 @@ export class FormViandaUpdate implements OnInit {
 
   uploadImage(id: number) {
     this.viandaService.updateImagenVianda(id, this.selectedFile!).subscribe({
-      next: () => {
-        this.updateSuccess();
-      },
+      next: () => this.updateSuccess(),
       error: (err) => {
         this.loading = false;
         this.uiNotificationService.abrirModalError(err, 'Vianda actualizada, pero error al subir la imagen.');

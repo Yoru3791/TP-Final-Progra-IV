@@ -1,47 +1,67 @@
-.header-container {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-  justify-content: space-between;
-  margin-top: 2rem;
-  padding: 0 2rem 0 2rem;
+:host {
+  display: block;
+  width: 100%;
 }
 
-.titulo-form {
-  --font-size: 2.4rem;
-
-  text-align: center;
-  font-size: var(--font-size);
-  line-height: var(--font-size);
-  font-weight: bold;
-  margin: 0;
-  color: var(--color-text-primary);
-}
-
-.btn-close {
-  background-color: inherit;
-  color: var(--color-primary);
-  font-size: 3rem;
-}
-
-/* Contenedor principal */
-.form {
+.modal-wrapper {
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.2rem;
-  padding: 2rem;
-  width: 100%;
-  background: var(--color-background-secondary);
-  border-radius: 1rem;
 }
 
-/* Botones */
-.actions-row {
+.modal-body.simple-form-layout {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 1rem;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+  grid-template-columns: 1fr !important;
+}
+
+:host ::ng-deep .form-field {
+  position: relative !important; 
+  margin-bottom: 0 !important;   
+  padding-bottom: 2.5rem !important; 
+}
+
+:host ::ng-deep .error-messages {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 2.5rem !important; 
+  
+  display: flex !important;
+  align-items: flex-start; 
+  padding-top: 0.2rem !important; 
+  
+  overflow: hidden; 
+  pointer-events: none; 
+}
+
+:host ::ng-deep .error-messages p {
+  font-size: 1.1rem !important; 
+  line-height: 1.2 !important;
+  margin: 0 !important;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; 
+  line-clamp: 1;         
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.loader {
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  width: 1.2rem;
+  height: 1.2rem;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

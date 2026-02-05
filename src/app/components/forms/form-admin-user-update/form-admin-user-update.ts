@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UsuarioService } from '../../../services/usuario-service';
@@ -11,7 +11,7 @@ import { UiNotificationService } from '../../../services/ui-notification-service
   templateUrl: './form-admin-user-update.html',
   styleUrl: './form-admin-user-update.css',
 })
-export class FormAdminUserUpdate {
+export class FormAdminUserUpdate implements OnInit {
   @Input() usuario!: UsuarioResponse;
 
   private cdr = inject(ChangeDetectorRef);
@@ -30,22 +30,20 @@ export class FormAdminUserUpdate {
   maxImageHeight = 1080;
   newImageFile: File | null = null;
 
-  form = this.formBuilder.group(
-    {
-      nombreCompleto: [
-        '',
-        [Validators.required, Validators.maxLength(256)],
-      ],
-      email: [
-        '',
-        [Validators.required, Validators.email, Validators.maxLength(254)]
-      ],
-      telefono: [
-        '',
-        [Validators.required, Validators.pattern(/^\d{6,15}$/)]
-      ]
-    }
-  );
+  form = this.formBuilder.group({
+    nombreCompleto: [
+      '',
+      [Validators.required, Validators.maxLength(256)],
+    ],
+    email: [
+      '',
+      [Validators.required, Validators.email, Validators.maxLength(254)],
+    ],
+    telefono: [
+      '',
+      [Validators.required, Validators.pattern(/^\d{6,15}$/)],
+    ],
+  });
 
   ngOnInit() {
     this.form.patchValue({
@@ -63,7 +61,7 @@ export class FormAdminUserUpdate {
 
   onFileSelected(event: any) {
     const input = event.target as HTMLInputElement;
-    
+
     if (!input.files || input.files.length === 0) {
       this.clearImage();
       return;
@@ -103,11 +101,23 @@ export class FormAdminUserUpdate {
     this.cdr.detectChanges();
   }
 
+  removeImage() {
+    this.newImageFile = null;
+    this.selectedFileName = null;
+    this.imagePreviewUrl = null;
+    
+    if (this.fileInputRef) {
+      this.fileInputRef.value = '';
+    }
+    
+    this.cdr.detectChanges();
+  }
+
   mostrarError(formControlName: string) {
     return (
       this.form.get(formControlName)?.invalid &&
       (this.form.get(formControlName)?.touched ||
-       this.form.get(formControlName)?.dirty)
+        this.form.get(formControlName)?.dirty)
     );
   }
 
@@ -128,10 +138,10 @@ export class FormAdminUserUpdate {
               .updateImagenUsuarioAdmin(this.usuario.id, this.newImageFile)
               .subscribe({
                 next: () => this.updateSuccess(),
-                error: (err) => this.uiNotificationService.abrirModalError(err)
+                error: (err) =>
+                  this.uiNotificationService.abrirModalError(err),
               });
-          }
-          else {
+          } else {
             this.updateSuccess();
           }
         },
@@ -140,9 +150,13 @@ export class FormAdminUserUpdate {
   }
 
   private updateSuccess() {
-    this.uiNotificationService.abrirSnackBarExito('Usuario actualizado exitosamente.')
-
-    // El form puede existir dentro de un modal
+    this.uiNotificationService.abrirSnackBarExito(
+      'Usuario actualizado exitosamente.'
+    );
     this.dialogRef?.close(true);
+  }
+
+  cerrarModal() {
+    this.dialogRef?.close();
   }
 }

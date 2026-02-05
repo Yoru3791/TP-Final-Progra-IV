@@ -1,90 +1,112 @@
-<div class="modal-container">
-  <!-- Header -->
-  <div class="modal-header">
-    <h2 class="modal-title">{{ vianda.nombreVianda }}</h2>
+<div class="card-modal-container">
+  
+  <!-- Imagen -->
+  <div class="image-section" 
+      [class.unavailable]="!vianda.estaDisponible && !esEliminada()"
+      [class.eliminada]="esEliminada()">
+    
+    @if (vianda.imagenUrl) {
+      <img [src]="vianda.imagenUrl" [alt]="vianda.nombreVianda" class="hero-image" />
+    } @else {
+      <div class="no-image-placeholder">
+        <img src="assets/logo-miviandita.png" alt="Sin imagen" class="placeholder-logo" />
+      </div>
+    }
+
+    <!-- Estado -->
+    @if (esEliminada()) {
+      <div class="status-badge deleted">ELIMINADA</div>
+    } @else if (!vianda.estaDisponible) {
+      <div class="status-badge">NO DISPONIBLE</div>
+    }
   </div>
 
-  <div class="modal-body">
-    <div class="left-panel">
-      <!-- Categoría -->
-      <div class="info-group">
-        <label>Categoría</label>
-        <p>{{ vianda.categoria }}</p>
+  <!-- Contenido -->
+  <div class="content-section">
+    
+    <div class="header-row">
+      <div class="title-block">
+        <span class="category-text">{{ vianda.categoria }}</span>
+        <h2 class="vianda-title">{{ vianda.nombreVianda }}</h2>
       </div>
+      <span class="price-badge">$ {{ vianda.precio }}</span>
+    </div>
 
-      <!-- Descripción -->
-      <div class="info-group">
-        <label>Descripción</label>
-        <p class="descripcion-text">{{ vianda.descripcion }}</p>
-      </div>
+    <!-- Descripción -->
+    <p class="vianda-description">
+      {{ vianda.descripcion }}
+    </p>
 
-      <!-- Precio -->
-      <div class="info-group">
-        <label>Precio</label>
-        <span class="precio-badge">$ {{ vianda.precio }}</span>
-      </div>
-
-      <!-- Iconos -->
-      <div class="restricciones-container">
-        @if (vianda.esVegano) {
-          <div class="icon-badge" title="Vegano">
-            <app-icon-vegan class="icon active"></app-icon-vegan>
-          </div>
-        }
-
-        @if (vianda.esVegetariano) {
-          <div class="icon-badge" title="Vegetariano">
-            <app-icon-veggie class="icon active"></app-icon-veggie>
-          </div>
-        }
-        
-        @if (vianda.esSinTacc) {
-          <div class="icon-badge" title="Sin TACC">
-            <app-icon-tacc class="icon active"></app-icon-tacc>
-          </div>
-        }
-      </div>
-
-      <!-- Botones -->
-      <div class="modal-actions">
-        
-        @if (modo === 'DUENO') {
-          <button class="btn-base btn-primary btn-rounded btn-action" (click)="cerrarModal()">Volver</button>
-        } @else {
-          <div class="control-row">
-            <button class="btn-base btn-primary btn-rounded btn-volver" (click)="cerrarModal()">Volver</button>
-              
-            <div class="cart-group">
-                <div class="quantity-selector">
-                  <button (click)="quitar()" class="btn-qty" [disabled]="enMinimo()">
-                      <i class="fa-solid fa-minus"></i>
-                  </button>
-
-                  <span class="qty-value">{{ cantidad() }}</span>
-
-                  <button (click)="agregar()" class="btn-qty" [disabled]="enMaximo()">
-                      <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-
-                <button class="btn btn-cart" (click)="abrirCarrito()" title="Ver Carrito">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                </button>
+    <!-- Lista de etiquetas dietarias -->
+    <div class="diet-list">
+      <h4 class="diet-title">Etiquetas</h4>
+      
+      <div class="diet-items-container">
+        @if (vianda.esSinTacc || vianda.esVegetariano || vianda.esVegano) {
+          @if (vianda.esSinTacc) {
+            <div class="diet-pill" title="Sin TACC">
+              <div class="icon-mini">
+                <app-icon-tacc class="icon-svg"></app-icon-tacc>
+              </div>
+              <span class="diet-label">Sin TACC</span>
             </div>
+          }
+          @if (vianda.esVegetariano) {
+            <div class="diet-pill" title="Vegetariano">
+              <div class="icon-mini">
+                <app-icon-veggie class="icon-svg"></app-icon-veggie>
+              </div>
+              <span class="diet-label">Vegetariano</span>
+            </div>
+          }
+          @if (vianda.esVegano) {
+            <div class="diet-pill" title="Vegano">
+              <div class="icon-mini">
+                <app-icon-vegan class="icon-svg"></app-icon-vegan>
+              </div>
+              <span class="diet-label">Vegano</span>
+            </div>
+          }
+        } @else {
+          <!-- Estado Sin etiquetas -->
+          <div class="diet-pill neutral">
+            <i class="fa-solid fa-circle-info icon-neutral"></i>
+            <span class="diet-label neutral-text">Sin etiquetas dietarias específicas</span>
           </div>
         }
       </div>
     </div>
 
-    <!-- Imagen -->
-    <div class="right-panel">
-      <div class="card-image-container">
-        @if (vianda.imagenUrl){
-          <img [src]="vianda.imagenUrl" [alt]="vianda.nombreVianda" class="product-image" />
-        } @else {
-          <img src="logo-miviandita-removebg-preview.png" alt="Imagen de vianda no disponible" class="no-image" />
-        }
-      </div>
-    </div>
   </div>
+
+  <div class="actions-section">
+    
+    <button class="btn-ghost-back" (click)="cerrarModal()">
+      <i class="fa-solid fa-arrow-left"></i> Volver
+    </button>
+
+    <!-- Controles carrito -->
+    @if (modo !== 'DUENO') {
+      <div class="right-actions">
+        
+        <div class="quantity-selector">
+          <button (click)="quitar()" class="btn-qty" [disabled]="enMinimo()">
+            <i class="fa-solid fa-minus"></i>
+          </button>
+
+          <span class="qty-value">{{ cantidad() }}</span>
+
+          <button (click)="agregar()" class="btn-qty" [disabled]="enMaximo()">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+
+        <button class="btn-cart-orange" (click)="abrirCarrito()" title="Ver Carrito">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </button>
+
+      </div>
+    }
+  </div>
+
 </div>

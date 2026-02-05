@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EmprendimientoService } from '../../../services/emprendimiento-service';
@@ -14,7 +14,7 @@ import { CitySelector } from '../../utils/city-selector/city-selector';
   templateUrl: './form-emprendimiento-update.html',
   styleUrl: './form-emprendimiento-update.css',
 })
-export class FormUpdateEmprendimiento {
+export class FormUpdateEmprendimiento implements OnInit {
   public emprendimiento: EmprendimientoResponse = inject(MAT_DIALOG_DATA);
 
   private fb = inject(FormBuilder);
@@ -62,10 +62,6 @@ export class FormUpdateEmprendimiento {
     const file = event.target.files[0];
 
     if (!file) {
-      this.newImageFile = null;
-      this.selectedFileName = null;
-      this.imagePreviewUrl = this.emprendimiento.imagenUrl || null;
-      this.cdr.detectChanges();
       return;
     }
 
@@ -83,29 +79,16 @@ export class FormUpdateEmprendimiento {
           this.uiNotificationService.abrirModalError(
             null, `La imagen no debe superar ${this.maxWidth}x${this.maxHeight}px`
           );
-
           this.newImageFile = null;
           this.selectedFileName = null;
           this.imagePreviewUrl = this.emprendimiento.imagenUrl || null;
         }
-
         this.cdr.detectChanges();
       };
-
       img.src = e.target.result;
     };
 
     reader.readAsDataURL(file);
-  }
-
-  removeImage() {
-    this.newImageFile = null;
-    this.selectedFileName = null;
-    this.imagePreviewUrl = null;
-
-    if (this.fileInputRef) this.fileInputRef.value = '';
-
-    this.cdr.detectChanges();
   }
 
   async onDelete() {
@@ -113,7 +96,7 @@ export class FormUpdateEmprendimiento {
       this.uiNotificationService.abrirModalConfirmacion({
         titulo: 'Eliminar Emprendimiento',
         texto:
-          '¿Seguro de que querés eliminar el emprendimiento? <span>Esta acción es irreversible.</span>',
+          '¿Estás seguro que querés eliminar el emprendimiento? <span>Esta acción es irreversible.</span>',
         textoEsHtml: true,
         critico: true,
       })
@@ -124,7 +107,6 @@ export class FormUpdateEmprendimiento {
     this.emprendimientoService.deleteEmprendimiento(this.emprendimiento.id).subscribe({
       next: () => {
         this.uiNotificationService.abrirSnackBarExito('Emprendimiento eliminado exitosamente.');
-
         this.dialogRef.close(true);
         this.router.navigateByUrl('home');
       },

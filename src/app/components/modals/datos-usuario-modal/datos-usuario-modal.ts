@@ -24,11 +24,9 @@ export class DatosUsuarioModal {
   getWhatsappLink(): string {
     if (!this.data.telefono) return '';
 
-    // 1. Quitamos todo lo que no sea número
     let numeroLimpio = this.data.telefono.replace(/\D/g, '');
 
-    // 2. Lógica para Argentina:
-    // Si el número NO empieza con 54 (código país), asumimos que es local y le pegamos el 549
+    // Lógica Argentina: Si no empieza con 54, agregamos 549
     if (!numeroLimpio.startsWith('54')) {
       numeroLimpio = '549' + numeroLimpio;
     }
@@ -37,18 +35,14 @@ export class DatosUsuarioModal {
   }
 
   getMapsLink(): string {
-    // Concatenamos dirección y ciudad para mejor precisión
     const query = `${this.data.direccion || ''}, ${this.data.ciudad || ''}`;
     if (!query.trim() || query === ', ') return '';
 
-    // encodeURIComponent convierte espacios y tildes a formato URL
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
   }
 
   getGmailLink(): string {
     if (!this.data.email) return '';
-
-    // fs=1 fuerza pantalla completa (es necesario para que funcione bien en pestañas nuevas).
     return `https://mail.google.com/mail/?view=cm&fs=1&to=${this.data.email}`;
   }
 }

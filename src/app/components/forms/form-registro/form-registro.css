@@ -1,32 +1,48 @@
 :host {
-  width: 100%;
   display: flex;
+  width: 100%;
   justify-content: center;
 }
 
 .form-registro {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   padding: 3rem;
+  
   width: 100%;
-  max-width: 55rem; /* Ancho controlado */
-  margin: 2rem auto;
+  max-width: 55rem;
+  margin: 0 auto;
+  
   background: var(--color-background-secondary);
   border-radius: 1.5rem;
   box-shadow: var(--shadow-form);
+  box-sizing: border-box;
 }
 
-/* Checkboxes específicos de registro (términos y condiciones) */
-:host .checkbox-container {
+.btn-full-width {
+  width: 100% !important;
+  margin-top: 1.5rem;
+  justify-content: center;
+}
+
+.checkboxes-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+}
+
+.checkbox-container {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 1.2rem;
   font-size: 1.4rem;
   width: 100%;
 }
 
-:host .checkbox-container label {
+.checkbox-container label {
   display: flex;
   align-items: flex-start;
   gap: 1rem;
@@ -34,40 +50,43 @@
   transition: color 0.2s ease;
   line-height: 1.4;
   color: var(--color-text-secondary);
+  user-select: none;
 }
 
-:host .checkbox-container label p {
+.checkbox-container input[type='checkbox'] {
+  margin-top: 0.2rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  accent-color: var(--color-primary-light);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.checkbox-container label p {
   margin: 0;
-}
-
-/* Efecto tachado al aceptar */
-:host .checkbox-container label:has(input[type='checkbox']:checked) {
-  color: var(--color-ui-neutral);
-}
-
-:host .checkbox-container label:has(input[type='checkbox']:checked) a {
-  color: var(--color-ui-neutral);
-  pointer-events: none;
-  text-decoration: line-through;
-  cursor: default;
 }
 
 .checkbox-container a {
   color: var(--color-primary-light);
   text-decoration: none;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .checkbox-container a:hover {
   text-decoration: underline;
+  color: var(--color-primary-hover-dark);
 }
 
-.btn-registro {
-  width: 100%;
-  font-size: 1.6rem;
-  font-weight: 700;
-  padding: 1.4rem;
-  margin-top: 1.5rem;
+.checkbox-container label:has(input[type='checkbox']:checked) {
+  color: var(--color-ui-neutral);
+}
+
+.checkbox-container label:has(input[type='checkbox']:checked) a {
+  color: var(--color-ui-neutral);
+  pointer-events: none;
+  text-decoration: line-through;
+  cursor: default;
 }
 
 @media (max-width: 480px) {

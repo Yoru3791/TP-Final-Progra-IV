@@ -1,4 +1,4 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ViandaService } from '../../../services/vianda-service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -23,8 +23,9 @@ export class FormVianda {
   private fb = inject(FormBuilder);
   private viandaService = inject(ViandaService);
   private dialogRef = inject(MatDialogRef);
-  private cdr = inject(ChangeDetectorRef); // Ayuda a forzar render
+  private cdr = inject(ChangeDetectorRef);
   private uiNotificationService = inject(UiNotificationService);
+  private elementRef = inject(ElementRef);
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { idEmprendimiento: number }) {}
 
@@ -36,6 +37,8 @@ export class FormVianda {
   loading = false;
   selectedFileName: string | null = null;
   public imagePreviewUrl: string | ArrayBuffer | null = null;
+  
+  openCategoria = false;
 
   fileInputRef: any;
 
@@ -44,14 +47,39 @@ export class FormVianda {
 
   formVianda = this.fb.group({
     nombreVianda: ['', [Validators.required, Validators.maxLength(256)]],
-    categoria: [null, Validators.required],
+    categoria: [null as string | null, Validators.required],
     descripcion: ['', [Validators.required, Validators.maxLength(256)]],
-    image: [null, Validators.required],
+    image: [null as File | null, Validators.required],
     precio: ['', [Validators.required, Validators.min(0)]],
     esVegano: [false, Validators.required],
     esVegetariano: [false, Validators.required],
     esSinTacc: [false, Validators.required],
   });
+
+  toggleCategoria(event: Event) {
+    event.stopPropagation();
+    this.openCategoria = !this.openCategoria;
+  }
+
+  selectCategoria(valor: string) {
+    this.formVianda.get('categoria')?.setValue(valor);
+    this.openCategoria = false;
+  }
+
+  getSelectedLabel(): string {
+    const val = this.formVianda.get('categoria')?.value;
+    if (!val) return '-- Seleccionar --';
+
+    const option = this.categorias.find((c) => c.key === val);
+    return option ? option.label : val;
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event) {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.openCategoria = false;
+    }
+  }
 
   onFileInputReady(element: HTMLInputElement) {
     this.fileInputRef = element;
@@ -60,21 +88,13 @@ export class FormVianda {
   onFileSelected(event: any) {
     const file = event.target.files[0];
 
-    if (!file) {
-      this.selectedFileName = null;
-      this.imagePreviewUrl = null;
-      this.formVianda.get('image')?.setValue(null);
-      this.formVianda.get('image')?.markAsTouched();
-      this.cdr.detectChanges(); // Asegura que se vea el cambio
-      return;
-    }
+    if (!file) return;
 
     this.selectedFileName = file.name;
 
     const reader = new FileReader();
     reader.onload = (e: any) => {
       this.imagePreviewUrl = e.target.result;
-
       this.cdr.detectChanges();
 
       const img = new Image();
@@ -92,9 +112,9 @@ export class FormVianda {
             null, `La imagen no debe superar ${this.maxWidth}x${this.maxHeight}px`
           );
         }
-
+        
         this.formVianda.get('image')?.markAsTouched();
-        this.cdr.detectChanges(); // Actualización final
+        this.cdr.detectChanges();
       };
 
       img.src = e.target.result;
@@ -113,7 +133,7 @@ export class FormVianda {
       this.fileInputRef.value = '';
     }
 
-    this.cdr.detectChanges(); // Asegura desaparición inmediata
+    this.cdr.detectChanges();
   }
 
   onSubmit() {

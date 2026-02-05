@@ -1,14 +1,17 @@
-<div class="modal-unificado-container">
-  <div class="header-modal">
-    <h3 class="titulo-seccion">Datos de contacto</h3>
-    <i class="fa-solid fa-xmark close-icon" (click)="cerrar()"></i>
+<div class="modal-wrapper">
+  
+  <div class="modal-header">
+    <h2 class="modal-title">Datos de Contacto</h2>
+    <button type="button" class="btn-icon-close" (click)="cerrar()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
   </div>
 
-  <div class="divisor"></div>
-
-  <div class="modal-content">
+  <div class="modal-body simple-body">
+    
     <div class="datos-principales-wrapper">
       
+      <!-- Foto de Perfil -->
       <div class="profile-img-container">
         <img
           [src]="data.imagenUrl"
@@ -18,15 +21,17 @@
         />
       </div>
 
+      <!-- Lista de Datos -->
       <div class="info-container">
         
+        <!-- Nombre -->
         <div class="dato">
           <span class="label">Nombre</span>
           <span class="valor">
             {{ 
-               (data.nombre.includes('usuario_borrado') || data.nombre === 'Emprendimiento Eliminado') 
-               ? 'Usuario no disponible' 
-               : data.nombre
+              (data.nombre.includes('usuario_borrado') || data.nombre === 'Emprendimiento Eliminado') 
+              ? 'Usuario no disponible' 
+              : data.nombre
             }}
           </span>
         </div>
@@ -37,6 +42,7 @@
                 <p>La información de contacto no está disponible.</p>
             </div>
         } @else {
+            <!-- Email -->
             @if (data.email && data.email !== 'No disponible' && !data.email.includes('borrado')) {
               <div class="dato">
                 <span class="label">Email</span>
@@ -54,6 +60,7 @@
               </div>
             }
 
+            <!-- Teléfono -->
             <div class="dato">
               <span class="label">Teléfono</span>
               <div class="valor-con-accion">
@@ -69,6 +76,7 @@
               </div>
             </div>
 
+            <!-- Dirección -->
             @if (data.direccion && data.direccion !== 'No disponible' && !data.direccion.includes('Eliminado')) {
               <div class="dato">
                 <span class="label">Dirección</span>
@@ -92,6 +100,7 @@
       </div>
     </div>
 
+    <!-- Alerta / Recomendación -->
     @if (role() !== 'ADMIN' && data.telefono && data.telefono !== 'No disponible' && !data.telefono.includes('borrado_')) {
       <div class="alerta">
         <i class="fa-solid fa-triangle-exclamation"></i>
@@ -100,7 +109,14 @@
     }
   </div>
 
-  <div class="acciones">
-    <button class="btn-base btn-secondary" (click)="cerrar()">Cerrar</button>
+  <div class="modal-footer">
+    <div class="footer-left"></div>
+    
+    <div class="footer-right">
+      <button type="button" class="btn-secondary-action" (click)="cerrar()">
+        Cerrar
+      </button>
+    </div>
   </div>
+
 </div>

@@ -1,8 +1,35 @@
-<h2 class="titulo-rojo" cdkFocusInitial>Eliminar cuenta</h2>
+<div class="modal-wrapper">
+  
+  <div class="modal-header">
+    <h2 class="modal-title danger-title">Eliminar Cuenta</h2>
+    <button type="button" class="btn-icon-close" (click)="cancelar()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
 
-<p class="texto">Esta acción es <span>irreversible</span>. ¿Estás seguro de que querés continuar?</p>
+  <div class="modal-body simple-body">
+    <div class="alert-content">
+      <div class="icon-warning-container">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      
+      <p class="texto-advertencia">
+        Esta acción es <span class="text-danger">irreversible</span>. <br>
+        ¿Estás seguro que querés continuar?
+      </p>
+    </div>
+  </div>
 
-<div class="acciones">
-  <button class="btn-base btn-danger" (click)="confirmar()">Estoy seguro</button>
-  <button class="btn-base btn-secondary" (click)="cancelar()">Cancelar</button>
+  <div class="modal-footer center-footer">
+    <div class="footer-actions">
+      <button type="button" class="btn-secondary-action" (click)="cancelar()">
+        Cancelar
+      </button>
+      
+      <button type="button" class="btn-danger-action" (click)="confirmar()">
+        Estoy seguro
+      </button>
+    </div>
+  </div>
+
 </div>

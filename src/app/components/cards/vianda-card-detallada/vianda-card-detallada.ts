@@ -43,11 +43,11 @@ export class ViandaCardDetallada {
   }
 
   openViandaModal() {
-    //  este modal se abre al clickear en cualquier parte de la vianda card
-    //  pero como hay partes ya clickeables, se agregaron "stopPropagation()"
-    //  en el html para evitar que se abra el modal cuando no debería
     this.dialog.open(ViandaExtendedModal, {
-      width: '100rem',
+      width: '40rem', 
+      maxWidth: '95vw', 
+      height: 'auto',
+      maxHeight: '90vh',
       data: {
         vianda: this.vianda(),
         modo: this.modo()

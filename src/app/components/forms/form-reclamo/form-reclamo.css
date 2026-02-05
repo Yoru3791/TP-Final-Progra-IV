@@ -1,92 +1,54 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
 .form-reclamo {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 2rem;
+  align-items: flex-start;
+  gap: 1.5rem; 
   padding: 3rem;
   width: 100%;
-  max-width: 55rem;
-  margin: 0 auto;
+  max-width: 55rem; 
   background: var(--color-background-secondary);
   border-radius: 1.5rem;
   box-shadow: var(--shadow-form);
-}
-
-/* Estilos específicos para el div que simula el input */
-.dropdown-trigger {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  user-select: none;
-  /* Asegura que use los mismos colores de transición que un input normal */
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-/* Estado activo/abierto: replica EXACTAMENTE el foco del input global */
-.dropdown-trigger.open {
-  border-color: var(--color-primary-light);
-  box-shadow: 0 0 0 0.3rem rgba(254, 144, 57, 0.15);
-}
-
-.selected-text {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-right: 1rem;
-  flex: 1; /* Ocupa el espacio disponible */
-}
-
-.placeholder-text {
-  color: var(--color-text-secondary);
-  opacity: 0.5;
-}
-
-/* Estilos para la nueva flecha SVG */
-.arrow-icon {
-  width: 1.8rem;
-  height: 1.8rem;
-  color: var(--color-text-secondary);
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease;
-  flex-shrink: 0; /* Evita que se aplaste */
-}
-
-.dropdown-trigger.open .arrow-icon {
-  transform: rotate(180deg);
-  color: var(--color-primary-light);
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .form-textarea {
-  resize: none;
+  height: auto !important; 
   min-height: 12rem;
-  line-height: 1.5;
+  resize: none;
+  line-height: 1.5 !important;
+  padding-top: 1.2rem !important;
+  padding-bottom: 1.2rem !important;
+}
+
+.btn-full-width {
+  width: 100% !important;
+  margin-top: 1rem;
+  justify-content: center;
 }
 
 .label-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .char-counter {
   font-size: 1.1rem;
   color: var(--color-text-light);
-  font-weight: 500;
-}
-
-.btn-submit {
-  width: 100%;
-  margin-top: 1rem;
-  font-size: 1.6rem;
-  padding: 1.4rem;
+  font-weight: 600;
 }
 
 @media (max-width: 480px) {
   .form-reclamo {
-    padding: 2rem 1.5rem;
+    padding: 2rem;
+    max-width: 100%;
   }
 }

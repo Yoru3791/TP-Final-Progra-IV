@@ -1,212 +1,217 @@
-<div class="modal-pedido-container">
-  <div class="pedido-header">
-    <h3 class="titulo-modal">
-      Pedido #{{ pedido.id }} —
-      {{
-        (fechaEliminacionEmprendimiento || pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado'))
-          ? 'Emprendimiento Eliminado'
-          : pedido.emprendimiento.nombreEmprendimiento
-      }}
-    </h3>
-    <button class="btn-close-icon" (click)="cerrar()">
+<div class="modal-wrapper">
+  
+  <div class="modal-header">
+    <h2 class="modal-title">
+      <i class="fa-solid fa-receipt highlight-icon"></i>
+      <span class="title-text">Pedido #{{ pedido.id }}</span>
+      <span class="divider">|</span>
+      <span class="shop-name">
+        {{ 
+          (fechaEliminacionEmprendimiento || pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado'))
+            ? 'Emprendimiento Eliminado'
+            : pedido.emprendimiento.nombreEmprendimiento
+        }}
+      </span>
+    </h2>
+    <button type="button" class="btn-icon-close" (click)="cerrar()">
       <i class="fa-solid fa-xmark"></i>
     </button>
   </div>
 
-  <div class="divisor"></div>
-
-  <div class="pedido-content">
-    <div class="left-panel scrolleable">
-      @for (detalle of pedido.viandas; track detalle.viandaId) {
-        <div class="item-vianda">
-          <img
-            [src]="detalle.imagenUrl || 'assets/placeholder-food.png'"
-            class="item-img"
-            alt="{{ detalle.nombreVianda }}"
-          />
-          <div class="item-info">
-            <p class="item-nombre">{{ detalle.nombreVianda }}</p>
-            <div class="item-meta">
-              <span class="item-precio">${{ detalle.precioUnitario }}</span>
-              <span class="item-cantidad">x{{ detalle.cantidad }}</span>
+  <div class="modal-body cart-layout">
+    
+    <div class="cart-items-panel">
+      <div class="items-list">
+        @for (detalle of pedido.viandas; track detalle.viandaId) {
+          <div class="cart-item">
+            <img 
+              [src]="detalle.imagenUrl || 'assets/placeholder-food.png'" 
+              class="item-img" 
+              alt="{{ detalle.nombreVianda }}"
+            />
+            <div class="item-info">
+              <h3 class="item-name">{{ detalle.nombreVianda }}</h3>
+              <div class="item-meta">
+                <span class="meta-price">${{ detalle.precioUnitario }}</span>
+                <span class="meta-qty-badge">x{{ detalle.cantidad }}</span>
+              </div>
+            </div>
+            <div class="item-actions">
+              <p class="item-subtotal">${{ detalle.subtotal }}</p>
             </div>
           </div>
-          <p class="item-subtotal">${{ detalle.subtotal }}</p>
-        </div>
-      }
+        }
+      </div>
     </div>
 
-    <div class="right-panel">
-      <div class="contexto-section">
-        @if (role() === 'DUENO') {
-          <img
-            [src]="pedido.cliente.imagenUrl || 'assets/placeholder-user.png'"
-            class="img-contexto"
-            [class.grayscale]="pedido.cliente.nombreCompleto.includes('usuario_borrado')"
-            alt="Cliente"
-          />
-          <div class="contexto-data">
-            <span class="contexto-label">Cliente</span>
-            <p class="contexto-nombre">
-              {{
-                pedido.cliente.nombreCompleto.includes('usuario_borrado')
-                  ? 'Usuario Eliminado'
-                  : pedido.cliente.nombreCompleto
-              }}
-            </p>
-          </div>
-        } @else {
-          <img
-            [src]="pedido.emprendimiento.imagenUrl || 'assets/placeholder-food.png'"
-            class="img-contexto"
-            [class.grayscale]="fechaEliminacionEmprendimiento || pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado')"
-            alt="Emprendimiento"
-          />
-          <div class="contexto-data">
-            <span class="contexto-label">Emprendimiento</span>
-            <p class="contexto-nombre">
-              {{
-                (fechaEliminacionEmprendimiento || pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado'))
-                  ? 'Emprendimiento Eliminado'
-                  : pedido.emprendimiento.nombreEmprendimiento
-              }}
-            </p>
-          </div>
-        }
-      </div>
-
-      <div class="resumen-section">
-        <div class="fila-resumen">
-          <span>Fecha de entrega:</span>
-          <strong>{{ pedido.fechaEntrega | date: 'dd/MM/yyyy' }}</strong>
-        </div>
-        <div class="fila-resumen">
-          <span>Total:</span>
-          <strong class="precio-total">${{ pedido.total }}</strong>
-        </div>
-        <div class="fila-resumen">
-          <span>Estado:</span>
-          <span class="estado-badge" [class]="pedido.estado.toLowerCase()">
-            {{ pedido.estado }}
-          </span>
-        </div>
-      </div>
-
-      <div class="acciones-section">
-        @if (role() === 'CLIENTE' && pedido.estado === 'PENDIENTE') {
-          <div class="grupo-fecha">
-            <label>Nueva fecha</label>
-            <input
-              type="date"
-              [(ngModel)]="nuevaFechaSeleccionada"
-              class="input-date"
-              [min]="minDate"
-              [disabled]="esDemasiadoTarde"
+    <div class="cart-summary-panel">
+      
+      <div class="summary-center-container">
+        
+        <div class="user-profile-section">
+          
+          @if (role() === 'DUENO') {
+            <img
+              [src]="pedido.cliente.imagenUrl || 'assets/placeholder-user.png'"
+              class="context-img large-img"
+              [class.grayscale]="pedido.cliente.nombreCompleto.includes('usuario_borrado')"
+              alt="Cliente"
             />
-          </div>
-          @if (esDemasiadoTarde) {
-            <div class="alerta-bloqueo"><i class="fa-solid fa-clock"></i> Plazo vencido</div>
-          }
-          <button
-            class="btn-base btn-primary full-width"
-            [disabled]="esDemasiadoTarde || !nuevaFechaSeleccionada"
-            (click)="cambiarFechaEntrega(nuevaFechaSeleccionada)"
-          >
-            CAMBIAR FECHA
-          </button>
-          <button
-            class="btn-base btn-danger full-width"
-            (click)="cambiarEstado(EstadoPedido.CANCELADO)"
-          >
-            CANCELAR PEDIDO
-          </button>
-        }
+            <div class="context-info">
+              <span class="context-label">Cliente</span>
+              <p class="context-name">
+                {{
+                  pedido.cliente.nombreCompleto.includes('usuario_borrado')
+                    ? 'Usuario Eliminado'
+                    : pedido.cliente.nombreCompleto
+                }}
+              </p>
+            </div>
+            
+            @if (!pedido.cliente.nombreCompleto.includes('usuario_borrado')) {
+              <button class="btn-contact" (click)="contactarCliente()">
+                <i class="fa-solid fa-comment-dots"></i> Contactar Cliente
+              </button>
+            } @else {
+              <button class="btn-contact" disabled>Cliente Inactivo</button>
+            }
 
-        @if (role() === 'DUENO' && pedido.estado === 'PENDIENTE') {
-          <button
-            class="btn-base btn-success full-width"
-            (click)="cambiarEstado(EstadoPedido.ACEPTADO)"
-          >
-            ACEPTAR PEDIDO
-          </button>
-          <button
-            class="btn-base btn-danger full-width"
-            (click)="cambiarEstado(EstadoPedido.RECHAZADO)"
-          >
-            RECHAZAR PEDIDO
-          </button>
-        }
-
-        @if (role() === 'DUENO' && pedido.estado === 'ACEPTADO') {
-          <button
-            class="btn-base btn-primary full-width"
-            (click)="cambiarEstado(EstadoPedido.ENTREGADO)"
-          >
-            MARCAR ENTREGADO
-          </button>
-        }
-
-        @if (role() === 'DUENO') {
-          @if (!pedido.cliente.nombreCompleto.includes('usuario_borrado')) {
-            <button class="btn-base btn-secondary full-width" (click)="contactarCliente()">
-              CONTACTAR CLIENTE
-            </button>
           } @else {
-            <button class="btn-base btn-secondary full-width" disabled>CLIENTE INACTIVO</button>
-          }
-        }
+            <img
+              [src]="pedido.emprendimiento.imagenUrl || 'assets/placeholder-food.png'"
+              class="context-img large-img"
+              [class.grayscale]="fechaEliminacionEmprendimiento || pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado')"
+              alt="Emprendimiento"
+            />
+            <div class="context-info">
+              <span class="context-label">Emprendimiento</span>
+              <p class="context-name">
+                {{
+                  (fechaEliminacionEmprendimiento || pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado'))
+                    ? 'Emprendimiento Eliminado'
+                    : pedido.emprendimiento.nombreEmprendimiento
+                }}
+              </p>
+            </div>
 
-        @if (
-             fechaEliminacionEmprendimiento || 
-             pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado_') ||
-             pedido.emprendimiento.nombreEmprendimiento === 'Emprendimiento Eliminado'
-        ) {
-            
-            <button class="btn-base btn-secondary full-width" disabled>
-                EMPRENDIMIENTO CERRADO
-            </button>
-
-        } @else {
-            
-            @if (role() === 'CLIENTE') {
-                <button class="btn-base btn-secondary full-width" (click)="contactarLocal()">
-                    CONTACTAR DUEÑO
+            @if (
+                !fechaEliminacionEmprendimiento && 
+                !pedido.emprendimiento.nombreEmprendimiento.includes('Eliminado_') &&
+                pedido.emprendimiento.nombreEmprendimiento !== 'Emprendimiento Eliminado' &&
+                role() === 'CLIENTE'
+            ) {
+                <button class="btn-contact" (click)="contactarLocal()">
+                    <i class="fa-solid fa-comment-dots"></i> Contactar Dueño
                 </button>
             }
-        }
+          }
+        </div>
 
-        @if (role() === 'ADMIN') {
-          <div class="admin-panel">
-            <label>Administrar Estado</label>
-            <div class="admin-row">
-              <select [(ngModel)]="estadoAdminSeleccionado" class="form-select admin-select">
-                @for (est of estadosPosibles; track est) {
-                  <option [value]="est">{{ est }}</option>
-                }
-              </select>
-              <button class="btn-base btn-primary btn-icon" (click)="actualizarEstadoAdmin()">
-                <i class="fa-solid fa-floppy-disk"></i>
-              </button>
-            </div>
+        <!-- Totales y Estado -->
+        <div class="total-section">
+          <div class="total-row">
+            <span class="total-label">Total</span>
+            <span class="total-amount">${{ pedido.total }}</span>
           </div>
+          <div class="status-row">
+            <span class="status-label">Estado actual:</span>
+            <span class="estado-badge" [class]="pedido.estado.toLowerCase()">
+              {{ pedido.estado }}
+            </span>
+          </div>
+          <div class="date-row">
+            <i class="fa-regular fa-calendar"></i>
+            <span>Entrega: <strong>{{ pedido.fechaEntrega | date: 'dd/MM/yyyy' }}</strong></span>
+          </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="checkout-actions">
           
-          <div class="admin-actions">
-            <button
-              class="btn-base btn-secondary half-width"
-              (click)="verDatosUsuario(pedido.emprendimiento.dueno)"
-            >
-              <i class="fa-solid fa-store"></i> Dueño
-            </button>
+          @if (role() === 'CLIENTE' && pedido.estado === 'PENDIENTE') {
+            <div class="date-change-block">
+              <label class="form-label-mini">Cambiar fecha</label>
+              <div class="input-group">
+                <div class="datepicker-mini-wrapper">
+                  <input
+                    matInput
+                    [matDatepicker]="picker"
+                    [(ngModel)]="nuevaFechaSeleccionada"
+                    class="form-input-mini date-input-custom"
+                    [min]="minDate"
+                    [disabled]="esDemasiadoTarde"
+                    (click)="picker.open()"
+                    readonly
+                    placeholder="DD/MM/AAAA"
+                  />
+                  <mat-datepicker-toggle matIconSuffix [for]="picker" class="toggle-icon-mini"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </div>
 
-            <button
-              class="btn-base btn-secondary half-width"
-              (click)="verDatosUsuario(pedido.cliente)"
-            >
-              <i class="fa-solid fa-user"></i> Cliente
+                <button 
+                  class="btn-mini-primary"
+                  [disabled]="esDemasiadoTarde || !nuevaFechaSeleccionada"
+                  (click)="cambiarFechaEntrega()"
+                  title="Guardar nueva fecha"
+                >
+                  <i class="fa-solid fa-floppy-disk"></i>
+                </button>
+              </div>
+            </div>
+            @if (esDemasiadoTarde) {
+              <div class="alerta-bloqueo">
+                <i class="fa-solid fa-clock"></i> Plazo vencido
+              </div>
+            }
+            <button class="btn-ghost-danger btn-block" (click)="cambiarEstado(EstadoPedido.CANCELADO)">
+              <i class="fa-solid fa-ban"></i> Cancelar Pedido
             </button>
-          </div>
-        }
+          }
+
+          @if (role() === 'DUENO' && pedido.estado === 'PENDIENTE') {
+            <button class="btn-primary-action btn-block btn-green" (click)="cambiarEstado(EstadoPedido.ACEPTADO)">
+              <i class="fa-solid fa-check"></i> Aceptar Pedido
+            </button>
+            <button class="btn-ghost-danger btn-block" (click)="cambiarEstado(EstadoPedido.RECHAZADO)">
+              <i class="fa-solid fa-xmark"></i> Rechazar Pedido
+            </button>
+          }
+
+          @if (role() === 'DUENO' && pedido.estado === 'ACEPTADO') {
+            <button class="btn-primary-action btn-block btn-blue" (click)="cambiarEstado(EstadoPedido.ENTREGADO)">
+              <i class="fa-solid fa-check-double"></i> Marcar Entregado
+            </button>
+          }
+
+          <!-- Panel ADMIN -->
+          @if (role() === 'ADMIN') {
+            <div class="admin-panel">
+              <label class="admin-label">Administrar Estado</label>
+              <div class="admin-controls">
+                <select [(ngModel)]="estadoAdminSeleccionado" class="admin-select">
+                  @for (est of estadosPosibles; track est) {
+                    <option [value]="est">{{ est }}</option>
+                  }
+                </select>
+                <button class="btn-icon-admin" (click)="actualizarEstadoAdmin()">
+                  <i class="fa-solid fa-floppy-disk"></i>
+                </button>
+              </div>
+              
+              <div class="admin-links">
+                <a class="link-admin" (click)="verDatosUsuario(pedido.emprendimiento.dueno)">
+                  <i class="fa-solid fa-store"></i> Dueño
+                </a>
+                <a class="link-admin" (click)="verDatosUsuario(pedido.cliente)">
+                  <i class="fa-solid fa-user"></i> Cliente
+                </a>
+              </div>
+            </div>
+          }
+
+        </div>
       </div>
     </div>
+
   </div>
 </div>

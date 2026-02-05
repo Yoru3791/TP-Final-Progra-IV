@@ -1,5 +1,5 @@
 import { Component, Inject, inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { PedidoResponse } from '../../../model/pedido-response.model';
@@ -15,10 +15,25 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { UiNotificationService } from '../../../services/ui-notification-service';
 import { DatosContactoModalData } from '../../../model/datos-modal-data.model';
 import { EmprendimientoAdminResponse } from '../../../model/emprendimiento-admin-response.model';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-pedido-extended-modal',
-  imports: [MatButtonModule, MatIconModule, DatePipe, FormsModule, CommonModule, A11yModule],
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    DatePipe,
+    FormsModule,
+    CommonModule,
+    A11yModule,
+    MatDialogModule,
+    MatDatepickerModule
+  ],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'es-AR' },
+    provideNativeDateAdapter()
+  ],
   templateUrl: './pedido-extended-modal.html',
   styleUrl: './pedido-extended-modal.css',
 })
@@ -34,8 +49,8 @@ export class PedidoExtendedModal implements OnInit {
 
   public role = this.authService.currentUserRole;
 
-  nuevaFechaSeleccionada: string | null = null;
-  minDate: string = '';
+  nuevaFechaSeleccionada: Date | null = null;
+  minDate: Date | null = null;
   esDemasiadoTarde: boolean = false;
   estadoAdminSeleccionado!: EstadoPedido;
 
@@ -71,13 +86,10 @@ export class PedidoExtendedModal implements OnInit {
     const fechaMinimaPolitica = new Date(hoy);
     fechaMinimaPolitica.setDate(hoy.getDate() + 2);
 
-    const minPoliticaStr = this.formatDate(fechaMinimaPolitica);
-    const fechaOriginalStr = this.pedido.fechaEntrega;
-
-    if (minPoliticaStr > fechaOriginalStr) {
-      this.minDate = minPoliticaStr;
+    if (fechaMinimaPolitica > fechaEntregaActual) {
+      this.minDate = fechaMinimaPolitica;
     } else {
-      this.minDate = fechaOriginalStr;
+      this.minDate = fechaEntregaActual;
     }
   }
 
@@ -93,10 +105,7 @@ export class PedidoExtendedModal implements OnInit {
 
     if (this.role() === 'CLIENTE') {
       if (estadoNuevo !== EstadoPedido.CANCELADO || estadoActual !== EstadoPedido.PENDIENTE) {
-        this.uiNotificationService.abrirModalError(
-          null,
-          'No tenés permiso para cambiar este estado.',
-        );
+        this.uiNotificationService.abrirModalError(null,'No tenés permiso para cambiar este estado.');
         return;
       }
     }
@@ -139,37 +148,32 @@ export class PedidoExtendedModal implements OnInit {
     this.sendUpdate(body);
   }
 
-  cambiarFechaEntrega(fecha: string | null) {
+  cambiarFechaEntrega() {
+    const fechaDate = this.nuevaFechaSeleccionada;
+
     if (this.role() !== 'CLIENTE') {
-      this.uiNotificationService.abrirModalError(
-        null,
-        'Solo el cliente puede modificar la fecha de entrega.',
-      );
+      this.uiNotificationService.abrirModalError(null, 'Solo el cliente puede modificar la fecha de entrega.');
       return;
     }
 
     if (this.esDemasiadoTarde) {
-      this.uiNotificationService.abrirModalError(
-        null,
-        'No podés cambiar el pedido un día antes de la entrega.',
-      );
+      this.uiNotificationService.abrirModalError(null, 'No podés cambiar el pedido un día antes de la entrega.');
       return;
     }
 
-    if (!fecha) {
+    if (!fechaDate) {
       this.uiNotificationService.abrirModalError(null, 'Seleccioná una fecha.');
       return;
     }
 
-    if (fecha! < this.pedido.fechaEntrega) {
-      this.uiNotificationService.abrirModalError(
-        null,
-        'La nueva fecha no puede ser anterior a la fecha original.',
-      );
+    const fechaStr = this.formatDate(fechaDate);
+
+    if (fechaStr < this.pedido.fechaEntrega) {
+      this.uiNotificationService.abrirModalError(null, 'La nueva fecha no puede ser anterior a la fecha original.');
       return;
     }
 
-    const body: PedidoUpdateRequest = { fechaEntrega: fecha };
+    const body: PedidoUpdateRequest = { fechaEntrega: fechaStr };
     this.sendUpdate(body);
   }
 
@@ -198,8 +202,8 @@ export class PedidoExtendedModal implements OnInit {
 
     this.dialog.open(DatosUsuarioModal, {
       data: data,
-      width: '95%',
-      maxWidth: '60rem',
+      width: '50rem',
+      maxWidth: '90vw',
       autoFocus: false,
       restoreFocus: false,
     });
@@ -212,11 +216,13 @@ export class PedidoExtendedModal implements OnInit {
       email: c.email,
       telefono: c.telefono,
       imagenUrl: c.imagenUrl,
+      direccion: 'No disponible', 
+      ciudad: 'No disponible'
     };
     this.dialog.open(DatosUsuarioModal, {
       data,
-      width: '95%',
-      maxWidth: '60rem',
+      width: '50rem',
+      maxWidth: '90vw',
       autoFocus: false,
       restoreFocus: false,
     });
@@ -230,11 +236,13 @@ export class PedidoExtendedModal implements OnInit {
       email: dueno.email,
       imagenUrl: dueno.imagenUrl,
       telefono: emprendimiento.telefono,
+      direccion: emprendimiento.direccion,
+      ciudad: emprendimiento.ciudad
     };
     this.dialog.open(DatosUsuarioModal, {
       data,
-      width: '95%',
-      maxWidth: '60rem',
+      width: '50rem',
+      maxWidth: '90vw',
       autoFocus: false,
       restoreFocus: false,
     });

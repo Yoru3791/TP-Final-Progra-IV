@@ -22,8 +22,7 @@ export class ConfirmarLogout {
 
   confirmar() {
     this.dialogRef.close();
-
-    this.uiNotificationService.abrirSnackBarExito('Sesión cerrada exitosamente.')
+    this.uiNotificationService.abrirSnackBarExito('Sesión cerrada exitosamente.');
 
     this.authService.handleLogout();
 

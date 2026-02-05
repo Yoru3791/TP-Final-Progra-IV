@@ -1,14 +1,25 @@
-<div class="icono">
-  <i class="fa-regular fa-face-sad-tear"></i>
-</div>
+<div class="modal-wrapper">
+  
+  <div class="modal-header header-transparent">
+    <button type="button" class="btn-icon-close" (click)="cerrar()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
 
-<h2 class="titulo">¡Qué pena que te vayas!</h2>
+  <!-- Mensaje de despedida -->
+  <div class="modal-body simple-body">
+    <div class="goodbye-content">
+      <div class="icono-triste">
+        <i class="fa-regular fa-face-sad-tear"></i>
+      </div>
 
-<p class="mensaje">
-  Esperamos volver a verte pronto.<br />
-  ¡Gracias por haber sido parte de MiViandita!
-</p>
+      <h2 class="titulo-despedida">¡Qué pena que te vayas!</h2>
 
-<div class="acciones center">
-  <button class="btn-base btn-secondary" (click)="volverInicio()">Volver al inicio</button>
+      <p class="mensaje">
+        Esperamos volver a verte pronto.<br />
+        ¡Gracias por haber sido parte de MiViandita!
+      </p>
+    </div>
+  </div>
+
 </div>

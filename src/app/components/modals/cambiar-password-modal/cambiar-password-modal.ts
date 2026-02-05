@@ -21,7 +21,6 @@ export class CambiarPasswordModal {
   private router = inject(Router);
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<CambiarPasswordModal>);
-  private dialog = inject(MatDialog);
   private uiNotificationService = inject(UiNotificationService);
 
   showActual = false;
@@ -61,25 +60,16 @@ export class CambiarPasswordModal {
         if (Object.keys(errores).length === 0) form.get('nueva')?.setErrors(null);
       }
     }
-
     return null;
   }
 
-  // La contraseña repetida debe coincidir
   validarRepetidaIgual(form: any) {
     const nueva = form.get('nueva')?.value;
     const repetir = form.get('repetir')?.value;
 
     if (nueva && repetir && nueva !== repetir) {
-      form.get('repetir')?.setErrors({ noCoincide: true });
-    } else {
-      const errores = form.get('repetir')?.errors;
-      if (errores) {
-        delete errores['noCoincide'];
-        if (Object.keys(errores).length === 0) form.get('repetir')?.setErrors(null);
-      }
+      return { noCoincide: true };
     }
-
     return null;
   }
 
@@ -93,15 +83,8 @@ export class CambiarPasswordModal {
 
     this.usuarioService.cambiarPassword(body).subscribe({
       next: () => {
-        this.dialog.open(SuccessDialogModal, {
-          data: { message: 'Tu contraseña fue actualizada. Volvé a iniciar sesión.' },
-          panelClass: 'modal-exito',
-          autoFocus: false,
-          restoreFocus: false,
-        });
-
+        this.uiNotificationService.abrirSnackBarExito('Contraseña actualizada. Volvé a iniciar sesión.');
         this.dialogRef.close();
-
         this.authService.handleLogout();
 
         setTimeout(() => {

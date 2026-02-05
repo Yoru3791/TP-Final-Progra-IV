@@ -81,6 +81,8 @@ export class AdminReclamosPage {
   abrirGestion(reclamo: Reclamo) {
     const dialogRef = this.dialog.open(AdminGestionReclamoModal, {
       panelClass: 'form-modal',
+      width: '50rem',
+      maxWidth: '95vw',
       data: reclamo,
       disableClose: true,
       autoFocus: false,

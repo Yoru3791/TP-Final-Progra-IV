@@ -53,6 +53,8 @@ export class AdminUsuariosPage {
     this.dialog
       .open(AdminUserCreateModal, {
         panelClass: 'form-modal',
+        width: '75rem',
+        maxWidth: '95vw',
         autoFocus: false,
         restoreFocus: false,
       })
