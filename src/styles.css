@@ -45,6 +45,8 @@
   --input-focus-outline: var(--color-primary-light);
   --color-border-light: #e5e7eb;
   --color-background-soft-orange: #fff7ed;
+
+  --header-mobile-bottom-nav-height: 5.5rem;
 }
 
 html {
@@ -64,6 +66,7 @@ body {
   margin: 0;
   color: var(--color-text-primary);
   font-family: 'Inria Sans', sans-serif;
+  line-height: 1;
 }
 
 app-root {
@@ -1269,17 +1272,17 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding: 2rem 0;
-  width: 120rem;
+  max-width: 120rem;
+  width: 100%;
 }
 
 .info-page-container content {
-  width: 100rem;
+  width: 100%;
 }
 
 .info-page-container p {
   font-size: 1.6rem;
-  line-height: 2rem;
+  line-height: 1.25;
 }
 
 .info-page-container a {
@@ -1479,7 +1482,10 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
 
 @media (max-width: 768px) {
   .main-content {
-    padding: 2rem;
+    --padding: 2rem;
+
+    padding: var(--padding);
+    padding-bottom: calc(var(--padding) + var(--header-mobile-bottom-nav-height));
   }
 
   .filters-container {

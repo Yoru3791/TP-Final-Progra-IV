@@ -7,6 +7,7 @@
   justify-content: right;
   position: sticky;
   width: 100%;
+  z-index: 5000;
 }
 
 .btn {
@@ -24,12 +25,11 @@
   position: absolute;
   transform: translateY(calc(-100% + 1rem));
   transition-duration: 0.25s;
-  z-index: 1000;
 }
 
 .visible {
   cursor: pointer;
-  opacity: 0.5;
+  opacity: 0.35;
   pointer-events: auto;
 }
 
@@ -38,7 +38,11 @@
 }
 
 @media (max-width: 768px) {
+  :host {
+    bottom: calc(var(--spacing) + var(--header-mobile-bottom-nav-height));
+  }
+
   .btn {
-    transform: translateY(calc(-100% + 1rem - 5.5rem));
+    transform: translateY(calc(-100% + 1rem));
   }
 }
