@@ -1,4 +1,3 @@
-/* --- COMPONENTE CARD DE EMPRENDIMIENTO/TIENDA --- */
 .card-container {
   background-color: var(--color-background-primary);
   border-radius: 1.6rem;
@@ -103,6 +102,10 @@
 }
 
 /* ------- Botón "Ver más" ------- */
+.btn-ver-mas {
+  white-space: nowrap;
+}
+
 .btn-ver-mas:hover {
   background-color: var(--color-primary-medium-hover);
   transform: translateX(0.3rem);
@@ -121,6 +124,7 @@
   padding: 1.5rem 3rem;
   overflow-x: auto;
   scroll-behavior: smooth;
+  align-items: flex-start; 
 }
 
 /* Barra de Scroll */
@@ -164,6 +168,8 @@ app-vianda-card {
   font-size: 1.4rem;
   color: var(--color-text-light);
   font-weight: 400;
+  text-align: center;
+  margin: 0;
 }
 
 
@@ -205,4 +211,46 @@ app-vianda-card {
 .card-container.unavailable:hover .logo-circle,
 .card-container.unavailable:hover .viandas-section {
   opacity: 0.9;
+}
+
+
+@media (max-width: 1024px) {
+  .card-container {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-container {
+    width: 95%;
+    margin: 1.5rem auto;
+  }
+
+  .info {
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+
+  .info-main {
+    width: 100%;
+  }
+
+  .btn-ver-mas {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .viandas-container {
+    padding: 1.5rem;
+  }
+  
+  .text-content h2 {
+    font-size: 1.6rem;
+    white-space: normal;
+  }
 }

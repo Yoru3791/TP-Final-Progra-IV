@@ -11,7 +11,7 @@
   justify-content: center;
 }
 
-/* --------  Card de creación -------- */
+/* --------  Card de creación -------- */
 .card-crear {
   background-color: var(--color-background-primary);
   border-radius: 1.5rem;
@@ -45,8 +45,7 @@
   text-transform: uppercase;
 }
 
-/* ---------  Si no encuentra viandas  --------- */
-
+/* ---------  Si no encuentra viandas  --------- */
 .no-results {
   grid-column: 1 / -1;
   display: flex;
@@ -81,7 +80,7 @@
 }
 
 .no-results .estado-vacio {
-  grid-column: 1 / -1; /* Agregado para consistencia, aunque esté en un contenedor */
+  grid-column: 1 / -1;
   width: 100%;
 }
 
@@ -136,19 +135,12 @@
 }
 
 @keyframes rebote {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(-0.6rem);
-  }
-  100% {
-    transform: translateX(0);
-  }
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-0.6rem); }
+  100% { transform: translateX(0); }
 }
 
-/* -----------  Si no levanta el emprendimiento  ----------- */
-
+/* -----------  Si no levanta el emprendimiento  ----------- */
 .not-found-container {
   display: flex;
   flex-direction: column;
@@ -207,4 +199,28 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(2rem); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1024px) {
+  .viandas-detalladas-grid {
+    width: 90%;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .viandas-detalladas-grid {
+    width: 95%;
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+    grid-template-columns: 1fr; 
+    gap: 2rem;
+  }
+
+  .card-crear {
+    min-height: 15rem;
+  }
+
+  .no-results {
+    padding: 2rem 1rem;
+  }
 }
