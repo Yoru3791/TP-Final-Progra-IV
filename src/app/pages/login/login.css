@@ -6,6 +6,7 @@
   margin: 0 auto;
   padding: 2rem;
   justify-content: center;
+  min-height: 80vh;
 }
 
 .header-container {
@@ -87,22 +88,42 @@
   transform: translateY(-0.1rem);
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .main-form-container {
-    padding: 1.5rem;
+    padding: 2rem 1.5rem;
+    justify-content: flex-start; 
+    padding-top: 4rem;
   }
 
   .main-h1-title {
     font-size: 2.4rem;
   }
 
-  .links-container {
-    flex-direction: column;
-    gap: 2rem;
-    align-items: center;
+  .subtitle {
+    font-size: 1.3rem;
   }
 
+  .login-wrapper {
+    max-width: 100%; 
+  }
+
+  .links-container {
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-form-container {
+    padding: 1rem;
+  }
+
+  .main-h1-title {
+    font-size: 2rem;
+  }
+  
   .link {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 }
