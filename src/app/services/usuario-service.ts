@@ -100,6 +100,14 @@ export class UsuarioService {
     );
   }
 
+  deleteUsuarioForceAdmin(id: number) {
+    return this.http.delete<any>(`${this.getApiUrl()}/${id}/force-delete`).pipe(
+        tap(() => {
+            this.fetchUsuariosAdmin(this.adminPageInfo()?.number || 0, 10);
+        })
+    );
+  }
+
   updateUsuario(id: number, body: UsuarioUpdate) {
     return this.http.put<UsuarioResponse>(`${this.apiUrl}/${id}`, body);
   }
@@ -127,6 +135,10 @@ export class UsuarioService {
 
   banUsuario(id: number) {
     return this.http.put<UsuarioAdminResponse>(`${this.getApiUrl()}/${id}/ban`, null);
+  }
+
+  banUsuarioForce(id: number) {
+    return this.http.put<UsuarioAdminResponse>(`${this.getApiUrl()}/${id}/ban/force`, null);
   }
 
   unbanUsuario(id: number) {
