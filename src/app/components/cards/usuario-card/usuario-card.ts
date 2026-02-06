@@ -122,6 +122,37 @@ export class UsuarioCard {
           this.uiNotificationService.abrirSnackBarExito(`Usuario ${banned ? 'desbloqueado' : 'bloqueado'} exitosamente.`);
           this.refreshList();
         },
+        error: (err) => {
+          if (!banned && err.status === 409) {
+            this.forceBan();
+          }
+          else {
+            this.uiNotificationService.abrirModalError(err);
+          }
+        },
+      });
+  }
+
+  async forceBan() {
+    const confirmado = await firstValueFrom(
+      this.uiNotificationService.abrirModalConfirmacion({
+        titulo: `Forzar bloqueo`,
+        texto:
+          'El usuario tiene pedidos en proceso; si lo bloqueás, los pedidos van a ser cancelados.\n' +
+          '¿Estás seguro que querés forzar el bloqueo?',
+          critico: true,
+      })
+    );
+
+    if (!confirmado) return;
+
+    const action$ = this.usuarioService.banUsuarioForce(this.usuario().id);
+
+    action$.subscribe({
+        next: () => {
+          this.uiNotificationService.abrirSnackBarExito(`Usuario bloqueado exitosamente.`);
+          this.refreshList();
+        },
         error: (err) => this.uiNotificationService.abrirModalError(err),
       });
   }
@@ -145,7 +176,39 @@ export class UsuarioCard {
           this.uiNotificationService.abrirSnackBarExito("Usuario eliminado exitosamente.");
           this.refreshList();
         },
-        error: (error) => this.uiNotificationService.abrirModalError(error),
+        error: (err) => {
+          if (err.status === 409) {
+            this.forceDelete();
+          }
+          else {
+            this.uiNotificationService.abrirModalError(err);
+          }
+        },
+      });
+  }
+
+  private async forceDelete() {
+    const confirmado = await firstValueFrom(
+      this.uiNotificationService.abrirModalConfirmacion({
+        titulo: 'Forzar eliminación',
+        texto:
+          'El usuario tiene pedidos en proceso; si lo eliminás, los pedidos van a ser cancelados.\n' +
+          '¿Estás seguro que querés forzar la eliminación? <span>Esta acción es irreversible.</span>',
+        textoEsHtml: true,
+        critico: true,
+      })
+    );
+
+    if (!confirmado) return;
+
+    this.usuarioService
+      .deleteUsuarioForceAdmin(this.usuario().id)
+      .subscribe({
+        next: () => {
+          this.uiNotificationService.abrirSnackBarExito("Usuario eliminado exitosamente.");
+          this.refreshList();
+        },
+        error: (err) => this.uiNotificationService.abrirModalError(err),
       });
   }
 }

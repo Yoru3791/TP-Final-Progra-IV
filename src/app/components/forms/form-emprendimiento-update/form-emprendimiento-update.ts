@@ -7,6 +7,7 @@ import { firstValueFrom } from 'rxjs';
 import { UiNotificationService } from '../../../services/ui-notification-service';
 import { Router } from '@angular/router';
 import { CitySelector } from '../../utils/city-selector/city-selector';
+import { AuthService } from '../../../services/auth-service';
 
 @Component({
   selector: 'app-form-emprendimiento-update',
@@ -17,6 +18,7 @@ import { CitySelector } from '../../utils/city-selector/city-selector';
 export class FormUpdateEmprendimiento implements OnInit {
   public emprendimiento: EmprendimientoResponse = inject(MAT_DIALOG_DATA);
 
+  private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<FormUpdateEmprendimiento>);
   private emprendimientoService = inject(EmprendimientoService);
@@ -106,6 +108,38 @@ export class FormUpdateEmprendimiento implements OnInit {
     if (!confirmado) return;
 
     this.emprendimientoService.deleteEmprendimiento(this.emprendimiento.id).subscribe({
+      next: () => {
+        this.uiNotificationService.abrirSnackBarExito('Emprendimiento eliminado exitosamente.');
+        this.dialogRef.close(true);
+        this.router.navigateByUrl('home');
+      },
+      error: (err) => {
+        const rol = this.authService.currentUserRole();
+
+        if (rol === 'ADMIN' && err.status === 409) {
+          this.forceDelete();
+        } else {
+          this.uiNotificationService.abrirModalError(err);
+        }
+      },
+    });
+  }
+
+  private async forceDelete() {
+    const confirmado = await firstValueFrom(
+      this.uiNotificationService.abrirModalConfirmacion({
+        titulo: 'Forzar Eliminación',
+        texto:
+          'El emprendimiento tiene pedidos en proceso; si lo eliminás, los pedidos van a ser cancelados.\n' +
+          '¿Estás seguro que querés forzar la eliminación? <span>Esta acción es irreversible.</span>',
+        textoEsHtml: true,
+        critico: true,
+      })
+    );
+
+    if (!confirmado) return;
+
+    this.emprendimientoService.deleteEmprendimientoForce(this.emprendimiento.id).subscribe({
       next: () => {
         this.uiNotificationService.abrirSnackBarExito('Emprendimiento eliminado exitosamente.');
         this.dialogRef.close(true);

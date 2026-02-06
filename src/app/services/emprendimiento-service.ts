@@ -189,6 +189,14 @@ export class EmprendimientoService {
     );
   }
 
+  deleteEmprendimientoForce(id: number) {
+    return this.http.delete<void>(`${this.baseUrls.ADMIN}/id/${id}/force-delete`).pipe(
+      tap(() => {
+        this.allEmprendimientos.update((list) => list.filter((e) => e.id !== id));
+      })
+    );
+  }
+
   // Verificar que un emprendimiento le corresponde a un dueño (para guards)
   esDuenoDelEmprendimiento(emprendimientoId: number, usuarioId: number): boolean {
     const emprendimiento = this.emprendimientos().find((e) => e.id === emprendimientoId);
