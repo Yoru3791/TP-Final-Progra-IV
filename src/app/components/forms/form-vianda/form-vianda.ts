@@ -161,6 +161,7 @@ export class FormVianda {
     this.viandaService.createVianda(formData).subscribe({
       next: () => {
         this.loading = false;
+        this.uiNotificationService.abrirSnackBarExito('Vianda creada exitosamente.');
         this.dialogRef.close(true);
       },
       error: (err) => {
