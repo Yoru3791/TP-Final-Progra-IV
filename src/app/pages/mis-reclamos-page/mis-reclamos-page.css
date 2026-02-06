@@ -109,13 +109,10 @@
   }
 
   .controls-container {
-    flex-direction: column-reverse; /* Botón arriba, Filtro abajo (o al revés según prefieras) */
+    flex-direction: column-reverse; 
     align-items: stretch;
     gap: 1.5rem;
   }
-
-  /* En mobile: Botón arriba, filtro abajo es un patrón común, 
-     pero si preferís el orden del HTML (Filtro arriba), usá flex-direction: column */
 
   .select-custom-wrapper {
     width: 100%;

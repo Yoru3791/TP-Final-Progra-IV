@@ -93,13 +93,35 @@
   font-style: italic;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 375px) {
+  .card-unificada {
+    padding: 1.5rem;
+  }
+
+  .titulo-seccion {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+
   .filters-container {
     flex-direction: column;
-    align-items: stretch;
+    align-items: stretch; 
+    gap: 1.2rem;
+    margin-top: 1rem;
   }
-  
+
   .select-custom-wrapper {
     width: 100% !important;
+    flex: none;
+  }
+
+  .form-label {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .lista-pedidos {
+    max-height: 50vh; 
+    padding-right: 0;
   }
 }

@@ -143,21 +143,40 @@ app-paginador {
   margin-top: auto;
   padding-top: 2rem;
 }
+@media (max-width: 767px) {
+  .notificaciones-container {
+    padding: 1.5rem;
+    height: auto;
+    min-height: 40rem; 
+  }
 
-
-@media (max-width: 600px) {
   .header-seccion {
     flex-direction: column;
     align-items: flex-start;
-  }
-  
-  .tabs-filter {
     gap: 1rem;
-    justify-content: space-between;
   }
-  
+
+  .titulo-seccion {
+    font-size: 1.6rem;
+  }
+
+  .filtro-fecha {
+    width: 100%; 
+  }
+
+  .tabs-filter {
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
   .tab-btn {
-    font-size: 1.3rem;
-    padding: 0.5rem;
+    font-size: 1.2rem;
+    padding: 0.5rem 0.2rem;
+  }
+
+  .mini-badge {
+    padding: 0.1rem 0.4rem;
+    font-size: 0.9rem;
   }
 }
