@@ -1,6 +1,9 @@
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  flex: 1;
+  min-height: 100%;
 }
 
 .page-container {
@@ -13,6 +16,8 @@
   max-width: 115rem;
   margin: 0 auto;
   box-sizing: border-box;
+  flex: 1;
+  justify-content: flex-start;
 }
 
 .header-section {
@@ -44,18 +49,106 @@
   gap: 1.5rem;
   width: 100%;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
 }
 
 .filter-input,
 .select-custom-wrapper {
   flex: 1;
   width: 100%;
-  min-width: 0;
+  min-width: 20rem;
 }
 
 .filter-input {
   height: 5rem;
   box-sizing: border-box;
+  width: 100%;
+  padding: 0 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--color-ui-neutral);
+  font-family: inherit;
+  font-size: 1.4rem;
+  background-color: white;
+  color: var(--color-text-secondary);
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 3px rgba(254, 144, 57, 0.15);
+}
+
+.select-custom-wrapper {
+  position: relative;
+}
+
+.select-trigger {
+  height: 5rem;
+  background: white;
+  border: 1px solid var(--color-ui-neutral);
+  border-radius: 1rem;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.select-trigger:hover,
+.select-trigger.open {
+  border-color: var(--color-primary-light);
+}
+
+.selected-option {
+  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.arrow {
+  font-size: 1.2rem;
+  color: var(--color-text-secondary);
+  transition: transform 0.2s;
+}
+
+.select-trigger.open .arrow {
+  transform: rotate(180deg);
+  color: var(--color-primary-light);
+}
+
+.options {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid var(--color-border-light);
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
+  z-index: 100;
+  max-height: 25rem;
+  overflow-y: auto;
+}
+
+.options li {
+  padding: 1rem 1.5rem;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: background 0.1s;
+}
+
+.options li:hover {
+  background-color: var(--color-background-soft-orange);
+  color: var(--color-text-primary);
 }
 
 .pedidos-list {
@@ -84,16 +177,33 @@ app-pedido-admin-card {
   font-size: 1.8rem;
   color: var(--color-ui-disabled-text);
   font-style: italic;
+  text-align: center;
 }
 
+
 @media (max-width: 900px) {
+  .page-container {
+    padding: 1.5rem;
+  }
+
+  .header-section {
+    margin-bottom: 2rem;
+  }
+
   .filters-container {
     flex-direction: column;
     align-items: stretch;
+    gap: 1rem;
   }
   
   .filter-input, 
   .select-custom-wrapper {
     width: 100% !important;
+    min-width: 0;
+  }
+  
+  app-paginador {
+    width: 100%;
+    overflow-x: auto;
   }
 }
