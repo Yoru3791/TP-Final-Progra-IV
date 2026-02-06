@@ -1,4 +1,3 @@
-/* --- COMPONENTE TARJETA DE VIANDA (PRODUCTO) --- */
 .vianda-card {
   width: 22rem; 
   height: auto; 
@@ -22,7 +21,7 @@
 .card-image-container {
   width: 100%;
   aspect-ratio: 4 / 3; 
-  background-color: var(--color-background-secondary); /* #f9fafb (similar a secondary) */
+  background-color: var(--color-background-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,7 +51,7 @@
 .card-content {
   padding: 1.2rem;
   background-color: var(--color-background-primary);
-  border-top: 0.1rem solid var(--color-border-light); /* #f3f4f6 (similar a border-light) */
+  border-top: 0.1rem solid var(--color-border-light);
   display: flex;
   justify-content: space-between; 
   align-items: center;
@@ -63,7 +62,7 @@
 .card-title {
   font-size: 1.3rem;
   font-weight: 700;
-  color: var(--color-text-dark-secondary); /* #3b3a3a */
+  color: var(--color-text-dark-secondary);
   text-transform: uppercase;
   margin: 0;
   
@@ -77,12 +76,12 @@
 
 /* -------- Precio -------- */
 .card-price {
-  color: var(--color-primary-action); /* #f48d2d (similar a primary-action) */
+  color: var(--color-primary-action);
   font-size: 1.2rem;
   font-weight: 700;
   white-space: nowrap;
   
-  background-color: var(--color-background-soft-orange); /* #fff7ed */
+  background-color: var(--color-background-soft-orange);
   padding: 0.3rem 0.7rem;
   border: 0.1rem solid var(--color-ui-neutral);
   border-radius: 0.6rem;
