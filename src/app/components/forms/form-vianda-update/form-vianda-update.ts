@@ -214,7 +214,11 @@ export class FormViandaUpdate implements OnInit {
       next: () => this.updateSuccess(),
       error: (err) => {
         this.loading = false;
-        this.uiNotificationService.abrirModalError(err, 'Vianda actualizada, pero error al subir la imagen.');
+        this.uiNotificationService.abrirModalError(
+          err,
+          'Vianda actualizada, pero error al subir la imagen.\n' +
+          (err.error?.error || err.error?.message || err.message)
+        );
       },
     });
   }

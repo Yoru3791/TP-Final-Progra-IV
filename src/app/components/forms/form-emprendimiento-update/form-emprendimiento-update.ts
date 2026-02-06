@@ -79,6 +79,7 @@ export class FormUpdateEmprendimiento implements OnInit {
           this.uiNotificationService.abrirModalError(
             null, `La imagen no debe superar ${this.maxWidth}x${this.maxHeight}px`
           );
+
           this.newImageFile = null;
           this.selectedFileName = null;
           this.imagePreviewUrl = this.emprendimiento.imagenUrl || null;
@@ -131,7 +132,7 @@ export class FormUpdateEmprendimiento implements OnInit {
             .updateImagenEmprendimiento(this.emprendimiento.id, fd)
             .subscribe({
               next: () => this.finishSuccess(),
-              error: (err) => this.uiNotificationService.abrirModalError(err, 'Error al actualizar la imagen.'),
+              error: (err) => this.uiNotificationService.abrirModalError(err),
             });
         } else {
           this.finishSuccess();
