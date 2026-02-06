@@ -1,4 +1,3 @@
-
 .main-container {
   width: 95%;
   margin: 2rem auto;
@@ -86,5 +85,37 @@ app-panel-acciones-cuenta {
 
   .seccion-pedidos app-pedidos-card {
     flex: 1;
+  }
+}
+
+@media (max-width: 767px) {
+  .main-container {
+    width: 92%;
+    margin: 1.5rem auto;
+  }
+
+  .perfil-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    grid-template-areas:
+      'datos'
+      'panel'
+      'noti'
+      'pedidos';
+  }
+
+  .col-contenido,
+  .grid-superior {
+    display: contents;
+  }
+
+
+  .col-notificaciones, 
+  .seccion-pedidos, 
+  app-datos-usuario-card, 
+  app-panel-acciones-cuenta {
+    width: 100%;
+    min-width: 0;
   }
 }

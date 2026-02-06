@@ -153,3 +153,41 @@
     width: auto;
   }
 }
+
+@media (max-width: 375px) {
+  .card-unificada {
+    padding: 1.5rem;
+  }
+
+  .titulo-seccion {
+    font-size: 1.6rem; 
+  }
+
+  .layout-datos {
+    flex-direction: column-reverse; 
+    gap: 2rem;
+  }
+
+  .datos-imagen {
+    width: 10rem;
+    height: 10rem;
+    margin: 0 auto;
+  }
+
+  .datos-info {
+    gap: 1.2rem;
+  }
+
+  .dato-container {
+    gap: 1rem;
+  }
+
+  .icon {
+    font-size: 1.5rem;
+    width: 2rem;
+  }
+
+  .dato {
+    font-size: 1.4rem;
+  }
+}
