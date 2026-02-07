@@ -73,6 +73,7 @@
   font-size: 1.4rem; /* Igual a tus inputs */
   line-height: 1.5;
   color: var(--color-text-secondary);
+  white-space: pre-line;
   word-break: break-word;
 }
 
