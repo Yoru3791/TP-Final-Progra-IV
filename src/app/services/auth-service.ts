@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { UsuarioLogin } from '../model/usuario-login.model';
 import { LoginResponse } from '../model/login-response.model';
 import { UsuarioResponse } from '../model/usuario-response.model';
 import { UsuarioRegistro } from '../model/usuario-registro.model';
-import { environment } from '../environments/environment';
 import { PasswordResetChange } from '../model/password-reset-change.model';
 import { Router } from '@angular/router';
+import { ApiUrlService } from './api-url-service';
+import { API_URLS } from '../constants/api-urls.const';
 
 export type UserRole = 'ADMIN' | 'DUENO' | 'CLIENTE' | 'INVITADO';
 
@@ -19,16 +20,18 @@ export class AuthService {
   public currentUserRole = signal<UserRole>('INVITADO');
   public usuarioId = signal<number | null>(this.getUsuarioIdFromStorage());
 
-  private apiUrlLogin = 'http://localhost:8080/api/public/login';
-  private apiUrlRegister = 'http://localhost:8080/api/public/register';
-  private apiUrlConfirm = 'http://localhost:8080/api/public/confirm';
-  private apiUrlResend = 'http://localhost:8080/api/public/resend-token';
-  private apiUrlForgot = 'http://localhost:8080/api/public/forgot-password';
-  private apiUrlReset = 'http://localhost:8080/api/public/reset-password';
-  private apiUrlRefresh = 'http://localhost:8080/api/public/refresh-token';
-  private apiUrlLogout = 'http://localhost:8080/api/public/logout';
-  private apiUrlLogoutAll = 'http://localhost:8080/api/public/logout-all';
-  private apiUrlGoogle = `${environment.apiUrl}/google`;
+  private apiUrl = API_URLS.PUBLIC;
+
+  private apiUrlLogin = `${this.apiUrl}/login`;
+  private apiUrlRegister = `${this.apiUrl}/register`;
+  private apiUrlConfirm = `${this.apiUrl}/confirm`;
+  private apiUrlResend = `${this.apiUrl}/resend-token`;
+  private apiUrlForgot = `${this.apiUrl}/forgot-password`;
+  private apiUrlReset = `${this.apiUrl}/reset-password`;
+  private apiUrlRefresh = `${this.apiUrl}/refresh-token`;
+  private apiUrlLogout = `${this.apiUrl}/logout`;
+  private apiUrlLogoutAll = `${this.apiUrl}/logout-all`;
+  private apiUrlGoogle = `${this.apiUrl}/google`;
 
   constructor(private http: HttpClient, private router: Router) {
     this.init();

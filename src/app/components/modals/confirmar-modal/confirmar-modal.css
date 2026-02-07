@@ -72,6 +72,7 @@
   line-height: 1.5;
   color: var(--color-text-secondary);
   margin: 0;
+  white-space: pre-line;
 }
 
 ::ng-deep .message-content span {

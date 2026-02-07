@@ -1,79 +1,45 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ViandaAnyResponse, ViandaResponse } from '../model/vianda-response.model';
-import { AuthService, UserRole } from './auth-service';
+import { AuthService } from './auth-service';
 import { ViandaCreate } from '../model/vianda-create.model';
 import { FiltrosViandas } from '../model/filtros-viandas.model';
 import { catchError, map, Observable, of } from 'rxjs';
 import { ViandaUpdate } from '../model/vianda-update.model';
 import { ViandaDeleteResponse } from '../model/vianda-delete-response.model';
 import { PagedResponse } from '../model/hateoas-pagination.models';
+import { ApiUrlService } from './api-url-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ViandaService {
   private http = inject(HttpClient);
+  private apiUrlService = inject(ApiUrlService);
   private authService = inject(AuthService);
-
-  private baseUrls = {
-    INVITADO: 'http://localhost:8080/api/public/viandas',
-    DUENO: 'http://localhost:8080/api/dueno/viandas',
-    CLIENTE: 'http://localhost:8080/api/cliente/viandas',
-    ADMIN: 'http://localhost:8080/api/admin/viandas',
-  };
 
   // Selecciona endpoint según el rol
   private getApiUrl(): string {
-    const rol: UserRole = this.authService.currentUserRole();
-
-    switch (rol) {
-      case 'ADMIN': 
-        return this.baseUrls.ADMIN;
-      case 'DUENO':
-        return this.baseUrls.DUENO;
-      case 'CLIENTE':
-        return this.baseUrls.CLIENTE;
-      default:
-        return this.baseUrls.INVITADO;
-    }
+    return `${this.apiUrlService.getApiUrlByCurrentRol()}/viandas`;
   }
 
   // ----------------- CRUD -----------------
 
   createVianda(formData: FormData) {
-    const rol = this.authService.currentUserRole();
-
-    if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tenés permiso para crear viandas.');
-    }
-
-    const url = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const url = this.getApiUrl();
 
     return this.http.post<ViandaCreate>(url, formData);
   }
 
   updateVianda(id: number, dto: ViandaUpdate): Observable<any> {
-    const rol = this.authService.currentUserRole();
-
-    if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tenés permiso para actualizar viandas.');
-    }
-
-    const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const baseUrl = this.getApiUrl();
     const url = `${baseUrl}/id/${id}`;
 
     return this.http.put<any>(url, dto);
   }
 
   updateImagenVianda(id: number, file: File): Observable<ViandaResponse> {
-    const rol = this.authService.currentUserRole();
-
-    if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tenés permiso para actualizar imágenes de viandas.');
-    }
-
-    const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const baseUrl = this.getApiUrl();
     const url = `${baseUrl}/id/${id}/imagen`;
 
     const formData = new FormData();
@@ -83,13 +49,7 @@ export class ViandaService {
   }
 
   deleteVianda(id: number): Observable<ViandaDeleteResponse> {
-    const rol = this.authService.currentUserRole();
-
-    if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tenés permiso para eliminar viandas.');
-    }
-
-    const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const baseUrl = this.getApiUrl();
     const url = `${baseUrl}/id/${id}`;
 
     return this.http.delete<ViandaDeleteResponse>(url);
@@ -103,7 +63,7 @@ export class ViandaService {
   }
 
   getAllViandasDisponibles(idEmprendimiento: number): Observable<ViandaResponse[]> {
-    const url = `${this.baseUrls.CLIENTE}/all/idEmprendimiento/${idEmprendimiento}`;
+    const url = `${this.getApiUrl()}/all/idEmprendimiento/${idEmprendimiento}`;
     return this.http.get<ViandaResponse[]>(url);
   }
 
@@ -136,19 +96,19 @@ export class ViandaService {
 
   getCategoriasPublico(idEmprendimiento: number): Observable<string[]> {
     return this.http.get<string[]>(
-      `${this.baseUrls.INVITADO}/categorias/idEmprendimiento/${idEmprendimiento}`
+      `${this.getApiUrl()}/categorias/idEmprendimiento/${idEmprendimiento}`
     );
   }
 
   getCategoriasCliente(idEmprendimiento: number): Observable<string[]> {
     return this.http.get<string[]>(
-      `${this.baseUrls.CLIENTE}/categorias/idEmprendimiento/${idEmprendimiento}`
+      `${this.getApiUrl()}/categorias/idEmprendimiento/${idEmprendimiento}`
     );
   }
 
   getCategoriasDueno(idEmprendimiento: number): Observable<string[]> {
-    const rol = this.authService.currentUserRole();
-    const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const baseUrl = this.getApiUrl();
+
     return this.http.get<string[]>(
       `${baseUrl}/categorias/idEmprendimiento/${idEmprendimiento}`
     );
@@ -164,7 +124,7 @@ export class ViandaService {
   ): Observable<PagedResponse<ViandaResponse>> {
     const params = this.construirParams(filtros, page, size);
     return this.http.get<PagedResponse<ViandaResponse>>(
-      `${this.baseUrls.INVITADO}/idEmprendimiento/${idEmprendimiento}`,
+      `${this.getApiUrl()}/idEmprendimiento/${idEmprendimiento}`,
       { params }
     );
   }
@@ -176,8 +136,9 @@ export class ViandaService {
     size: number = 10
   ): Observable<PagedResponse<ViandaResponse>> {
     const params = this.construirParams(filtros, page, size);
+
     return this.http.get<PagedResponse<ViandaResponse>>(
-      `${this.baseUrls.CLIENTE}/idEmprendimiento/${idEmprendimiento}`,
+      `${this.getApiUrl()}/idEmprendimiento/${idEmprendimiento}`,
       { params }
     );
   }
@@ -189,8 +150,7 @@ export class ViandaService {
     size: number = 9
   ): Observable<PagedResponse<ViandaAnyResponse>> {
     const params = this.construirParams(filtros, page, size);
-    const rol = this.authService.currentUserRole();
-    const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const baseUrl = this.getApiUrl();
 
     return this.http.get<PagedResponse<ViandaAnyResponse>>(
       `${baseUrl}/idEmprendimiento/${idEmprendimiento}`,

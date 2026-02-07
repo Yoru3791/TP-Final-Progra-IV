@@ -5,6 +5,7 @@ import { catchError, of, tap } from 'rxjs';
 import { Reclamo } from '../model/reclamo-response.model';
 import { EstadoReclamo } from '../enums/estadoReclamo.enum';
 import { PagedResponse, PageMetadata } from '../model/hateoas-pagination.models';
+import { ApiUrlService } from './api-url-service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,10 +13,11 @@ import { PagedResponse, PageMetadata } from '../model/hateoas-pagination.models'
 export class ReclamoService {
 
   private http = inject(HttpClient);
+  private apiUrlService = inject(ApiUrlService);
 
-  private apiUrlPublic = 'http://localhost:8080/api/public/reclamos';
-  private apiUrlClienteDueno = 'http://localhost:8080/api/logged/reclamos';
-  private apiUrlAdmin = 'http://localhost:8080/api/admin/reclamos';
+  private apiUrlPublic = `${this.apiUrlService.apiUrlPublic}/reclamos`;
+  private apiUrlLogged = `${this.apiUrlService.apiUrlLogged}/reclamos`;
+  private apiUrlAdmin = `${this.apiUrlService.apiUrlAdmin}/reclamos`;
 
   // --- CLIENTE (Mis Reclamos) ---
   public misReclamos = signal<Reclamo[]>([]);
@@ -36,7 +38,7 @@ export class ReclamoService {
       params = params.set('estado', estado);
     }
 
-    this.http.get<PagedResponse<Reclamo>>(this.apiUrlClienteDueno, { params })
+    this.http.get<PagedResponse<Reclamo>>(this.apiUrlLogged, { params })
       .pipe(catchError(err => {
         console.error('Error cargando mis reclamos', err);
         return of(null);
