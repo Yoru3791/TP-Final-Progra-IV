@@ -1,26 +1,20 @@
 import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
-import { Injectable, signal, computed, inject } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { Notificacion } from '../model/notificacion.model';
 import { catchError, of } from 'rxjs';
-import { AuthService, UserRole } from './auth-service';
 import { PagedResponse, PageMetadata } from '../model/hateoas-pagination.models';
 import { SKIP_LOADING } from '../interceptors/loading.interceptor';
+import { ApiUrlService } from './api-url-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificacionService {
   private http = inject(HttpClient);
-  private authService = inject(AuthService);
-
-  private baseUrls = {
-    DUENO: 'http://localhost:8080/api/dueno/notificaciones',
-    CLIENTE: 'http://localhost:8080/api/cliente/notificaciones',
-  };
+  private apiUrlService = inject(ApiUrlService);
 
   private getApiUrl(): string {
-    const rol: UserRole = this.authService.currentUserRole();
-    return rol === 'DUENO' ? this.baseUrls.DUENO : this.baseUrls.CLIENTE;
+    return `${this.apiUrlService.getApiUrlByCurrentRol()}/notificaciones`;
   }
 
   public notificaciones = signal<Notificacion[]>([]);

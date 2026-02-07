@@ -10,12 +10,14 @@ import { UsuarioUpdateAdmin } from '../model/usuario-update-admin.model';
 import { AdminChangePasswordRequest } from '../model/admin-change-password-request.model';
 import { UsuarioAdminResponse } from '../model/usuario-admin-response.model';
 import { PagedResponse, PageMetadata } from '../model/hateoas-pagination.models';
+import { ApiUrlService } from './api-url-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsuarioService {
 
+  private apiUrlService = inject(ApiUrlService);
   private authService = inject(AuthService);
   private http = inject(HttpClient);
 
@@ -26,20 +28,12 @@ export class UsuarioService {
   public adminFiltroEmail = signal<string>('');
   public adminSoloEliminados = signal<boolean>(false);
 
-  private apiUrl = 'http://localhost:8080/api/usuarios';
-
   private getApiUrl(): string {
-    const rol: UserRole = this.authService.currentUserRole();
+    const path = (this.authService.currentUserRole() === 'ADMIN')
+                 ? 'admin/usuarios' : 'usuarios';
 
-    switch (rol) {
-      case 'ADMIN':
-        return 'http://localhost:8080/api/admin/usuarios';
-
-      default:
-        return 'http://localhost:8080/api/usuarios';
-    }
+    return `${this.apiUrlService.apiUrl}/${path}`;
   }
-
   
   fetchUsuariosAdmin(page: number = 0, size: number = 10) {
     let params = new HttpParams().set('page', page).set('size', size);
@@ -81,7 +75,7 @@ export class UsuarioService {
   }
 
   cambiarPassword(body: ChangePasswordRequest): Observable<any> {
-    return this.http.put(`${this.apiUrl}/changePassword/me`, body);
+    return this.http.put(`${this.getApiUrl()}/changePassword/me`, body);
   }
 
   updatePasswordAdmin(id: number, body: AdminChangePasswordRequest) {
@@ -109,7 +103,7 @@ export class UsuarioService {
   }
 
   updateUsuario(id: number, body: UsuarioUpdate) {
-    return this.http.put<UsuarioResponse>(`${this.apiUrl}/${id}`, body);
+    return this.http.put<UsuarioResponse>(`${this.getApiUrl()}/${id}`, body);
   }
 
   updateUsuarioAdmin(id: number, body: UsuarioUpdateAdmin) {
