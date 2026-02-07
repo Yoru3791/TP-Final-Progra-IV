@@ -25,6 +25,7 @@
       type="text"
       class="filter-input"
       placeholder="Filtrar por dueño o email..."
+      [value]="emprendimientoService.adminFiltroDueno()"
       (input)="onDuenoInput($event)"
     />
 
