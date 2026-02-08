@@ -23,7 +23,7 @@
   width: 6rem;
   height: 6rem;
   border-radius: 50%;
-  background-color: #fef2f2;
+  background-color: color-mix(in srgb, var(--color-background-primary) 90%, var(--color-state-error));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,13 +73,13 @@
   font-size: 1.5rem;
   letter-spacing: 0.05rem;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 6px rgba(220, 38, 38, 0.25);
+  box-shadow: 0 4px 6px color-mix(in srgb, var(--color-state-error-hover) 25%, rgba(0,0,0,0));
 }
 
 .btn-danger-action:hover {
   background-color: var(--color-state-error-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(220, 38, 38, 0.35);
+  box-shadow: 0 6px 12px color-mix(in srgb, var(--color-state-error-hover) 35%, rgba(0,0,0,0));
 }
 
 .btn-danger-action:active {

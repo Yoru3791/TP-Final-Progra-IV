@@ -16,7 +16,7 @@ p {
 }
 
 .usuario-card {
-  background: white;
+  background: var(--color-background-primary);
   border: 1px solid var(--color-ui-neutral);
   border-radius: 1rem;
   box-shadow: var(--shadow-card);
@@ -32,8 +32,7 @@ p {
 }
 
 .usuario-card.eliminado {
-  background-color: #f9f9f9;
-  border-color: #e0e0e0;
+  background-color: var(--color-background-secondary);
   opacity: 0.8;
 }
 .usuario-card.eliminado .card-img {
@@ -147,7 +146,7 @@ p {
 
 .btn:hover:not(:disabled) {
   color: var(--color-primary-light);
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: color-mix(in srgb, var(--color-background-primary) 95%, var(--color-background-inverse));
 }
 
 .btn:disabled {

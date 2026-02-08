@@ -86,7 +86,6 @@
   border-color: var(--color-primary-light);
   transform: translateY(-0.5rem);
   box-shadow: 0 1rem 2rem rgba(254, 144, 57, 0.15);
-  background-color: white;
 }
 
 .page-button:active {
@@ -102,7 +101,6 @@
 .page-button:hover i {
   transform: scale(1.1);
 }
-
 
 @media (max-width: 768px) {
   .main-form-container {

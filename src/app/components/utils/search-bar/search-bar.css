@@ -20,7 +20,7 @@
   font-family: inherit;
   font-size: 1.5rem;
   color: var(--color-text-primary);
-  background-color: white;
+  background-color: var(--color-background-primary);
   outline: none;
   transition:
     border-color 0.2s ease,
@@ -38,7 +38,7 @@
 .search-input.mostrando-resultados,
 .search-input:hover {
   border-color: var(--color-primary-light);
-  box-shadow: 0 0 0 0.3rem rgba(254, 144, 57, 0.15);
+  box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--color-primary) 15%, rgb(0,0,0,0));
 }
 
 .search-input::placeholder {
@@ -81,11 +81,13 @@
 
 /* --- RESULTADOS --- */
 .search-results {
-  background-color: white;
+  background-color: var(--color-background-primary);
   border: 0.1rem solid var(--color-primary-light);
   border-top: none;
   border-radius: 0 0 1rem 1rem;
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 1rem 2rem rgba(0, 0, 0, 0.1),
+    0 5px 0 0.3rem color-mix(in srgb, var(--color-primary) 15%, rgb(0,0,0,0));
   overflow: hidden;
   position: absolute;
   top: 100%;

@@ -97,7 +97,6 @@
   color: var(--color-text-primary);
 }
 
-
 @media (max-width: 768px) {
   .page-container {
     padding: 1.5rem;

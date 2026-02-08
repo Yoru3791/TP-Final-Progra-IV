@@ -79,7 +79,7 @@ h2 {
 }
 
 .faq-item {
-  background-color: white;
+  background-color: var(--color-background-primary);
   border: 1px solid var(--color-border-light);
   border-radius: 1rem;
   overflow: hidden;
@@ -88,7 +88,7 @@ h2 {
 
 .faq-item[open] {
   border-color: var(--color-primary-light);
-  box-shadow: 0 4px 12px rgba(235, 131, 52, 0.1);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary) 10%, black);
 }
 
 .faq-question {
@@ -139,7 +139,7 @@ h2 {
 
 .faq-answer {
   padding: 2rem;
-  background-color: white;
+  background-color: var(--color-background-primary);
   animation: slideDown 0.3s ease-out;
 }
 
@@ -194,7 +194,7 @@ h2 {
   background-color: var(--color-primary);
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(235, 131, 52, 0.25);
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--color-primary) 25%, black);
 }
 
 @media (max-width: 768px) {

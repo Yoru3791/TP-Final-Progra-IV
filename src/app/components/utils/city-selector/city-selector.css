@@ -12,7 +12,7 @@
   padding: 0.8rem 1.4rem;
   border: 0.1rem solid var(--color-border-light);
   border-radius: 2rem;
-  background-color: white;
+  background-color: var(--color-background-primary);
   transition: all 0.2s ease;
   cursor: pointer;
   min-height: 4rem;
@@ -24,7 +24,7 @@
 .input-container:hover,
 .input-container:focus-within {
   border-color: var(--color-primary-light);
-  box-shadow: 0 0 0 0.3rem rgba(254, 144, 57, 0.15);
+  box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--color-background-primary) 85%, var(--color-primary));
   transform: translateY(-0.1rem);
 }
 
@@ -42,7 +42,7 @@
   font-family: inherit;
   font-size: 1.5rem;
   font-weight: 600;
-  color: #666;
+  color: color-mix(in srgb, var(--color-text-primary) 50%, var(--color-text-inverse));
   line-height: normal;
   margin: 0;
   padding-left: 0.5rem;
@@ -104,7 +104,7 @@
   max-width: 30rem;
   max-height: 25rem;
   overflow-y: auto;
-  background: white;
+  background: var(--color-background-primary);
   border: 0.1rem solid var(--color-border-light);
   border-radius: 1rem;
   box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
@@ -138,7 +138,7 @@
 }
 
 .option-item.current-value {
-  background-color: color-mix(in srgb, var(--color-primary-light) 15%, white);
+  background-color: color-mix(in srgb, var(--color-primary-light) 15%, var(--color-background-primary));
   font-weight: 600;
 }
 

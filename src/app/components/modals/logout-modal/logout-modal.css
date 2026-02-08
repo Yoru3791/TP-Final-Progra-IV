@@ -32,7 +32,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(254, 144, 57, 0.15);
+  border: 1px solid color-mix(in srgb, var(--color-background-soft-orange) 70%, var(--color-primary));
 }
 
 .icon-background i {

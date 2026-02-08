@@ -122,7 +122,7 @@ app-root {
   font-size: 1.5rem;
   color: var(--color-text-primary);
   outline: none;
-  background-color: white;
+  background-color: var(--color-background-primary);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   font-family: inherit;
   box-sizing: border-box;
@@ -130,7 +130,7 @@ app-root {
 
 .form-input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(235, 131, 52, 0.15);
+  box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--color-background-primary) 85%, var(--color-primary));
 }
 
 .form-input::placeholder {
@@ -185,7 +185,7 @@ textarea.form-input::-webkit-scrollbar {
   justify-content: space-between;
   padding: 2rem 3rem;
   border-bottom: 1px solid var(--color-border-light);
-  background-color: white;
+  background-color: var(--color-background-primary);
 }
 
 .modal-title {
@@ -228,7 +228,7 @@ textarea.form-input::-webkit-scrollbar {
 .modal-footer {
   padding: 2rem 3rem;
   border-top: 1px solid var(--color-border-light);
-  background-color: #fafafa; 
+  background-color: color-mix(in srgb, var(--color-background-primary) 97.5%, var(--color-background-inverse));
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -276,7 +276,7 @@ textarea.form-input::-webkit-scrollbar {
 .image-preview-area {
   width: 20rem; 
   height: 20rem; 
-  background-color: white;
+  background-color: var(--color-background-primary);
   border: 2px dashed var(--color-ui-neutral);
   position: relative;
   overflow: hidden; 
@@ -298,7 +298,7 @@ textarea.form-input::-webkit-scrollbar {
 .image-preview-area.has-image {
   border-style: solid;
   border-width: 4px; 
-  border-color: white; 
+  border-color: var(--color-background-primary); 
   box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.15);
 }
 
@@ -354,7 +354,7 @@ textarea.form-input::-webkit-scrollbar {
   width: 4rem;
   height: 4rem;
   border-radius: 50%; 
-  background-color: white;
+  background-color: var(--color-background-primary);
   color: var(--color-text-primary);
   display: flex;
   align-items: center;
@@ -372,7 +372,7 @@ textarea.form-input::-webkit-scrollbar {
 
 .btn-upload-trigger {
   background-color: rgba(255, 255, 255, 0.2);
-  border: 1px solid white;
+  border: 1px solid var(--color-background-primary);
   color: white;
   padding: 0.8rem 1.6rem;
   border-radius: 2rem;
@@ -383,7 +383,7 @@ textarea.form-input::-webkit-scrollbar {
   transition: background-color 0.2s;
 }
 .btn-upload-trigger:hover {
-  background-color: white;
+  background-color: var(--color-background-primary);
   color: var(--color-primary);
 }
 
@@ -392,7 +392,7 @@ textarea.form-input::-webkit-scrollbar {
   background-color: var(--color-background-soft-orange); 
   padding: 1.5rem;
   border-radius: 1rem;
-  border: 1px solid #fed7aa; 
+  border: 1px solid color-mix(in srgb, var(--color-primary) 40%, var(--color-background-primary));
 }
 
 .toggle-container {
@@ -449,13 +449,13 @@ input:checked + .slider:before { transform: translateX(2.4rem); }
     padding: 0 1.6rem !important;
     display: flex !important;
     align-items: center !important;
-    background-color: white !important;
+    background-color: var(--color-background-primary) !important;
 }
 
 .modal-body app-city-selector .input-container:hover,
 .modal-body app-city-selector .input-container:focus-within {
     border-color: var(--color-primary-light) !important;
-    box-shadow: 0 0 0 3px rgba(254, 144, 57, 0.15) !important;
+  box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--color-background-primary) 85%, var(--color-primary)) !important;
     transform: none !important;
 }
 
@@ -503,7 +503,7 @@ input:checked + .slider:before { transform: translateX(2.4rem); }
   padding: 0.8rem 1.6rem;
   border-radius: 5rem;
   border: 0.1rem solid var(--color-ui-neutral);
-  background-color: white;
+  background-color: var(--color-background-primary);
   
   color: var(--color-text-secondary);
   font-size: 1.4rem;
@@ -523,7 +523,7 @@ input:checked + .slider:before { transform: translateX(2.4rem); }
   background-color: var(--color-primary);
   border-color: var(--color-primary);
   color: white;
-  box-shadow: 0 2px 5px rgba(235, 131, 52, 0.3);
+  box-shadow: 0 2px 5px color-mix(in srgb, var(--color-primary) 30%, rgb(0,0,0,0));
 }
 
 .custom-icon {
@@ -552,7 +552,7 @@ input:checked + .slider:before { transform: translateX(2.4rem); }
 
 .dropdown-trigger.open {
   border-color: var(--color-primary-light);
-  box-shadow: 0 0 0 3px rgba(254, 144, 57, 0.15);
+  box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--color-background-primary) 85%, var(--color-primary));
 }
 
 .arrow-icon {
@@ -587,7 +587,7 @@ input:checked + .slider:before { transform: translateX(2.4rem); }
   width: 100%;
   max-height: 25rem;
   overflow-y: auto;
-  background: white;
+  background: var(--color-background-primary);
   border: 0.1rem solid var(--color-border-light);
   border-radius: 1rem;
   box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
@@ -616,7 +616,7 @@ input:checked + .slider:before { transform: translateX(2.4rem); }
 /* --- BOTONES DE ACCIÓN (Ya existentes) --- */
 .btn-primary-action {
   background-color: var(--color-primary);
-  color: white;
+  color: var(--color-background-primary);
   border-radius: 1rem;
   font-weight: 700;
   height: 4.5rem;
@@ -629,7 +629,7 @@ input:checked + .slider:before { transform: translateX(2.4rem); }
   font-size: 1.5rem;
   letter-spacing: 0.05rem;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 6px rgba(235, 131, 52, 0.25);
+  box-shadow: 0 4px 6px color-mix(in srgb, var(--color-primary) 25%, rgb(0,0,0,0));
   position: relative;
   overflow: hidden;
   gap: 1rem;
@@ -637,11 +637,11 @@ input:checked + .slider:before { transform: translateX(2.4rem); }
 .btn-primary-action:hover:not(:disabled) {
   background-color: var(--color-primary-hover-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(235, 131, 52, 0.35);
+  box-shadow: 0 6px 12px color-mix(in srgb, var(--color-primary) 35%, rgb(0,0,0,0));
 }
 .btn-primary-action:active:not(:disabled) {
   transform: translateY(1px);
-  box-shadow: 0 2px 4px rgba(235, 131, 52, 0.2);
+  box-shadow: 0 2px 4px color-mix(in srgb, var(--color-primary) 20%, rgb(0,0,0,0));
 }
 .btn-primary-action:disabled {
   background-color: var(--color-ui-disabled-background);
@@ -666,7 +666,7 @@ input:checked + .slider:before { transform: translateX(2.4rem); }
   transition: all 0.2s ease;
 }
 .btn-secondary-action:hover {
-  background-color: #f3f4f6;
+  background-color: rgb(0,0,0,0.05);
   color: var(--color-text-primary);
 }
 
@@ -685,7 +685,7 @@ input:checked + .slider:before { transform: translateX(2.4rem); }
   font-weight: 500;
 }
 .btn-ghost-danger:hover {
-  background-color: #fef2f2;
+  background-color: rgb(0,0,0,0.05);
   color: var(--color-state-error);
 }
 
@@ -697,7 +697,7 @@ input:checked + .slider:before { transform: translateX(2.4rem); }
   display: flex;
   align-items: center;
   padding: 0 1.6rem;
-  background-color: white;
+  background-color: var(--color-background-primary);
 }
 .select-custom:hover, .select-custom.active { border-color: var(--color-primary-light); }
 
@@ -717,20 +717,6 @@ input[type='password']::placeholder {
 .invalid {
   border-color: var(--color-state-error);
   box-shadow: var(--shadow-focus-error);
-}
-
-.select-custom {
-  height: 4.5rem !important;
-  border-radius: 1rem !important;
-  border: 0.1rem solid var(--color-border-light);
-  display: flex;
-  align-items: center;
-  padding: 0 1.6rem;
-  background-color: white;
-}
-
-.select-custom:hover, .select-custom.active {
-  border-color: var(--color-primary-light);
 }
 
 /* Calendario personalizado */
@@ -806,9 +792,9 @@ input[type='password']::placeholder {
 
 .mat-calendar-body-selected {
   background-color: var(--color-primary) !important;
-  color: white !important;
+  color: var(--color-background-primary) !important;
   font-weight: 700 !important;
-  box-shadow: 0 2px 5px rgba(235, 131, 52, 0.3) !important;
+  box-shadow: 0 2px 5px color-mix(in srgb, var(--color-primary) 30%, rgb(0,0,0,0)) !important;
   border-color: transparent !important;
 }
 
@@ -821,7 +807,7 @@ input[type='password']::placeholder {
 }
 
 .mat-calendar-body-today.mat-calendar-body-selected {
-  box-shadow: 0 2px 5px rgba(235, 131, 52, 0.3) !important;
+  box-shadow: 0 2px 5px color-mix(in srgb, var(--color-primary) 30%, rgb(0,0,0,0)) !important;
   border: none !important;
 }
 
@@ -835,13 +821,12 @@ input[type='password']::placeholder {
   background-color: var(--color-background-soft-orange) !important;
 }
 
-
 .form-select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   cursor: pointer;
-  background-color: white;
+  background-color: var(--color-background-primary);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fe9039' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1.5rem center;
@@ -936,7 +921,7 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
 
 .btn-primary:hover:not(:disabled) {
   background-color: var(--color-primary-hover-light);
-  box-shadow: 0 0.4rem 0.8rem rgba(254, 144, 57, 0.3);
+  box-shadow: 0 0.4rem 0.8rem color-mix(in srgb, var(--color-primary) 30%, rgb(0,0,0,0));
 }
 
 .btn-secondary {
@@ -958,7 +943,7 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
 
 .btn-danger:hover:not(:disabled) {
   background-color: var(--color-state-error-hover);
-  box-shadow: 0 0.4rem 0.8rem rgba(255, 75, 75, 0.25);
+  box-shadow: 0 0.4rem 0.8rem color-mix(in srgb, var(--color-state-error-hover) 25%, rgb(0,0,0,0));
 }
 
 .btn-success {
@@ -968,7 +953,7 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
 
 .btn-success:hover:not(:disabled) {
   filter: brightness(0.9);
-  box-shadow: 0 0.4rem 0.8rem rgba(46, 204, 113, 0.25);
+  box-shadow: 0 0.4rem 0.8rem color-mix(in srgb, var(--color-state-success) 25%, rgb(0,0,0,0));
 }
 
 .btn-rounded {
@@ -1182,7 +1167,7 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
 }
 
 .modal-scrolleable .mat-mdc-dialog-title {
-  background-color: #ff8c00;
+  background-color: var(--color-primary);
   color: white !important;
   border: none;
   margin: 0;
@@ -1197,7 +1182,7 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
 }
 
 .modal-scrolleable .mat-mdc-dialog-content {
-  background-color: rgb(238, 238, 238);
+  background-color: var(--color-background-secondary);
   margin: 0;
 }
 
@@ -1375,7 +1360,7 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
   font-family: inherit;
   font-size: 1.4rem;
   color: var(--color-text-secondary);
-  background-color: white;
+  background-color: var(--color-background-primary);
   -webkit-appearance: none;
   appearance: none;
   box-sizing: border-box;
@@ -1389,9 +1374,8 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
 .filter-input:focus {
   outline: none;
   border-color: var(--color-primary-light);
-  box-shadow: 0 0 0 0.2rem rgba(254, 144, 57, 0.15);
+  box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--color-background-primary) 85%, var(--color-primary));
 }
-
 
 .select-trigger {
   width: 100%;
@@ -1399,7 +1383,7 @@ textarea.form-input::-webkit-scrollbar-thumb:hover {
   padding: 0 1.5rem;
   border-radius: 1rem;
   border: 1px solid var(--color-ui-neutral);
-  background: white;
+  background: var(--color-background-primary);
   font-size: 1.4rem;
   display: flex;
   align-items: center;
