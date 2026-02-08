@@ -4,7 +4,7 @@ import { UsuarioResponse } from '../model/usuario-response.model';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { ChangePasswordRequest } from '../model/change-password-request.model';
 import { UsuarioUpdate } from '../model/usuario-update.model';
-import { AuthService, UserRole } from './auth-service';
+import { AuthService } from './auth-service';
 import { UsuarioCreateAdmin } from '../model/usuario-create-admin.model';
 import { UsuarioUpdateAdmin } from '../model/usuario-update-admin.model';
 import { AdminChangePasswordRequest } from '../model/admin-change-password-request.model';
