@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { AuthService, UserRole } from './auth-service';
+import { AuthService } from './auth-service';
 import { PedidoResponse } from '../model/pedido-response.model';
 import { catchError, of, tap } from 'rxjs';
 import { PedidoUpdateRequest } from '../model/pedido-update-request.model';
@@ -15,6 +15,7 @@ import { ApiUrlService } from './api-url-service';
 export class PedidosService {
   private http = inject(HttpClient);
   private apiUrlService = inject(ApiUrlService);
+  private authService = inject(AuthService);
 
   public pedidos = signal<PedidoResponse[]>([]);
   public pageInfo = signal<PageMetadata | null>(null);
@@ -85,7 +86,11 @@ export class PedidosService {
   }
 
   updatePedido(id: number, pedidoUpdate: PedidoUpdateRequest) {
-    const url = `${this.getApiUrl()}/id/${id}`;
+    const path = this.authService.currentUserRole() === 'ADMIN'
+                 ? "" : "id/";
+
+    const url = `${this.getApiUrl()}/${path}${id}`;
+
     return this.http
       .put<any>(url, pedidoUpdate)
       .pipe(
