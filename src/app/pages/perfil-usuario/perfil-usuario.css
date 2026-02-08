@@ -34,7 +34,6 @@ app-panel-acciones-cuenta {
     'panel';
 }
 
-
 @media (min-width: 1024px) {
   .main-container {
     width: 85%;

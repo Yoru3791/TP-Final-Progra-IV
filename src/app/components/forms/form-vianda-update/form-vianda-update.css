@@ -54,6 +54,7 @@
   width: 100%;
   padding: 0.5rem;
   color: white;
+  opacity: 0.9;
   font-weight: 700;
   font-size: 1rem;
   text-align: center;
@@ -64,11 +65,11 @@
 }
 
 .preview-badge.new {
-  background: rgba(46, 204, 113, 0.9);
+  background: var(--color-state-success);
 }
 
 .preview-badge.current {
-  background: rgba(254, 144, 57, 0.9);
+  background: var(--color-primary);
 }
 
 .image-error-container {

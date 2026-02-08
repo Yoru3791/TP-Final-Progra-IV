@@ -67,14 +67,14 @@
 .filter-input:focus {
   outline: none;
   border-color: var(--color-primary-light);
-  box-shadow: 0 0 0 3px rgba(254, 144, 57, 0.15);
+  box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--color-background-primary) 85%, var(--color-primary));
 }
 
 label.filter-input.toggle-wrapper {
   display: flex;
   align-items: center;
   gap: 1.2rem;
-  background-color: white;
+  background-color: var(--color-background-primary);
   cursor: pointer;
   user-select: none;
   flex: 0 0 auto;
@@ -87,7 +87,7 @@ label.filter-input.toggle-wrapper {
 
 label.filter-input.toggle-wrapper:hover {
   border-color: var(--color-primary-light);
-  box-shadow: 0 0 0 3px rgba(254, 144, 57, 0.15);
+  box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--color-background-primary) 85%, var(--color-primary));
 }
 
 .toggle-label {
@@ -192,7 +192,6 @@ app-usuario-card {
   margin-top: 4rem;
   width: 100%;
 }
-
 
 @media (max-width: 900px) {
   .page-container {

@@ -48,15 +48,15 @@
 }
 
 .bg-danger {
-  background-color: #fef2f2;
+  background-color: color-mix(in srgb, var(--color-background-primary) 90%, var(--color-state-error));
   color: var(--color-state-error);
-  border: 1px solid rgba(255, 75, 75, 0.1);
+  border: 1px solid color-mix(in srgb, var(--color-background-primary) 70%, var(--color-state-error));
 }
 
 .bg-primary {
   background-color: var(--color-background-soft-orange);
   color: var(--color-primary);
-  border: 1px solid rgba(254, 144, 57, 0.15);
+  border: 1px solid color-mix(in srgb, var(--color-background-primary) 70%, var(--color-primary));
 }
 
 .text-column {
@@ -131,13 +131,13 @@
   cursor: pointer;
   font-size: 1.5rem;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 6px rgba(235, 131, 52, 0.25);
+  box-shadow: 0 4px 6px color-mix(in srgb, var(--color-primary) 25%, black);
 }
 
 .btn-primary-action:hover {
   background-color: var(--color-primary-hover-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(235, 131, 52, 0.35);
+  box-shadow: 0 6px 12px color-mix(in srgb, var(--color-primary) 35%, black);
 }
 
 @media (max-width: 500px) {

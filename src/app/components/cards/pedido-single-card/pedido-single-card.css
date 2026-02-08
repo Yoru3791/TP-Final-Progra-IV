@@ -74,27 +74,27 @@
 
 .aceptado {
   color: var(--color-state-success);
-  background: #eafff0;
+  background: color-mix(in srgb, var(--color-background-primary) 90%, var(--color-state-success));
 }
 
 .rechazado {
   color: var(--color-state-error);
-  background: #ffebeb;
+  background: color-mix(in srgb, var(--color-background-primary) 85%, var(--color-state-error));
 }
 
 .pendiente {
   color: var(--color-state-warning);
-  background: #fff8e1;
+  background: color-mix(in srgb, var(--color-background-primary) 85%, var(--color-state-warning));
 }
 
 .entregado {
   color: var(--color-state-finish);
-  background: #eef6ff;
+  background: color-mix(in srgb, var(--color-background-primary) 85%, var(--color-state-finish));
 }
 
 .cancelado {
   color: var(--color-state-danger);
-  background: #ffebeb;
+  background: color-mix(in srgb, var(--color-background-primary) 85%, var(--color-state-danger));
 }
 
 .btn-ver {

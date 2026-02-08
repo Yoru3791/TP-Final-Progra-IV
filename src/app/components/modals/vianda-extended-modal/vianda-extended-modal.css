@@ -9,7 +9,7 @@
   flex-direction: column;
   height: 100%;
   max-height: 90vh;
-  background-color: white;
+  background-color: var(--color-background-primary);
   overflow-y: auto;
 }
 
@@ -35,7 +35,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f3f4f6;
+  background-color: var(--color-background-secondary);
 }
 
 .placeholder-logo {
@@ -48,7 +48,7 @@
 
 .image-section.unavailable .hero-image { filter: grayscale(100%); opacity: 0.6; }
 .image-section.eliminada .hero-image { filter: grayscale(100%); opacity: 0.5; }
-.image-section.eliminada { background-color: #fef2f2; }
+.image-section.eliminada { background-color: var(--color-background-secondary); }
 
 .status-badge {
   position: absolute;
@@ -63,7 +63,8 @@
   letter-spacing: 0.05rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
-.status-badge.deleted { background-color: #991b1b; }
+
+.status-badge.deleted { background-color: var(--color-state-danger); }
 
 .content-section {
   padding: 2rem 2.5rem;
@@ -152,7 +153,7 @@
   align-items: center;
   gap: 0.8rem;
   background-color: var(--color-background-soft-orange);
-  border: 1px solid rgba(254, 144, 57, 0.2);
+  border: 1px solid color-mix(in srgb, var(--color-background-soft-orange) 75%, var(--color-primary));
   padding: 0.6rem 1.2rem;
   border-radius: 2rem;
   width: fit-content;
@@ -180,8 +181,8 @@
 }
 
 .diet-pill.neutral {
-  background-color: #f3f4f6;
-  border-color: #e5e7eb;
+  background-color: color-mix(in srgb, var(--color-background-primary) 95%, var(--color-background-inverse));
+  border-color: color-mix(in srgb, var(--color-background-primary) 85%, var(--color-background-inverse));
   align-self: center;
 }
 
@@ -220,7 +221,7 @@
 }
 
 .btn-ghost-back:hover {
-  background-color: #f3f4f6;
+  background-color: color-mix(in srgb, var(--color-background-primary) 95%, var(--color-background-inverse));
   color: var(--color-text-primary);
 }
 
@@ -255,7 +256,6 @@
 }
 
 .btn-qty:hover:not(:disabled) {
-  background-color: rgba(255, 255, 255, 0.5);
   color: var(--color-primary-action-hover);
 }
 
@@ -294,7 +294,7 @@
   color: white; 
   border-color: var(--color-primary);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(235, 131, 52, 0.3);
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--color-primary) 50%, rgb(0,0,0,0));
 }
 
 @media (max-width: 400px) {

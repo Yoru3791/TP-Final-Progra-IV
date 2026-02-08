@@ -1,7 +1,7 @@
 .card-notificacion {
   background-color: var(--color-background-primary);
   border: 0.1rem solid var(--color-border-light);
-  border-radius: 1rem; /* Coincide con tus inputs/selects */
+  border-radius: 1rem;
   padding: 1.2rem 1.6rem;
   margin-bottom: 1rem;
   display: flex;
@@ -15,16 +15,13 @@
 
 /* --- ESTADO: NO LEÍDA (NUEVA) --- */
 .card-notificacion.no-leida {
-  /* Borde naranja fuerte a la izquierda */
   border-left: 0.5rem solid var(--color-primary);
-  /* Usamos tu variable de fondo naranja suave */
   background-color: var(--color-background-soft-orange);
   box-shadow: var(--shadow-card);
 }
 
 /* --- ESTADO: LEÍDA --- */
 .card-notificacion.leida {
-  /* Borde gris sutil a la izquierda para mantener alineación */
   border-left: 0.5rem solid var(--color-ui-neutral);
   background-color: var(--color-background-secondary);
   opacity: 0.9;
@@ -70,21 +67,20 @@
 /* --- MENSAJE --- */
 .mensaje {
   margin: 0;
-  font-size: 1.4rem; /* Igual a tus inputs */
+  font-size: 1.4rem;
   line-height: 1.5;
   color: var(--color-text-secondary);
   white-space: pre-line;
   word-break: break-word;
 }
 
-/* Si no está leída, el texto es más oscuro y un poco más grueso */
 .no-leida .mensaje {
   color: var(--color-text-primary);
-  font-weight: 400; /* Regular en Inria Sans */
+  font-weight: 400;
 }
 
 .leida .mensaje {
-  color: var(--color-text-light); /* Texto más apagado */
+  color: var(--color-text-light);
 }
 
 /* --- BOTÓN DE ACCIÓN (DERECHA) --- */
@@ -105,7 +101,7 @@
 }
 
 .btn-action:hover {
-  background-color: rgba(254, 144, 57, 0.1); /* Un naranja muy transparente */
+  background-color: color-mix(in srgb, var(--color-primary) 10%, rgba(0,0,0,0));
   transform: scale(1.05);
   color: var(--color-primary-hover-light);
 }
@@ -124,7 +120,7 @@
 
 /* --- INDICADOR DE YA LEÍDO --- */
 .status-leido {
-  color: var(--color-state-success); /* Verde éxito */
+  color: var(--color-state-success);
   font-size: 1.6rem;
   padding: 0 1rem;
   opacity: 0.5;
