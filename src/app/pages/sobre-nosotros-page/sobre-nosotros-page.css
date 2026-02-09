@@ -50,13 +50,15 @@ p {
   font-style: italic;
   line-height: normal;
   margin: 0;
-  margin-bottom: 0rem;
+  margin-bottom: 1rem;
   word-break: break-word;
 }
 
 .sobre-nosotros-card-text-container p {
   font-size: 1.6rem;
   line-height: 1.6rem;
+  margin: 0;
+  text-align: justify;
   word-break: break-word;
 }
 
