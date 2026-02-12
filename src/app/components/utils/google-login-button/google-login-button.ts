@@ -22,14 +22,16 @@ export class GoogleLoginButton implements AfterViewInit {
     google.accounts.id.initialize({
       client_id: environment.googleClientId,
       callback: (response: any) => this.handleGoogleCredential(response),
+      auto_select: false,
     });
 
-    google.accounts.id.renderButton(document.getElementById('google-btn'), {
+    google.accounts.id.renderButton(document.getElementById('google-btn-hidden'), {
       theme: 'outline',
-      size: 'large',
-      width: '350',
-      text: 'signin_with',
-      logo_alignment: 'left',
+      size: 'large',     
+      type: 'standard',
+      shape: 'pill',
+      width: '400',      
+      opacity: 0         
     });
   }
 

@@ -44,6 +44,8 @@ export class UiNotificationService {
     }
 
     this.dialog.open(ErrorDialogModal, {
+      width: '45rem',
+      maxWidth: '90vw',
       autoFocus: false, // El mensaje es importante; evitar descartar el modal por accidente
       data: { message: mensaje },
       panelClass: 'modal-error',
@@ -84,6 +86,8 @@ export class UiNotificationService {
   
   public abrirModalExito(mensaje: string): void {
     this.dialog.open(SuccessDialogModal, {
+      width: '45rem',
+      maxWidth: '90vw',
       autoFocus: false, // El mensaje es importante; evitar descartar el modal por accidente
       data: { message: mensaje },
       panelClass: 'modal-exito',

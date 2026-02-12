@@ -1,136 +1,50 @@
-/* --- FORMULARIO DE EDICIÓN DE VIANDA --- */
-
-.header-container {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 1rem 2rem 0 2rem;
+:host {
+  display: block;
+  width: 100%;
 }
 
-.header-container h2 {
-  font-size: 2.4rem;
-  margin: 0;
-}
-
-.btn-icon-circle {
-  width: 3.6rem;
-  height: 3.6rem;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  color: var(--color-text-primary);
-  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.2);
-  z-index: 15;
-}
-
-.btn-icon-circle:hover {
-  background-color: var(--color-primary-light);
-  color: var(--color-background-primary);
-  transform: scale(1.07);
-}
-
-.btn-close-modal {
-  color: var(--color-text-light);
-}
-
-.btn-close-modal:hover {
-  background-color: var(--color-primary-light);
-  color: var(--color-background-primary);
-}
-
-.form-vianda {
+.modal-wrapper {
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1.2rem;
-  padding: 2rem;
-  width: 100%;
-  max-width: 75rem;
-  background: var(--color-background-secondary);
-  border-radius: 1rem;
-  position: relative;
 }
 
-.form-title {
-  color: var(--color-text-secondary);
-  margin-bottom: 1rem;
-  align-self: flex-start;
-  margin-left: 2rem;
-}
-
-.form-layout {
+.modal-body.flex-layout {
   display: flex;
-  width: 100%;
+  flex-direction: column;
+  gap: 0.5rem; 
+  grid-template-columns: none !important; 
+}
+
+.top-section-grid {
+  display: grid;
+  grid-template-columns: 1fr 24rem; 
   gap: 4rem;
-  align-items: flex-start;
+  align-items: start;
 }
 
-.form-fields-left {
-  flex: 0 0 60%;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
-
-textarea.form-input {
-  resize: none;
-  min-height: 5rem;
-}
-
-.image-upload-delete-right {
-  flex: 40%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 2rem;
-}
-
-.form-file-input {
-  display: none;
-}
-
-.upload-box-visual {
+.bottom-section {
   width: 100%;
-  aspect-ratio: 1 / 1;
-  border: 0.3rem dashed var(--color-ui-disabled-background);
-  border-radius: 1rem;
-  background-color: var(--color-background-secondary);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.2s;
+  display: grid;
+  grid-template-columns: 1fr 24rem; 
+  gap: 4rem;
+  align-items: end; 
 }
 
-.upload-box-visual:hover {
-  background-color: var(--color-background-secondary);
-  border-color: var(--color-primary-light);
-}
-
-.upload-box-visual.has-preview {
-  border: none;
-  background-color: transparent;
-}
-
-.image-preview {
-  position: absolute;
-  top: 0;
-  left: 0;
+.bottom-section .toggle-section {
+  margin-top: 0 !important; 
+  height: fit-content;
   width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  min-width: 0; 
+}
+
+.bottom-section .form-field {
+  margin-bottom: 0; 
+}
+
+.form-select {
+  background-position: right 1.5rem center;
 }
 
 .preview-badge {
@@ -139,11 +53,15 @@ textarea.form-input {
   left: 0;
   width: 100%;
   padding: 0.5rem;
-  color: var(--color-text-inverse);
-  font-weight: bold;
-  font-size: 0.9rem;
+  color: white;
+  opacity: 0.9;
+  font-weight: 700;
+  font-size: 1rem;
   text-align: center;
   pointer-events: none;
+  z-index: 5;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
 }
 
 .preview-badge.new {
@@ -151,214 +69,48 @@ textarea.form-input {
 }
 
 .preview-badge.current {
-  background: var(--color-primary-light);
+  background: var(--color-primary);
 }
 
-.btn-remove-image {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background-color: rgba(255, 255, 255, 0.9);
-  border: none;
-  width: 3.6rem;
-  height: 3.6rem;
+.image-error-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.hint-text {
+  font-size: 1.1rem;
+  color: var(--color-text-light);
+  margin: 0;
+}
+
+.loader {
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top: 2px solid white;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--color-state-error);
-  font-size: 1.4rem;
-  box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.25);
-  transition: transform 0.2s;
-  z-index: 10;
+  width: 1.2rem;
+  height: 1.2rem;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 0.5rem;
 }
 
-.btn-remove-image:hover {
-  transform: scale(1.1);
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-.edit-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-inverse);
-  font-size: 3rem;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.upload-box-visual:hover .edit-overlay {
-  opacity: 1;
-}
-
-.btn-eliminar {
-  margin-top: 1.5rem;
-  padding: 1rem 4rem;
-}
-
-.btn-crear {
-  padding: 1rem 4rem;
-  margin-top: 1.2rem;
-}
-
-.image-placeholder-message {
-  margin-top: 1rem;
-  text-align: center;
-  font-size: 0.9rem;
-}
-
-.placeholder-info {
-  color: var(--color-text-light);
-}
-
-.success-message {
-  color: var(--color-state-success);
-}
-
-.upload-icon {
-  font-size: 3rem;
-  color: var(--color-text-light);
-}
-
-.upload-text {
-  font-size: 1.2rem;
-  color: var(--color-text-light);
-}
-
-/* ------- CONTENEDOR: DIETAS + DISPONIBILIDAD ------- */
-.checkbox-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-}
-
-/* ------- DIETAS ------- */
-.diet-chips-container {
-  display: flex;
-  gap: 1.4rem;
-  flex-wrap: wrap;
-}
-
-.chip-checkbox input[type="checkbox"] {
-  display: none;
-}
-
-.chip-label {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
+@media (max-width: 768px) {
+  .top-section-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .form-column-sidebar {
+    order: -1; 
+  }
   
-  padding: 0.8rem 1.6rem;
-  border-radius: 5rem;
-  border: 0.1rem solid var(--color-ui-neutral);
-  background-color: var(--color-background-primary);
-  
-  color: var(--color-text-secondary);
-  font-size: 1.6rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  user-select: none;
-}
-
-.chip-label:hover {
-  border-color: var(--color-primary-light);
-  color: var(--color-primary-medium);
-  background-color: var(--color-background-soft-orange);
-}
-
-.chip-checkbox input:checked + .chip-label {
-  background-color: var(--color-primary-light);
-  border-color: var(--color-primary-light);
-  color: var(--color-text-inverse);
-}
-
-.custom-icon {
-  width: 1.6rem;
-  height: 1.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: inherit; 
-}
-
-/* ------- DISPONIBILIDAD ------- */
-.availability-section {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 1.2rem;
-  margin-top: 1rem;
-}
-
-.availability-info {
-  display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-}
-
-.availability-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--color-text-dark-secondary);
-}
-
-.availability-subtitle {
-  font-size: 1.3rem;
-  color: var(--color-text-placeholder);
-  font-weight: 400;
-}
-
-.switch-toggle {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-  position: relative;
-  flex-shrink: 0;
-}
-
-.switch-toggle input {
-  display: none;
-}
-
-.slider {
-  width: 4.8rem;
-  height: 2.6rem;
-  background: var(--color-ui-gray-light);
-  border-radius: 3rem;
-  position: relative;
-  transition: 0.3s;
-  box-shadow: inset 0 0.1rem 0.3rem rgba(0,0,0,0.1);
-}
-
-.slider::before {
-  content: '';
-  position: absolute;
-  width: 2rem;
-  height: 2rem;
-  left: 0.3rem;
-  top: 0.3rem;
-  background: var(--color-background-primary);
-  border-radius: 50%;
-  transition: 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-  box-shadow: 0 0.2rem 0.4rem rgba(0,0,0,0.2);
-}
-
-input:checked + .slider {
-  background: var(--color-primary-light);
-}
-
-input:checked + .slider::before {
-  transform: translateX(2.2rem);
+  .bottom-section {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }

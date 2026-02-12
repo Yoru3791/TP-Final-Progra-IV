@@ -1,128 +1,142 @@
-<form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
-  <!-- Nombre completo -->
-  <div class="form-field">
-    <label for="nombreCompleto" class="form-label">Nombre completo</label>
-    <input
-      formControlName="nombreCompleto"
-      type="text"
-      class="form-input"
-      [class.invalid]="mostrarError('nombreCompleto')"
-      placeholder="Ej.: Juan Pérez"
-    />
-
-    <div class="error-messages">
-      @if (mostrarError('nombreCompleto')) {
-        @if (form.get('nombreCompleto')?.hasError('required')) {
-          <p>Campo obligatorio.</p>
-        } @else if (form.get('nombreCompleto')?.hasError('maxLength')) {
-          <p>Máximo 256 caracteres.</p>
-        }
-      }
-    </div>
+<div class="modal-wrapper">
+  
+  <div class="modal-header">
+    <h2 class="modal-title">Crear usuario</h2>
+    <button type="button" class="btn-icon-close" (click)="closeDialog()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
   </div>
 
-  <!-- Email -->
-  <div class="form-field">
-    <label for="email" class="form-label">Email</label>
-    <input
-      formControlName="email"
-      type="email"
-      class="form-input"
-      [class.invalid]="mostrarError('email')"
-      placeholder="Ej.: juanperez@gmail.com"
-    />
-
-    <div class="error-messages">
-      @if (mostrarError('email')) {
-        @if (form.get('email')?.hasError('required')) {
-          <p>Campo obligatorio.</p>
-        } @else if (form.get('email')?.hasError('email')) {
-          <p>Email inválido.</p>
-        } @else if (form.get('email')?.hasError('maxLength')) {
-          <p>Máximo 254 caracteres.</p>
-        }
-      }
-    </div>
-  </div>
-
-  <!-- Telefono -->
-  <div class="form-field">
-    <label for="telefono" class="form-label">Teléfono</label>
-    <input
-      formControlName="telefono"
-      type="text"
-      class="form-input"
-      [class.invalid]="mostrarError('telefono')"
-      placeholder="Ej.: 2231234567"
-    />
-
-    <div class="error-messages">
-      @if (mostrarError('telefono')) {
-        @if (form.get('telefono')?.hasError('required')) {
-          <p>Campo obligatorio.</p>
-        } @else if (form.get('telefono')?.hasError('pattern')) {
-          <p>Entre 6 y 15 dígitos, sin espacios ni guiones.</p>
-        }
-      }
-    </div>
-  </div>
-
-  <!-- Rol -->
-  <div class="form-field">
-    <label for="rol" class="form-label">Rol</label>
-
-    <select formControlName="rol" class="form-input">
-      <option value="" disabled selected hidden>-- Seleccionar --</option>
-
-      @for (rol of roles; track rol.identificadorBDD) {
-        <option [value]="rol.identificadorBDD">{{ rol.descripcion }}</option>
-      }
-    </select>
-
-    <div class="error-messages">
-      @if (mostrarError('rol')) {
-        @if (form.get('rol')?.hasError('required')) {
-          <p>Campo obligatorio.</p>
-        }
-      }
-    </div>
-  </div>
-
-  <!-- Password -->
-  <div class="form-field password-field">
-    <label for="password" class="form-label">Contraseña</label>
-
-    <div class="input-with-icon">
+  <form [formGroup]="form" class="modal-body user-form-layout">
+    
+    <!-- Nombre -->
+    <div class="form-field">
+      <label for="nombreCompleto" class="form-label">Nombre completo</label>
       <input
-        formControlName="password"
-        [type]="showPassword ? 'text' : 'password'"
+        formControlName="nombreCompleto"
+        type="text"
         class="form-input"
-        [class.invalid]="mostrarError('password')"
-        placeholder="Entre 8 y 16 caracteres, y al menos una mayúscula, una minúscula, un número y un carácter especial."
+        placeholder="Ej.: Juan Pérez"
       />
-      <button type="button" class="toggle-eye" (click)="togglePassword()">
-        <i class="fa-solid {{ showPassword ? 'fa-eye' : 'fa-eye-slash' }}"></i>
+      <div class="error-messages">
+        @if (mostrarError('nombreCompleto')) {
+          @if (form.get('nombreCompleto')?.hasError('required')) {
+            <p>Campo obligatorio.</p>
+          } @else if (form.get('nombreCompleto')?.hasError('maxlength')) {
+            <p>Máximo 256 caracteres.</p>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Fila 1: Email y Teléfono -->
+    <div class="form-row-2-col">
+      <!-- Email -->
+      <div class="form-field">
+        <label for="email" class="form-label">Email</label>
+        <input
+          formControlName="email"
+          type="email"
+          class="form-input"
+          placeholder="Ej.: juanperez@gmail.com"
+        />
+        <div class="error-messages">
+          @if (mostrarError('email')) {
+            @if (form.get('email')?.hasError('required')) {
+              <p>Campo obligatorio.</p>
+            } @else if (form.get('email')?.hasError('email')) {
+              <p>Email inválido.</p>
+            } @else if (form.get('email')?.hasError('maxlength')) {
+              <p>Máximo 254 caracteres.</p>
+            }
+          }
+        </div>
+      </div>
+
+      <!-- Teléfono -->
+      <div class="form-field">
+        <label for="telefono" class="form-label">Teléfono</label>
+        <input
+          formControlName="telefono"
+          type="text"
+          class="form-input"
+          placeholder="Ej.: 2231234567"
+        />
+        <div class="error-messages">
+          @if (mostrarError('telefono')) {
+            @if (form.get('telefono')?.hasError('required')) {
+              <p>Campo obligatorio.</p>
+            } @else if (form.get('telefono')?.hasError('pattern')) {
+              <p>Entre 6 y 15 dígitos.</p>
+            }
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Fila 2: Rol y Contraseña -->
+    <div class="form-row-2-col">
+      <!-- Rol -->
+      <div class="form-field">
+        <label for="rol" class="form-label">Rol</label>
+        <select formControlName="rol" class="form-input form-select">
+          <option value="" disabled selected hidden>-- Seleccionar --</option>
+          @for (rol of roles; track rol.identificadorBDD) {
+            <option [value]="rol.identificadorBDD">{{ rol.descripcion }}</option>
+          }
+        </select>
+        <div class="error-messages">
+          @if (mostrarError('rol')) {
+            <p>Campo obligatorio.</p>
+          }
+        </div>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="form-field password-field">
+        <label for="password" class="form-label">Contraseña</label>
+        <div class="input-with-icon">
+          <input
+            formControlName="password"
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-input"
+            placeholder="Mín 8 carac., mayús, minús, núm."
+          />
+          <button type="button" class="toggle-eye" (click)="togglePassword()">
+            <i class="fa-solid {{ showPassword ? 'fa-eye' : 'fa-eye-slash' }}"></i>
+          </button>
+        </div>
+        <div class="error-messages">
+          @if (mostrarError('password')) {
+            @if (form.get('password')?.hasError('required')) {
+              <p>Campo obligatorio.</p>
+            } @else if (form.get('password')?.hasError('pattern')) {
+              <p>Formato inválido (Revisa mayús/minús/núm).</p>
+            }
+          }
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="modal-footer">
+    <div class="footer-left"></div>
+    
+    <div class="footer-right">
+      <button type="button" class="btn-secondary-action" (click)="closeDialog()">
+        Cancelar
+      </button>
+      
+      <button
+        type="button"
+        class="btn-primary-action"
+        (click)="onSubmit()"
+        [disabled]="!form.valid"
+      >
+        <i class="fa-solid fa-check"></i> Crear usuario
       </button>
     </div>
-
-    <div class="error-messages">
-      @if (mostrarError('password')) {
-        @if (form.get('password')?.hasError('required')) {
-          <p>Campo obligatorio.</p>
-        } @else if (form.get('password')?.hasError('pattern')) {
-          <p>
-            Entre 8 y 16 caracteres, y al menos una mayúscula, una minúscula, un número y un carácter especial.
-          </p>
-        }
-      }
-    </div>
   </div>
 
-  <button
-    type="submit"
-    class="btn-base btn-primary"
-    [disabled]="!form.valid"
-  >
-    Crear usuario
-  </button>
-</form>
+</div>

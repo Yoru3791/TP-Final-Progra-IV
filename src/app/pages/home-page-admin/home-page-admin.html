@@ -1,25 +1,34 @@
-<div class="admin-homepage-container">
-  <div class="button-row">
-    <button class="btn page-button" routerLink="/admin/usuarios">
-      <i class="fa-solid fa-user"></i>
-      Usuarios
-    </button>
-
-    <button class="btn page-button" routerLink="/admin/reclamos">
-      <i class="fa-solid fa-receipt"></i>
-      Reclamos
-    </button>
+<div class="main-form-container fade-in">
+  <div class="header-container">
+    <h1 class="main-h1-title">
+      HOLA, <span>{{ nombreAdmin() | uppercase }}</span>
+    </h1>
+    <p class="subtitle">Panel de administración y gestión</p>
   </div>
 
-  <div class="button-row">
-    <button class="btn page-button" routerLink="/admin/emprendimientos">
-      <i class="fa-solid fa-industry"></i>
-      Emprendimientos
-    </button>
+  <div class="admin-homepage-container">
+    <div class="button-row">
+      <button class="btn page-button" routerLink="/admin/usuarios">
+        <i class="fa-solid fa-user"></i>
+        Usuarios
+      </button>
 
-    <button class="btn page-button" routerLink="/admin/pedidos">
-      <i class="fa-solid fa-basket-shopping"></i>
-      Pedidos
-    </button>
+      <button class="btn page-button" routerLink="/admin/reclamos">
+        <i class="fa-solid fa-receipt"></i>
+        Reclamos
+      </button>
+    </div>
+
+    <div class="button-row">
+      <button class="btn page-button" routerLink="/admin/emprendimientos">
+        <i class="fa-solid fa-industry"></i>
+        Emprendimientos
+      </button>
+
+      <button class="btn page-button" routerLink="/admin/pedidos">
+        <i class="fa-solid fa-basket-shopping"></i>
+        Pedidos
+      </button>
+    </div>
   </div>
 </div>

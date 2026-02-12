@@ -5,9 +5,6 @@ import { AuthService } from '../../../services/auth-service';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { EliminarCuentaPaso3 } from '../eliminar-cuenta-paso3/eliminar-cuenta-paso3';
-import { ErrorDialogModal
-
- } from '../error-dialog-modal/error-dialog-modal';
 import { UiNotificationService } from '../../../services/ui-notification-service';
 @Component({
   selector: 'app-eliminar-cuenta-paso2',
@@ -28,6 +25,8 @@ export class EliminarCuentaPaso2 {
   });
 
   eliminar() {
+    if (this.form.invalid) return;
+
     const value = this.form.get('confirm')?.value?.trim().toLowerCase();
 
     if (value !== 'eliminar') {
@@ -46,8 +45,11 @@ export class EliminarCuentaPaso2 {
       next: () => {
         this.dialogRef.close();
         this.authService.handleLogout();
-
-        this.dialog.open(EliminarCuentaPaso3);
+        this.dialog.open(EliminarCuentaPaso3, {
+            width: '40rem',
+            maxWidth: '90vw',
+            autoFocus: false
+        });
       },
       error: (err) => {
         this.uiNotificationService.abrirModalError(err);

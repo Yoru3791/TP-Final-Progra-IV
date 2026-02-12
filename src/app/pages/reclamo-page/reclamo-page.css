@@ -1,84 +1,64 @@
-/* --- PAGINA DE RECLAMOS --- */
 .main-form-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 80vh; /* Para que ocupe buen espacio vertical */
   width: 100%;
-  max-width: 600px; /* Un poco más ancho que el login para el textarea */
+  padding: 1rem 2rem;
   margin: 0 auto;
-  padding: 2rem 1rem;
+}
+
+.header-container {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .main-h1-title {
-  margin: 0;
+  font-size: 2.8rem;
   color: var(--color-primary);
-  font-size: 2.5rem;
-  text-transform: uppercase;
-  text-align: center;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
 }
 
 .subtitle {
-  font-size: 1.2rem;
-  color: #666;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: var(--color-text-dark-secondary);
+  margin: 0;
 }
 
 .info-footer {
-  margin-top: 1.5rem;
+  margin-top: 2.5rem;
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info-footer p {
+  margin: 0;
 }
 
 .info-footer a {
   color: var(--color-primary-light);
-  font-weight: bold;
+  font-weight: 700;
   text-decoration: none;
+  font-size: 1.5rem;
+  transition: color 0.2s ease;
 }
 
 .info-footer a:hover {
+  color: var(--color-primary-hover-light);
   text-decoration: underline;
 }
 
-/* RESPONSIVE */
-
-@media (max-width: 600px) {
-  .container-reclamos {
-    margin: 1.5rem auto;
-    padding: 0 1rem;
-  }
-
-  .header-section {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1.2rem;
-    text-align: center;
-  }
-
-  .titulo {
-    font-size: 1.6rem;
-  }
-
-  .btn-nuevo {
-    justify-content: center;
-    width: 100%; 
-    padding: 0.8rem;
-  }
-
-  .filtros-container {
-    scrollbar-width: none; 
-  }
-  .filtros-container::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .empty-state {
+@media (max-width: 480px) {
+  .main-form-container {
     padding: 2rem 1rem;
   }
-  
-  .icon-empty {
-    font-size: 2.5rem;
+
+  .main-h1-title {
+    font-size: 2.4rem;
   }
 }

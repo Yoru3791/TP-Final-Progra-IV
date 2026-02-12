@@ -1,7 +1,9 @@
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  /* min-height: 100vh;  <-- ELIMINADO para que no empuje el footer */
+  flex: 1;
+  min-height: 100%;
 }
 
 .page-container {
@@ -9,17 +11,15 @@
   flex-direction: column;
   align-items: center;
   padding: 0 2rem;
-
-  /* CORRECCIÓN DE HEADER TAPADO */
-  padding-top: 8rem; /* Espacio para que el navbar no tape el título */
-
+  padding-top: 2rem;
   width: 100%;
   max-width: 115rem;
   margin: 0 auto;
   box-sizing: border-box;
+  flex: 1;
+  justify-content: flex-start;
 }
 
-/* --- HEADER --- */
 .header-section {
   width: 100%;
   text-align: left;
@@ -31,6 +31,7 @@
 .main-title {
   font-size: 2.4rem;
   color: var(--color-primary);
+  line-height: 1;
   margin: 0;
   font-weight: bold;
 }
@@ -41,63 +42,58 @@
   margin: 0.5rem 0 0 0;
 }
 
-/* --- FILTROS --- */
-.filters {
+.filters-container {
   display: flex;
-  gap: 2rem;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
   margin-bottom: 2rem;
   flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-  max-width: 115rem;
 }
 
 .filter-input,
-.select-trigger,
-.date-picker-wrapper {
+.select-custom-wrapper {
   flex: 1;
-  min-width: 25rem;
+  width: 100%;
+  min-width: 20rem;
 }
 
 .filter-input {
   height: 5rem;
-  min-height: 5rem;
+  box-sizing: border-box;
+  width: 100%;
   padding: 0 1.5rem;
   border-radius: 1rem;
   border: 1px solid var(--color-ui-neutral);
   font-family: inherit;
   font-size: 1.4rem;
+  background-color: var(--color-background-primary);
   color: var(--color-text-secondary);
-  background-color: white;
-  -webkit-appearance: none;
-  appearance: none;
-  box-sizing: border-box;
 }
 
 .filter-input:focus {
   outline: none;
   border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--color-background-primary) 85%, var(--color-primary));
 }
 
 .select-custom-wrapper {
   position: relative;
-  flex: 1;
-  min-width: 25rem;
 }
 
 .select-trigger {
-  width: 100%;
   height: 5rem;
-  padding: 0 1.5rem;
-  border-radius: 1rem;
+  background: var(--color-background-primary);
   border: 1px solid var(--color-ui-neutral);
-  background: white;
-  font-size: 1.4rem;
+  border-radius: 1rem;
+  padding: 0 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  color: var(--color-text-secondary);
+  user-select: none;
+  transition: all 0.2s;
   box-sizing: border-box;
 }
 
@@ -106,31 +102,53 @@
   border-color: var(--color-primary-light);
 }
 
+.selected-option {
+  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.arrow {
+  font-size: 1.2rem;
+  color: var(--color-text-secondary);
+  transition: transform 0.2s;
+}
+
+.select-trigger.open .arrow {
+  transform: rotate(180deg);
+  color: var(--color-primary-light);
+}
+
 .options {
   position: absolute;
-  top: 105%;
+  top: calc(100% + 0.5rem);
   left: 0;
   width: 100%;
   background: var(--color-background-primary);
-  border-radius: 1rem;
-  padding: 0.6rem 0;
-  margin: 0;
-  list-style: none;
-  z-index: 20;
   border: 1px solid var(--color-border-light);
-  box-shadow: 0 0.5rem 1.4rem rgba(0, 0, 0, 0.15);
-  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
+  z-index: 100;
+  max-height: 25rem;
+  overflow-y: auto;
 }
 
 .options li {
-  padding: 0.9rem 1.4rem;
-  cursor: pointer;
+  padding: 1rem 1.5rem;
   font-size: 1.4rem;
+  cursor: pointer;
   color: var(--color-text-secondary);
+  transition: background-color 0.1s;
 }
 
 .options li:hover {
-  background: color-mix(in srgb, var(--color-primary-light) 25%, var(--color-background-primary));
+  background-color: var(--color-background-soft-orange);
+  color: var(--color-text-primary);
 }
 
 .pedidos-list {
@@ -159,18 +177,32 @@ app-pedido-admin-card {
   font-size: 1.8rem;
   color: var(--color-ui-disabled-text);
   font-style: italic;
+  text-align: center;
 }
 
-@media (max-width: 600px) {
-  .filters {
-    flex-direction: column;
-    gap: 1.5rem;
+@media (max-width: 900px) {
+  .page-container {
+    padding: 1.5rem;
   }
 
-  .filter-input,
-  .select-custom-wrapper,
-  .date-picker-wrapper {
+  .header-section {
+    margin-bottom: 2rem;
+  }
+
+  .filters-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .filter-input, 
+  .select-custom-wrapper {
+    width: 100% !important;
+    min-width: 0;
+  }
+  
+  app-paginador {
     width: 100%;
-    min-width: unset;
+    overflow-x: auto;
   }
 }

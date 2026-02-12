@@ -20,7 +20,7 @@ export class ReclamoPage {
   enviarReporte(reclamo: ReclamoRequest) {
     this.reclamoService.enviarReclamo(reclamo).subscribe({
       next: () => {
-        this.uiNotificationService.abrirSnackBarExito('¡Reclamo enviado! Revisá tu correo.');
+        this.uiNotificationService.abrirSnackBarExito('¡Reclamo enviado! Revisá tu bandeja de entrada.');
         
         this.formComponent.resetForm();
       },

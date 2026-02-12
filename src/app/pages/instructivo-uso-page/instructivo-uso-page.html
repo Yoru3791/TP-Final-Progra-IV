@@ -1,270 +1,312 @@
-<div class="info-page-container">
-  <h1 class="main-h1-title">INSTRUCTIVO DE USO</h1>
+<div class="info-page-container fade-in">
+  <header class="page-header">
+    <h1 class="main-h1-title">INSTRUCTIVO DE USO</h1>
+  </header>
 
-  <nav>
-    <h3>Navegación</h3>
+  <nav class="anchor-nav">
+    <h3 class="nav-label">Navegación</h3>
 
-    <p>
-      <a [routerLink]="[]" fragment="general">General</a> — 
-      <a [routerLink]="[]" fragment="invitado">Invitado</a> — 
-      <a [routerLink]="[]" fragment="cliente">Cliente</a> — 
-      <a [routerLink]="[]" fragment="dueno">Dueño</a>
-    </p>
+    <div class="nav-pills">
+      <a [routerLink]="[]" fragment="general" class="nav-pill">General</a>
+      <a [routerLink]="[]" fragment="invitado" class="nav-pill">Invitado</a>
+      <a [routerLink]="[]" fragment="cliente" class="nav-pill">Cliente</a>
+      <a [routerLink]="[]" fragment="dueno" class="nav-pill">Dueño</a>
+    </div>
   </nav>
 
-  <content>
-    <section id="general">
+  <div class="content-wrapper">
+    <section id="general" class="info-section">
       <h2 class="texto-con-separador">General</h2>
 
-      <p>
-        Todo lo detallado en esta sección aplica para todos los usuarios sin importar su rol, salvo se indique lo 
-        contrario.
-      </p>
+      <div class="section-body">
+        <p>
+          Todo lo detallado en esta sección aplica para todos los usuarios sin importar su rol, salvo se indique lo 
+          contrario.
+        </p>
 
-      <p>
-        El sitio ofrece varias páginas informativas como esta, disponibles en todo momento desde el encabezado (la 
-        barra superior) o el pie de página (la barra inferior). Además, los logos del sitio funcionan como enlaces a 
-        la página de inicio.
-      </p>
+        <p>
+          El sitio ofrece varias páginas informativas como esta, disponibles en todo momento desde el encabezado (la 
+          barra superior) o el pie de página (la barra inferior). Además, los logos del sitio funcionan como enlaces a 
+          la página de inicio.
+        </p>
 
-      <p>
-        En el <strong>encabezado</strong> se encuentran los siguientes elementos principales:
-      </p>
+        <div class="highlight-box">
+          <p>
+            En el <strong>encabezado</strong> se encuentran los siguientes elementos principales:
+          </p>
 
-      <ul>
-        <li>
-          <strong>Selector de Ciudad:</strong> esencialmente un filtro de emprendimientos por ciudad.
-        </li>
+          <ul>
+            <li>
+              <strong>Selector de Ciudad:</strong> esencialmente un filtro de emprendimientos por ciudad.
+            </li>
 
-        <li>
-          <strong>Buscador de Emprendimientos:</strong> permite buscar emprendimientos en la ciudad actual escribiendo 
-          parte de sus nombres.
-        </li>
+            <li>
+              <strong>Buscador de Emprendimientos:</strong> permite buscar emprendimientos en la ciudad actual escribiendo 
+              parte de sus nombres.
+            </li>
 
-        <li>
-          <strong>Notificaciones (campana):</strong> botón que desplega un listado con una vista previa de tus nuevas 
-          notificaciones.
-        </li>
+            <li>
+              <strong>Notificaciones (campana):</strong> botón que desplega un listado con una vista previa de tus nuevas 
+              notificaciones.
+            </li>
 
-        <li>
-          <strong>Acceso a Perfil (busto):</strong> botón que te lleva a tu perfil completo.
-        </li>
+            <li>
+              <strong>Acceso a Perfil (busto):</strong> botón que te lleva a tu perfil completo.
+            </li>
 
-        <li>
-          <strong>Cierre de Sesión (flecha de salida):</strong> botón que abre el diálogo de cierre de sesión.
-        </li>
-      </ul>
+            <li>
+              <strong>Cierre de Sesión (flecha de salida):</strong> botón que abre el diálogo de cierre de sesión.
+            </li>
+          </ul>
+        </div>
 
-      <p>
-        En el <strong>pie de página</strong> se encuentran las siguientes secciones principales:
-      </p>
+        <p>
+          En el <strong>pie de página</strong> se encuentran las siguientes secciones principales:
+        </p>
 
-      <ul>
-        <li>
-          <strong>Contacto:</strong> listado de medios para contactarnos.
-        </li>
+        <ul>
+          <li>
+            <strong>Contacto:</strong> listado de medios para contactarnos.
+          </li>
 
-        <li>
-          <strong>Enlaces Rápidos:</strong> enlaces varios, incluyendo un enlace al formulario de reclamos.
-        </li>
-      </ul>
+          <li>
+            <strong>Enlaces Rápidos:</strong> enlaces varios, incluyendo un enlace al formulario de reclamos.
+          </li>
+        </ul>
 
-      <h3>Página de Inicio</h3>
+        <div class="subsection">
+          <h3>Página de Inicio</h3>
 
-      <p>
-        En la página de inicio podés ver vistas previas de los emprendimientos disponibles de la ciudad que hayas 
-        elegido. Desde una vista, podés presionar las viandas para verlas en detalle, e ingresar a la página completa 
-        del emprendimiento.
-      </p>
+          <p>
+            En la página de inicio podés ver vistas previas de los emprendimientos disponibles de la ciudad que hayas 
+            elegido. Desde una vista, podés presionar las viandas para verlas en detalle, e ingresar a la página completa 
+            del emprendimiento.
+          </p>
+        </div>
 
-      <h3>Página de Emprendimiento</h3>
+        <div class="subsection">
+          <h3>Página de Emprendimiento</h3>
 
-      <p>
-        En la página de un emprendimiento podés ver todos sus detalles públicos y viandas disponibles, y ver estas 
-        últimas en detalle. Según tu rol, vas a tener acceso a ciertas opciones adicionales.
-      </p>
+          <p>
+            En la página de un emprendimiento podés ver todos sus detalles públicos y viandas disponibles, y ver estas 
+            últimas en detalle. Según tu rol, vas a tener acceso a ciertas opciones adicionales.
+          </p>
+        </div>
 
-      <h3>Pedidos</h3>
+        <div class="subsection">
+          <h3>Pedidos</h3>
 
-      <p>
-        <strong>Cada pedido corresponde a un único emprendimiento</strong>; no pueden mezclarse viandas de múltiples 
-        emprendimientos. Además, cada pedido solamente puede incluir un máximo de 10 unidades de cada vianda.
-      </p>
+          <p>
+            <strong>Cada pedido corresponde a un único emprendimiento</strong>; no pueden mezclarse viandas de múltiples 
+            emprendimientos. Además, cada pedido solamente puede incluir un máximo de 10 unidades de cada vianda.
+          </p>
 
-      <p>
-        La fecha de entrega debe ser posterior o igual a dos días después de la fecha actual.
-      </p>
+          <p>
+            La fecha de entrega debe ser posterior o igual a dos días después de la fecha actual.
+          </p>
 
-      <p>
-        <strong>Este sitio no gestiona pagos ni entrega;</strong> estas son responsabilidades de los dueños y clientes.
-      </p>
+          <div class="alert-box">
+            <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+            <p class="alert-text-content">
+              <strong>Este sitio no gestiona pagos ni entrega;</strong> estas son responsabilidades de los dueños y clientes.
+            </p>
+          </div>
+        </div>
 
-      <h3>Perfil</h3>
+        <div class="subsection">
+          <h3>Perfil</h3>
 
-      <p>
-        En la página de perfil podés ver y editar tus datos personales (incluyendo tu foto de perfil), cambiar tu 
-        contraseña, y eliminar tu cuenta. Según tu rol, van a aplicar ciertas condiciones para poder eliminar tu 
-        cuenta.
-      </p>
-      
-      <p>
-        También podés ver el listado de pedidos que hayas realizado como cliente o recibido como dueño, entrar a 
-        verlos en detalle, y realizar ciertas acciones pertinentes según tu rol.
-      </p>
-      
-      <p>
-        Finalmente, podés ver el listado de notificaciones que hayas recibido.
-      </p>
+          <p>
+            En la página de perfil podés ver y editar tus datos personales (incluyendo tu foto de perfil), cambiar tu 
+            contraseña, y eliminar tu cuenta. Según tu rol, van a aplicar ciertas condiciones para poder eliminar tu 
+            cuenta.
+          </p>
+          
+          <p>
+            También podés ver el listado de pedidos que hayas realizado como cliente o recibido como dueño, entrar a 
+            verlos en detalle, y realizar ciertas acciones pertinentes según tu rol.
+          </p>
+          
+          <p>
+            Finalmente, podés ver el listado de notificaciones que hayas recibido.
+          </p>
+        </div>
 
-      <h3>Reclamos</h3>
+        <div class="subsection">
+          <h3>Reclamos</h3>
 
-      <p>
-        Para ir al formulario de reclamos, presioná <a routerLink="/reclamos">acá</a> o el enlace correspondiente en 
-        el pie de página.
-      </p>
+          <p>
+            Para ir al formulario de reclamos, presioná <a routerLink="/reclamos">acá</a> o el enlace correspondiente en 
+            el pie de página.
+          </p>
 
-      <p>
-        Una vez ahí, podés ingresar el email al que quieras que te contactemos, y los detalles de tu reclamo. No es 
-        necesario que inicies sesión para realizar un reclamo.
-      </p>
+          <p>
+            Una vez ahí, podés ingresar el email al que quieras que te contactemos, y los detalles de tu reclamo. No es 
+            necesario que inicies sesión para realizar un reclamo.
+          </p>
+        </div>
+      </div>
     </section>
 
-    <section id="invitado">
+    <section id="invitado" class="info-section">
       <h2 class="texto-con-separador">Invitado</h2>
 
-      <p>
-        Se considera invitados a los usuarios que no tengan una sesión abierta. Como tal, sólo podés visualizar los 
-        emprendimientos disponibles, sus viandas disponibles, y las páginas informativas del sitio. <strong>Tenés que 
-        iniciar sesión para poder acceder al resto de funcionalidad del sitio.</strong>
-      </p>
+      <div class="section-body">
+        <p>
+          Se considera invitados a los usuarios que no tengan una sesión abierta. Como tal, sólo podés visualizar los 
+          emprendimientos disponibles, sus viandas disponibles, y las páginas informativas del sitio. <strong>Tenés que 
+          iniciar sesión para poder acceder al resto de funcionalidad del sitio.</strong>
+        </p>
 
-      <h3>Inicio de Sesión</h3>
+        <div class="subsection">
+          <h3>Inicio de Sesión</h3>
 
-      <p>
-        Para iniciar sesión, presioná el botón naranja en el encabezado, e ingresá tus credenciales.
-      </p>
+          <p>
+            Para iniciar sesión, presioná el botón naranja en el encabezado, e ingresá tus credenciales.
+          </p>
 
-      <p>
-        Si olvidaste tu contraseña, vas a tener que contactarnos para recuperarla, ya que de momento no tenemos un 
-        sistema automático que se encargue de ello.
-      </p>
+          <p>
+            Si no tenés cuenta y/o querés crear una nueva, presioná el enlace correspondiente en la página de inicio de 
+            sesión.
+          </p>
 
-      <p>
-        Si no tenés cuenta y/o querés crear una nueva, presioná el enlace correspondiente en la página de inicio de 
-        sesión.
-      </p>
+          <p>
+            Si olvidaste tu contraseña, podés recuperarla presionando el enlace correspondiente debajo del inicio de 
+            sesión. Si perdiste el acceso a tu email o no te llega el correo de recuperación, podés generar un 
+            <a routerLink="/reclamos">reclamo</a>.
+          </p>
+        </div>
 
-      <h3>Registro (Creación de Cuenta)</h3>
+        <div class="subsection">
+          <h3>Registro (Creación de Cuenta)</h3>
 
-      <p>
-        Para registrarte, tenés que completar el formulario con algunos de tus datos, y aceptar las 
-        <a routerLink="/bases-condiciones">bases y condiciones</a> y las 
-        <a routerLink="/normas-comunidad">normas de la comunidad</a>.
-      </p>
+          <p>
+            Para registrarte, tenés que completar el formulario con algunos de tus datos, y aceptar las 
+            <a routerLink="/bases-condiciones">bases y condiciones</a> y las 
+            <a routerLink="/normas-comunidad">normas de la comunidad</a>.
+          </p>
 
-      <p>
-        Tené en cuenta que <strong>el registro por defecto es para clientes; si querés registrarte como dueño, 
-        simplemente presioná el enlace correspondiente debajo del formulario.</strong>
-      </p>
+          <p>
+            Tené en cuenta que <strong>el registro por defecto es para clientes; si querés registrarte como dueño, 
+            simplemente presioná el enlace correspondiente debajo del formulario.</strong>
+          </p>
 
-      <p>
-        Además, <strong>tus credenciales de email y teléfono deben ser únicas</strong>: no se permite el registro de 
-        múltiples usuarios con las mismas credenciales.
-      </p>
+          <p>
+            Además, <strong>tus credenciales de email y teléfono deben ser únicas</strong>: no se permite el registro de 
+            múltiples usuarios con las mismas credenciales.
+          </p>
+        </div>
+      </div>
     </section>
 
-    <section id="cliente">
+    <section id="cliente" class="info-section">
       <h2 class="texto-con-separador">Cliente</h2>
 
-      <p>
-        Como cliente, podés realizar pedidos a los emprendimientos.
-      </p>
+      <div class="section-body">
+        <p>
+          Como cliente, podés realizar pedidos a los emprendimientos.
+        </p>
 
-      <h3>Pedidos</h3>
+        <div class="subsection">
+          <h3>Pedidos</h3>
 
-      <p>
-        Para realizar un pedido, primero tenés que crear un carrito, para lo cual tenés que ingresar a la página de un 
-        emprendimiento y presionar el botón correspondiente o directamente agregar viandas. Si intentás crear un nuevo 
-        carrito en un emprendimiento mientras ya tengas uno creado en otro emprendimiento, el sitio te va a informar y 
-        preguntar cómo continuar.
-      </p>
+          <p>
+            Para realizar un pedido, primero tenés que crear un carrito, para lo cual tenés que ingresar a la página de un 
+            emprendimiento y presionar el botón correspondiente o directamente agregar viandas. Si intentás crear un nuevo 
+            carrito en un emprendimiento mientras ya tengas uno creado en otro emprendimiento, el sitio te va a informar y 
+            preguntar cómo continuar.
+          </p>
 
-      <p>
-        Desde el carrito, podés cambiar la cantidad de unidades que quieras de cada vianda, seleccionar la fecha en la 
-        que querés recibir el pedido, y confirmar o cancelar el pedido, además de visualizar el precio total del 
-        pedido.
-      </p>
+          <p>
+            Desde el carrito, podés cambiar la cantidad de unidades que quieras de cada vianda, seleccionar la fecha en la 
+            que querés recibir el pedido, y confirmar o cancelar el pedido, además de visualizar el precio total del 
+            pedido.
+          </p>
 
-      <p>
-        Desde tu página de perfil podés acceder al listado de pedidos que hayas realizado, pudiendo ver sus estados 
-        actuales y acceder a datos de contacto del dueño del emprendimiento correspondiente a cada pedido.
-      </p>
+          <p>
+            Desde tu página de perfil podés acceder al listado de pedidos que hayas realizado, pudiendo ver sus estados 
+            actuales y acceder a datos de contacto del dueño del emprendimiento correspondiente a cada pedido.
+          </p>
 
-      <p>
-        Para pedidos pendientes, podés cambiar la fecha de entrega deseada o cancelar el pedido.
-      </p>
+          <p>
+            Para pedidos pendientes, podés cambiar la fecha de entrega deseada o cancelar el pedido.
+          </p>
+        </div>
 
-      <h3>Miscelánea</h3>
+        <div class="subsection">
+          <h3>Miscelánea</h3>
 
-      <p>
-        <strong>Para poder eliminar tu cuenta como cliente, no podés tener pedidos en proceso (en estado pendiente o 
-        aceptado).</strong>
-      </p>
+          <p>
+            <strong>Para poder eliminar tu cuenta como cliente, no podés tener pedidos en proceso (en estado pendiente o 
+            aceptado).</strong>
+          </p>
+        </div>
+      </div>
     </section>
 
-    <section id="dueno">
+    <section id="dueno" class="info-section">
       <h2 class="texto-con-separador">Dueño</h2>
 
-      <p>
-        Como dueño, podés crear emprendimientos, crear viandas dentro de estos, y aceptar o rechazar pedidos a estos.
-      </p>
-      
-      <h3>Emprendimientos</h3>
+      <div class="section-body">
+        <p>
+          Como dueño, podés crear emprendimientos, crear viandas dentro de estos, y aceptar o rechazar pedidos a estos.
+        </p>
+        
+        <div class="subsection">
+          <h3>Emprendimientos</h3>
 
-      <p>
-        Desde la página de inicio podés crear nuevos emprendimientos. Tené en cuenta que solamente vas a poder ver tus 
-        propios emprendimientos, no los ajenos.
-      </p>
-      
-      <p>
-        Desde la página de un emprendimiento específico podés modificar su información, cambiar su disponibilidad 
-        (podés marcarlo como no disponible sin eliminarlo), o eliminarlo completamente.
-      </p>
+          <p>
+            Desde la página de inicio podés crear nuevos emprendimientos. Tené en cuenta que solamente vas a poder ver tus 
+            propios emprendimientos, no los ajenos.
+          </p>
+          
+          <p>
+            Desde la página de un emprendimiento específico podés modificar su información, cambiar su disponibilidad 
+            (podés marcarlo como no disponible sin eliminarlo), o eliminarlo completamente.
+          </p>
 
-      <p>
-        <strong>Para eliminar un emprendimiento, este no puede tener ningún pedido asociado, sin importar su 
-        estado.</strong>
-      </p>
+          <p>
+            <strong>Para eliminar un emprendimiento, este no puede tener ningún pedido asociado, sin importar su 
+            estado.</strong>
+          </p>
+        </div>
 
-      <h3>Viandas</h3>
+        <div class="subsection">
+          <h3>Viandas</h3>
 
-      <p>
-        Desde la página de un emprendimiento específico podés crear viandas, verlas en detalle, modificar su 
-        información y, al igual que con tus emprendimientos, su disponibilidad, o eliminarlas completamente.
-      </p>
-      
-      <p>
-        <strong>Para eliminar una vianda, esta no puede tener ningún pedido asociado, sin importar su estado.</strong>
-      </p>
+          <p>
+            Desde la página de un emprendimiento específico podés crear viandas, verlas en detalle, modificar su 
+            información y, al igual que con tus emprendimientos, su disponibilidad, o eliminarlas completamente.
+          </p>
+          
+          <p>
+            <strong>Para eliminar una vianda, esta no puede tener ningún pedido asociado, sin importar su estado.</strong>
+          </p>
+        </div>
 
-      <h3>Pedidos</h3>
+        <div class="subsection">
+          <h3>Pedidos</h3>
 
-      <p>
-        Desde tu página de perfil podés acceder al listado de pedidos que hayan recibido tus emprendimientos, pudiendo 
-        ver sus estados actuales y acceder a datos de contacto del cliente que haya realizado cada pedido.
-      </p>
+          <p>
+            Desde tu página de perfil podés acceder al listado de pedidos que hayan recibido tus emprendimientos, pudiendo 
+            ver sus estados actuales y acceder a datos de contacto del cliente que haya realizado cada pedido.
+          </p>
 
-      <p>
-        Para pedidos pendientes, podés aceptar o rechazar el pedido. Para pedidos aceptados, una vez se haya realizado 
-        la entrega, podés marcarlos como entregados.
-      </p>
-      
-      <h3>Miscelánea</h3>
+          <p>
+            Para pedidos pendientes, podés aceptar o rechazar el pedido. Para pedidos aceptados, una vez se haya realizado 
+            la entrega, podés marcarlos como entregados.
+          </p>
+        </div>
+        
+        <div class="subsection">
+          <h3>Miscelánea</h3>
 
-      <p>
-        <strong>Para poder eliminar tu cuenta como dueño, no podés tener emprendimientos que no puedan ser 
-        eliminados.</strong>
-      </p>
+          <p>
+            <strong>Para poder eliminar tu cuenta como dueño, no podés tener emprendimientos que no puedan ser 
+            eliminados.</strong>
+          </p>
+        </div>
+      </div>
     </section>
-  </content>
+  </div>
 </div>

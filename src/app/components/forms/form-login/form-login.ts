@@ -43,12 +43,14 @@ export class FormLogin {
       })
       .subscribe({
         next: (response: LoginResponse) => {
-          this.uiNotificationService.abrirSnackBarExito('Sesión iniciada exitosamente.');
+          this.uiNotificationService.abrirSnackBarExito(
+            'Sesión iniciada exitosamente.'
+          );
 
           this.authService.handleLoginSuccess(
             response.token,
             response.usuarioID,
-            usuario.recordarme!,
+            usuario.recordarme!
           );
 
           setTimeout(() => {
@@ -64,8 +66,8 @@ export class FormLogin {
             } else if (errorCode === 'ACCOUNT_BANNED') {
               this.uiNotificationService.abrirModalError(
                 err,
-                "Esta cuenta fue bloqueada por un administrador. " +
-                "Si creés que esto es un error, contactanos para solucionarlo."
+                'Esta cuenta fue bloqueada por un administrador. ' +
+                  'Si creés que esto es un error, contactanos para solucionarlo.'
               );
             }
           } else {
@@ -86,12 +88,17 @@ export class FormLogin {
       next: (res) => {
         this.isResending = false;
         this.unverifiedEmail = null;
-        this.uiNotificationService.abrirSnackBarExito('¡Correo enviado! Revisá tu correo.');
+        this.uiNotificationService.abrirSnackBarExito(
+          '¡Correo enviado! Revisá tu correo.'
+        );
       },
       error: (err) => {
         this.isResending = false;
-        this.uiNotificationService.abrirSnackBarError(err, 'Error al reenviar el correo.');
-      }
+        this.uiNotificationService.abrirSnackBarError(
+          err,
+          'Error al reenviar el correo.'
+        );
+      },
     });
   }
 }

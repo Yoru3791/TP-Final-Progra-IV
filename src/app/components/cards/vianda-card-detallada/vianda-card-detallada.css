@@ -1,10 +1,14 @@
-/* --- COMPONENTE TARJETA DE VIANDA DETALLADA --- */
 :host {
   display: block;
   height: 100%;
   width: 100%;
   max-width: 30rem;
-  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  :host {
+    max-width: 100%; 
+  }
 }
 
 .card {
@@ -247,13 +251,13 @@
 }
 
 .card.eliminada {
-  border: 0.2rem dashed #dc2626;
-  background-color: #fef2f2;
+  border: 0.2rem dashed var(--color-state-danger);
+  background-color: var(--color-background-secondary);
 }
 
 .status-badge.deleted {
-  background-color: #991b1b;
-  border-color: #991b1b;
+  background-color: var(--color-state-danger);
+  border-color: var(--color-state-danger);
 }
 
 .card.eliminada .product-image,

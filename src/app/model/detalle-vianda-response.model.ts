@@ -4,4 +4,5 @@ export interface DetalleViandaResponse {
   precioUnitario: number;
   cantidad: number;
   subtotal: number;
+  imagenUrl?: string;
 }

@@ -1,10 +1,8 @@
 .result-container {
-    min-height: 80vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
-    background-color: var(--color-background-secondary);
+    padding: 1rem;
 }
 
 .card-result {
@@ -88,7 +86,7 @@ h1 {
     font-size: 1.4rem;
     display: flex;
     gap: 1rem;
-    align-items: start;
+    align-items: center;
     text-align: left;
 }
 

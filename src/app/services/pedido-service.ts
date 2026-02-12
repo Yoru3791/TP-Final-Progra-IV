@@ -1,18 +1,20 @@
-import { Injectable, inject, signal, computed } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { AuthService, UserRole } from './auth-service';
+import { AuthService } from './auth-service';
 import { PedidoResponse } from '../model/pedido-response.model';
 import { catchError, of, tap } from 'rxjs';
 import { PedidoUpdateRequest } from '../model/pedido-update-request.model';
 import { PedidoRequest } from '../model/pedido-request.model';
 import { EstadoPedido } from '../enums/estadoPedido.enum';
 import { PagedResponse, PageMetadata } from '../model/hateoas-pagination.models';
+import { ApiUrlService } from './api-url-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PedidosService {
   private http = inject(HttpClient);
+  private apiUrlService = inject(ApiUrlService);
   private authService = inject(AuthService);
 
   public pedidos = signal<PedidoResponse[]>([]);
@@ -23,23 +25,8 @@ export class PedidosService {
   public filtroEstado = signal<EstadoPedido | null>(null);
   public filtroEmprendimiento = signal<string | null>(null);
 
-  private baseUrls = {
-    DUENO: 'http://localhost:8080/api/dueno/pedidos',
-    CLIENTE: 'http://localhost:8080/api/cliente/pedidos',
-    ADMIN: 'http://localhost:8080/api/admin/pedidos',
-  };
-
   private getApiUrl(): string {
-    const rol: UserRole = this.authService.currentUserRole();
-    switch (rol) {
-      case 'ADMIN':
-        return this.baseUrls.ADMIN;
-      case 'DUENO':
-        return this.baseUrls.DUENO;
-      case 'CLIENTE':
-      default:
-        return this.baseUrls.CLIENTE;
-    }
+    return `${this.apiUrlService.getApiUrlByCurrentRol()}/pedidos`;
   }
 
   fetchPedidos(page: number = 0, size: number = 10) {
@@ -99,7 +86,11 @@ export class PedidosService {
   }
 
   updatePedido(id: number, pedidoUpdate: PedidoUpdateRequest) {
-    const url = `${this.getApiUrl()}/id/${id}`;
+    const path = this.authService.currentUserRole() === 'ADMIN'
+                 ? "" : "id/";
+
+    const url = `${this.getApiUrl()}/${path}${id}`;
+
     return this.http
       .put<any>(url, pedidoUpdate)
       .pipe(

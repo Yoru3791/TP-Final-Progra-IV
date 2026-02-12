@@ -1,8 +1,14 @@
 <form class="form-login" [formGroup]="formLogin" (ngSubmit)="login()">
+  
   <!-- Email -->
   <div class="form-field">
     <label for="email" class="form-label">Email</label>
-    <input formControlName="email" type="email" class="form-input" />
+    <input 
+      formControlName="email" 
+      type="email" 
+      class="form-input" 
+      placeholder="ejemplo@email.com"
+    />
   </div>
 
   <!-- Password -->
@@ -14,8 +20,9 @@
         formControlName="password"
         [type]="showPassword ? 'text' : 'password'"
         class="form-input"
+        placeholder="Ingresá tu contraseña"
       />
-      <button type="button" class="toggle-eye" (click)="togglePassword()">
+      <button type="button" class="toggle-eye" (click)="togglePassword()" tabindex="-1">
         <i class="fa-solid {{ showPassword ? 'fa-eye' : 'fa-eye-slash' }}"></i>
       </button>
     </div>
@@ -32,14 +39,13 @@
   <!-- Boton : "Ingresar" -->
   <button
     type="submit"
-    class="btn-base btn-primary btn-login"
+    class="btn-primary-action btn-full-width"
     [disabled]="!formLogin.valid"
-    [class.disabled]="!formLogin.valid"
   >
-    <!-- Si el form no es valido, se desabilita el boton, funcional y estéticamente -->
     Iniciar Sesión
   </button>
 
+  <!-- Alerta de cuenta no verificada -->
   @if (unverifiedEmail) {
     <div class="account-warning">
       <p>
@@ -47,9 +53,9 @@
         Tu cuenta aún no ha sido validada.
       </p>
       
-      <button type="button" class="btn btn-resend" (click)="reenviarCorreo()" [disabled]="isResending">
+      <button type="button" class="btn-resend" (click)="reenviarCorreo()" [disabled]="isResending">
         @if (isResending) {
-          Revisá tu correo.
+          Revisá tu bandeja de entrada.
         } @else {
           Reenviar email de activación
         }

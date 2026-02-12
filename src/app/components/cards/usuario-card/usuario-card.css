@@ -16,7 +16,7 @@ p {
 }
 
 .usuario-card {
-  background: white;
+  background: var(--color-background-primary);
   border: 1px solid var(--color-ui-neutral);
   border-radius: 1rem;
   box-shadow: var(--shadow-card);
@@ -28,6 +28,19 @@ p {
   text-align: center;
 
   transition: box-shadow 0.2s ease;
+  width: 100%;
+}
+
+.usuario-card.eliminado {
+  background-color: var(--color-background-secondary);
+  opacity: 0.8;
+}
+.usuario-card.eliminado .card-img {
+  filter: grayscale(1);
+}
+
+.usuario-card.bloqueado {
+  border-left: 5px solid var(--color-state-error);
 }
 
 .card-img {
@@ -42,6 +55,7 @@ p {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .nombre {
@@ -55,16 +69,11 @@ p {
   font-size: 1.4rem;
 }
 
-.email-telefono-container a {
+.email-telefono-container p {
   color: var(--color-text-secondary);
-  text-decoration: none;
-  display: block;
   margin-bottom: 0.2rem;
-}
-
-.email-telefono-container a:hover {
-  color: var(--color-primary-light);
-  text-decoration: underline;
+  margin-top: 0; 
+  cursor: default; 
 }
 
 .status-container {
@@ -73,6 +82,7 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 0.5rem;
 }
 
 .not-enabled-container {
@@ -120,6 +130,7 @@ p {
   display: flex;
   gap: 1rem;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .btn {
@@ -135,13 +146,14 @@ p {
 
 .btn:hover:not(:disabled) {
   color: var(--color-primary-light);
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: color-mix(in srgb, var(--color-background-primary) 95%, var(--color-background-inverse));
 }
 
 .btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
 }
+
 
 @media (min-width: 900px) {
   .usuario-card {
@@ -155,6 +167,11 @@ p {
 
   .card-img {
     margin-right: 1rem;
+  }
+
+  .info-block {
+    width: auto;
+    align-items: flex-start;
   }
 
   .nombre {
@@ -184,5 +201,6 @@ p {
 
   .buttons-container {
     gap: 0.5rem;
+    flex-wrap: nowrap;
   }
 }

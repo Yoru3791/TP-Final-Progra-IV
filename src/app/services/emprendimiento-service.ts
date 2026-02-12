@@ -2,15 +2,17 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { EmprendimientoResponse } from '../model/emprendimiento-response.model';
 import { catchError, forkJoin, map, Observable, of, tap } from 'rxjs';
-import { AuthService, UserRole } from './auth-service';
+import { AuthService } from './auth-service';
 import { CityFilterService } from './city-filter-service';
 import { ViandaService } from './vianda-service';
 import { PagedResponse, PageMetadata } from '../model/hateoas-pagination.models';
 import { EmprendimientoAdminResponse } from '../model/emprendimiento-admin-response.model';
+import { ApiUrlService } from './api-url-service';
 
 @Injectable({ providedIn: 'root' })
 export class EmprendimientoService {
   private http = inject(HttpClient);
+  private apiUrlService = inject(ApiUrlService);
   private authService = inject(AuthService);
   private cityFilter = inject(CityFilterService);
   private viandaService = inject(ViandaService);
@@ -24,31 +26,10 @@ export class EmprendimientoService {
   public adminFiltroNombre = signal<string>('');
   public adminFiltroCiudad = signal<string>('');
   public adminFiltroDueno = signal<string>('');
+  public adminSoloEliminados = signal<boolean>(false);
   
-
-  private baseUrls = {
-    PUBLIC: 'http://localhost:8080/api/public/emprendimientos',
-    DUENO: 'http://localhost:8080/api/dueno/emprendimientos',
-    CLIENTE: 'http://localhost:8080/api/cliente/emprendimientos',
-    ADMIN: 'http://localhost:8080/api/admin/emprendimientos',
-  };
-
   private getApiUrl(): string {
-    const rol: UserRole = this.authService.currentUserRole();
-
-    switch (rol) {
-      case 'ADMIN':
-        return this.baseUrls.ADMIN;
-
-      case 'DUENO':
-        return this.baseUrls.DUENO;
-
-      case 'CLIENTE':
-        return this.baseUrls.CLIENTE;
-
-      default:
-        return this.baseUrls.PUBLIC;
-    }
+    return `${this.apiUrlService.getApiUrlByCurrentRol()}/emprendimientos`;
   }
 
   fetchEmprendimientos(page: number = 0, size: number = 10, ignorarCiudad: boolean = false) {
@@ -79,13 +60,15 @@ export class EmprendimientoService {
     const nombre = this.adminFiltroNombre();
     const ciudad = this.adminFiltroCiudad();
     const dueno = this.adminFiltroDueno();
+    const soloEliminados = this.adminSoloEliminados();
 
     if (nombre) params = params.set('nombre', nombre);
     if (ciudad) params = params.set('ciudad', ciudad);
     if (dueno) params = params.set('dueno', dueno);
+    if (soloEliminados) params = params.set('soloEliminados', 'true');
 
     this.http
-      .get<PagedResponse<EmprendimientoAdminResponse>>(this.baseUrls.ADMIN, { params })
+      .get<PagedResponse<EmprendimientoAdminResponse>>(this.getApiUrl(), { params })
       .pipe(catchError((err) => {
           console.error('Error al cargar emprendimientos (ADMIN)', err);
           return of(null);
@@ -132,8 +115,7 @@ export class EmprendimientoService {
         .set('page', 0)
         .set('size', 6);
 
-    if (rol === 'DUENO') {
-    } else {
+    if (rol !== 'DUENO') {
       const ciudad = this.cityFilter.city();
       if (ciudad) {
         params = params.set('ciudad', ciudad);
@@ -157,10 +139,7 @@ export class EmprendimientoService {
   // ----------------------- CRUD -----------------------
 
   createEmprendimiento(formData: FormData) {
-    const rol = this.authService.currentUserRole();
-    if (rol !== 'DUENO' && rol !== 'ADMIN') throw new Error('Acceso denegado');
-
-    const url = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const url = this.getApiUrl();
 
     return this.http.post<EmprendimientoResponse>(url, formData).pipe(
       tap(() => {
@@ -170,16 +149,18 @@ export class EmprendimientoService {
   }
 
   deleteEmprendimiento(id: number) {
-    const rol = this.authService.currentUserRole();
-
-    if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tenés permiso para eliminar emprendimientos.');
-    }
-
-    const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const baseUrl = this.getApiUrl();
     const url = `${baseUrl}/id/${id}`;
 
     return this.http.delete<void>(url).pipe(
+      tap(() => {
+        this.allEmprendimientos.update((list) => list.filter((e) => e.id !== id));
+      })
+    );
+  }
+
+  deleteEmprendimientoForce(id: number) {
+    return this.http.delete<void>(`${this.getApiUrl()}/id/${id}/force-delete`).pipe(
       tap(() => {
         this.allEmprendimientos.update((list) => list.filter((e) => e.id !== id));
       })
@@ -193,13 +174,7 @@ export class EmprendimientoService {
   }
 
   updateEmprendimiento(id: number, dto: any) {
-    const rol = this.authService.currentUserRole();
-
-    if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tenés permiso para actualizar emprendimientos.');
-    }
-
-    const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const baseUrl = this.getApiUrl();
     const url = `${baseUrl}/id/${id}`;
 
     return this.http.put<EmprendimientoResponse>(url, dto).pipe(
@@ -212,13 +187,7 @@ export class EmprendimientoService {
   }
 
   updateImagenEmprendimiento(id: number, formData: FormData) {
-    const rol = this.authService.currentUserRole();
-
-    if (rol !== 'DUENO' && rol !== 'ADMIN') {
-      throw new Error('No tenés permisos para actualizar imágenes de emprendimientos.');
-    }
-
-    const baseUrl = rol === 'ADMIN' ? this.baseUrls.ADMIN : this.baseUrls.DUENO;
+    const baseUrl = this.getApiUrl();
     const url = `${baseUrl}/id/${id}/imagen`;
 
     return this.http.put<EmprendimientoResponse>(url, formData).pipe(

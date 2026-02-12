@@ -15,3 +15,7 @@
   margin-right: 1rem;
   color: var(--color-primary-light);
 }
+
+#mensaje {
+  line-height: 1;
+}

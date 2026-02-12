@@ -1,6 +1,70 @@
-.google-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-top: 1rem;
+:host {
+  display: block;
+  width: 100%;
+}
+
+.google-btn-wrapper {
+  position: relative; 
+  width: 100%;
+  max-width: 350px; 
+  height: 50px;    
+  margin: 1.5rem auto 0;
+}
+
+.custom-google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  border: 1px solid #dadce0;
+  border-radius: 999px; 
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  padding: 0 1rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.google-btn-wrapper:hover .custom-google-btn {
+  background-color: #f8faff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  border-color: #d2e3fc;
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px; 
+}
+
+.btn-text {
+  font-family: 'Roboto', sans-serif; 
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #3c4043;
+}
+
+.google-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10; 
+  opacity: 0.01; 
+  overflow: hidden;
+  border-radius: 999px; 
+}
+
+
+@media (max-width: 480px) {
+  .google-btn-wrapper {
+    max-width: 100%;
+  }
+  
+  .btn-text {
+    font-size: 1.4rem; 
+  }
 }

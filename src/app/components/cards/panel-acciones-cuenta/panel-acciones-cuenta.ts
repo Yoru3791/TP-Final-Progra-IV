@@ -16,14 +16,17 @@ export class PanelAccionesCuenta {
   private authService = inject(AuthService);
   private dialog = inject(MatDialog);
 
+  esAdmin = computed(() => this.authService.currentUserRole() === 'ADMIN');
+
   esAdminOriginal = computed(() =>
-    this.authService.currentUserRole() === 'ADMIN' && this.authService.usuarioId() === 1
+    this.esAdmin() && this.authService.usuarioId() === 1
   );
 
   cambiarPassword() {
     this.dialog.open(CambiarPasswordModal, {
       panelClass: 'form-modal',
-      width: '60rem',
+      width: '55rem',
+      maxWidth: '95vw',
     });
   }
 

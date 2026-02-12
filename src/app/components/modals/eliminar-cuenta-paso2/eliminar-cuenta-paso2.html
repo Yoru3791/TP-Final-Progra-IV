@@ -1,17 +1,47 @@
-<h2 class="titulo-rojo">Eliminar cuenta</h2>
-
-<p class="texto">
-  Para confirmar esta acción, escribí “<span>eliminar</span>” en el campo inferior.
-</p>
-
-<form [formGroup]="form">
-  <input type="text" class="form-input" formControlName="confirm" placeholder="eliminar" />
-
-  <div class="acciones">
-    <button type="submit" class="btn-base btn-danger" [disabled]="form.invalid" (click)="eliminar()">
-      Eliminar definitivamente
+<div class="modal-wrapper">
+  
+  <div class="modal-header">
+    <h2 class="modal-title danger-title">Eliminar Cuenta</h2>
+    <button type="button" class="btn-icon-close" (click)="cancelar()">
+      <i class="fa-solid fa-xmark"></i>
     </button>
-
-    <button type="button" class="btn-base btn-secondary" (click)="cancelar()">Cancelar</button>
   </div>
-</form>
+
+  <form [formGroup]="form" class="modal-body simple-body" (submit)="eliminar()">
+    
+    <div class="instruction-content">
+      <p class="texto-instruccion">
+        Para confirmar esta acción, escribí "<span class="text-danger">eliminar</span>" debajo.
+      </p>
+
+      <div class="form-field">
+        <input 
+          type="text" 
+          class="form-input text-center" 
+          formControlName="confirm" 
+          placeholder="eliminar" 
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+  </form>
+
+  <div class="modal-footer center-footer">
+    <div class="footer-actions">
+      <button type="button" class="btn-secondary-action" (click)="cancelar()">
+        Cancelar
+      </button>
+
+      <button 
+        type="button" 
+        class="btn-danger-action" 
+        [disabled]="form.invalid" 
+        (click)="eliminar()"
+      >
+        Eliminar definitivamente
+      </button>
+    </div>
+  </div>
+
+</div>

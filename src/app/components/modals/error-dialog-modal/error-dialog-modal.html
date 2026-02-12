@@ -1,12 +1,34 @@
-<h2 mat-dialog-title>
-  <mat-icon>error</mat-icon>
-  ¡ERROR!
-</h2>
+<div class="modal-wrapper">
+  
+  <div class="modal-header">
+    <h2 class="modal-title danger-title">Ocurrió un error</h2>
+    <button type="button" class="btn-icon-close" [mat-dialog-close]="true">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
 
-<mat-dialog-content>
-  <p>{{ data.message }}</p>
-</mat-dialog-content>
+  <div class="modal-body error-body-layout">
+    
+    <div class="error-icon-column">
+      <div class="icon-background">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+    </div>
 
-<mat-dialog-actions>
-  <button class="btn-base btn-secondary" [mat-dialog-close]="true">Cerrar</button>
-</mat-dialog-actions>
+    <!-- Mensaje -->
+    <div class="error-text-column">
+      <h3 class="error-subtitle">No pudimos completar la acción</h3>
+      <p class="error-message">
+        {{ data.message }}
+      </p>
+    </div>
+
+  </div>
+
+  <div class="modal-footer footer-right-align">
+    <button type="button" class="btn-secondary-action" [mat-dialog-close]="true">
+      Volver
+    </button>
+  </div>
+
+</div>

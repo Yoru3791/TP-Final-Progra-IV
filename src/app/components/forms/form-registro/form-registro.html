@@ -1,5 +1,6 @@
 <form class="form-registro" [formGroup]="formRegistro" (ngSubmit)="onSubmit()">
-  <!-- Nombre completo -->
+  
+  <!-- Nombre -->
   <div class="form-field">
     <label for="nombreCompleto" class="form-label">Nombre completo</label>
     <input
@@ -12,12 +13,11 @@
       "
       placeholder="Ej.: Juan Pérez"
     />
-    <!-- Si el nombre es invalido y el input ya fue tocado de alguna manera, se le agrega la clase invalid al input, asi se manejan visualmente los errores -->
-
     <div class="error-messages">
-      @if (formRegistro.get('nombreCompleto')?.invalid &&
-           (formRegistro.get('nombreCompleto')?.touched || formRegistro.get('nombreCompleto')?.dirty))
-      {
+      @if (
+        formRegistro.get('nombreCompleto')?.invalid &&
+        (formRegistro.get('nombreCompleto')?.touched || formRegistro.get('nombreCompleto')?.dirty)
+      ) {
         @if (formRegistro.get('nombreCompleto')?.hasError('required')) {
           <p>Campo obligatorio.</p>
         } @else if (formRegistro.get('nombreCompleto')?.hasError('maxLength')) {
@@ -40,11 +40,11 @@
       "
       placeholder="Ej.: juanperez@gmail.com"
     />
-
     <div class="error-messages">
-      @if (formRegistro.get('email')?.invalid && (formRegistro.get('email')?.touched ||
-           formRegistro.get('email')?.dirty))
-      {
+      @if (
+        formRegistro.get('email')?.invalid &&
+        (formRegistro.get('email')?.touched || formRegistro.get('email')?.dirty)
+      ) {
         @if (formRegistro.get('email')?.hasError('required')) {
           <p>Campo obligatorio.</p>
         } @else if (formRegistro.get('email')?.hasError('email')) {
@@ -69,11 +69,11 @@
       "
       placeholder="Ej.: 2231234567"
     />
-
     <div class="error-messages">
-      @if (formRegistro.get('telefono')?.invalid && (formRegistro.get('telefono')?.touched ||
-           formRegistro.get('telefono')?.dirty))
-      {
+      @if (
+        formRegistro.get('telefono')?.invalid &&
+        (formRegistro.get('telefono')?.touched || formRegistro.get('telefono')?.dirty)
+      ) {
         @if (formRegistro.get('telefono')?.hasError('required')) {
           <p>Campo obligatorio.</p>
         } @else if (formRegistro.get('telefono')?.hasError('pattern')) {
@@ -96,22 +96,23 @@
           formRegistro.get('password')?.invalid &&
           (formRegistro.get('password')?.touched || formRegistro.get('password')?.dirty)
         "
-        placeholder="Entre 8 y 16 caracteres, y al menos una mayúscula, una minúscula, un número y un carácter especial."
+        placeholder="8-16 caracteres, mayús, minús, núm, especial."
       />
-      <button type="button" class="toggle-eye" (click)="togglePassword()">
+      <button type="button" class="toggle-eye" (click)="togglePassword()" tabindex="-1">
         <i class="fa-solid {{ showPassword ? 'fa-eye' : 'fa-eye-slash' }}"></i>
       </button>
     </div>
 
     <div class="error-messages">
-      @if (formRegistro.get('password')?.invalid && (formRegistro.get('password')?.touched ||
-           formRegistro.get('password')?.dirty))
-      {
+      @if (
+        formRegistro.get('password')?.invalid &&
+        (formRegistro.get('password')?.touched || formRegistro.get('password')?.dirty)
+      ) {
         @if (formRegistro.get('password')?.hasError('required')) {
           <p>Campo obligatorio.</p>
         } @else if (formRegistro.get('password')?.hasError('pattern')) {
           <p>
-            Entre 8 y 16 caracteres, y al menos una mayúscula, una minúscula, un número y un carácter especial.
+            Formato inválido (Revisa mayús/minús/núm/especial).
           </p>
         }
       }
@@ -135,17 +136,18 @@
         "
         placeholder="Repetí la contraseña."
       />
-      <button type="button" class="toggle-eye" (click)="toggleConfirmPassword()">
+      <button type="button" class="toggle-eye" (click)="toggleConfirmPassword()" tabindex="-1">
         <i class="fa-solid {{ showConfirmPassword ? 'fa-eye' : 'fa-eye-slash' }}"></i>
       </button>
     </div>
 
     <div class="error-messages">
-      @if ((formRegistro.get('confirmarPassword')?.touched ||
+      @if (
+        (formRegistro.get('confirmarPassword')?.touched ||
           formRegistro.get('confirmarPassword')?.dirty) &&
-          (formRegistro.get('confirmarPassword')?.hasError('required') ||
-          formRegistro.hasError('noCoinciden')) )
-      {
+        (formRegistro.get('confirmarPassword')?.hasError('required') ||
+          formRegistro.hasError('noCoinciden'))
+      ) {
         @if (formRegistro.get('confirmarPassword')?.hasError('required')) {
           <p>Campo obligatorio.</p>
         } @else if (formRegistro.hasError('noCoinciden')) {
@@ -155,25 +157,20 @@
     </div>
   </div>
 
-  <!-- Checkboxes -->
-  <div class="checkboxes-container">
+  <!-- Checkboxes: "Bases y condiciones" y "Normas" -->
+  <div class="checkboxes-wrapper">
     <div class="checkbox-container">
       <label>
         <input type="checkbox" formControlName="aceptarTerminos" />
-
-        <p>
-          He leído y acepto las <a (click)="openBasesCondiciones()">bases y condiciones</a>.
-        </p>
+        <p>He leído y acepto las <a (click)="openBasesCondiciones()">bases y condiciones</a>.</p>
       </label>
     </div>
 
     <div class="checkbox-container">
       <label>
         <input type="checkbox" formControlName="aceptarPoliticas" />
-
         <p>
-          Me comprometo a hacer un buen uso de la plataforma y respetar las
-          <a (click)="openNormasComunidad()">normas de la comunidad</a>.
+          Me comprometo a respetar las <a (click)="openNormasComunidad()">normas de la comunidad</a>.
         </p>
       </label>
     </div>
@@ -181,11 +178,9 @@
 
   <button
     type="submit"
-    class="btn-base btn-primary btn-registro"
+    class="btn-primary-action btn-full-width"
     [disabled]="!formRegistro.valid"
-    [class.disabled]="!formRegistro.valid"
   >
-    <!-- Si el form no es valido, se desabilita el boton, funcional y esteticamente -->
     Registrarse
   </button>
 </form>

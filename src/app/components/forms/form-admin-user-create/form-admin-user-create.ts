@@ -23,45 +23,36 @@ export class FormAdminUserCreate {
 
   roles = RolUsuario.ROLES_LOGUEADOS;
 
-  form = this.formBuilder.group(
-    {
-      nombreCompleto: [
-        '',
-        [Validators.required, Validators.maxLength(256)],
+  form = this.formBuilder.group({
+    nombreCompleto: ['', [Validators.required, Validators.maxLength(256)]],
+    email: [
+      '',
+      [Validators.required, Validators.email, Validators.maxLength(254)],
+    ],
+    rol: ['', Validators.required],
+    telefono: ['', [Validators.required, Validators.pattern(/^\d{6,15}$/)]],
+    password: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,16}$/
+        ),
       ],
-      email: [
-        '',
-        [Validators.required, Validators.email, Validators.maxLength(254)]
-      ],
-      rol: [
-        '',
-        Validators.required
-      ],
-      telefono: [
-        '',
-        [Validators.required, Validators.pattern(/^\d{6,15}$/)]
-      ],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,16}$/
-          ),
-        ],
-      ]
-    }
-  );
+    ],
+  });
 
   mostrarError(formControlName: string) {
     return (
       this.form.get(formControlName)?.invalid &&
       (this.form.get(formControlName)?.touched ||
-       this.form.get(formControlName)?.dirty)
+        this.form.get(formControlName)?.dirty)
     );
   }
 
   onSubmit() {
+    if (this.form.invalid) return;
+
     const usuario = this.form.value;
 
     this.usuarioService
@@ -74,9 +65,9 @@ export class FormAdminUserCreate {
       })
       .subscribe({
         next: () => {
-          this.uiNotificationService.abrirSnackBarExito('Usuario creado exitosamente.')
-
-          // El form puede existir dentro de un modal
+          this.uiNotificationService.abrirSnackBarExito(
+            'Usuario creado exitosamente.'
+          );
           this.dialogRef?.close(true);
         },
         error: (err) => {
@@ -87,5 +78,9 @@ export class FormAdminUserCreate {
 
   togglePassword() {
     this.showPassword = !this.showPassword;
+  }
+
+  closeDialog() {
+    this.dialogRef?.close();
   }
 }

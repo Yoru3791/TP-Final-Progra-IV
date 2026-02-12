@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, HostListener, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, HostListener, inject, OnInit, signal } from '@angular/core';
 import { ReclamoCardComponent } from '../../components/cards/reclamo-card/reclamo-card';
 import { ReclamoService } from '../../services/reclamo-service';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,24 +8,29 @@ import { EstadoReclamo } from '../../enums/estadoReclamo.enum';
 import { AdminGestionReclamoModal } from '../../components/modals/admin-gestion-reclamo-modal/admin-gestion-reclamo-modal';
 import { InfoReclamoTooltipComponent } from '../../components/utils/info-reclamo-tooltip/info-reclamo-tooltip';
 import { UiNotificationService } from '../../services/ui-notification-service';
+import { Paginador } from '../../components/utils/paginador/paginador';
 
 @Component({
   selector: 'app-admin-reclamos-page',
-  imports: [CommonModule, ReclamoCardComponent, InfoReclamoTooltipComponent],
+  imports: [
+    CommonModule,
+    ReclamoCardComponent,
+    InfoReclamoTooltipComponent,
+    Paginador
+  ],
   templateUrl: './admin-reclamos-page.html',
   styleUrl: './admin-reclamos-page.css',
 })
-export class AdminReclamosPage implements OnInit {
+export class AdminReclamosPage {
+
   private reclamoService = inject(ReclamoService);
   private dialog = inject(MatDialog);
   private uiNotificationService = inject(UiNotificationService);
 
-  reclamos = signal<Reclamo[]>([]);
-  loading = signal(true);
+  reclamos = computed(() => this.reclamoService.adminReclamos());
+  pageInfo = computed(() => this.reclamoService.adminPageInfo());
 
-  filtroActual = signal<string>('TODOS');
   openFiltro = false;
-
   filtrosDisponibles = [
     { label: 'Pendientes', value: EstadoReclamo.PENDIENTE },
     { label: 'En Proceso', value: EstadoReclamo.EN_PROCESO },
@@ -33,44 +38,32 @@ export class AdminReclamosPage implements OnInit {
     { label: 'Cerrados', value: EstadoReclamo.RECHAZADO },
   ];
 
-  reclamosFiltrados = computed(() => {
-    const filtro = this.filtroActual();
-    const lista = this.reclamos();
-
-    if (filtro === 'TODOS') return lista;
-    return lista.filter((r) => r.estado === filtro);
-  });
-
-  ngOnInit() {
-    this.cargarReclamos();
-  }
-
-  cargarReclamos() {
-    this.loading.set(true);
-    this.reclamoService.getAllReclamos().subscribe({
-      next: (data) => {
-        this.reclamos.set(data);
-        this.loading.set(false);
-      },
-      error: (err) => {
-        this.uiNotificationService.abrirSnackBarError(err);
-        this.loading.set(false);
-      },
+  
+  constructor() {
+    effect(() => {
+        this.reclamoService.filtroEstadoAdmin();
+        this.reclamoService.fetchAdminReclamos(0, 10);
     });
   }
 
+  onPageChange(page: number) {
+    this.reclamoService.fetchAdminReclamos(page, 10);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // --- Lógica Filtros ---
   toggleFiltro(event: MouseEvent) {
     this.openFiltro = !this.openFiltro;
     event.stopPropagation();
   }
 
-  setFiltro(valor: string) {
-    this.filtroActual.set(valor);
+  setFiltro(valor: EstadoReclamo | 'TODOS') {
+    this.reclamoService.filtroEstadoAdmin.set(valor);
     this.openFiltro = false;
   }
 
   getLabelFiltroActual(): string {
-    const actual = this.filtroActual();
+    const actual = this.reclamoService.filtroEstadoAdmin();
     if (actual === 'TODOS') return 'Estado: Todos';
     const found = this.filtrosDisponibles.find((f) => f.value === actual);
     return found ? found.label : actual;
@@ -84,9 +77,12 @@ export class AdminReclamosPage implements OnInit {
     }
   }
 
+  // --- Gestión ---
   abrirGestion(reclamo: Reclamo) {
     const dialogRef = this.dialog.open(AdminGestionReclamoModal, {
       panelClass: 'form-modal',
+      width: '50rem',
+      maxWidth: '95vw',
       data: reclamo,
       disableClose: true,
       autoFocus: false,
@@ -104,7 +100,6 @@ export class AdminReclamosPage implements OnInit {
     this.reclamoService.actualizarEstado(id, nuevoEstado, respuesta).subscribe({
       next: () => {
         this.uiNotificationService.abrirSnackBarExito('Ticket actualizado.');
-        this.cargarReclamos();
       },
       error: (err) => {
         this.uiNotificationService.abrirSnackBarError(err, 'Error al actualizar el ticket.');

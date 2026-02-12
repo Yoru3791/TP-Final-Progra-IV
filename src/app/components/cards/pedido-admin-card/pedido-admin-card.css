@@ -1,8 +1,12 @@
+:host {
+  --card-background-color: var(--color-background-primary);
+}
+
 .pedido-card {
   border: 1px solid var(--color-ui-neutral);
   border-radius: 1rem;
   box-shadow: var(--shadow-card);
-  background-color: white;
+  background-color: var(--card-background-color);
 
   display: flex;
   flex-direction: column;
@@ -10,13 +14,8 @@
   padding: 1.5rem;
 
   width: 100%;
-  /* Height auto para mobile, fijo en desktop */
   height: auto;
-}
-
-/* Eliminamos el hover de borde de color */
-.pedido-card:hover {
-  border-color: var(--color-ui-neutral);
+  box-sizing: border-box;
 }
 
 .main-info {
@@ -24,6 +23,24 @@
   flex-direction: column;
   gap: 0.8rem;
   flex: 1;
+}
+
+.img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border-light);
+  width: 100%;
+}
+
+.emp-logo {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-border-light);
+  background-color: var(--color-background-secondary);
 }
 
 .nombre {
@@ -62,7 +79,6 @@
   margin: 0;
 }
 
-/* Nuevos estilos para labels inline */
 .label-dato {
   font-weight: normal;
   color: var(--color-text-light);
@@ -91,7 +107,6 @@
   text-align: center;
 }
 
-/* Columna Dueño */
 .dueno-col {
   display: flex;
   flex-direction: column;
@@ -117,20 +132,21 @@
 .dueno-email {
   font-size: 1.2rem;
   color: var(--color-text-secondary);
-  text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
+  margin: 0;        
+  cursor: default; 
 }
 
-/* Columna Estado y Acción */
 .status-action-col {
   display: flex;
-  flex-direction: row; /* En mobile suelen ir juntos */
+  flex-direction: row; 
   justify-content: space-between;
   align-items: center;
   margin-top: 0.5rem;
+  gap: 1rem;
 }
 
 .estado {
@@ -139,44 +155,57 @@
   text-transform: uppercase;
   padding: 0.4rem 1rem;
   border-radius: 0.5rem;
+  white-space: nowrap;
 }
 
-/* Colores de Estado */
 .estado-aceptado {
   color: var(--color-state-success);
-  background: #eafff0;
+  background: color-mix(in srgb, var(--card-background-color) 90%, var(--color-state-success));
 }
 .estado-pendiente {
   color: var(--color-state-warning);
-  background: #fff8e1;
+  background: color-mix(in srgb, var(--card-background-color) 85%, var(--color-state-warning));
 }
 .estado-rechazado {
   color: var(--color-state-error);
-  background: #ffebeb;
+  background: color-mix(in srgb, var(--card-background-color) 85%, var(--color-state-error));
 }
 .estado-entregado {
   color: var(--color-state-finish);
-  background: #eef6ff;
+  background: color-mix(in srgb, var(--card-background-color) 85%, var(--color-state-finish));
 }
 
 .btn-ver-mas {
-  padding: 0.8rem 1.2rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.3rem;
+  white-space: nowrap;
 }
 
-/* --- RESPONSIVE DESKTOP --- */
 @media (min-width: 900px) {
   .pedido-card {
     flex-direction: row;
     align-items: center;
     padding: 1rem 2rem;
     height: 10rem;
-    gap: 3rem;
+    gap: 2rem;
     max-width: 115rem;
+  }
+
+  .img-container {
+    border-bottom: none;
+    padding-bottom: 0;
+    width: auto;
+    margin-left: 1rem;
+  }
+
+  .emp-logo {
+    width: 6rem;
+    height: 6rem;
   }
 
   .main-info {
     justify-content: center;
-    border-right: 1px solid transparent; /* Espaciador si fuera necesario */
+    border-right: 1px solid transparent;
   }
 
   .dueno-col {

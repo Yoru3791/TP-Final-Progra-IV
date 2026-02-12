@@ -1,4 +1,13 @@
 <div class="pedido-card">
+
+  <div class="img-container">
+      <img
+        [src]="pedido.emprendimiento.imagenUrl || 'assets/placeholder-food.png'"
+        class="emp-logo"
+        alt="Logo emprendimiento"
+      />
+  </div>
+
   <div class="main-info">
     <p class="nombre">
       <span class="id-pedido">#{{ pedido.id }}</span> {{ pedido.cliente.nombreCompleto }}
@@ -31,9 +40,9 @@
   <div class="dueno-col">
     <span class="label">Dueño:</span>
     <p class="dueno-nombre">{{ pedido.emprendimiento.dueno.nombreCompleto }}</p>
-    <a [href]="'mailto:' + pedido.emprendimiento.dueno.email" class="dueno-email">
+    <p class="dueno-email">
       {{ pedido.emprendimiento.dueno.email }}
-    </a>
+    </p>
   </div>
 
   <div class="status-action-col">

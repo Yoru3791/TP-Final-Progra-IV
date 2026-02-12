@@ -1,4 +1,4 @@
-import { Component, computed, inject, Input, signal, Signal } from '@angular/core';
+import { Component, computed, inject, input, Input, signal, Signal } from '@angular/core';
 import { AuthService } from '../../../services/auth-service';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminUserUpdateModal } from '../../modals/admin-user-update-modal/admin-user-update-modal';
@@ -15,50 +15,44 @@ import { UsuarioAdminResponse } from '../../../model/usuario-admin-response.mode
   styleUrl: './usuario-card.css',
 })
 export class UsuarioCard {
-  @Input({ required: true }) usuario!: UsuarioAdminResponse;
-  usuarioSignal = signal<UsuarioAdminResponse|null>(null);
+  usuario = input.required<UsuarioAdminResponse>();
 
   private authService = inject(AuthService);
   private dialog = inject(MatDialog);
   private uiNotificationService = inject(UiNotificationService);
   private usuarioService = inject(UsuarioService);
 
-  isDeleted = computed(() =>
-    this.usuarioSignal()?.deletedAt !== null
+  isDeleted = computed(() => !!this.usuario().deletedAt);
+
+  deletionDate = computed(() => 
+    this.usuario().deletedAt ? this.usuario().deletedAt.split('T')[0] : ''
   );
 
-  deletionDate = "";
+  isBanned = computed(() => !!this.usuario().bannedAt);
 
-  isBanned = computed(() =>
-    this.usuarioSignal()?.bannedAt !== null
+  banDate = computed(() => 
+    this.usuario().bannedAt ? this.usuario().bannedAt.split('T')[0] : ''
   );
 
-  banDate = "";
+  isEditable = computed(() => {
+    const u = this.usuario();
+    return u.id !== 1 && u.id !== this.authService.usuarioId() && !u.deletedAt;
+  });
 
-  isEditable = computed(() =>
-    this.usuarioSignal()?.id !== 1 && this.usuarioSignal()?.id !== this.authService.usuarioId()
-    && !this.isDeleted()
-  );
-
-  ngOnChanges() {
-    this.usuarioSignal.set(this.usuario);
-
-    if (this.isDeleted()) {
-      this.deletionDate = this.usuario.deletedAt.split('T')[0];
-    }
-
-    if (this.isBanned()) {
-      this.banDate = this.usuario.bannedAt.split('T')[0];
-    }
+  private refreshList() {
+    const currentPage = this.usuarioService.adminPageInfo()?.number || 0;
+    this.usuarioService.fetchUsuariosAdmin(currentPage);
   }
 
   changePassword() {
       this.dialog
         .open(AdminUserUpdatePasswordModal, {
           panelClass: 'form-modal',
+          width: '50rem',
+          maxWidth: '95vw',
           autoFocus: false,
           restoreFocus: false,
-          data: this.usuario,
+          data: this.usuario(),
         })
         .afterClosed()
         .subscribe({
@@ -70,22 +64,20 @@ export class UsuarioCard {
     const confirmado = await firstValueFrom(
       this.uiNotificationService.abrirModalConfirmacion({
           titulo: 'Activar usuario',
-          texto: '¿Seguro de que querés activar este usuario?',
+          texto: '¿Estás seguro que querés activar este usuario manualmente?',
       })
     );
 
     if (!confirmado) return;
 
     this.usuarioService
-      .enableUsuario(this.usuario.id)
+      .enableUsuario(this.usuario().id)
       .subscribe({
         next: () => {
           this.uiNotificationService.abrirSnackBarExito("Usuario activado exitosamente.");
-          this.usuarioService.readUsuariosAdmin();
+          this.refreshList();
         },
-        error: (err) => {
-          this.uiNotificationService.abrirModalError(err);
-        },
+        error: (err) => this.uiNotificationService.abrirModalError(err),
       });
   }
 
@@ -93,14 +85,16 @@ export class UsuarioCard {
       this.dialog
         .open(AdminUserUpdateModal, {
           panelClass: 'form-modal',
+          width: '75rem',
+          maxWidth: '95vw',
           autoFocus: false,
           restoreFocus: false,
-          data: this.usuario,
+          data: this.usuario(),
         })
         .afterClosed()
         .subscribe((result) => {
             if (result === true) {
-              this.usuarioService.readUsuariosAdmin();
+              this.refreshList();
             }
           }
         );
@@ -112,22 +106,54 @@ export class UsuarioCard {
     const confirmado = await firstValueFrom(
       this.uiNotificationService.abrirModalConfirmacion({
           titulo: `${banned ? 'Desbloquear' : 'Bloquear'} usuario`,
-          texto: `¿Seguro de que querés ${banned ? 'desbloquear' : 'bloquear'} a este usuario?`,
-          critico: banned ? false : true,
+          texto: `¿Estás seguro que querés ${banned ? 'desbloquear' : 'bloquear'} a este usuario?`,
+          critico: !banned,
       })
     );
 
     if (!confirmado) return;
 
-    (banned ? this.usuarioService.unbanUsuario(this.usuario.id) : this.usuarioService.banUsuario(this.usuario.id))
-      .subscribe({
+    const action$ = banned 
+        ? this.usuarioService.unbanUsuario(this.usuario().id) 
+        : this.usuarioService.banUsuario(this.usuario().id);
+
+    action$.subscribe({
         next: () => {
           this.uiNotificationService.abrirSnackBarExito(`Usuario ${banned ? 'desbloqueado' : 'bloqueado'} exitosamente.`);
-          this.usuarioService.readUsuariosAdmin();
+          this.refreshList();
         },
         error: (err) => {
-          this.uiNotificationService.abrirModalError(err);
+          if (!banned && err.status === 409) {
+            this.forceBan();
+          }
+          else {
+            this.uiNotificationService.abrirModalError(err);
+          }
         },
+      });
+  }
+
+  async forceBan() {
+    const confirmado = await firstValueFrom(
+      this.uiNotificationService.abrirModalConfirmacion({
+        titulo: `Forzar bloqueo`,
+        texto:
+          'El usuario tiene pedidos en proceso; si lo bloqueás, los pedidos van a ser cancelados.\n' +
+          '¿Estás seguro que querés forzar el bloqueo?',
+          critico: true,
+      })
+    );
+
+    if (!confirmado) return;
+
+    const action$ = this.usuarioService.banUsuarioForce(this.usuario().id);
+
+    action$.subscribe({
+        next: () => {
+          this.uiNotificationService.abrirSnackBarExito(`Usuario bloqueado exitosamente.`);
+          this.refreshList();
+        },
+        error: (err) => this.uiNotificationService.abrirModalError(err),
       });
   }
 
@@ -135,7 +161,7 @@ export class UsuarioCard {
     const confirmado = await firstValueFrom(
       this.uiNotificationService.abrirModalConfirmacion({
           titulo: 'Eliminar usuario',
-          texto: '¿Seguro de que querés eliminar este usuario? <span>Esta acción es irreversible.</span>',
+          texto: '¿Estás seguro que querés eliminar este usuario? <span>Esta acción es irreversible.</span>',
           textoEsHtml: true,
           critico: true,
       })
@@ -144,15 +170,45 @@ export class UsuarioCard {
     if (!confirmado) return;
 
     this.usuarioService
-      .deleteUsuarioAdmin(this.usuario.id)
+      .deleteUsuarioAdmin(this.usuario().id)
       .subscribe({
         next: () => {
           this.uiNotificationService.abrirSnackBarExito("Usuario eliminado exitosamente.");
-          this.usuarioService.readUsuariosAdmin();
+          this.refreshList();
         },
-        error: (error) => {
-          this.uiNotificationService.abrirModalError(error);
+        error: (err) => {
+          if (err.status === 409) {
+            this.forceDelete();
+          }
+          else {
+            this.uiNotificationService.abrirModalError(err);
+          }
         },
+      });
+  }
+
+  private async forceDelete() {
+    const confirmado = await firstValueFrom(
+      this.uiNotificationService.abrirModalConfirmacion({
+        titulo: 'Forzar eliminación',
+        texto:
+          'El usuario tiene pedidos en proceso; si lo eliminás, los pedidos van a ser cancelados.\n' +
+          '¿Estás seguro que querés forzar la eliminación? <span>Esta acción es irreversible.</span>',
+        textoEsHtml: true,
+        critico: true,
+      })
+    );
+
+    if (!confirmado) return;
+
+    this.usuarioService
+      .deleteUsuarioForceAdmin(this.usuario().id)
+      .subscribe({
+        next: () => {
+          this.uiNotificationService.abrirSnackBarExito("Usuario eliminado exitosamente.");
+          this.refreshList();
+        },
+        error: (err) => this.uiNotificationService.abrirModalError(err),
       });
   }
 }

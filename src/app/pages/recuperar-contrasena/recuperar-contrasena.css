@@ -1,3 +1,7 @@
+.main-h1-title {
+  margin-bottom: 2rem;
+}
+
 .form {
   align-items: center;
   background-color: var(--color-background-secondary);
@@ -8,10 +12,35 @@
   justify-content: center;
   gap: 1.2rem;
   padding: 2rem;
-  width: 60rem;
+  width: 60rem; 
+  max-width: 100%; 
 }
 
 .btn {
   padding: 1rem 2rem;
   font-size: 1.45rem;
+}
+
+@media (max-width: 768px) {
+  .main-form-container {
+    width: 95%; 
+    padding: 0 1rem; 
+    margin-top: 2rem;
+  }
+
+  .form {
+    width: 100%;
+    padding: 2rem 1.5rem; 
+    box-sizing: border-box; 
+  }
+
+  .btn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 1.2rem; 
+  }
+  
+  .input-with-icon {
+    width: 100%;
+  }
 }

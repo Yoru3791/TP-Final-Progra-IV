@@ -1,34 +1,39 @@
-<div class="usuario-card">
-  <img class="card-img" [src]="usuario.imagenUrl" alt="Avatar" />
+<div class="usuario-card" 
+    [class.eliminado]="isDeleted()"
+    [class.bloqueado]="isBanned()">
 
-  <p class="nombre">{{ usuario.nombreCompleto }}</p>
+  <img class="card-img" [src]="usuario().imagenUrl" alt="Avatar" />
 
-  <div class="email-telefono-container">
-    <a [href]="'mailto:' + usuario.email">{{ usuario.email }}</a>
-    <a [href]="'tel:' + usuario.telefono">{{ usuario.telefono }}</a>
+  <div class="info-block">
+    <p class="nombre">{{ usuario().nombreCompleto }}</p>
+
+    <div class="email-telefono-container">
+      <p>{{ usuario().email }}</p>
+      <p>{{ usuario().telefono }}</p>
+    </div>
   </div>
 
   <div class="status-container">
-    @if (isEditable() && !usuario.enabled) {
+    @if (isEditable() && !usuario().enabled && !isDeleted()) {
       <div class="not-enabled-container">
         <span>NO VERIFICADO</span>
-        <button class="enable-button" (click)="enable()" title="Activar">
+        <button class="enable-button" (click)="enable()" title="Activar manualmente">
           <i class="fa-regular fa-circle-check"></i>
         </button>
       </div>
     }
 
     @if (isBanned()) {
-      <p class="banned-text"><span>BLOQUEADO:</span> {{ banDate }}</p>
+      <p class="banned-text"><span>BLOQUEADO:</span> {{ banDate() }}</p>
     }
 
     @if (isDeleted()) {
-      <p class="deleted-text"><span>ELIMINADO:</span> {{ deletionDate }}</p>
+      <p class="deleted-text"><span>ELIMINADO:</span> {{ deletionDate() }}</p>
     }
   </div>
 
   <div class="rol-container">
-    <p>{{ usuario.rolUsuario }}</p>
+    <p>{{ usuario().rolUsuario }}</p>
   </div>
 
   <div class="buttons-container">

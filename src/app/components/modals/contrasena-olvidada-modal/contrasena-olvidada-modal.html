@@ -1,44 +1,63 @@
-<h2 class="titulo-modal">Recuperar Contraseña</h2>
+<div class="modal-wrapper">
+  
+  <div class="modal-header">
+    <h2 class="modal-title">Recuperar Contraseña</h2>
+    <button type="button" class="btn-icon-close" (click)="cancelar()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
 
-<p class="texto">
-  Ingresá tu email para recibir un enlace para restablecer tu contraseña.
-</p>
+  <form [formGroup]="form" (ngSubmit)="enviar()" class="modal-body simple-body">
+    
+    <p class="modal-description">
+      Ingresá tu email para recibir un enlace para restablecer tu contraseña.
+    </p>
 
-<form [formGroup]="form" (ngSubmit)="enviar()">
-  <div class="form-field">
-    <label for="email" class="form-label">Mail</label>
-
-    <input
-      type="email"
-      id="email"
-      formControlName="email"
-      placeholder="ejemplo@correo.com"
-      class="form-input"
-      [class.invalid]="
-        form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty)
-      "
-    />
-
-    <div class="error-messages">
-      @if (form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty)) {
-        @if (form.get('email')?.hasError('required')) {
-          <p>Campo obligatorio.</p>
+    <div class="form-field">
+      <label for="email" class="form-label">Mail</label>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        placeholder="ejemplo@correo.com"
+        class="form-input"
+        [class.invalid]="form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty)"
+      />
+      
+      <div class="error-messages">
+        @if (form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty)) {
+          @if (form.get('email')?.hasError('required')) {
+            <p>Campo obligatorio.</p>
+          }
+          @if (form.get('email')?.hasError('email')) {
+            <p>Email inválido.</p>
+          }
         }
-        @if (form.get('email')?.hasError('email')) {
-          <p>Email inválido.</p>
+      </div>
+    </div>
+  </form>
+
+  <div class="modal-footer">
+    <div class="footer-left"></div>
+
+    <div class="footer-right">
+      <button type="button" class="btn-secondary-action" (click)="cancelar()">
+        Cancelar
+      </button>
+
+      <button 
+        type="button" 
+        class="btn-primary-action" 
+        (click)="enviar()" 
+        [disabled]="form.invalid || isLoading()"
+      >
+        @if (isLoading()) {
+          <i class="fa-solid fa-spinner fa-spin"></i> Enviando...
+        } @else {
+          Enviar enlace
         }
-      }
+      </button>
     </div>
   </div>
 
-  <div class="acciones">
-    <button type="submit" class="btn-base btn-primary" [disabled]="form.invalid || isLoading()">
-      @if (isLoading()) {
-        Enviando...
-      } @else {
-        Enviar enlace
-      }
-    </button>
-    <button type="button" class="btn-base btn-secondary" (click)="cancelar()">Cancelar</button>
-  </div>
-</form>
+</div>

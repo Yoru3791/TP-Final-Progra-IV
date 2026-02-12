@@ -1,34 +1,95 @@
-:host {
-  display: block;
-  padding: 2.4rem;
-  border-radius: 1.2rem;
-}
-
-.titulo-rojo {
-  font-size: 2rem;
-  color: var(--color-state-error);
-  font-weight: bold;
-  margin: 0 0 1.4rem 0;
-}
-
-.texto {
-  font-size: 1.45rem;
-  color: var(--color-text-primary);
-  margin-bottom: 2rem;
-}
-
-.texto span {
-  font-weight: bolder;
-  color: var(--color-state-error);
-}
-
-.acciones {
+.modal-body.simple-body {
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
   justify-content: center;
-  margin-top: 1rem;
+  align-items: center;
+  padding: 3rem;
+  overflow-y: auto;
 }
 
-.acciones.center {
+.danger-title {
+  color: var(--color-state-error) !important;
+}
+
+.instruction-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 40rem;
+  text-align: center;
+}
+
+.texto-instruccion {
+  font-size: 1.6rem;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.text-danger {
+  color: var(--color-state-error);
+  font-weight: 800;
+}
+
+.form-input.text-center {
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.05rem;
+}
+
+.modal-footer.center-footer {
   justify-content: center;
+}
+
+.footer-actions {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.btn-danger-action {
+  background-color: var(--color-state-error);
+  color: white;
+  border-radius: 1rem;
+  font-weight: 700;
+  height: 4.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3.5rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  letter-spacing: 0.05rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px color-mix(in srgb, var(--color-state-error-hover) 25%, rgba(0,0,0,0));
+}
+
+.btn-danger-action:hover:not(:disabled) {
+  background-color: var(--color-state-error-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px color-mix(in srgb, var(--color-state-error-hover) 35%, rgba(0,0,0,0));
+}
+
+.btn-danger-action:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn-danger-action:disabled {
+  background-color: var(--color-ui-disabled-background);
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+  .footer-actions {
+    flex-direction: column-reverse;
+  }
+  
+  .btn-secondary-action, .btn-danger-action {
+    width: 100%;
+  }
 }

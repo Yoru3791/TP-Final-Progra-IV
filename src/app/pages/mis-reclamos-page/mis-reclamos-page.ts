@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   computed,
+  effect,
   ElementRef,
   HostListener,
   inject,
@@ -15,73 +16,63 @@ import { ReclamoService } from '../../services/reclamo-service';
 import { Reclamo } from '../../model/reclamo-response.model';
 import { InfoReclamoTooltipComponent } from '../../components/utils/info-reclamo-tooltip/info-reclamo-tooltip';
 import { UiNotificationService } from '../../services/ui-notification-service';
+import { Paginador } from '../../components/utils/paginador/paginador';
 
 @Component({
   selector: 'app-mis-reclamos-page',
-  imports: [CommonModule, RouterLink, ReclamoCardComponent, InfoReclamoTooltipComponent],
+  imports: [
+    CommonModule,
+    RouterLink,
+    ReclamoCardComponent,
+    InfoReclamoTooltipComponent,
+    Paginador
+  ],
   templateUrl: './mis-reclamos-page.html',
   styleUrl: './mis-reclamos-page.css',
 })
-export class MisReclamosComponent implements OnInit {
-  private reclamoService = inject(ReclamoService);
-  private uiNotificationService = inject(UiNotificationService);
+export class MisReclamosComponent {
 
-  // Para detectar clicks fuera del dropdown y cerrarlo
+  private reclamoService = inject(ReclamoService);
   private elementRef = inject(ElementRef);
 
-  reclamos = signal<Reclamo[]>([]);
-  loading = signal(true);
+  reclamos = computed(() => this.reclamoService.misReclamos());
+  pageInfo = computed(() => this.reclamoService.misReclamosPageInfo());
 
-  filtroActual = signal<string>('TODOS');
   openFiltro = false;
-
-  reclamosFiltrados = computed(() => {
-    const filtro = this.filtroActual();
-    const lista = this.reclamos();
-
-    if (filtro === 'TODOS') {
-      return lista;
-    }
-    return lista.filter((r) => r.estado === filtro);
-  });
-
   filtrosDisponibles = [
-    { label: 'Todos', value: 'TODOS' },
     { label: 'Pendientes', value: EstadoReclamo.PENDIENTE },
     { label: 'En Proceso', value: EstadoReclamo.EN_PROCESO },
     { label: 'Resueltos', value: EstadoReclamo.RESUELTO },
     { label: 'Cerrados', value: EstadoReclamo.RECHAZADO },
   ];
 
-  ngOnInit() {
-    this.cargarReclamos();
+  constructor() {
+      effect(() => {
+          this.reclamoService.filtroEstadoCliente();
+          this.reclamoService.fetchMisReclamos(0, 10);
+      });
   }
 
-  cargarReclamos() {
-    this.reclamoService.getMisReclamos().subscribe({
-      next: (data) => {
-        this.reclamos.set(data);
-        this.loading.set(false);
-      },
-      error: (err) => {
-        this.uiNotificationService.abrirSnackBarError(err, 'Error al cargar reclamos.');
-        this.loading.set(false);
-      },
-    });
+  onPageChange(page: number) {
+      this.reclamoService.fetchMisReclamos(page, 10);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  setFiltro(valor: string) {
-    this.filtroActual.set(valor);
-    this.openFiltro = false;
-  }
 
+  // --- Filtros UI ---
   toggleFiltro(event: Event) {
     event.stopPropagation();
     this.openFiltro = !this.openFiltro;
   }
 
+  setFiltro(valor: EstadoReclamo | 'TODOS') {
+    this.reclamoService.filtroEstadoCliente.set(valor);
+    this.openFiltro = false;
+  }
+
   getLabelFiltroActual(): string {
-    const actual = this.filtroActual();
+    const actual = this.reclamoService.filtroEstadoCliente();
+    if (actual === 'TODOS') return 'Estado: Todos';
     const filtro = this.filtrosDisponibles.find((f) => f.value === actual);
     return filtro ? filtro.label : 'Todos';
   }

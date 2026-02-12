@@ -4,9 +4,10 @@
     <p class="subtitulo">Gestión de emprendimientos y locales</p>
   </div>
 
-  <div class="filters">
+  <div class="filters-container">
     <input
       type="text"
+      class="filter-input"
       placeholder="Filtrar por ciudad..."
       [value]="emprendimientoService.adminFiltroCiudad()"
       (input)="onCiudadInput($event)"
@@ -14,15 +15,31 @@
 
     <input
       type="text"
+      class="filter-input"
       placeholder="Filtrar por emprendimiento..."
       [value]="emprendimientoService.adminFiltroNombre()"
       (input)="onNombreInput($event)"
     />
 
-    <input 
-      type="text" 
-      placeholder="Filtrar por dueño o email..." 
-      (input)="onDuenoInput($event)" />
+    <input
+      type="text"
+      class="filter-input"
+      placeholder="Filtrar por dueño o email..."
+      [value]="emprendimientoService.adminFiltroDueno()"
+      (input)="onDuenoInput($event)"
+    />
+
+    <label class="filter-input toggle-wrapper">
+      <div class="switch">
+        <input
+          type="checkbox"
+          [checked]="emprendimientoService.adminSoloEliminados()"
+          (change)="onToggleEliminados($event)"
+        />
+        <span class="slider round"></span>
+      </div>
+      <span class="toggle-label">Ver eliminados</span>
+    </label>
   </div>
 
   <div class="emprendimientos-list">
@@ -34,12 +51,13 @@
       @for (emp of emprendimientos(); track emp.id) {
         <app-emprendimiento-admin-card [emprendimiento]="emp" />
       }
-      
+
       @if (pageInfo(); as info) {
-        <app-paginador 
-            [currentPage]="info.number" 
-            [totalPages]="info.totalPages" 
-            (pageChange)="onPageChange($event)">
+        <app-paginador
+          [currentPage]="info.number"
+          [totalPages]="info.totalPages"
+          (pageChange)="onPageChange($event)"
+        >
         </app-paginador>
       }
     }

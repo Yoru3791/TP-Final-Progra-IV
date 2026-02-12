@@ -48,15 +48,7 @@ export class DatosUsuarioCard implements OnInit {
         this.uiNotificationService.abrirSnackBarExito('Foto de perfil actualizada exitosamente.');
       },
       error: (err) => {
-        let mensaje = 'Ocurrió un error al subir la imagen.';
-
-        if (err.status === 400) {
-          mensaje = 'Formato de imagen inválido.';
-        } else if (err.status === 403) {
-          mensaje = 'No tenés permiso para cambiar esto.';
-        }
-
-        this.uiNotificationService.abrirModalError(err, mensaje);
+        this.uiNotificationService.abrirModalError(err);
       }
     });
 
@@ -67,6 +59,7 @@ export class DatosUsuarioCard implements OnInit {
     const dialogRef = this.dialog.open(FormUserUpdate, {
       data: this.usuarioSignal(),
       width: '60rem',
+      maxWidth: '95vw',
       panelClass: 'form-modal',
       autoFocus: false,
       restoreFocus: false,

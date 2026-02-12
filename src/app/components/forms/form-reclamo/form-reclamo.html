@@ -1,49 +1,69 @@
 <form class="form-reclamo" [formGroup]="formReclamo" (ngSubmit)="onSubmit()">
   
+  <!-- Email -->
   <div class="form-field">
     <label for="email" class="form-label">Email de contacto</label>
-    <input 
-      id="email" 
-      formControlName="email" 
-      type="email" 
-      class="form-input" 
+    <input
+      id="email"
+      formControlName="email"
+      type="email"
+      class="form-input"
       placeholder="Ej.: juanperez@gmail.com"
     />
   </div>
 
+  <!-- Motivo (Selector) -->
   <div class="form-field">
-    <label for="categoria" class="form-label">Motivo del reporte</label>
+    <label class="form-label">Motivo del reporte</label>
 
-    <select id="categoria" formControlName="categoria" class="form-input form-select">
-      <option value="" disabled selected>Selecciona una opción</option>
+    <div class="select-custom-wrapper">
+      <div
+        class="form-input dropdown-trigger"
+        [class.open]="openCategoria"
+        (click)="toggleCategoria($event)"
+      >
+        <span [class.placeholder-text]="!formReclamo.get('categoria')?.value" class="selected-text">
+          {{ getSelectedLabel() }}
+        </span>
 
-      @for (opcion of categoriasOptions; track opcion.value) {
-        <option [value]="opcion.value">{{ opcion.label }}</option>
+        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+      </div>
+
+      <!-- Desplegable -->
+      @if (openCategoria) {
+        <ul class="options-list">
+          @for (opcion of categoriasOptions; track opcion.value) {
+            <li (click)="selectCategoria(opcion.value); $event.stopPropagation()">
+              {{ opcion.label }}
+            </li>
+          }
+        </ul>
       }
-    </select>
+    </div>
   </div>
 
+  <!-- Descripción -->
   <div class="form-field">
     <div class="label-container">
       <label for="descripcion" class="form-label">Detalle del problema</label>
-
       <span class="char-counter">{{ charsCount }}/400</span>
     </div>
-    
-    <textarea 
-      id="descripcion" 
-      formControlName="descripcion" 
-      class="form-input form-textarea" 
-      rows="5"
+
+    <textarea
+      id="descripcion"
+      formControlName="descripcion"
+      class="form-input form-textarea"
+      placeholder="Contanos qué pasó..."
+      rows="6"
     ></textarea>
   </div>
 
   <button
     type="submit"
-    class="btn-base btn-primary"
+    class="btn-primary-action btn-full-width"
     [disabled]="formReclamo.invalid"
-    [class.disabled]="formReclamo.invalid"
   >
     Enviar Reporte
   </button>
+
 </form>

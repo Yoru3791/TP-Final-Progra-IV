@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EmprendimientoService } from '../../../services/emprendimiento-service';
@@ -7,6 +7,7 @@ import { firstValueFrom } from 'rxjs';
 import { UiNotificationService } from '../../../services/ui-notification-service';
 import { Router } from '@angular/router';
 import { CitySelector } from '../../utils/city-selector/city-selector';
+import { AuthService } from '../../../services/auth-service';
 
 @Component({
   selector: 'app-form-emprendimiento-update',
@@ -14,9 +15,10 @@ import { CitySelector } from '../../utils/city-selector/city-selector';
   templateUrl: './form-emprendimiento-update.html',
   styleUrl: './form-emprendimiento-update.css',
 })
-export class FormUpdateEmprendimiento {
+export class FormUpdateEmprendimiento implements OnInit {
   public emprendimiento: EmprendimientoResponse = inject(MAT_DIALOG_DATA);
 
+  private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<FormUpdateEmprendimiento>);
   private emprendimientoService = inject(EmprendimientoService);
@@ -62,10 +64,6 @@ export class FormUpdateEmprendimiento {
     const file = event.target.files[0];
 
     if (!file) {
-      this.newImageFile = null;
-      this.selectedFileName = null;
-      this.imagePreviewUrl = this.emprendimiento.imagenUrl || null;
-      this.cdr.detectChanges();
       return;
     }
 
@@ -88,24 +86,12 @@ export class FormUpdateEmprendimiento {
           this.selectedFileName = null;
           this.imagePreviewUrl = this.emprendimiento.imagenUrl || null;
         }
-
         this.cdr.detectChanges();
       };
-
       img.src = e.target.result;
     };
 
     reader.readAsDataURL(file);
-  }
-
-  removeImage() {
-    this.newImageFile = null;
-    this.selectedFileName = null;
-    this.imagePreviewUrl = null;
-
-    if (this.fileInputRef) this.fileInputRef.value = '';
-
-    this.cdr.detectChanges();
   }
 
   async onDelete() {
@@ -113,7 +99,7 @@ export class FormUpdateEmprendimiento {
       this.uiNotificationService.abrirModalConfirmacion({
         titulo: 'Eliminar Emprendimiento',
         texto:
-          '¿Seguro de que querés eliminar el emprendimiento? <span>Esta acción es irreversible.</span>',
+          '¿Estás seguro que querés eliminar el emprendimiento? <span>Esta acción es irreversible.</span>',
         textoEsHtml: true,
         critico: true,
       })
@@ -124,7 +110,38 @@ export class FormUpdateEmprendimiento {
     this.emprendimientoService.deleteEmprendimiento(this.emprendimiento.id).subscribe({
       next: () => {
         this.uiNotificationService.abrirSnackBarExito('Emprendimiento eliminado exitosamente.');
+        this.dialogRef.close(true);
+        this.router.navigateByUrl('home');
+      },
+      error: (err) => {
+        const rol = this.authService.currentUserRole();
 
+        if (rol === 'ADMIN' && err.status === 409) {
+          this.forceDelete();
+        } else {
+          this.uiNotificationService.abrirModalError(err);
+        }
+      },
+    });
+  }
+
+  private async forceDelete() {
+    const confirmado = await firstValueFrom(
+      this.uiNotificationService.abrirModalConfirmacion({
+        titulo: 'Forzar Eliminación',
+        texto:
+          'El emprendimiento tiene pedidos en proceso; si lo eliminás, los pedidos van a ser cancelados.\n' +
+          '¿Estás seguro que querés forzar la eliminación? <span>Esta acción es irreversible.</span>',
+        textoEsHtml: true,
+        critico: true,
+      })
+    );
+
+    if (!confirmado) return;
+
+    this.emprendimientoService.deleteEmprendimientoForce(this.emprendimiento.id).subscribe({
+      next: () => {
+        this.uiNotificationService.abrirSnackBarExito('Emprendimiento eliminado exitosamente.');
         this.dialogRef.close(true);
         this.router.navigateByUrl('home');
       },
@@ -149,7 +166,7 @@ export class FormUpdateEmprendimiento {
             .updateImagenEmprendimiento(this.emprendimiento.id, fd)
             .subscribe({
               next: () => this.finishSuccess(),
-              error: (err) => this.uiNotificationService.abrirModalError(err, 'Error al actualizar la imagen.'),
+              error: (err) => this.uiNotificationService.abrirModalError(err),
             });
         } else {
           this.finishSuccess();

@@ -1,84 +1,107 @@
-<div class="modal-unificado-container">
-  <div class="header-modal">
-    <h3 class="titulo-seccion">Datos de contacto</h3>
-    <i class="fa-solid fa-xmark close-icon" (click)="cerrar()"></i>
+<div class="modal-wrapper">
+  
+  <div class="modal-header">
+    <h2 class="modal-title">Datos de Contacto</h2>
+    <button type="button" class="btn-icon-close" (click)="cerrar()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
   </div>
 
-  <div class="divisor"></div>
-
-  <div class="modal-content">
+  <div class="modal-body simple-body">
+    
     <div class="datos-principales-wrapper">
+      
+      <!-- Foto de Perfil -->
       <div class="profile-img-container">
         <img
-          [src]="data.imagenUrl || 'assets/placeholder-user.png'"
+          [src]="data.imagenUrl"
           class="profile-img"
+          [class.grayscale]="data.nombre.includes('Eliminado') || data.nombre.includes('borrado')"
           alt="Foto de perfil"
         />
       </div>
 
+      <!-- Lista de Datos -->
       <div class="info-container">
+        
+        <!-- Nombre -->
         <div class="dato">
           <span class="label">Nombre</span>
-          <span class="valor">{{ data.nombre }}</span>
+          <span class="valor">
+            {{ 
+              (data.nombre.includes('usuario_borrado') || data.nombre === 'Emprendimiento Eliminado') 
+              ? 'Usuario no disponible' 
+              : data.nombre
+            }}
+          </span>
         </div>
 
-        @if (data.email) {
-          <div class="dato">
-            <span class="label">Email</span>
-            <div class="valor-con-accion">
-              <span class="valor">{{ data.email }}</span>
-              <a
-                [href]="getGmailLink()"
-                target="_blank"
-                class="btn-icon-action btn-gmail"
-                title="Abrir en Gmail"
-              >
-                <i class="fa-solid fa-envelope"></i>
-              </a>
+        @if (!data.telefono || data.telefono === 'No disponible' || data.telefono.includes('borrado_') || data.telefono.includes('Eliminado_')) {
+            <div class="aviso-eliminado">
+                <i class="fa-solid fa-store-slash"></i>
+                <p>La información de contacto no está disponible.</p>
             </div>
-          </div>
-        }
+        } @else {
+            <!-- Email -->
+            @if (data.email && data.email !== 'No disponible' && !data.email.includes('borrado')) {
+              <div class="dato">
+                <span class="label">Email</span>
+                <div class="valor-con-accion">
+                  <span class="valor">{{ data.email }}</span>
+                  <a
+                    [href]="getGmailLink()"
+                    target="_blank"
+                    class="btn-icon-action btn-gmail"
+                    title="Abrir en Gmail"
+                  >
+                    <i class="fa-solid fa-envelope"></i>
+                  </a>
+                </div>
+              </div>
+            }
 
-        <div class="dato">
-          <span class="label">Teléfono</span>
-          <div class="valor-con-accion">
-            <span class="valor">{{ data.telefono }}</span>
-            <a
-              [href]="getWhatsappLink()"
-              target="_blank"
-              class="btn-icon-action btn-whatsapp"
-              title="Abrir WhatsApp"
-            >
-              <i class="fa-brands fa-whatsapp"></i>
-            </a>
-          </div>
-        </div>
-
-        @if (data.direccion) {
-          <div class="dato">
-            <span class="label">Dirección</span>
-            <div class="valor-con-accion">
-              <span class="valor">
-                {{ data.direccion }}
-                @if (data.ciudad) {
-                  - {{ data.ciudad }}
-                }
-              </span>
-              <a
-                [href]="getMapsLink()"
-                target="_blank"
-                class="btn-icon-action btn-maps"
-                title="Ver en Google Maps"
-              >
-                <i class="fa-solid fa-location-dot"></i>
-              </a>
+            <!-- Teléfono -->
+            <div class="dato">
+              <span class="label">Teléfono</span>
+              <div class="valor-con-accion">
+                <span class="valor">{{ data.telefono }}</span>
+                <a
+                  [href]="getWhatsappLink()"
+                  target="_blank"
+                  class="btn-icon-action btn-whatsapp"
+                  title="Abrir WhatsApp"
+                >
+                  <i class="fa-brands fa-whatsapp"></i>
+                </a>
+              </div>
             </div>
-          </div>
+
+            <!-- Dirección -->
+            @if (data.direccion && data.direccion !== 'No disponible' && !data.direccion.includes('Eliminado')) {
+              <div class="dato">
+                <span class="label">Dirección</span>
+                <div class="valor-con-accion">
+                  <span class="valor">
+                    {{ data.direccion }}
+                    @if (data.ciudad && data.ciudad !== 'No disponible') { - {{ data.ciudad }} }
+                  </span>
+                  <a
+                    [href]="getMapsLink()"
+                    target="_blank"
+                    class="btn-icon-action btn-maps"
+                    title="Ver en Google Maps"
+                  >
+                    <i class="fa-solid fa-location-dot"></i>
+                  </a>
+                </div>
+              </div>
+            }
         }
       </div>
     </div>
 
-    @if (role() !== 'ADMIN') {
+    <!-- Alerta / Recomendación -->
+    @if (role() !== 'ADMIN' && data.telefono && data.telefono !== 'No disponible' && !data.telefono.includes('borrado_')) {
       <div class="alerta">
         <i class="fa-solid fa-triangle-exclamation"></i>
         <p>Recomendación: reunite siempre en un lugar público y concurrido.</p>
@@ -86,7 +109,14 @@
     }
   </div>
 
-  <div class="acciones">
-    <button class="btn-base btn-secondary" (click)="cerrar()">Cerrar</button>
+  <div class="modal-footer">
+    <div class="footer-left"></div>
+    
+    <div class="footer-right">
+      <button type="button" class="btn-secondary-action" (click)="cerrar()">
+        Cerrar
+      </button>
+    </div>
   </div>
+
 </div>

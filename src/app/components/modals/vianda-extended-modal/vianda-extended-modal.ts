@@ -26,7 +26,7 @@ export class ViandaExtendedModal {
   private carritoService = inject(CarritoService);
   private uiNotificationService = inject(UiNotificationService);
 
-  vianda: ViandaResponse;
+  vianda: any;
   modo: PageMode;
   
   constructor(
@@ -40,6 +40,10 @@ export class ViandaExtendedModal {
   cantidad = computed(() => {
     return this.carritoService.cantidadViandaEnCarrito(this.vianda)();
   });
+
+  esEliminada() {
+    return this.vianda.fechaEliminacion && this.vianda.fechaEliminacion !== null;
+  }
 
   abrirCarrito() {
     if (this.modo === 'INVITADO') {

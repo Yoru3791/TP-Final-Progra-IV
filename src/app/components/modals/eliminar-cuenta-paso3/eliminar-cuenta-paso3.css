@@ -1,27 +1,51 @@
-/* --- COMPONENTE DE CONFIRMACIÓN / MENSAJE DE ESTADO --- */
-:host {
-  display: block;
-  padding: 2.6rem;
-  border-radius: 1.2rem;
+.modal-header.header-transparent {
+  border-bottom: none;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+  margin-bottom: 1rem;
+  justify-content: flex-end;
+  min-height: auto;
+}
+
+.modal-body.simple-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 1.5rem 4rem 1.5rem; 
+  overflow-y: auto;
+}
+
+.goodbye-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+  gap: 1.5rem;
 }
 
-.icono {
-  font-size: 4rem;
+.icono-triste {
+  font-size: 5rem;
   color: var(--color-state-error);
-  margin-bottom: 1.4rem;
+  margin-bottom: 0.5rem;
+  animation: float 3s ease-in-out infinite;
 }
 
-.titulo {
-  font-size: 2rem;
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+}
+
+.titulo-despedida {
+  font-size: 2.2rem;
   font-weight: 700;
   color: var(--color-text-primary);
-  margin-bottom: 1.2rem;
+  margin: 0;
 }
 
 .mensaje {
-  font-size: 1.45rem;
-  color: var(--color-text-primary);
+  font-size: 1.6rem;
+  color: var(--color-text-secondary);
   line-height: 1.6;
-  margin-bottom: 2.8rem;
+  margin: 0;
 }

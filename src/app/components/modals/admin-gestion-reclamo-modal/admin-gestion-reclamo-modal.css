@@ -1,66 +1,61 @@
-.dialog-container {
-  padding: 2rem;
-  background: white;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.dialog-title {
-  color: var(--color-primary);
-  margin-top: 0;
-  border-bottom: 1px solid var(--color-border-light);
-  padding-bottom: 1rem;
-  margin-bottom: 2rem;
-  font-size: 2rem;
-}
-
-.form-group {
-  margin-bottom: 2rem;
-}
-
-.form-group label {
+:host {
   display: block;
-  font-weight: bold;
-  margin-bottom: 0.8rem;
-  color: var(--color-text-primary);
-  font-size: 1.4rem;
-}
-
-.form-input {
   width: 100%;
-  padding: 0 1.5rem;
-  height: 5rem;
-  border: 1px solid var(--color-ui-neutral);
-  border-radius: 1rem;
-  font-size: 1.4rem;
-  font-family: inherit;
-  box-sizing: border-box;
-  background: white;
-
-  -webkit-appearance: none;
-  appearance: none;
 }
 
-.form-input.textarea {
-  height: auto;
-  padding: 1.5rem;
-  resize: vertical;
+.modal-wrapper {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-body.simple-form-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+  grid-template-columns: none !important;
+}
+
+.form-textarea {
+  height: auto !important; 
   min-height: 12rem;
+  resize: none;
+  line-height: 1.5 !important;
+  padding-top: 1.2rem !important;
+  padding-bottom: 1.2rem !important;
 }
 
-.error-msg {
-  color: var(--color-state-error);
-  font-size: 1.2rem;
-  margin-top: 0.8rem;
+:host ::ng-deep .form-field {
+  position: relative !important; 
+  margin-bottom: 0 !important;   
+  padding-bottom: 2.5rem !important; 
+}
+
+:host ::ng-deep .error-messages {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 2.5rem !important; 
+  display: flex !important;
+  align-items: flex-start; 
+  padding-top: 0.2rem !important; 
+  overflow: hidden; 
+  pointer-events: none; 
+}
+
+:host ::ng-deep .error-messages p {
+  font-size: 1.1rem !important; 
+  line-height: 1.2 !important;
+  margin: 0 !important;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; 
+  line-clamp: 1;         
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-
-.dialog-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1.5rem;
-  margin-top: 3rem;
-}
-
