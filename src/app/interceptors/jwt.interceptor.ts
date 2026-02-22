@@ -18,34 +18,19 @@ export class JwtInterceptor implements HttpInterceptor {
     null,
   );
 
-  // 👉 CAMBIÁ ESTO por la URL real de tu backend
-  private readonly API_URL = 'https://mi-viandita.onrender.com';
-
   constructor(private authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // 🔎 Solo interceptamos requests a NUESTRA API
-    const isApiRequest = request.url.startsWith(this.API_URL);
-
     let authReq = request;
+    const token = this.authService.getToken();
 
-    if (isApiRequest) {
-      const token = this.authService.getToken();
-
-      authReq = request.clone({
-        withCredentials: true,
-      });
-
-      if (token) {
-        authReq = this.addToken(authReq, token);
-      }
+    if (token) {
+      authReq = this.addToken(request, token);
     }
 
     return next.handle(authReq).pipe(
       catchError((error) => {
-        // ❗ Solo manejamos 401 de NUESTRA API
         if (
-          isApiRequest &&
           error instanceof HttpErrorResponse &&
           error.status === 401 &&
           !request.url.includes('/login') &&
@@ -69,7 +54,9 @@ export class JwtInterceptor implements HttpInterceptor {
           this.isRefreshing = false;
 
           const newToken = tokenResponse.token;
+
           this.authService.saveToken(newToken);
+
           this.refreshTokenSubject.next(newToken);
 
           return next.handle(this.addToken(request, newToken));
@@ -96,7 +83,6 @@ export class JwtInterceptor implements HttpInterceptor {
       setHeaders: {
         Authorization: `Bearer ${token}`,
       },
-      withCredentials: true,
     });
   }
 }
