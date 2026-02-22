@@ -16,28 +16,28 @@ import { ApiUrlService } from './api-url-service';
   providedIn: 'root',
 })
 export class UsuarioService {
-
   private apiUrlService = inject(ApiUrlService);
   private authService = inject(AuthService);
   private http = inject(HttpClient);
 
   public usuariosAdmin = signal<UsuarioAdminResponse[]>([]);
   public adminPageInfo = signal<PageMetadata | null>(null);
-  
+
   public adminFiltroNombre = signal<string>('');
   public adminFiltroEmail = signal<string>('');
   public adminSoloEliminados = signal<boolean>(false);
 
   private getApiUrl(): string {
-    const path = (this.authService.currentUserRole() === 'ADMIN')
-                 ? 'admin/usuarios' : 'usuarios';
+    // Obtiene la URL base correcta según el rol actual (ej: https://.../api/admin)
+    const baseUrl = this.apiUrlService.getApiUrlByCurrentRol();
 
-    return `${this.apiUrlService.apiUrl}/${path}`;
+    // Concatena el recurso específico ('/usuarios')
+    return `${baseUrl}/usuarios`;
   }
-  
+
   fetchUsuariosAdmin(page: number = 0, size: number = 10) {
     let params = new HttpParams().set('page', page).set('size', size);
-    
+
     const nombre = this.adminFiltroNombre();
     const email = this.adminFiltroEmail();
     const soloEliminados = this.adminSoloEliminados();
@@ -46,12 +46,13 @@ export class UsuarioService {
     if (email) params = params.set('email', email);
     if (soloEliminados) params = params.set('soloEliminados', 'true');
 
-    this.http.get<PagedResponse<UsuarioAdminResponse>>(this.getApiUrl(), { params })
+    this.http
+      .get<PagedResponse<UsuarioAdminResponse>>(this.getApiUrl(), { params })
       .pipe(
         catchError((err) => {
           console.error('Error al cargar usuarios:', err);
           return of(null);
-        })
+        }),
       )
       .subscribe((response) => {
         if (response && response._embedded) {
@@ -64,7 +65,6 @@ export class UsuarioService {
         }
       });
   }
-
 
   createUsuario(body: UsuarioCreateAdmin) {
     return this.http.post<UsuarioAdminResponse>(`${this.getApiUrl()}/register`, body);
@@ -88,17 +88,17 @@ export class UsuarioService {
 
   deleteUsuarioAdmin(id: number) {
     return this.http.delete<any>(`${this.getApiUrl()}/${id}`).pipe(
-        tap(() => {
-            this.fetchUsuariosAdmin(this.adminPageInfo()?.number || 0, 10);
-        })
+      tap(() => {
+        this.fetchUsuariosAdmin(this.adminPageInfo()?.number || 0, 10);
+      }),
     );
   }
 
   deleteUsuarioForceAdmin(id: number) {
     return this.http.delete<any>(`${this.getApiUrl()}/${id}/force-delete`).pipe(
-        tap(() => {
-            this.fetchUsuariosAdmin(this.adminPageInfo()?.number || 0, 10);
-        })
+      tap(() => {
+        this.fetchUsuariosAdmin(this.adminPageInfo()?.number || 0, 10);
+      }),
     );
   }
 
