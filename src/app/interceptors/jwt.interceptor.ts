@@ -34,7 +34,8 @@ export class JwtInterceptor implements HttpInterceptor {
           error instanceof HttpErrorResponse &&
           error.status === 401 &&
           !request.url.includes('/login') &&
-          !request.url.includes('/refresh-token')
+          !request.url.includes('/refresh-token') &&
+          !request.url.includes('/logout')
         ) {
           return this.handle401Error(authReq, next);
         }

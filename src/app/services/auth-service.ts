@@ -33,7 +33,10 @@ export class AuthService {
   private apiUrlLogoutAll = `${this.apiUrl}/logout-all`;
   private apiUrlGoogle = `${this.apiUrl}/google`;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {
     this.init();
     console.log('AuthService inicializado. Rol actual:', this.currentUserRole());
   }
@@ -73,15 +76,19 @@ export class AuthService {
   }
 
   login(usuario: UsuarioLogin) {
-  return this.http.post<LoginResponse>(this.apiUrlLogin, usuario, {
-    withCredentials: true
-  });
-}
+    return this.http.post<LoginResponse>(this.apiUrlLogin, usuario, {
+      withCredentials: true,
+    });
+  }
 
   loginGoogle(token: string) {
-    return this.http.post<LoginResponse>(this.apiUrlGoogle, { token }, {
-    withCredentials: true
-  });
+    return this.http.post<LoginResponse>(
+      this.apiUrlGoogle,
+      { token },
+      {
+        withCredentials: true,
+      },
+    );
   }
 
   refreshToken() {
@@ -109,7 +116,12 @@ export class AuthService {
     this.currentUserRole.set(this.decodeRolFrom(token));
     this.usuarioId.set(usuarioID);
 
-    console.log('Login exitoso. Rol:', this.currentUserRole(), '- ID de usuario:', this.usuarioId());
+    console.log(
+      'Login exitoso. Rol:',
+      this.currentUserRole(),
+      '- ID de usuario:',
+      this.usuarioId(),
+    );
   }
 
   // Cierre de sesion y elimina la persistencia del refreshToken
@@ -117,9 +129,11 @@ export class AuthService {
     this.http
       .post(this.apiUrlLogout, {}, { withCredentials: true, responseType: 'text' })
       .subscribe({
-        //aca se borra el refreshToken
         next: () => console.log('Logout en servidor exitoso.'),
-        error: (err) => console.error('Error de logout en servidor:', err),
+        error: (err) => {
+          console.error('Error de logout en servidor:', err);
+          this.clearLocalData(); 
+        },
         complete: () => this.clearLocalData(),
       });
   }
@@ -188,7 +202,7 @@ export class AuthService {
       atob(base64)
         .split('')
         .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join('')
+        .join(''),
     );
   }
 
