@@ -18,25 +18,34 @@ export class JwtInterceptor implements HttpInterceptor {
     null,
   );
 
+  // 👉 CAMBIÁ ESTO por la URL real de tu backend
+  private readonly API_URL = 'https://mi-viandita.onrender.com';
+
   constructor(private authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // 1. Clonamos la petición original para habilitar el envío de cookies (withCredentials)
-    let authReq = request.clone({
-      withCredentials: true,
-    });
+    // 🔎 Solo interceptamos requests a NUESTRA API
+    const isApiRequest = request.url.startsWith(this.API_URL);
 
-    const token = this.authService.getToken();
+    let authReq = request;
 
-    // 2. Si tenemos un JWT en el LocalStorage, lo añadimos al header
-    if (token) {
-      authReq = this.addToken(authReq, token);
+    if (isApiRequest) {
+      const token = this.authService.getToken();
+
+      authReq = request.clone({
+        withCredentials: true,
+      });
+
+      if (token) {
+        authReq = this.addToken(authReq, token);
+      }
     }
 
     return next.handle(authReq).pipe(
       catchError((error) => {
-        // 3. Si recibimos un 401 y no es login ni refresh, intentamos refrescar el token
+        // ❗ Solo manejamos 401 de NUESTRA API
         if (
+          isApiRequest &&
           error instanceof HttpErrorResponse &&
           error.status === 401 &&
           !request.url.includes('/login') &&
@@ -55,7 +64,6 @@ export class JwtInterceptor implements HttpInterceptor {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
 
-      // 4. Llamamos al servicio de refresh (que ahora enviará la cookie gracias a withCredentials)
       return this.authService.refreshToken().pipe(
         switchMap((tokenResponse: LoginResponse) => {
           this.isRefreshing = false;
@@ -64,7 +72,6 @@ export class JwtInterceptor implements HttpInterceptor {
           this.authService.saveToken(newToken);
           this.refreshTokenSubject.next(newToken);
 
-          // Reintentamos la petición original con el nuevo token
           return next.handle(this.addToken(request, newToken));
         }),
         catchError((err) => {
@@ -89,7 +96,6 @@ export class JwtInterceptor implements HttpInterceptor {
       setHeaders: {
         Authorization: `Bearer ${token}`,
       },
-      // Nos aseguramos de mantener las credenciales habilitadas en el clon con el token
       withCredentials: true,
     });
   }
