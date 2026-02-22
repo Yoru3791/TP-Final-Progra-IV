@@ -27,12 +27,20 @@ export class UsuarioService {
   public adminFiltroEmail = signal<string>('');
   public adminSoloEliminados = signal<boolean>(false);
 
+  //Esto se hace especificamente porque el endpoint para ADMIN es diferente al de CLIENTE/DUENO, y no se puede usar 
+  // el mismo endpoint con @PreAuthorize para ambos casos. Si se quisiera unificar, habría que cambiar la estructura 
+  // de los endpoints en el backend.
   private getApiUrl(): string {
-    // Obtiene la URL base correcta según el rol actual (ej: https://.../api/admin)
-    const baseUrl = this.apiUrlService.getApiUrlByCurrentRol();
-
-    // Concatena el recurso específico ('/usuarios')
-    return `${baseUrl}/usuarios`;
+    const rol = this.authService.currentUserRole();
+    // Si es ADMIN, usamos el endpoint específico de admin
+    if (rol === 'ADMIN') {
+      return `${this.apiUrlService.apiUrlAdmin}/usuarios`; 
+    } 
+    // Si es CLIENTE o DUENO, usamos el endpoint compartido protegido por @PreAuthorize
+    else {
+      // Usamos apiUrl (que es API_URLS.BASE -> https://mi-viandita.onrender.com)
+      return `${this.apiUrlService.apiUrl}/api/usuarios`;
+    }
   }
 
   fetchUsuariosAdmin(page: number = 0, size: number = 10) {
