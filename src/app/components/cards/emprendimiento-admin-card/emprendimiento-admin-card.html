@@ -23,7 +23,10 @@
     <div class="meta-data">
       <p class="dato">
         <i class="fa-solid fa-location-dot icon-small"></i>
-        {{ emprendimiento.ciudad }} · {{ emprendimiento.direccion }}
+        {{ emprendimiento.ciudad }}
+        @if (emprendimiento.direccion) {
+          - {{ emprendimiento.direccion }}
+        }
       </p>
 
       <p class="dato">
@@ -36,7 +39,7 @@
   <div class="dueno-col">
     <span class="label">Dueño:</span>
     <p class="dueno-nombre">{{ emprendimiento.dueno.nombreCompleto }}</p>
-    
+
     <p class="dueno-email">
       {{ emprendimiento.dueno.email }}
     </p>
