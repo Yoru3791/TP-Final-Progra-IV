@@ -10,26 +10,42 @@
   flex-direction: column;
 }
 
-.modal-body.flex-layout {
+.modal-body.form-body {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem; 
-  grid-template-columns: none !important; 
+  gap: 2rem; 
+  padding: 3rem;
+  overflow-y: auto;
 }
 
 .top-section-grid {
   display: grid;
-  grid-template-columns: 1fr 24rem; 
+  grid-template-columns: 1fr 25rem; 
   gap: 4rem;
   align-items: start;
+}
+
+.form-column-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-column-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
 }
 
 .bottom-section {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 24rem; 
+  grid-template-columns: 1fr 25rem; 
   gap: 4rem;
   align-items: end; 
+  margin-top: 1rem;
 }
 
 .bottom-section .toggle-section {
@@ -41,6 +57,21 @@
 
 .bottom-section .form-field {
   margin-bottom: 0; 
+}
+
+.image-info-text {
+  width: 100%;
+  text-align: center;
+}
+
+.image-info-text .form-label {
+  text-align: center;
+}
+
+.image-error-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
 }
 
 .form-select {
@@ -72,12 +103,6 @@
   background: var(--color-primary);
 }
 
-.image-error-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 0.5rem;
-}
-
 .hint-text {
   font-size: 1.1rem;
   color: var(--color-text-light);
@@ -101,16 +126,63 @@
 }
 
 @media (max-width: 768px) {
+  .modal-body.form-body {
+    padding: 2.5rem 2rem;
+  }
+
   .top-section-grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     gap: 3rem;
   }
+  
   .form-column-sidebar {
-    order: -1; 
+    order: -1;
+    width: 100%;
+  }
+
+  .form-column-main {
+    width: 100%;
+    gap: 1.5rem;
+  }
+
+  .form-row-2-col {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1.5rem;
+  }
+
+  .form-field {
+    width: 100%;
+  }
+
+  .bottom-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 2rem;
+    align-items: stretch;
+  }
+
+  .bottom-section .toggle-section {
+    margin-top: 1rem !important;
+  }
+
+  .modal-footer {
+    flex-direction: column-reverse;
+    gap: 1.5rem;
+  }
+
+  .footer-left, .footer-right {
+    width: 100%;
+    justify-content: stretch;
+    flex-direction: column-reverse;
   }
   
-  .bottom-section {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+  .btn-ghost-danger, .btn-secondary-action, .btn-primary-action {
+    width: 100%;
+    justify-content: center;
   }
 }
