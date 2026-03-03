@@ -80,6 +80,7 @@
                 <span class="currency-symbol">$</span>
                 <input 
                     type="number" 
+                    min="0"
                     placeholder="Min" 
                     [ngModel]="precioMin()"
                     (ngModelChange)="precioMin.set($event)"
@@ -89,7 +90,8 @@
             <div class="input-wrapper" [class.filled]="precioMax()">
                 <span class="currency-symbol">$</span>
                 <input 
-                    type="number" 
+                    type="number"
+                    min="0"
                     placeholder="Max"
                     [ngModel]="precioMax()"
                     (ngModelChange)="precioMax.set($event)"
