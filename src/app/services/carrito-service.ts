@@ -71,6 +71,7 @@ export class CarritoService {
 
     if (vaciado) {
       this.vaciar(true);
+      this.setEmprendimiento(emprendimiento);
     }
   }
 
