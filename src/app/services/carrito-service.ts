@@ -43,6 +43,8 @@ export class CarritoService {
   // Modificación de datos
 
   public async abrirCarrito(emprendimiento: EmprendimientoResponse) {
+    let vaciado = false;
+
     if (this._emprendimiento()) {
       if (this._emprendimiento()!.id !== emprendimiento.id) {
         const confirmado = await firstValueFrom(
@@ -55,7 +57,7 @@ export class CarritoService {
         );
 
         if (confirmado) {
-          this.vaciar(true);
+          vaciado = true;
           this.setEmprendimiento(emprendimiento);
         } else return;
       } else {
@@ -66,6 +68,10 @@ export class CarritoService {
     }
 
     this.abrirModalCarrito();
+
+    if (vaciado) {
+      this.vaciar(true);
+    }
   }
 
   public async agregarVianda(vianda: ViandaResponse): Promise<void> {
