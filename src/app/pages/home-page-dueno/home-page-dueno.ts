@@ -58,9 +58,8 @@ export class HomePageDueno {
   openEmprendimientoForm() {
     this.dialog
       .open(FormEmprendimiento, {
-        width: '100rem',
-        panelClass: 'form-modal',
-        autoFocus: false,
+        width: '90rem',
+        maxWidth: '95vw',
         restoreFocus: false,
       })
       .afterClosed()

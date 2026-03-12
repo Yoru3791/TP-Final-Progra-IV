@@ -64,7 +64,7 @@ export class FormRegistro {
       })
       .subscribe({
         next: () => {
-          this.uiNotificationService.abrirSnackBarExito('¡Casi listo! Validá tu email para empezar a usar la cuenta.');
+          this.uiNotificationService.abrirModalExito('¡Casi listo! Validá tu email para empezar a usar la cuenta.');
           this.router.navigate(['/login']);
         },
         error: (err) => {

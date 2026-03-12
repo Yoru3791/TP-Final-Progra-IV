@@ -18,7 +18,10 @@ export class AccountActivation implements OnInit {
   // Estados de la vista
   isLoading = signal<boolean>(true);
   isSuccess = signal<boolean>(false);
+
+  title = signal<string>('');
   message = signal<string>('Procesando solicitud...');
+  submessage = signal<string>('');
 
   // Lógica para reenviar
   showResendForm = signal<boolean>(false);
@@ -39,7 +42,10 @@ export class AccountActivation implements OnInit {
       next: (responseMsg) => {
         this.isLoading.set(false);
         this.isSuccess.set(true);
-        this.message.set(responseMsg);
+
+        this.title.set('¡Todo listo!');
+        this.message.set('Cuenta confirmada exitosamente.');
+        this.submessage.set('Ya podés iniciar sesión.');
       },
       error: (err) => {
         let msg = 'El enlace expiró o es inválido.';
@@ -78,7 +84,10 @@ export class AccountActivation implements OnInit {
         this.showResendForm.set(false);
         this.isLoading.set(false);
         this.isSuccess.set(true);
-        this.message.set('¡Listo! Te enviamos un nuevo correo de validación.');
+
+        this.title.set('Correo enviado');
+        this.message.set('Te enviamos un nuevo correo de validación.');
+        this.submessage.set('Revisá tu bandeja de entrada.');
       },
       error: (err) => {
         this.isResending.set(false);
