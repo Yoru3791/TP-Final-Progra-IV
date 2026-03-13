@@ -69,8 +69,10 @@ export class PedidosCard implements OnInit {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
-    const inside = (event.target as HTMLElement).closest('.select-custom');
-    if (!inside) {
+    const inside = (event.target as HTMLElement).closest('.select-trigger');
+    const insideCalendar = (event.target as HTMLElement).closest('.calendar-dropdown');
+    
+    if (!inside && !insideCalendar) {
       this.openEstado = false;
       this.openEmp = false;
     }

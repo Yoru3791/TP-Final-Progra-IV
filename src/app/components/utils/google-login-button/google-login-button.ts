@@ -66,7 +66,7 @@ export class GoogleLoginButton implements AfterViewInit {
             msg = 'Cuenta deshabilitada.';
           }
 
-          this.uiNotificationService.abrirSnackBarError(err, msg);
+          this.uiNotificationService.abrirModalError(err, msg);
         }
       });
     }

@@ -45,17 +45,19 @@
   </div>
 
   <div class="info-right">
-    <div class="text-icon-container">
-      <p class="direccion">{{ emprendimiento().direccion }}</p>
-      <a
-        [href]="getMapsLink()"
-        target="_blank"
-        class="btn-icon-action btn-maps"
-        title="Ver en Google Maps"
-      >
-        <i class="fa-solid fa-location-dot"></i>
-      </a>
-    </div>
+    @if (emprendimiento().direccion) {
+      <div class="text-icon-container">
+        <p class="direccion">{{ emprendimiento().direccion }}</p>
+        <a
+          [href]="getMapsLink()"
+          target="_blank"
+          class="btn-icon-action btn-maps"
+          title="Ver en Google Maps"
+        >
+          <i class="fa-solid fa-location-dot"></i>
+        </a>
+      </div>
+    }
 
     <div class="text-icon-container">
       <p class="telefono">{{ emprendimiento().telefono }}</p>

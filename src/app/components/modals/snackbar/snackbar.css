@@ -1,7 +1,7 @@
 /* --- COMPONENTE SNACKBAR --- */
 :host {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   background-color: var(--color-background-primary);
   color: var(--color-text-primary);
@@ -14,8 +14,11 @@
 .snackbar-icon {
   margin-right: 1rem;
   color: var(--color-primary-light);
+  flex-shrink: 0;
 }
 
 #mensaje {
   line-height: 1;
+  flex: 1;
+  text-align: center;
 }

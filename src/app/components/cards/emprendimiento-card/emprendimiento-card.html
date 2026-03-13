@@ -1,9 +1,6 @@
 <div class="card-container" [class.unavailable]="!emprendimiento.estaDisponible">
-
   <div class="info">
-
     <div class="info-main">
-      
       <div class="logo-circle">
         @if (emprendimiento.imagenUrl && !imageLoadError()) {
           <img [src]="emprendimiento.imagenUrl" alt="Logo" (error)="handleImageError()" />
@@ -13,23 +10,25 @@
       </div>
 
       <div class="text-content">
-
         <div class="name-status-row">
-            <h2>{{ emprendimiento.nombreEmprendimiento }}</h2>
-            @if (!emprendimiento.estaDisponible) {
-                <span class="badge-card-unavailable">NO DISPONIBLE</span>
-            }
+          <h2>{{ emprendimiento.nombreEmprendimiento }}</h2>
+          @if (!emprendimiento.estaDisponible) {
+            <span class="badge-card-unavailable">NO DISPONIBLE</span>
+          }
         </div>
-
-        <p class="direccion">
-          <i class="fa-solid fa-location-dot"></i>
-          {{ emprendimiento.direccion }}
-        </p>
+        @if (emprendimiento.direccion) {
+          <p class="direccion">
+            <i class="fa-solid fa-location-dot"></i>
+            {{ emprendimiento.direccion }}
+          </p>
+        }
       </div>
-
     </div>
 
-    <button class="btn-base btn-primary btn-rounded btn-ver-mas" routerLink="/emprendimiento/{{ emprendimiento.id }}">
+    <button
+      class="btn-base btn-primary btn-rounded btn-ver-mas"
+      routerLink="/emprendimiento/{{ emprendimiento.id }}"
+    >
       Ver más
       <i class="fa-solid fa-chevron-right"></i>
     </button>
@@ -43,7 +42,6 @@
         <div class="no-viandas-wrapper">
           <h2 class="no-viandas">Este emprendimiento no tiene viandas disponibles.</h2>
         </div>
-        
       }
     </div>
   </div>

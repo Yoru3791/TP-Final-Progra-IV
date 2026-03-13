@@ -108,8 +108,10 @@ export class EmprendimientoPage {
   abrirModalEditarEmprendimiento() {
     this.dialog
       .open(FormUpdateEmprendimiento, {
-        //  REVISAR errores que tira este modal (dentro del form)
-        width: '100rem',
+        width: '80rem',
+        maxWidth: '95vw',
+        height: 'auto',
+        maxHeight: '90vh',
         panelClass: 'form-modal',
         autoFocus: false,
         restoreFocus: false,
@@ -262,7 +264,10 @@ export class EmprendimientoPage {
     this.dialog
       .open(FormVianda, {
         data: { idEmprendimiento: emprendimientoId },
-        width: '100rem',
+        width: '80rem',
+        maxWidth: '95vw',
+        height: 'auto',
+        maxHeight: '90vh',
         panelClass: 'form-modal',
         autoFocus: false,
         restoreFocus: false,
@@ -310,7 +315,10 @@ export class EmprendimientoPage {
     this.dialog
       .open(FormViandaUpdate, {
         data: { vianda: vianda },
-        width: '100rem',
+        width: '80rem',
+        maxWidth: '95vw',
+        height: 'auto',
+        maxHeight: '90vh',
         panelClass: 'form-modal',
         autoFocus: false,
         restoreFocus: false,

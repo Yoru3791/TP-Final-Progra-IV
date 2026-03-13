@@ -131,13 +131,11 @@
   cursor: pointer;
   font-size: 1.5rem;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 6px color-mix(in srgb, var(--color-primary) 25%, black);
 }
 
 .btn-primary-action:hover {
   background-color: var(--color-primary-hover-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px color-mix(in srgb, var(--color-primary) 35%, black);
 }
 
 @media (max-width: 500px) {
