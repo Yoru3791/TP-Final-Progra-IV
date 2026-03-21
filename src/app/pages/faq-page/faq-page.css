@@ -88,7 +88,7 @@ h2 {
 
 .faq-item[open] {
   border-color: var(--color-primary-light);
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary) 10%, black);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary) 10%, rgba(0,0,0,0.25));
 }
 
 .faq-question {
@@ -194,7 +194,7 @@ h2 {
   background-color: var(--color-primary);
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px color-mix(in srgb, var(--color-primary) 25%, black);
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--color-primary) 25%, rgba(0,0,0,0.25));
 }
 
 @media (max-width: 768px) {

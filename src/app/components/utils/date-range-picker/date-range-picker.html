@@ -1,5 +1,5 @@
 <div class="select-wrapper">
-  <div class="select-custom" [class.open]="isOpen()" (click)="toggleDropdown($event)">
+  <div class="select-trigger" [class.open]="isOpen()" (click)="toggleDropdown($event)">
     <div class="selected-option">
       {{ displayLabel() }}
     </div>
@@ -39,7 +39,7 @@
       @if (!showSelectorView()) {
         <div class="mode-selector">
           <button class="mode-btn" [class.active]="!isRangeMode()" (click)="setMode(false, $event)">
-            Fecha puntual
+            Fecha
           </button>
           <button class="mode-btn" [class.active]="isRangeMode()" (click)="setMode(true, $event)">
             Rango

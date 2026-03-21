@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Output, computed, signal, ElementRef, HostListener } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  computed,
+  signal,
+  ElementRef,
+  HostListener,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -32,9 +40,13 @@ export class DateRangePickerComponent {
   displayLabel = computed(() => {
     const start = this.startDate();
     const end = this.endDate();
-    
-    const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: '2-digit', year: '2-digit' };
-    
+
+    const options: Intl.DateTimeFormatOptions = {
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit',
+    };
+
     if (!start) return 'Filtrar por fecha';
 
     const startStr = start.toLocaleDateString('es-AR', options);
@@ -50,7 +62,7 @@ export class DateRangePickerComponent {
     const month = date.toLocaleString('es-AR', { month: 'long' });
     const year = date.getFullYear();
     const monthCap = month.charAt(0).toUpperCase() + month.slice(1);
-    return `${monthCap} - ${year}`; 
+    return `${monthCap} - ${year}`;
   });
 
   calendarDays = computed(() => {
@@ -59,7 +71,7 @@ export class DateRangePickerComponent {
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     const daysInMonth = lastDay.getDate();
-    const startingDayOfWeek = firstDay.getDay(); 
+    const startingDayOfWeek = firstDay.getDay();
     const adjustedStartDay = startingDayOfWeek === 0 ? 6 : startingDayOfWeek - 1;
 
     const days = [];
@@ -69,8 +81,18 @@ export class DateRangePickerComponent {
   });
 
   monthsList = [
-    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
   ];
 
   clearSelection(event: Event) {
@@ -83,8 +105,8 @@ export class DateRangePickerComponent {
 
   // --- Acciones ---
   toggleDropdown(event?: Event) {
-    if(event) event.stopPropagation();
-    this.isOpen.update(v => !v);
+    if (event) event.stopPropagation();
+    this.isOpen.update((v) => !v);
     if (!this.isOpen()) this.showSelectorView.set(false);
   }
 
@@ -104,14 +126,14 @@ export class DateRangePickerComponent {
     event.stopPropagation();
     const current = this.viewDate();
     this.viewDate.set(new Date(current.getFullYear(), monthIndex, 1));
-    this.showSelectorView.set(false); 
+    this.showSelectorView.set(false);
   }
 
   toggleSelectorView(event: Event) {
     event.stopPropagation();
-    this.showSelectorView.update(v => !v);
+    this.showSelectorView.update((v) => !v);
   }
-  
+
   setMode(isRange: boolean, event: Event) {
     event.stopPropagation();
     if (this.isRangeMode() !== isRange) {
@@ -148,11 +170,15 @@ export class DateRangePickerComponent {
       this.isOpen.set(false);
     }
   }
-  
+
   isToday(date: Date): boolean {
     if (!date) return false;
     const today = new Date();
-    return date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
   }
   isSelected(date: Date): boolean {
     if (!date) return false;
@@ -167,7 +193,8 @@ export class DateRangePickerComponent {
     const end = this.endDate();
     const hover = this.hoverDate();
     if (start && end) return date > start && date < end;
-    if (start && !end && hover) return (date > start && date < hover) || (date < start && date > hover);
+    if (start && !end && hover)
+      return (date > start && date < hover) || (date < start && date > hover);
     return false;
   }
   onDateHover(date: Date | null) {
@@ -183,5 +210,3 @@ export class DateRangePickerComponent {
     this.isOpen.set(false);
   }
 }
-
-  
