@@ -19,7 +19,8 @@ import { IconVeggie } from '../../utils/icon-veggie/icon-veggie';
     CommonModule,
     IconTacc,
     IconVegan,
-    IconVeggie],
+    IconVeggie
+  ],
   templateUrl: './form-vianda-update.html',
   styleUrl: './form-vianda-update.css',
 })
@@ -182,10 +183,12 @@ export class FormViandaUpdate implements OnInit {
     this.loading = true;
     const formValues = this.formVianda.value;
     const viandaId = this.data.vianda.id;
+    const categoriaKey = formValues.categoria;
+    const categoriaLabel = this.categorias.find(c => c.key === categoriaKey)?.label || categoriaKey;
 
     const updateDTO: ViandaUpdate = {
       nombreVianda: formValues.nombreVianda!,
-      categoria: formValues.categoria as any,
+      categoria: categoriaLabel as any,
       descripcion: formValues.descripcion!,
       precio: Number(formValues.precio),
       esVegano: !!formValues.esVegano,
