@@ -1,6 +1,7 @@
 <header class="main-header">
   <nav class="header-nav">
-    <div class="header-top-mobile">
+    
+    <div class="header-top-mobile desktop-only">
       <div class="logo-rol-container">
         <a class="logo-container" routerLink="/home">
           <img
@@ -21,15 +22,12 @@
           <button class="btn btn-admin" routerLink="/admin/usuarios">
             <i class="fa-solid fa-user"></i>
           </button>
-
           <button class="btn btn-admin" routerLink="/admin/reclamos">
             <i class="fa-solid fa-receipt"></i>
           </button>
-
           <button class="btn btn-admin" routerLink="/admin/emprendimientos">
             <i class="fa-solid fa-industry"></i>
           </button>
-
           <button class="btn btn-admin" routerLink="/admin/pedidos">
             <i class="fa-solid fa-basket-shopping"></i>
           </button>
@@ -45,7 +43,7 @@
       }
     </div>
 
-    <div class="header-center">
+    <div class="header-center desktop-only">
       @if (role() !== 'ADMIN') {
         <app-search-bar></app-search-bar>
       }
@@ -73,6 +71,59 @@
         </div>
       }
     </div>
+
+    <div class="mobile-header-main mobile-only">
+      <div class="logo-rol-container">
+        <a class="logo-container" routerLink="/home">
+          <img
+            class="header-logo"
+            src="logo-miviandita-removebg-preview.png"
+            alt="MiViandita Logo"
+          />
+        </a>
+        @if (role() === 'DUENO') {
+          <p class="rol">DUEÑO</p>
+        } @else if (role() === 'ADMIN') {
+          <p class="rol">ADMIN</p>
+        }
+      </div>
+
+      @if (role() === 'ADMIN') {
+        <nav class="btn-admin-container">
+          <button class="btn btn-admin" routerLink="/admin/usuarios">
+            <i class="fa-solid fa-user"></i>
+          </button>
+          <button class="btn btn-admin" routerLink="/admin/reclamos">
+            <i class="fa-solid fa-receipt"></i>
+          </button>
+          <button class="btn btn-admin" routerLink="/admin/emprendimientos">
+            <i class="fa-solid fa-industry"></i>
+          </button>
+          <button class="btn btn-admin" routerLink="/admin/pedidos">
+            <i class="fa-solid fa-basket-shopping"></i>
+          </button>
+        </nav>
+      } @else {
+        <div class="mobile-search-wrapper">
+          <app-search-bar></app-search-bar>
+        </div>
+
+        <button class="btn-mobile-icon" (click)="toggleCiudad()" [class.active]="mostrarCiudad()">
+          <i class="fa-solid fa-location-dot"></i>
+        </button>
+      }
+    </div>
+
+    @if (mostrarCiudad()) {
+      <div class="mobile-expandable-area mobile-only">
+        <app-city-selector
+          [ngModel]="cityFilterService.city()"
+          (ngModelChange)="cityFilterService.setCity($event)"
+          [restoreOnBlur]="true"
+        ></app-city-selector>
+      </div>
+    }
+
   </nav>
 </header>
 
