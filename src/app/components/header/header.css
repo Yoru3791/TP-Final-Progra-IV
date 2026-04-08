@@ -195,6 +195,7 @@ app-search-bar {
   display: flex;
 }
 
+/* --- MOBILE --- */
 @media (max-width: 768px) {
   .desktop-only {
     display: none !important;
@@ -205,30 +206,71 @@ app-search-bar {
 
   .header-nav {
     flex-direction: column;
-    padding: 1rem;
-    gap: 1rem;
+    padding: 1.2rem 2rem;
+    gap: 0;
     align-items: stretch;
   }
 
-  .header-top-mobile {
+  .mobile-header-main {
+    display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
+    gap: 1.5rem;
   }
 
-  .city-wrapper {
+  .mobile-search-wrapper {
     flex: 1;
     display: flex;
-    justify-content: flex-end;
+    min-width: 0;
   }
 
-  .header-center {
+  .mobile-search-wrapper app-search-bar {
     width: 100%;
-    padding: 0;
-    flex: unset;
   }
 
-  app-search-bar {
-    max-width: none;
+  .btn-mobile-icon {
+    background: transparent;
+    border: none;
+    color: var(--color-primary-light);
+    font-size: 2.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .btn-mobile-icon:active {
+    transform: scale(0.9);
+  }
+
+  .btn-mobile-icon.active {
+    background-color: var(--color-background-soft-orange);
+  }
+
+  .mobile-expandable-area {
+    width: 100%;
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    animation: slideDown 0.25s ease-out forwards;
+  }
+
+  .mobile-expandable-area app-city-selector {
+    display: block;
+    width: 100%;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-1rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .bottom-nav {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, EventEmitter, inject, Output, effect } from '@angular/core';
+import { Component, computed, EventEmitter, inject, Output, effect, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -30,6 +30,7 @@ export class Header {
   public role = this.authService.currentUserRole;
 
   isLoggedIn = computed(() => this.role() !== 'INVITADO');
+  mostrarCiudad = signal(false);
 
   @Output() loginClicked = new EventEmitter<void>();
   @Output() searchSubmitted = new EventEmitter<string>();
@@ -55,5 +56,9 @@ export class Header {
     if (searchInput.value) {
       this.searchSubmitted.emit(searchInput.value);
     }
+  }
+
+  toggleCiudad() {
+    this.mostrarCiudad.set(!this.mostrarCiudad());
   }
 }
